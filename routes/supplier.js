@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Supplier = require('../models/Supplier');
+const Supplier = require('../modals/Supplier');
 
 //Get the apecific Supplier
 router.get('/:code', async (req, res) => {
@@ -17,7 +17,7 @@ router.patch('/:code', async (req, res) => {
 	try {
 		await Supplier.updateOne(
 			{ _id: req.params.code },
-			{ $set: { email: req.body.email, supplierId: req.body.supplier,password:req.body.password } }
+			{ $set: { email: req.body.email, supplierId: req.body.supplier, password: req.body.password } }
 		);
 		res.json({ message: 'Supplier updated Successfilly' });
 	} catch (error) {
@@ -29,8 +29,8 @@ router.patch('/:code', async (req, res) => {
 router.post('/', async (req, res) => {
 	const supplier = new Supplier({
 		email: req.body.email,
-    supplierId: req.body.supplier,
-    password:req.body.password
+		supplierId: req.body.supplierId,
+		password: req.body.password
 	});
 	try {
 		const newSupplier = await supplier.save();
