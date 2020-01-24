@@ -1,0 +1,26 @@
+.formContent{
+  margin: 100px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 40%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  border: 1px solid;
+}
+
+.dashHeading{
+  text-align: center;
+  top: 50%;
+}
+
+.logout{
+  font-size: xx-large;
+  color: red;
+}
+
+@media screen and (max-width: 700px){
+  .formContent{
+    width: 70%;
+  }
+}

@@ -1,0 +1,22 @@
+.wrapper {
+    height: 97vh;
+    width: 100%;
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #4A4E69; */
+}
+
+.form-horizontal{
+  width: 50%;
+    margin: auto;
+}
+
+.form-group
+{position: relative;
+    display: flex;}
+
+.fieldset{
+  width: 100%;
+}
