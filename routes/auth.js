@@ -5,6 +5,9 @@ const User = require('../model/User');
 const Products = require('../model/Products');
 const {userValidation} = require('../validation');
 
+
+/*Supplier Part*/
+
 //Register Account
 router.post('/', async (req, res)=>{
 
@@ -38,6 +41,40 @@ router.post('/', async (req, res)=>{
 	}
 });
 
+//get all supplier created
+router.get('/', async (req, res)=>{
+	try {
+		const data = await User.find({category:"supplier"})
+		res.json(data)
+	} catch (error) {
+		res.json({message: error});
+	}
+})
+
+//update Supplier
+router.patch('/update', async (req, res)=>{
+	//hash the password
+	const salt = await bcrypt.genSalt(10);
+	const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+
+	const updateUser = {
+		supplier_id: req.body.supplier_id,
+		email: req.body.email,
+		password: hashPassword,
+	};
+	console.log(updateUser)
+	try {
+		const data = await User.updateOne(
+			{ _id: req.body._id }, {$set:updateUser});
+		res.json({ message: 'Product updated Successfilly'+data });
+	} catch (error) {
+		res.json({ message: error.message });
+	}
+})
+
+
+
 //Generate lofin token and pass to client
 router.post('/login', async (req, res)=>{
 
@@ -64,17 +101,7 @@ router.post('/login', async (req, res)=>{
 
 })
 
-//get all supplier created
-router.get('/', async (req, res)=>{
-	try {
-		const data = await User.find({category:"supplier"})
-		res.json(data)
-	} catch (error) {
-		res.json({message: error});
-	}
-})
-
-/*Supplier Part*/
+/*Product Part*/
 
 //Add Product
 router.post('/addProduct', async (req, res)=>{
@@ -98,10 +125,13 @@ router.post('/addProduct', async (req, res)=>{
 });
 
 
+
+
 // product list by Specific Supplier
-router.get('/listProduct',async(req,res)=>{
+router.get('/product/:id',async(req,res)=>{
 	try {
-		const item = await Products.find(req.body)
+		console.log("console",req.params)
+		const item = await Products.find({"supplier_id": req.params.id})
 		res.json(item);
 		console.log('got it');
 	}
@@ -109,6 +139,8 @@ router.get('/listProduct',async(req,res)=>{
 			res.json({message: error})
 	}
 })
+
+
 
 // product list
 router.get('/product', async (req, res)=>{
@@ -131,5 +163,16 @@ router.patch('/product/update', async (req, res) => {
 		res.json({ message: error.message });
 	}
 });
+
+//Delete product
+router.delete('/product/:id', async (req, res)=>{
+	try {
+		const data = await  Products.deleteOne({"_id":req.params.id})
+		res.json({message:"product Deleted"})
+	} catch (e) {
+		res.json({ message: error.message });
+
+	}
+})
 
 module.exports = router;

@@ -1,24 +1,25 @@
-.wrapper {
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* background-color: #4A4E69; */
-}
-
-.form-horizontal{
-  width: 50%;
-    margin: auto;
-}
-.form-horizontal .form-group .control-label{
-  text-align: left;
-}
-.form-group
-{
+.card-input{
   position: relative;
-    display: flex;
-  }
+  width: 70%;
+  margin: auto;
+  padding: 1em;
+}
+.card-button{
+  width: 31%;
+  margin: auto;
 
-.fieldset{
-  width: 100%;
+}
+
+.card .form-group label{
+  color: #2F4F4F;
+  font-size: 14px;
+  font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+}
+.save_product{
+  width: 20%;
+}
+.status{
+  color: Green;
+  font-size: medium;
+  font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
 }

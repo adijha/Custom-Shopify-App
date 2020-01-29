@@ -23,6 +23,8 @@ import Modal from "react-responsive-modal";
 
 
 import Card from "../components/Card/Card.jsx";
+import "../assets/css/productList.css"
+
 
 const ProductList = () => {
 
@@ -38,7 +40,13 @@ const [description, setDescription] = useState("");
 const [category, setCategory] = useState("");
 const [code, setCode] = useState("");
 const [status, setStatus] = useState("")
+const [itemId, setItemId] = useState("")
 const [open, setOpen] = useState(false)
+
+const modalStyle = {
+                    margin:"auto",
+                    position: "relative",
+                  };
 
 
 useEffect(()=>{
@@ -47,7 +55,7 @@ useEffect(()=>{
 
 const getProductData = () =>{
   axios.
-  get('/shopify/listProduct', {supplier_id:decode.id})
+  get('/shopify/product/'+decode.id)
   .then(products=>{
     setProductItems(products.data)
   })
@@ -62,6 +70,7 @@ const updateProduct = item =>{
   setDescription(item.description)
   setCategory(item.category)
   setCode(item.code)
+  setItemId(item._id)
   setOpen(true)
 }
 
@@ -69,8 +78,59 @@ const onCloseModal = ()=>{
   setOpen(false)
 }
 
+const deleteProduct = item=>{
+  console.log("delete"+item._id)
+    axios
+    .delete('/shopify/product/'+item._id)
+    .then(data=>{
+      if (data) {
+        setStatus("Product Deleted")
+        getProductData();
+      }
+    })
+}
+
+const updateProductItem = e =>{
+  e.preventDefault();
+  const object = {
+    _id:itemId,
+    name: name,
+    price: price,
+    quantity: quantity,
+    warranty: warranty,
+    description: description,
+    category:category,
+    code:code
+  }
+  console.log(object)
+  axios
+  .patch('/shopify/product/update', object)
+  .then(data=>{
+
+    if (data) {
+      setStatus("Product Updated Successfully")
+      setName("")
+      setPrice("")
+      setQuantity("")
+      setWarranty("")
+      setDescription("")
+      setCategory("")
+      setCode("")
+      setOpen(false)
+      getProductData();
+    }
+
+  })
+  .catch(err=>{
+    console.log("update product error is:", err.message)
+  })
+}
+
     return (
       <div>
+      <br/>
+      <div id="hideStatus" className="status text-center">{status}</div>
+
       <div className="content">
         <Grid fluid>
           <Row>
@@ -101,7 +161,7 @@ const onCloseModal = ()=>{
                             <td>{item.price}</td>
                             <td style={{width:'20%'}}>{item.description}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
-                            <td><button className="btn btn-danger btn-sm">Delete</button></td>
+                            <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>
                         );
                       })}
@@ -115,22 +175,104 @@ const onCloseModal = ()=>{
 
       </div>
       <Modal open={open} onClose={()=>setOpen(false)}>
-      <form>
-    <div className="form-group">
-      <label htmlFor="exampleInputEmail1">Email address</label>
-      <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-      <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
-    </div>
-    <div className="form-group">
-      <label htmlFor="exampleInputPassword1">Password</label>
-      <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-    </div>
-    <div className="form-group form-check">
-      <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-      <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" className="btn btn-primary">Submit</button>
-  </form>
+      <br/>
+      <h3 style={{color:"red"}}className="text-center">Edit Product Details:</h3>
+      <br/>
+
+      <form style={modalStyle } onSubmit={updateProductItem}>
+        <div className="card card-update" >
+          <div className="form-group">
+            <label for="product_id">ID/SKU</label>
+            <input type="text"
+                    value={code}
+                    onChange={(e)=>setCode(e.target.value)}
+                    className="form-control"
+                    id="product_id"
+                    placeholder="Enter Unique Id of Product"
+                    required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_name">Title</label>
+            <input type="text"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
+                    className="form-control"
+                    id="product_name"
+                    placeholder="Enter Title of Product"
+                    required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_category">Category</label>
+            <input type="text"
+                    value={category}
+                    onChange={(e)=>setCategory(e.target.value)}
+                    className="form-control"
+                    id="product_category"
+                    placeholder="Enter category of Product"
+                    required
+            />
+          </div>
+        </div>
+        <div className="card card-update" >
+          <div className="form-group">
+            <label for="product_price">Price</label>
+            <input type="number"
+                    min="0" value={price}
+                    onChange={(e)=>setPrice(e.target.value)}
+                    className="form-control"
+                    id="product_price"
+                    placeholder="Enter Price of Product"
+                    required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_quantity">Quantity</label>
+            <input type="number"
+                    value={quantity}
+                    onChange={(e)=>setQuantity(e.target.value)}
+                    min="0"
+                    className="form-control"
+                    id="product_quantity"
+                    placeholder="Enter Available Quanity of Product"
+                    required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Warranty</label>
+            <input type="text"
+                    value={warranty}
+                    onChange={(e)=>setWarranty(e.target.value)}
+                    className="form-control"
+                    id="product_warranty"
+                    placeholder="Enter Available warranty of Product"
+                    required
+            />
+          </div>
+        </div>
+        <div className="card card-update" >
+          <div className="form-group">
+            <label for="product_description">Detail Description</label>
+            <textarea className="form-control"
+                      rows="6"
+                      value={description}
+                      onChange={(e)=>setDescription(e.target.value)}
+                      id="product_description"
+                      placeholder="Enter Description of Product"
+                      required
+            />
+          </div>
+        </div>
+        <div className="card-button">
+          <button
+          type="submit"
+          className="btn btn-primary btn-sm"
+          >
+          Update Product
+          </button>
+        </div>
+      </form>
 
 
       </Modal>
