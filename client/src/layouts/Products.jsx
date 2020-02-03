@@ -38,7 +38,7 @@ const getProductList = () =>{
              <div className="photo">
                <div className="options-cart-round">
                  <button className="btn btn-default" title="Add to cart">
-                   <span className="fa fa-shopping-cart" />
+                   <span className="fa fa-eye" />
                  </button>
                </div>
 
@@ -48,11 +48,13 @@ const getProductList = () =>{
              <div className="info">
                <div className="row">
                  <div className="price-details col-md-6">
-                {/*   <p className="details">
-                     Lorem ipsum dolor sit amet, consectetur..
-                   </p> */}
-                   <h1>{list.name}</h1>
-                   <span className="price-new">&#8377;{list.price}</span>
+
+                   <h1><b>{list.name}</b></h1>
+                   <span className="price-new"><b>&#8377;</b>{list.price}</span>
+                   <hr/>
+                   <p className="details">
+                     {list.description}
+                   </p>
                  </div>
                </div>
              </div>
