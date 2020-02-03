@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -9,6 +10,9 @@ const authRoute = require('./routes/auth');
 const postroute = require('./routes/posts');
 
 dotenv.config();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 //connect Db
 mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopology: true }, () =>

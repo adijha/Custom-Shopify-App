@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 const User = require('../model/User');
 const Products = require('../model/Products');
 const {userValidation} = require('../validation');
-
+const upload = multer({
+	storage: multer.memoryStorage()
+})
 
 /*Supplier Part*/
 
@@ -104,28 +107,52 @@ router.post('/login', async (req, res)=>{
 /*Product Part*/
 
 //Add Product
-router.post('/addProduct', async (req, res)=>{
-	const product = new Products({
-		supplier_id: req.body.supplier_id,
-		name: req.body.name,
-		price: req.body.price,
-		quantity: req.body.quantity,
-		warranty: req.body.warranty,
-		description: req.body.description,
-		category:req.body.category,
-		code:req.body.code
-	});
-	try {
+router.post('/addProduct', upload.array('productImage'), async (req, res)=>{
+	const files = req.files;
+
+	let imgData=[];
+
+	 files.forEach(file=>{
+		 let bufferString =
+		imgData.push({
+			imgName: file.mimetype,
+			imgBufferData:  file.buffer.toString('base64')
+		})
+	})
+	//console.log(imgData)
+	const product = await new Products({
+	 supplier_id: req.body.supplier_id,
+	 name: req.body.name,
+	 price: req.body.price,
+	 quantity: req.body.quantity,
+	 warranty: req.body.warranty,
+	 description: req.body.description,
+	 category:req.body.category,
+	 code:req.body.code,
+	 productImage: imgData
+ });
+ console.log("product object is", product)
+	 try {
+
 		const newProduct = await product.save();
-		console.log("post response")
+		console.log("post response", product)
 		res.json(newProduct);
-	} catch (error) {
+	 } catch (error) {
 		res.json({message: error})
+	 }
+ });
+
+
+// product list
+router.get('/product', async (req, res)=>{
+	try {
+		const item = await Products.find();
+		res.json(item);
 	}
-});
-
-
-
+	catch (error) {
+		res.json({message:error})
+	}
+})
 
 // product list by Specific Supplier
 router.get('/product/:id',async(req,res)=>{
@@ -137,19 +164,6 @@ router.get('/product/:id',async(req,res)=>{
 	}
 	catch (error) {
 			res.json({message: error})
-	}
-})
-
-
-
-// product list
-router.get('/product', async (req, res)=>{
-	try {
-		const item = await Products.find();
-		res.json(item);
-	}
-	catch (error) {
-		res.json({message:error})
 	}
 })
 

@@ -12,6 +12,7 @@ const AddProduct = () => {
   const [warranty, setWarranty] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [productImage, setProductImage] = useState([])
   const [code, setCode] = useState("");
   const [status, setStatus] = useState("")
 
@@ -20,24 +21,24 @@ const AddProduct = () => {
 
   const addProduct = e =>{
     e.preventDefault();
-    const object = {
-      supplier_id: decode.id,
-      name: name,
-  		price: price,
-  		quantity: quantity,
-  		warranty: warranty,
-  		description: description,
-  		category:category,
-  		code:code
-    }
-    console.log(object)
+
+    const data = new FormData()
+    data.append('productImage', productImage[0])
+    data.append('productImage', productImage[1])
+    data.append("supplier_id", decode.id)
+    data.append("name", name)
+    data.append("price", price)
+    data.append("quantity", quantity)
+    data.append("warranty", warranty)
+    data.append("description", description)
+    data.append("category", category)
+    data.append("code", code)
+
     axios
-    .post('/shopify/addproduct', object)
+    .post('/shopify/addproduct', data)
     .then(item=>{
       if (item) {
-        console.log(item)
-        console.log(item.config.data)
-        console.log(item.config.data.name);
+        console.log(item.config)
         setStatus("Product Added Successfully")
         setName("")
         setPrice("")
@@ -46,7 +47,7 @@ const AddProduct = () => {
         setDescription("")
         setCategory("")
         setCode("")
-
+        setProductImage([])
       }
     })
     .catch(err=>{
@@ -140,6 +141,15 @@ const AddProduct = () => {
                       id="product_description"
                       placeholder="Enter Description of Product"
                       required
+            />
+          </div>
+          <div className="form-group">
+            <label for="productImage">Image upload</label>
+            <input type="file"
+            name="productImage"
+                      className="form-control"
+                      onChange={(e)=>setProductImage(e.target.files)}
+                      multiple accept="image/*"
             />
           </div>
         </div>

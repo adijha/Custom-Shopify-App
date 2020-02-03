@@ -4,6 +4,7 @@ import Login from './components/Login'
 import Auth from './components/Auth'
 import AdminLayout from "./layouts/Admin.jsx";
 import SupplierLayout from "./layouts/Supplier.jsx";
+import ProductLayout from "./layouts/Products.jsx";
 
 
 
@@ -12,7 +13,8 @@ function App() {
     <BrowserRouter>
     <div className="App">
         <Switch>
-          <Route exact path="/" component={Login}/>
+          <Route exact path="/" component={ProductLayout}/>
+          <Route path="/login" component={Login}/>
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
           <Route path='/auth' component={Auth}/>
           <Route path='/supplier' render={props => <SupplierLayout {...props} />}/>

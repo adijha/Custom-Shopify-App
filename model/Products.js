@@ -32,7 +32,11 @@ const ProductSchema = mongoose.Schema({
   code:{
     type: String,
     required: true
-  }
+  },
+  productImage:[{
+    imgName: String,
+    imgBufferData: String
+  }]
 })
 
 module.exports = mongoose.model('Products', ProductSchema);

@@ -144,6 +144,7 @@ const updateProductItem = e =>{
                   <Table striped hover >
                     <thead >
                       <tr>
+                        <th>f</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
@@ -155,6 +156,8 @@ const updateProductItem = e =>{
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
+                          
+                          <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
