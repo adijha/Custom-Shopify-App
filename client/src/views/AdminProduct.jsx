@@ -26,7 +26,7 @@ import Card from "../components/Card/Card.jsx";
 import "../assets/css/productList.css"
 
 
-const ProductList = () => {
+const AdminProduct = () => {
 
 const [productItems, setProductItems] = useState([])
 const token = localStorage.getItem("token")
@@ -55,7 +55,7 @@ useEffect(()=>{
 
 const getProductData = () =>{
   axios.
-  get('/shopify/supplier/product/'+decode.id)
+  get('/shopify/product')
   .then(products=>{
     setProductItems(products.data)
   })
@@ -144,7 +144,8 @@ const updateProductItem = e =>{
                   <Table striped hover >
                     <thead >
                       <tr>
-                        <th>f</th>
+                        <th>#</th>
+                        <th>Supplier Id</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
@@ -156,13 +157,13 @@ const updateProductItem = e =>{
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
-
                           <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>
+                          <td>{item.supplier_id}</td>
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td style={{width:'20%'}}>{item.description}</td>
+                            <td >{item.description}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>
@@ -284,4 +285,4 @@ const updateProductItem = e =>{
 
 }
 
-export default ProductList;
+export default AdminProduct;

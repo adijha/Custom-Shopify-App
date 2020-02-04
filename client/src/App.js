@@ -14,7 +14,7 @@ function App() {
     <div className="App">
         <Switch>
           <Route exact path="/" component={ProductLayout}/>
-          <Route path="/login-access" component={Login}/>
+          <Route exact path="/login-access" component={Login}/>
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
           <Route path='/auth' component={Auth}/>
           <Route path='/supplier' render={props => <SupplierLayout {...props} />}/>

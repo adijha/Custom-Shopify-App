@@ -155,7 +155,7 @@ router.get('/product', async (req, res)=>{
 })
 
 // product list by Specific Supplier
-router.get('/product/:id',async(req,res)=>{
+router.get('/supplier/product/:id',async(req,res)=>{
 	try {
 		console.log("console",req.params)
 		const item = await Products.find({"supplier_id": req.params.id})
@@ -166,6 +166,20 @@ router.get('/product/:id',async(req,res)=>{
 			res.json({message: error})
 	}
 })
+
+// product list by specific prducbt id
+router.get('/product/:id',async(req,res)=>{
+	try {
+		console.log("console",req.params)
+		const item = await Products.find({"_id": req.params.id})
+		res.json(item);
+		console.log('got it');
+	}
+	catch (error) {
+			res.json({message: error})
+	}
+})
+
 
 //update Product details
 router.patch('/product/update', async (req, res) => {

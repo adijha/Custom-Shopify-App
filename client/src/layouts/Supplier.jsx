@@ -114,7 +114,7 @@ class Supplier extends Component {
       <div className="wrapper">
         <Sidebar {...this.props} routes={routes} image={this.state.image}
         hasImage={this.state.hasImage}/>
-        <div id="main-panel" className="main-panel" ref="mainPanel">
+        <div id="main-panel" className="main-panel" ref="mainPanel" style={{position: 'absolute', margin: 'auto', right: 0}}>
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}

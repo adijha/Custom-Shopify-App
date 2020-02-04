@@ -18,6 +18,7 @@
 import Dashboard from "./views/Dashboard.jsx";
 import SupplierList from "./views/SupplierList.jsx";
 import Supplier from "./views/Supplier.jsx";
+import AdminProduct from "./views/AdminProduct.jsx"
 
 const dashboardRoutes = [
 
@@ -40,6 +41,14 @@ const dashboardRoutes = [
     name: "Add Supplier",
     icon: "pe-7s-bell",
     component: Supplier,
+    layout: "/admin"
+  },
+
+  {
+    path: "/product",
+    name: "Product List",
+    icon: "pe-7s-bell",
+    component: AdminProduct,
     layout: "/admin"
   },
   {
