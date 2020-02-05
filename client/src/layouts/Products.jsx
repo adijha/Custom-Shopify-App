@@ -49,11 +49,21 @@ const onCloseModal = ()=>{
 
   return(
     <div className="">
-    <h2>Ecommerce Products Display Layout</h2>
+      <div style={{backgroundColor: "antiquewhite", position:"relative", display:"flex"}}>
+        <h2 className="text-center">Product <span style={{color: "#ff9f1a"}}>Collection</span></h2>
+
+        <hr/>
+        <div className="text-center">
+        <ul className="category text-center" style={{listStyle: "none", display: "flex", padding:"2em"}}>
+          <li className="filter"><button className="btn btn-primary">Latest</button></li>
+          <li className="filter"><button className="btn btn-primary">Top Rated</button></li>
+        </ul>
+        </div>
+      </div>
+      <div className="container-fluid" style={{backgroundColor: "", padding: "6px" , paddingTop:"2em"}}>
 
     {productList.map(list=>{
       return(
-
         <div className="col-sm-3">
                <article className="col-item item column-item">
                  <div className="photo">
@@ -72,10 +82,7 @@ const onCloseModal = ()=>{
 
                        <h1><b>{list.name}</b></h1>
                        <span className="price-new"><b>&#8377;</b>{list.price}</span>
-                       <hr/>
-                       <p className="details">
-                         {list.description}
-                       </p>
+
                      </div>
                    </div>
                  </div>
@@ -83,8 +90,7 @@ const onCloseModal = ()=>{
              </div>
             )
           })}
-
-
+          </div>
 
 
     <Modal open={open} onClose={()=>setOpen(false)}>

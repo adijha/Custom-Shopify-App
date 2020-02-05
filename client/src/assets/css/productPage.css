@@ -1,12 +1,23 @@
 *{
   font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
-
 }
+
+.filter{
+  float: left;
+}
+
+.category li{
+  position: relative;
+  margin-right: 2rem;
+}
+
 .column-item {
   border: 1px solid #E1E1E1;
-  background: #FFF;
+  background: #f0ffff;
   margin-bottom:12px;
   font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 6px;
 
 }
 .column-item .options {
@@ -16,6 +27,8 @@
 }
 .column-item .photo {
   overflow: hidden;
+  padding: 8px;
+
 }
 .column-item .photo .options {
   display:none;
