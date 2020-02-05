@@ -55,8 +55,8 @@ const onCloseModal = ()=>{
         <hr/>
         <div className="text-center">
         <ul className="category text-center" style={{listStyle: "none", display: "flex", padding:"2em"}}>
-          <li className="filter"><button className="btn btn-primary">Latest</button></li>
-          <li className="filter"><button className="btn btn-primary">Top Rated</button></li>
+          <li className="filter"><button className="btn btn-danger">Latest</button></li>
+          <li className="filter"><button className="btn btn-danger">Top Rated</button></li>
         </ul>
         </div>
       </div>
