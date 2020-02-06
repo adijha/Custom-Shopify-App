@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import axios from 'axios';
-import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Grid, Row, Col, Table, DropdownButton } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 
 
@@ -15,11 +15,13 @@ const Products= ()=>{
 const [productList, setProductList] = useState([]);
 const [open, setOpen] = useState(false)
 const [singleProduct, setSingleProduct] = useState([]);
+const [search, setSearch] = useState('');
 
 
 useEffect(()=>{
   getProductList();
 },[])
+
 
 
 const getProductList = () =>{
@@ -47,22 +49,52 @@ const onCloseModal = ()=>{
 }
 
 
+const filterItems = (productList.filter(plist=>{
+  return plist.name.toLowerCase().includes(search.toLowerCase());
+}))
+
+
+
+const handlClick = (e)=>{
+  e.preventDefault();
+  let unsorted = filterItems;
+  console.log("unsorted", unsorted)
+if (e.target.value==="asce") {
+   setProductList(filterItems.sort((a,b)=>parseFloat(a.price)-parseFloat(b.price)))
+}
+else if (e.target.value=="desc") {
+  setProductList(filterItems.sort((a,b)=>parseFloat(b.price)-parseFloat(a.price)))
+}
+
+}
+
+
+
+
   return(
     <div className="">
-      <div style={{backgroundColor: "antiquewhite", position:"relative", display:"flex"}}>
+      <div >
         <h2 className="text-center">Product <span style={{color: "#ff9f1a"}}>Collection</span></h2>
 
-        <hr/>
-        <div className="text-center">
-        <ul className="category text-center" style={{listStyle: "none", display: "flex", padding:"2em"}}>
-          <li className="filter"><button className="btn btn-danger">Latest</button></li>
-          <li className="filter"><button className="btn btn-danger">Top Rated</button></li>
+        <hr style={{width:"20%", color:"antiquewhite", border:"1px solid"}}/>
+        <div className="text-right container arrow" style={{width:"35%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
+        <ul className="category text-center" style={{listStyle: "none", padding:"1em", position:"relative", display:"flex"}}>
+          <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product"/></li>
+          <li>
+          <select onChange={(e)=>handlClick(e)}>
+            <option value="all">All</option>
+            <option value="asce">Sort: Highest to Lowest</option>
+            <option value="desc">Sort: Lowest to highest</option>
+          </select>
+          </li>
         </ul>
+
         </div>
+
       </div>
       <div className="container-fluid" style={{backgroundColor: "", padding: "6px" , paddingTop:"2em"}}>
 
-    {productList.map(list=>{
+    {filterItems.map(list=>{
       return(
         <div className="col-sm-3">
                <article className="col-item item column-item">

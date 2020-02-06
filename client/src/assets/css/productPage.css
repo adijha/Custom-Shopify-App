@@ -2,9 +2,25 @@
   font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
 }
 
-.filter{
-  float: left;
+.arrow{
+	background-color: $color-orange;
+	padding: 0;
+	margin-top: -5px;
+	font-weight: bold;
+	color: $color-white;
+    position: relative;
 }
+.arrow:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-left: 35px solid antiquewhite;
+    border-top: 35px solid transparent;
+    border-bottom: 35px solid transparent;
+    left: 100%;
+    top: 0;
+}
+
 
 .category li{
   position: relative;
