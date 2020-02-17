@@ -16,6 +16,7 @@ const [productList, setProductList] = useState([]);
 const [open, setOpen] = useState(false)
 const [singleProduct, setSingleProduct] = useState([]);
 const [search, setSearch] = useState('');
+const [msg, setMsg] = useState('')
 
 
 useEffect(()=>{
@@ -84,6 +85,10 @@ const AddInShopify = (t) =>{
     .post('/addToShopify', product)
     .then(res=>{
       console.log("post response is", res)
+      setMsg("Product Added in Shopify App")
+    })
+    .catch(error=>{
+      console.log(error)
     })
 
 }
@@ -147,6 +152,7 @@ const AddInShopify = (t) =>{
     <Modal open={open} onClose={()=>setOpen(false)}>
 
     <div className="container-fluid" >
+    <div className="text-center" style={{color:"green"}}>{msg}</div>
     {singleProduct.map(product=>{
       return(
         <div className="card card-class">
