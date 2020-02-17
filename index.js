@@ -13,7 +13,7 @@ const cors = require('cors');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products';
-const forwardingAddress = "https://custom-shopify-web.herokuapp.com/";
+const forwardingAddress = "https://custom-shopify-web.herokuapp.com";
 let hmacc,tokenn;
 let shop=`demo-mojito.myshopify.com`;
 
@@ -108,7 +108,7 @@ if (shop && hmac && code) {
 				const shopRequestHeaders = {
 					'X-Shopify-Access-Token': tokenn,
 				};
-				request.get('https://custom-shopify-web.herokuapp.com/', {headers: shopRequestHeaders})
+				request.get('https://custom-shopify-web.herokuapp.com', {headers: shopRequestHeaders})
 				.then((shopResponse) => {
 							res.send(shopResponse);
 						})
