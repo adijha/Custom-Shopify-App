@@ -28,7 +28,7 @@ const addSuplier = e =>{
     password: password
   }
   axios
-  .post('/shopify/', obj)
+  .post('/api/', obj)
   .then((data)=>{
     if (data) {
       setStatus("New Supplier Created Successfully: "+ data.config.data)

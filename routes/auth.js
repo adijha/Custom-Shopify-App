@@ -12,7 +12,7 @@ const upload = multer({
 /*Supplier Part*/
 
 //Register Account
-router.post('/', async (req, res)=>{
+router.post('/test', async (req, res)=>{
 
 	//let validate the data
 	const {error} = userValidation(req.body);
@@ -45,7 +45,7 @@ router.post('/', async (req, res)=>{
 });
 
 //get all supplier created
-router.get('/', async (req, res)=>{
+router.get('/test', async (req, res)=>{
 	try {
 		const data = await User.find({category:"supplier"})
 		res.json(data)

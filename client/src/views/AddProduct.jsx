@@ -35,7 +35,7 @@ const AddProduct = () => {
     data.append("code", code)
 
     axios
-    .post('/shopify/addproduct', data)
+    .post('/api/addproduct', data)
     .then(item=>{
       if (item) {
         console.log(item.config)

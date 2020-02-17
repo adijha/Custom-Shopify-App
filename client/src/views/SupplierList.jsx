@@ -40,7 +40,7 @@ useEffect(()=>{
 
 const getSupplierData = () =>{
   axios.
-  get('/shopify/')
+  get('/api/')
   .then(list=>{
     console.log("api data", list)
     setSuppliers(list.data)
@@ -65,7 +65,7 @@ const submitUpdateSuplier = (e)=>{
   }
   console.log(obj)
   axios
-  .patch('/shopify/update', obj)
+  .patch('/api/update', obj)
   .then(data=>{
     if (data) {
       setStatus("Supplier Updated Successfully")

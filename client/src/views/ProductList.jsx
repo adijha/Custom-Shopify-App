@@ -55,7 +55,7 @@ useEffect(()=>{
 
 const getProductData = () =>{
   axios.
-  get('/shopify/supplier/product/'+decode.id)
+  get('/api/supplier/product/'+decode.id)
   .then(products=>{
     setProductItems(products.data)
   })
@@ -81,7 +81,7 @@ const onCloseModal = ()=>{
 const deleteProduct = item=>{
   console.log("delete"+item._id)
     axios
-    .delete('/shopify/product/'+item._id)
+    .delete('/api/product/'+item._id)
     .then(data=>{
       if (data) {
         setStatus("Product Deleted")
@@ -104,7 +104,7 @@ const updateProductItem = e =>{
   }
   console.log(object)
   axios
-  .patch('/shopify/product/update', object)
+  .patch('/api/product/update', object)
   .then(data=>{
 
     if (data) {

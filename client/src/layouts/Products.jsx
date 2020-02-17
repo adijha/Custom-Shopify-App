@@ -26,7 +26,7 @@ useEffect(()=>{
 
 const getProductList = () =>{
     axios
-    .get('/shopify/product')
+    .get('/api/product')
     .then(data=>{
       console.log("get api of product list", data);
       setProductList(data.data);
@@ -36,7 +36,7 @@ const getProductList = () =>{
 
 const getProductId=(list)=>{
   //console.log(list._id);
-  axios.get('/shopify/product/'+list._id)
+  axios.get('/api/product/'+list._id)
   .then(item=>{
     console.log("single pronduct detail", item)
     setSingleProduct(item.data)
@@ -68,6 +68,25 @@ else if (e.target.value=="desc") {
 
 }
 
+const AddInShopify = (t) =>{
+
+  let product={
+
+      "product": {
+        "title": t.name,
+        "body_html": t.description,
+        "vendor": "Demo-Mojito",
+        "product_type": t.category
+      }
+
+}
+     axios
+    .post('/addToShopify', product)
+    .then(res=>{
+      console.log("post response is", res)
+    })
+
+}
 
 
 
@@ -161,7 +180,7 @@ else if (e.target.value=="desc") {
                 <p className="vote"><strong>91%</strong> of buyers enjoyed this product!<br/> <br/><strong>87 votes</strong></p>
                 <h5 className="sizes">Available Quantity: <span>{product.quantity}</span>
                 </h5>
-
+                <button onClick={()=>AddInShopify(product)} className="btn btn-primary">Add To Shopify</button>
 
               </div>
             </div>
