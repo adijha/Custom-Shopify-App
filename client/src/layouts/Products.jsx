@@ -47,6 +47,7 @@ const getProductId=(list)=>{
 
 const onCloseModal = ()=>{
   setOpen(false)
+  setMsg('')
 }
 
 
