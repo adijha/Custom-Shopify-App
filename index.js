@@ -10,6 +10,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products';
@@ -30,6 +32,10 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
 	console.log('Db is connected')
 );
 
+app.use(fileUpload({
+  useTempFiles : true,
+   tempFileDir : '/tmp/'
+}));
 //Middleware
 app.use(express.json());
 //Route Middleware

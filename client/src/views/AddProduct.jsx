@@ -55,6 +55,22 @@ const AddProduct = () => {
     })
   }
 
+  const addCSvProduct = (e) =>{
+    e.preventDefault();
+
+    const csvData = new FormData();
+    csvData.append('avatar')
+
+    axios
+    .post('/api/product/csv', csvData)
+    .then(item=>{
+      console.log("file uploaded");
+      setStatus("File uploaded Successfully")
+    })
+    .catch(error=>{
+      console.log("csv product :", error.message)
+    })
+  }
   return (
 
     <div className="container-fluid">
@@ -163,9 +179,15 @@ const AddProduct = () => {
         </div>
       </form>
       <br/>
+
+      <form onSubmit={addCSvProduct}>
+      <p className="text-center"><br/><strong>Or Upload CSV File</strong></p>
+        <input type="file" name="avatar" />
+        <button type="submit" name="button">submit</button>
+      </form>
+      <br/>
       <div className="status text-center">{status}</div>
       <br/>
-
     </div>
 
   )

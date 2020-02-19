@@ -27,7 +27,7 @@ const Login = () => {
     }
     console.log(obj)
     axios
-    .post('/shopify/login', obj)
+    .post('/api/login', obj)
     .then(data=>{
       const token =  localStorage.setItem("token", data.data);
         setisLoggedIn(true)

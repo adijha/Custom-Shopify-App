@@ -12,7 +12,7 @@ const upload = multer({
 /*Supplier Part*/
 
 //Register Account
-router.post('/test', async (req, res)=>{
+router.post('/', async (req, res)=>{
 
 	//let validate the data
 	const {error} = userValidation(req.body);
@@ -45,7 +45,7 @@ router.post('/test', async (req, res)=>{
 });
 
 //get all supplier created
-router.get('/test', async (req, res)=>{
+router.get('/', async (req, res)=>{
 	try {
 		const data = await User.find({category:"supplier"})
 		res.json(data)
@@ -202,5 +202,16 @@ router.delete('/product/:id', async (req, res)=>{
 
 	}
 })
+
+	router.post('/product/csv', async (req, res)=>{
+	  console.log(req.files.avatar);
+	  console.log("file path is", req.files.avatar.tempFilePath)
+	   const csvFilePath= await req.files.avatar.tempFilePath;
+	    csv()
+	  .fromFile(csvFilePath)
+	  .then((jsonObj)=>{
+	      console.log("fileData", jsonObj);
+	  })
+	})
 
 module.exports = router;
