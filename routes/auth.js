@@ -5,9 +5,12 @@ const multer = require('multer');
 const User = require('../model/User');
 const Products = require('../model/Products');
 const {userValidation} = require('../validation');
+const fileUpload = require('express-fileupload');
+const csv=require('csvtojson')
 const upload = multer({
 	storage: multer.memoryStorage()
 })
+
 
 /*Supplier Part*/
 
@@ -204,13 +207,19 @@ router.delete('/product/:id', async (req, res)=>{
 })
 
 	router.post('/product/csv', async (req, res)=>{
-	  console.log(req.files.avatar);
-	  console.log("file path is", req.files.avatar.tempFilePath)
-	   const csvFilePath= await req.files.avatar.tempFilePath;
+	  console.log("sile",req.files.file);
+	  console.log("file path is", req.files.file.tempFilePath)
+	   const csvFilePath= await req.files.file.tempFilePath;
 	    csv()
 	  .fromFile(csvFilePath)
 	  .then((jsonObj)=>{
-	      console.log("fileData", jsonObj);
+			jsonObj.forEach((item) => {
+		  //       console.log(item);
+	      console.log("fileData", item);
+			})
+	  })
+		.catch(err=>{
+	     res.send(err.message)
 	  })
 	})
 

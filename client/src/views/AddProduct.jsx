@@ -13,6 +13,7 @@ const AddProduct = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [productImage, setProductImage] = useState([])
+  const [csvData, setCsvData] =useState([])
   const [code, setCode] = useState("");
   const [status, setStatus] = useState("")
 
@@ -57,12 +58,10 @@ const AddProduct = () => {
 
   const addCSvProduct = (e) =>{
     e.preventDefault();
-
-    const csvData = new FormData();
-    csvData.append('avatar')
-
+    const scvdata = new FormData()
+    scvdata.append('file', csvData[0])
     axios
-    .post('/api/product/csv', csvData)
+    .post('/api/product/csv',scvdata)
     .then(item=>{
       console.log("file uploaded");
       setStatus("File uploaded Successfully")
@@ -182,8 +181,10 @@ const AddProduct = () => {
 
       <form onSubmit={addCSvProduct}>
       <p className="text-center"><br/><strong>Or Upload CSV File</strong></p>
-        <input type="file" name="avatar" />
-        <button type="submit" name="button">submit</button>
+        <input type="file" name="avatar" onChange={(e)=>setCsvData(e.target.files)}
+        enctype="multipart/form-data"
+        />
+        <button className="btn btn-primary" type="submit" name="button">submit</button>
       </form>
       <br/>
       <div className="status text-center">{status}</div>
