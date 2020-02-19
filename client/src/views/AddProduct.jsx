@@ -60,6 +60,7 @@ const AddProduct = () => {
     e.preventDefault();
     const scvdata = new FormData()
     scvdata.append('file', csvData[0])
+    scvdata.append('supplier_id', decode.id)
     axios
     .post('/api/product/csv',scvdata)
     .then(item=>{
@@ -178,14 +179,20 @@ const AddProduct = () => {
         </div>
       </form>
       <br/>
-
+      <div className="container-fluid">
       <form onSubmit={addCSvProduct}>
+      <div className="card card-input" >
+        <div className="form-group">
       <p className="text-center"><br/><strong>Or Upload CSV File</strong></p>
-        <input type="file" name="avatar" onChange={(e)=>setCsvData(e.target.files)}
+        <input type="file" className="form-control text-center" name="avatar" onChange={(e)=>setCsvData(e.target.files)}
         enctype="multipart/form-data"
         />
-        <button className="btn btn-primary" type="submit" name="button">submit</button>
+        <br/>
+        <button className="btn btn-primary btn-sm" type="submit" name="button">submit</button>
+        </div>
+        </div>
       </form>
+      </div>
       <br/>
       <div className="status text-center">{status}</div>
       <br/>

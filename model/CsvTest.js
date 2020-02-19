@@ -15,23 +15,19 @@ const CsvTestSchema = mongoose.Schema({
 	},
 	quantity: {
 		type: Number,
-		required: true
+
 	},
   warranty: {
     type: String,
-    required: true
   },
   description: {
     type: String,
-    required: true
   },
   category:{
     type: String,
-    required: true
   },
   code:{
     type: String,
-    required: true
   }
 })
 

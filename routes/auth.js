@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const User = require('../model/User');
 const Products = require('../model/Products');
+const CsvTest = require('../model/CsvTest');
 const {userValidation} = require('../validation');
 const fileUpload = require('express-fileupload');
 const csv=require('csvtojson')
@@ -215,12 +216,30 @@ router.delete('/product/:id', async (req, res)=>{
 	  .then((jsonObj)=>{
 			jsonObj.forEach((item) => {
 		  //       console.log(item);
-	      console.log("fileData", item);
+			const csvtest = new CsvTest({
+			 supplier_id: req.body.supplier_id,
+			 name: item.construction,
+			 price: item.policyID,
+			 quantity: item.point_granularity,
+			 category:item.construction,
+
+		 });
+
+	      console.log("fileData", csvtest);
+				try {
+					console.log("post response", csvtest)
+				 const newProduct =  csvtest.save();
+				console.log("newProduct", newProduct);
+				} catch (error) {
+				 res.json({message: error})
+				}
+			});
 			})
+
+		.catch(error=>{
+	     res.send(error)
 	  })
-		.catch(err=>{
-	     res.send(err.message)
-	  })
+		res.send("uploaded")
 	})
 
 module.exports = router;
