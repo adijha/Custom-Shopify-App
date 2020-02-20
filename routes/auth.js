@@ -228,14 +228,15 @@ router.delete('/product/:id', async (req, res)=>{
 			 category:item.construction,
 
 		 });
-
-				try {
-				 const newProduct =  csvtest.save();
-				}
-				catch (error) {
-				 res.json({message: error})
-				}
+			if (item) {
+				const newProduct =  csvtest.save();
+								console.log("newProduct", newProduct);
+			}
+			else {
+				console.log("not saved not product")
+			}
 			});
+			res.json("product added completed");
 			})
 
 		.catch(error=>{
