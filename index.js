@@ -41,7 +41,6 @@ app.use(express.json());
 //Route Middleware
 app.use('/api', authRoute);
 //app.use('/shopify', postroute);
-//app.use(express.static(path.join(__dirname, 'build')))
 
 //Shopify Install route
 app.get('/shopify', (req, res) => {

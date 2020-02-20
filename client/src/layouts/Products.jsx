@@ -163,10 +163,13 @@ const AddInShopify = (t) =>{
                   <div className="preview-pic tab-content">
                     <div className="tab-pane active" id="pic-1"><img src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`} /></div>
                     <div className="tab-pane" id="pic-2"><img src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`} /></div>
+
+
                   </div>
                   <ul className="preview-thumbnail nav nav-tabs">
                     <li className="active"><a data-target="#pic-1" data-toggle="tab"><img src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`} /></a></li>
                     <li><a data-target="#pic-2" data-toggle="tab"><img src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`} /></a></li>
+
 
                   </ul>
                 </div>

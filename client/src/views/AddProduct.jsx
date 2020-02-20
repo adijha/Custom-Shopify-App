@@ -26,6 +26,11 @@ const AddProduct = () => {
     const data = new FormData()
     data.append('productImage', productImage[0])
     data.append('productImage', productImage[1])
+    data.append('productImage', productImage[2])
+    data.append('productImage', productImage[3])
+    data.append('productImage', productImage[4])
+    data.append('productImage', productImage[5])
+    data.append('productImage', productImage[6])
     data.append("supplier_id", decode.id)
     data.append("name", name)
     data.append("price", price)
@@ -34,9 +39,9 @@ const AddProduct = () => {
     data.append("description", description)
     data.append("category", category)
     data.append("code", code)
-
+console.log("data", data)
     axios
-    .post('/api/addproduct', data)
+    .post('/api/addProduct', data)
     .then(item=>{
       if (item) {
         console.log(item.config)

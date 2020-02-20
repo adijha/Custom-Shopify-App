@@ -111,8 +111,9 @@ router.post('/login', async (req, res)=>{
 /*Product Part*/
 
 //Add Product
-router.post('/addProduct', upload.array('productImage'), async (req, res)=>{
-	const files = req.files;
+router.post('/addProduct',  async (req, res)=>{
+	const files = req.files.productImage;
+	// console.log("files is ", req.files.productImage);
 
 	let imgData=[];
 
@@ -120,7 +121,7 @@ router.post('/addProduct', upload.array('productImage'), async (req, res)=>{
 		 let bufferString =
 		imgData.push({
 			imgName: file.mimetype,
-			imgBufferData:  file.buffer.toString('base64')
+			imgBufferData:  file.data.buffer.toString('base64')
 		})
 	})
 	//console.log(imgData)
@@ -135,11 +136,14 @@ router.post('/addProduct', upload.array('productImage'), async (req, res)=>{
 	 code:req.body.code,
 	 productImage: imgData
  });
- console.log("product object is", product)
+ //  console.log(product , "product is");
+ // console.log("req.body", req.body);
+ // console.log(typeof(imgData));
+ //console.log("product object is", product)
 	 try {
 
 		const newProduct = await product.save();
-		console.log("post response", product)
+		console.log("post response", JSON.stringify(product))
 		res.json(newProduct);
 	 } catch (error) {
 		res.json({message: error})
@@ -225,12 +229,10 @@ router.delete('/product/:id', async (req, res)=>{
 
 		 });
 
-	      console.log("fileData", csvtest);
 				try {
-					console.log("post response", csvtest)
 				 const newProduct =  csvtest.save();
-				console.log("newProduct", newProduct);
-				} catch (error) {
+				}
+				catch (error) {
 				 res.json({message: error})
 				}
 			});
