@@ -5,12 +5,14 @@ const multer = require('multer');
 const User = require('../model/User');
 const Products = require('../model/Products');
 const CsvTest = require('../model/CsvTest');
+const Category = require('../model/Category')
 const {userValidation} = require('../validation');
 const fileUpload = require('express-fileupload');
-const csv=require('csvtojson')
+const csv=require('csvtojson');
 const upload = multer({
 	storage: multer.memoryStorage()
 })
+
 
 
 /*Supplier Part*/
@@ -108,12 +110,49 @@ router.post('/login', async (req, res)=>{
 
 })
 
+
+
 /*Product Part*/
 
+//category add
+router.post('/addCategory', async (req, res)=>{
+
+	const add =  new Category({
+		category: req.body.category
+	});
+
+	try {
+		const newCategory = await add.save();
+		console.log(newCategory, "category added")
+		res.json("product Added")
+	} catch (error) {
+		console.log("category add error", error)
+	}
+
+})
+
+router.get('/totalCategory', async (req, res)=>{
+	try {
+		const categories = await Category.find({});
+		res.json(categories)
+	} catch (error) {
+		console.log("error in get category", error)
+	}
+})
+
+router.delete('/category/:id', async (req, res)=>{
+	try {
+		const data = await  Category.deleteOne({"_id":req.params.id})
+		res.json({message:"category Deleted"})
+	} catch (e) {
+		res.json({ message: error.message });
+
+	}
+})
 //Add Product
-router.post('/addProduct',  async (req, res)=>{
-	const files = req.files.productImage;
-	// console.log("files is ", req.files.productImage);
+router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
+	const files = await req.files;
+	 console.log("files is ", req.files);
 
 	let imgData=[];
 
@@ -121,10 +160,10 @@ router.post('/addProduct',  async (req, res)=>{
 		 let bufferString =
 		imgData.push({
 			imgName: file.mimetype,
-			imgBufferData:  file.data.buffer.toString('base64')
+			imgBufferData:  file.buffer.toString('base64')
 		})
 	})
-	//console.log(imgData)
+	console.log("imageDatais", imgData)
 	const product = await new Products({
 	 supplier_id: req.body.supplier_id,
 	 name: req.body.name,
@@ -143,7 +182,7 @@ router.post('/addProduct',  async (req, res)=>{
 	 try {
 
 		const newProduct = await product.save();
-		console.log("post response", JSON.stringify(product))
+		//console.log("post response", JSON.stringify(product))
 		res.json(newProduct);
 	 } catch (error) {
 		res.json({message: error})
@@ -214,7 +253,7 @@ router.delete('/product/:id', async (req, res)=>{
 	router.post('/product/csv', async (req, res)=>{
 	  console.log("sile",req.files.file);
 	  console.log("file path is", req.files.file.tempFilePath)
-	   const csvFilePath= await req.files.file.tempFilePath;
+	   const csvFilePath= req.files.file.tempFilePath;
 	    csv()
 	  .fromFile(csvFilePath)
 	  .then((jsonObj)=>{
@@ -228,13 +267,12 @@ router.delete('/product/:id', async (req, res)=>{
 			 category:item.construction,
 
 		 });
-			if (item) {
+			try {
 				const newProduct =  csvtest.save();
-								console.log("newProduct", newProduct);
-			}
-			else {
-				console.log("not saved not product")
-			}
+
+			} catch (error) {
+				console.log("catch error is", error)
+}
 			});
 			res.json("product added completed");
 			})
@@ -242,7 +280,16 @@ router.delete('/product/:id', async (req, res)=>{
 		.catch(error=>{
 	     res.send(error)
 	  })
-		res.send("uploaded")
+		console.log("uploaded")
 	})
 
+	router.get('/csv/product', async (req, res)=>{
+		try {
+			const item = await CsvTest.find();
+			res.json(item);
+		}
+		catch (error) {
+			res.json({message:error})
+		}
+	})
 module.exports = router;

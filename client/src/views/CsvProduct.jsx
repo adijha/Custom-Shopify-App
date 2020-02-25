@@ -55,7 +55,7 @@ useEffect(()=>{
 
 const getProductData = () =>{
   axios.
-  get('/api/supplier/product/'+decode.id)
+  get('/api/csv/product/')
   .then(products=>{
     setProductItems(products.data)
   })
@@ -136,7 +136,7 @@ const updateProductItem = e =>{
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
+                title="CSV File Product List"
                 category={"Total Products :"+ productItems.length}
                 ctTableFullWidth
                 ctTableResponsive
@@ -144,12 +144,10 @@ const updateProductItem = e =>{
                   <Table striped hover >
                     <thead >
                       <tr>
-                        <th>f</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Description</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -157,12 +155,10 @@ const updateProductItem = e =>{
                         return (
                           <tr key={key}>
 
-                          <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td style={{width:'20%'}}>{item.description}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>

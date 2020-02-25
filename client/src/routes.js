@@ -19,6 +19,7 @@ import Dashboard from "./views/Dashboard.jsx";
 import SupplierList from "./views/SupplierList.jsx";
 import Supplier from "./views/Supplier.jsx";
 import AdminProduct from "./views/AdminProduct.jsx"
+import Category from "./views/Category.jsx"
 
 const dashboardRoutes = [
 
@@ -55,6 +56,13 @@ const dashboardRoutes = [
     path: "/orders",
     name: "orders",
     icon: "pe-7s-bell",
+    layout: "/admin"
+  },
+  {
+    path: "/AddCategory",
+    name: "Add Category for Product",
+    icon: "pe-7s-bell",
+    component: Category,
     layout: "/admin"
   }
 ];

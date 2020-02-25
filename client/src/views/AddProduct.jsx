@@ -141,8 +141,8 @@ console.log("data", data)
             />
           </div>
           <div className="form-group">
-            <label for="product_warranty">Warranty</label>
-            <input type="text"
+            <label for="product_warranty">Weight</label>
+            <input type="number"
                     value={warranty}
                     onChange={(e)=>setWarranty(e.target.value)}
                     className="form-control"

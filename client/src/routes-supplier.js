@@ -18,6 +18,8 @@
 import Dashboard from "./views/Dashboard.jsx";
 import AddOnProduct from "./views/AddProduct.jsx"
 import ProductList from "./views/ProductList.jsx"
+import CsvProduct from "./views/CsvProduct.jsx"
+
 
 
 const dashboardRoutes = [
@@ -40,6 +42,13 @@ const dashboardRoutes = [
     name: "Add Product",
     icon: "pe-7s-bell",
     component: AddOnProduct,
+    layout: "/supplier"
+  },
+  {
+    path: "/CSvProduct",
+    name: "Csv Added Product",
+    icon: "pe-7s-bell",
+    component: CsvProduct,
     layout: "/supplier"
   }
 
