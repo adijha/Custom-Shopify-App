@@ -60,7 +60,7 @@ const dashboardRoutes = [
   },
   {
     path: "/AddCategory",
-    name: "Add Category for Product",
+    name: "Product Category",
     icon: "pe-7s-bell",
     component: Category,
     layout: "/admin"

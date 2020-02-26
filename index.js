@@ -32,10 +32,10 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
 	console.log('Db is connected')
 );
 
-app.use(fileUpload({
-  useTempFiles : true,
-   tempFileDir : '/tmp/'
-}));
+// app.use(fileUpload({
+//   useTempFiles : true,
+//    tempFileDir : '/tmp/'
+// }));
 //Middleware
 app.use(express.json());
 //Route Middleware

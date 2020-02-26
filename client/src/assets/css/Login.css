@@ -16,6 +16,7 @@ SILVER PINK: #C9ADA7
 
 #wrapper-login {
   background-color: grey;
+  background-image: url('https://newmibridges.michigan.gov/resource/1564238600000/ISD_Icons/landing-page/group-3.svg');
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import "../assets/css/addProduct.css"
@@ -10,16 +10,25 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [warranty, setWarranty] = useState("");
+  const [weight, setWeight] = useState("")
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [productImage, setProductImage] = useState([])
   const [csvData, setCsvData] =useState([])
   const [code, setCode] = useState("");
   const [status, setStatus] = useState("")
+  const [categoryList, setCategoryList] = useState([])
 
   const token = localStorage.getItem("token")
   const decode = jwt_decode(token)
 
+
+useEffect(()=>{
+  getCategoryList();
+}, [])
+
+
+//Add Product
   const addProduct = e =>{
     e.preventDefault();
 
@@ -36,6 +45,7 @@ const AddProduct = () => {
     data.append("price", price)
     data.append("quantity", quantity)
     data.append("warranty", warranty)
+    data.append("weight", weight)
     data.append("description", description)
     data.append("category", category)
     data.append("code", code)
@@ -61,6 +71,7 @@ console.log("data", data)
     })
   }
 
+//Add Product from CSV File
   const addCSvProduct = (e) =>{
     e.preventDefault();
     const scvdata = new FormData()
@@ -76,6 +87,17 @@ console.log("data", data)
       console.log("csv product :", error.message)
     })
   }
+
+//Fetch category List
+  const getCategoryList = ()=>{
+    axios
+    .get('/api/totalCategory')
+    .then(data=>{
+      console.log("category list is", data.data)
+      setCategoryList(data.data)
+    })
+  }
+
   return (
 
     <div className="container-fluid">
@@ -106,14 +128,19 @@ console.log("data", data)
           </div>
           <div className="form-group">
             <label for="product_category">Category</label>
-            <input type="text"
-                    value={category}
+            <select className="form-control" id="product_category"
+             value={category}
                     onChange={(e)=>setCategory(e.target.value)}
-                    className="form-control"
-                    id="product_category"
-                    placeholder="Enter category of Product"
-                    required
-            />
+                     placeholder="Enter category of Product"
+>
+            {categoryList.map((item, i)=>{
+              return(
+                <option key={i}>{item.category}</option>
+
+              )
+            })}
+            </select>
+
           </div>
         </div>
         <div className="card card-input" >
@@ -143,12 +170,23 @@ console.log("data", data)
           <div className="form-group">
             <label for="product_warranty">Weight</label>
             <input type="number"
+                    value={weight}
+                    onChange={(e)=>setWeight(e.target.value)}
+                    className="form-control"
+                    id="product_warranty"
+                    placeholder="Enter Weight of Product in Grams"
+
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Warranty</label>
+            <input type="text"
                     value={warranty}
                     onChange={(e)=>setWarranty(e.target.value)}
                     className="form-control"
                     id="product_warranty"
                     placeholder="Enter Available warranty of Product"
-                    required
+
             />
           </div>
         </div>
@@ -190,7 +228,7 @@ console.log("data", data)
         <div className="form-group">
       <p className="text-center"><br/><strong>Or Upload CSV File</strong></p>
         <input type="file" className="form-control text-center" name="avatar" onChange={(e)=>setCsvData(e.target.files)}
-        enctype="multipart/form-data"
+        encType="multipart/form-data"
         />
         <br/>
         <button className="btn btn-primary btn-sm" type="submit" name="button">submit</button>

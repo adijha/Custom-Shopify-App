@@ -17,10 +17,13 @@ const [open, setOpen] = useState(false)
 const [singleProduct, setSingleProduct] = useState([]);
 const [search, setSearch] = useState('');
 const [msg, setMsg] = useState('')
+const [status, setStatus] = useState('');
+const [category, setCategory] = useState([])
 
 
 useEffect(()=>{
   getProductList();
+  getCategoryList();
 },[])
 
 
@@ -70,6 +73,38 @@ else if (e.target.value=="desc") {
 
 }
 
+const getCategoryList = () =>{
+  axios
+  .get('/api/totalCategory/')
+  .then(response=>{
+    setCategory(response.data)
+  })
+}
+
+const handleCategory = (e)=>{
+  e.preventDefault();
+  const selectedCategory = e.target.value
+  console.log("selectedCategory", selectedCategory)
+
+  if (selectedCategory==="Select Category") {
+    getProductList()
+    setStatus('')
+  }
+  else{
+    axios.get('/api/product/filter/'+selectedCategory)
+    .then(response=>{
+      if (response.data.length) {
+        setProductList(response.data)
+        setStatus('')
+      }
+      else{
+        setStatus("No Product of This Category")
+      }
+    })
+  }
+
+}
+
 const AddInShopify = (t) =>{
 
   let product={
@@ -102,14 +137,25 @@ const AddInShopify = (t) =>{
         <h2 className="text-center">Product <span style={{color: "#ff9f1a"}}>Collection</span></h2>
 
         <hr style={{width:"20%", color:"antiquewhite", border:"1px solid"}}/>
-        <div className="text-right container arrow" style={{width:"35%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
+        <div className="text-right container arrow" style={{width:"80%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
         <ul className="category text-center" style={{listStyle: "none", padding:"1em", position:"relative", display:"flex"}}>
           <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product"/></li>
           <li>
           <select onChange={(e)=>handlClick(e)}>
-            <option value="all">All</option>
+            <option value="all">Sort</option>
             <option value="asce">Sort: Highest to Lowest</option>
             <option value="desc">Sort: Lowest to highest</option>
+          </select>
+          </li>
+          <li>
+          <select onChange={e=>handleCategory(e)}>
+          <option>Select Category</option>
+
+          {category.map((item, i)=>{
+            return(
+              <option>{item.category}</option>
+            )
+          })}
           </select>
           </li>
         </ul>
@@ -118,7 +164,7 @@ const AddInShopify = (t) =>{
 
       </div>
       <div className="container-fluid" style={{backgroundColor: "", padding: "6px" , paddingTop:"2em"}}>
-
+      <div className="text-center" style={{color:"red"}}>{status}</div>
     {filterItems.map(list=>{
       return(
         <div className="col-sm-3">

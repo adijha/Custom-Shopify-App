@@ -140,6 +140,16 @@ router.get('/totalCategory', async (req, res)=>{
 	}
 })
 
+router.get('/product/filter/:category', async (req, res)=>{
+	console.log("category filter req.body", req.params.category)
+	try {
+		const data =await Products.find({"category":req.params.category})
+		res.json(data)
+	} catch (error) {
+		res.json(error)
+	}
+})
+
 router.delete('/category/:id', async (req, res)=>{
 	try {
 		const data = await  Category.deleteOne({"_id":req.params.id})
@@ -173,10 +183,11 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	 description: req.body.description,
 	 category:req.body.category,
 	 code:req.body.code,
+	 weight:req.body.weight,
 	 productImage: imgData
  });
- //  console.log(product , "product is");
- // console.log("req.body", req.body);
+  console.log(product , "product is");
+  console.log("req.body", req.body);
  // console.log(typeof(imgData));
  //console.log("product object is", product)
 	 try {
@@ -250,6 +261,7 @@ router.delete('/product/:id', async (req, res)=>{
 	}
 })
 
+//Csv product Add
 	router.post('/product/csv', async (req, res)=>{
 	  console.log("sile",req.files.file);
 	  console.log("file path is", req.files.file.tempFilePath)
@@ -283,6 +295,8 @@ router.delete('/product/:id', async (req, res)=>{
 		console.log("uploaded")
 	})
 
+
+//get CSv product List
 	router.get('/csv/product', async (req, res)=>{
 		try {
 			const item = await CsvTest.find();

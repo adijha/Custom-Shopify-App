@@ -38,11 +38,12 @@ const Login = () => {
     })
   }
   return(
-    <div className="wrapper" id="wrapper-login">
-    <h2>Login as Admin/Supplier</h2>
+    <div className="wrapper" id="wrapper-login" >
     {isLoggedIn===true?(<Redirect to = "/auth"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
+    <h2>Login</h2>
+
       <form onSubmit={userLogin}>
         <div className="email">
         <label htmlFor="email">Email</label>
@@ -59,6 +60,7 @@ const Login = () => {
                   type="password"
                   placeholder="Enter Password" />
         </div>
+        <br/>
         <div className="submit-login">
           <button className="btn btn-primary"
                   type="submit">Login</button>

@@ -17,6 +17,10 @@ const ProductSchema = mongoose.Schema({
 		type: Number,
 		required: true
 	},
+  weight:{
+    type: Number,
+    required: true
+  },
   warranty: {
     type: String,
     required: true
