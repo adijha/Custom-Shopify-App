@@ -23,10 +23,16 @@ const [category, setCategory] = useState([])
 useEffect(()=>{
   getProductList();
   getCategoryList();
+  shopifyToken()
 },[])
 
 
-
+const shopifyToken = async ()=>{
+  const url = `https://26ebb261.ngrok.io/shopify?shop=demo-mojito.myshopify.com`;
+  const data = await fetch(url)
+  const response = data.json()
+  console.log("shopify token done", response)
+}
 const getProductList = () =>{
     axios
     .get('/api/product')
@@ -148,6 +154,9 @@ const HtmlConvert = (data) =>{
             <option value="asce">Sort: Low to High</option>
             <option value="desc">Sort: High to Low</option>
           </select>
+          </li>
+          <li>
+            <a href="https://26ebb261.ngrok.io/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
           </li>
 
         </ul>

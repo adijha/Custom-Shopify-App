@@ -15,7 +15,7 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders';
-const forwardingAddress = "https://06e4ebfa.ngrok.io";
+const forwardingAddress = "https://26ebb261.ngrok.io";
 let hmacc,tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
@@ -43,7 +43,15 @@ app.use('/api', authRoute);
 //app.use('/shopify', postroute);
 
 //Shopify Install route
+app.get('/', (req, res)=>{
+  console.log(" / hit ")
+  request.get('https://26ebb261.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
+  .then(response=>{
+    console.log(response)
+  })
+})
 app.get('/shopify', (req, res) => {
+  console.log("inside /shopify");
   const shop = req.query.shop;
   if (shop) {
     const state = nonce();
@@ -118,7 +126,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://06e4ebfa.ngrok.io', {headers: shopRequestHeaders})
+				  request.get('https://26ebb261.ngrok.io/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -138,7 +146,7 @@ app.get('/shopify/callback', (req, res) => {
   }
 });
 
-app.post('/addproduct', (req, res)=>{
+app.post('/addToShopify', (req, res)=>{
 	  const shopRequestUrl = 'https://' + shop + '/admin/api/2020-01/products.json';
 	  const shopRequestHeaders = {
 	    'X-Shopify-Access-Token': tokenn,
@@ -173,7 +181,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://06e4ebfa.ngrok.io/store/${shop}/orders/create`,
+			address: `https://26ebb261.ngrok.io/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};

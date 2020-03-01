@@ -306,4 +306,7 @@ router.delete('/product/:id', async (req, res)=>{
 			res.json({message:error})
 		}
 	})
+
+
+
 module.exports = router;
