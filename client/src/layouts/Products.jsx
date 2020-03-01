@@ -20,7 +20,6 @@ const [msg, setMsg] = useState('')
 const [status, setStatus] = useState('');
 const [category, setCategory] = useState([])
 
-
 useEffect(()=>{
   getProductList();
   getCategoryList();
@@ -98,7 +97,7 @@ const handleCategory = (e)=>{
         setStatus('')
       }
       else{
-        setStatus("No Product of This Category")
+        setStatus("No Product of This Category : "+ selectedCategory)
       }
     })
   }
@@ -129,6 +128,9 @@ const AddInShopify = (t) =>{
 
 }
 
+const HtmlConvert = (data) =>{
+  return <div dangerouslySetInnerHTML={{__html: data}} />
+}
 
 
   return(
@@ -139,29 +141,41 @@ const AddInShopify = (t) =>{
         <hr style={{width:"20%", color:"antiquewhite", border:"1px solid"}}/>
         <div className="text-right container arrow" style={{width:"80%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
         <ul className="category text-center" style={{listStyle: "none", padding:"1em", position:"relative", display:"flex"}}>
-          <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product"/></li>
+          <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product" style={{width:"400px"}}/></li>
           <li>
           <select onChange={(e)=>handlClick(e)}>
-            <option value="all">Sort</option>
-            <option value="asce">Sort: Highest to Lowest</option>
-            <option value="desc">Sort: Lowest to highest</option>
+            <option value="all">Sort: Price</option>
+            <option value="asce">Sort: Low to High</option>
+            <option value="desc">Sort: High to Low</option>
           </select>
           </li>
-          <li>
-          <select onChange={e=>handleCategory(e)}>
-          <option>Select Category</option>
 
-          {category.map((item, i)=>{
-            return(
-              <option>{item.category}</option>
-            )
-          })}
-          </select>
-          </li>
         </ul>
 
         </div>
 
+      </div>
+      <div class="container">
+	<div class="row">
+		<div className="col-xs-offset 1 col-xs-11 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+			<div className="btn-toolbar" role="toolbar">
+			  <div className="btn-group btn-group-justified" role="group" style={{}}>
+
+        {category.map(item=>{
+          return(
+
+            <div class="btn-group" role="group">
+              <button value={item.category} onClick={e=>handleCategory(e)}  className="btn btn-primary">{item.category}</button>
+            </div>
+
+            //<button style={{marginLeft:"10px"}}className="btn btn-primary" value={item.category} onClick={e=>console.log(e.target.value)}>{item.category}</button>
+          )
+        })}
+
+      </div>
+      </div>
+      </div>
+      </div>
       </div>
       <div className="container-fluid" style={{backgroundColor: "", padding: "6px" , paddingTop:"2em"}}>
       <div className="text-center" style={{color:"red"}}>{status}</div>
@@ -231,7 +245,7 @@ const AddInShopify = (t) =>{
                   </div>
                   <span className="review-no">41 reviews</span>
                 </div>
-                <p className="product-description">{product.description}</p>
+                <p className="product-description">HtmlConvert({product.description})</p>
                 <h4 className="price">current price: <span>&#x20b9;{product.price}</span></h4>
                 <p className="vote"><strong>91%</strong> of buyers enjoyed this product!<br/> <br/><strong>87 votes</strong></p>
                 <h5 className="sizes">Available Quantity: <span>{product.quantity}</span>

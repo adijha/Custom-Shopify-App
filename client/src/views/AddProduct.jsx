@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // ES6
 import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import "../assets/css/addProduct.css"
@@ -50,7 +52,7 @@ useEffect(()=>{
     data.append("category", category)
     data.append("code", code)
 console.log("data", data)
-    axios
+   axios
     .post('/api/addProduct', data)
     .then(item=>{
       if (item) {
@@ -193,14 +195,9 @@ console.log("data", data)
         <div className="card card-input" >
           <div className="form-group">
             <label for="product_description">Detail Description</label>
-            <textarea className="form-control"
-                      rows="6"
-                      value={description}
-                      onChange={(e)=>setDescription(e.target.value)}
-                      id="product_description"
-                      placeholder="Enter Description of Product"
-                      required
-            />
+
+            <ReactQuill value={description}
+                  onChange={(value)=>setDescription(value.toString())} />
           </div>
           <div className="form-group">
             <label for="productImage">Image upload</label>

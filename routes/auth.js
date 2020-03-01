@@ -18,7 +18,7 @@ const upload = multer({
 /*Supplier Part*/
 
 //Register Account
-router.post('/', async (req, res)=>{
+router.post('/signUp', async (req, res)=>{
 
 	//let validate the data
 	const {error} = userValidation(req.body);

@@ -28,7 +28,7 @@ const addSuplier = e =>{
     password: password
   }
   axios
-  .post('/api/', obj)
+  .post('/api/signUp', obj)
   .then((data)=>{
     if (data) {
       setStatus("New Supplier Created Successfully: "+ data.config.data)
@@ -49,7 +49,7 @@ const addSuplier = e =>{
          <h2>Create Supplier</h2>
          <form  onSubmit={addSuplier} >
            <div className='fullName'>
-             <label htmlFor="fullName">Full Name</label>
+             <label htmlFor="fullName">Username</label>
              <input type='text' name='fullName' value={name} onChange={updateName}/>
            </div>
            <div className='email'>

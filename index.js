@@ -14,11 +14,11 @@ const fileUpload = require('express-fileupload');
 const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
-const scopes = 'read_products, write_products';
-const forwardingAddress = "https://282c8a59.ngrok.io";
+const scopes = 'read_products, write_products, read_orders';
+const forwardingAddress = "https://06e4ebfa.ngrok.io";
 let hmacc,tokenn;
 let shop=`demo-mojito.myshopify.com`;
-
+let topic = 'orders/create'
 //Import Route
  const authRoute = require('./routes/auth');
 // const postroute = require('./routes/posts');
@@ -44,96 +44,101 @@ app.use('/api', authRoute);
 
 //Shopify Install route
 app.get('/shopify', (req, res) => {
-const shop = req.query.shop;
-if (shop) {
-	const state = nonce();
-	const redirectUri = forwardingAddress + '/shopify/callback';
-	const installUrl = 'https://' + shop +
-		'/admin/oauth/authorize?client_id=' + apiKey +
-		'&scope=' + scopes +
-		'&state=' + state +
-		'&redirect_uri=' + redirectUri;
+  const shop = req.query.shop;
+  if (shop) {
+    const state = nonce();
+    const redirectUri = forwardingAddress + '/shopify/callback';
+    const installUrl = 'https://' + shop +
+      '/admin/oauth/authorize?client_id=' + apiKey +
+      '&scope=' + scopes +
+      '&state=' + state +
+      '&redirect_uri=' + redirectUri;
 
-	res.cookie('state', state);
-	res.redirect(installUrl);
-} else {
-	return res.status(400).send('Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request');
-}
+    res.cookie('state', state);
+    res.redirect(installUrl);
+  } else {
+    return res.status(400).send('Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request');
+  }
 });
 
 
 app.get('/shopify/callback', (req, res) => {
-const { shop, hmac, code, state } = req.query;
-const stateCookie = cookie.parse(req.headers.cookie).state;
+  const { shop, hmac, code, state } = req.query;
+  const stateCookie = cookie.parse(req.headers.cookie).state;
 
-if (state !== stateCookie) {
-	return res.status(403).send('Request origin cannot be verified');
-}
+  if (state !== stateCookie) {
+    return res.status(403).send('Request origin cannot be verified');
+  }
 
-if (shop && hmac && code) {
-	// DONE: Validate request is from Shopify
-	const map = Object.assign({}, req.query);
-	delete map['signature'];
-	delete map['hmac'];
-	const message = querystring.stringify(map);
-	const providedHmac = Buffer.from(hmac, 'utf-8');
-	const generatedHash = Buffer.from(
-		crypto
-			.createHmac('sha256', apiSecret)
-			.update(message)
-			.digest('hex'),
-			'utf-8'
-		);
-	let hashEquals = false;
+  if (shop && hmac && code) {
+    // DONE: Validate request is from Shopify
+    const map = Object.assign({}, req.query);
+    delete map['signature'];
+    delete map['hmac'];
+    const message = querystring.stringify(map);
+    const providedHmac = Buffer.from(hmac, 'utf-8');
+    const generatedHash = Buffer.from(
+      crypto
+        .createHmac('sha256', apiSecret)
+        .update(message)
+        .digest('hex'),
+        'utf-8'
+      );
+    let hashEquals = false;
 
-	try {
-		hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac)
-	} catch (e) {
-		hashEquals = false;
-	};
+    try {
+      hashEquals = crypto.timingSafeEqual(generatedHash, providedHmac)
+    } catch (e) {
+      hashEquals = false;
+    };
 
-	if (!hashEquals) {
-		return res.status(400).send('HMAC validation failed');
-	}
+    if (!hashEquals) {
+      return res.status(400).send('HMAC validation failed');
+    }
 
-	// DONE: Exchange temporary code for a permanent access token
-	const accessTokenRequestUrl = 'https://' + shop + '/admin/oauth/access_token';
-	const accessTokenPayload = {
-		client_id: apiKey,
-		client_secret: apiSecret,
-		code,
-	};
-	request.post(accessTokenRequestUrl, { json: accessTokenPayload })
-			.then((accessTokenResponse) => {
-				tokenn = accessTokenResponse.access_token;
-				hmacc = hmac;
-		// tokenn = accessTokenResponse.access_token;
-				//return postRequest(tokenn, hmacc, shop)
-				const shopRequestUrl = 'https://' + shop + '/admin/api/2020-01/products.json';
-				const shopRequestHeaders = {
-					'X-Shopify-Access-Token': tokenn,
-				};
-				request.get('https://282c8a59.ngrok.io', {headers: shopRequestHeaders})
-				.then((shopResponse) => {
-							res.send(shopResponse);
-						})
-						.catch(error=>{
-							console.log(error)
-						})
-						//return postRequest(tokenn, hmacc, shop)				//	return tokenn, hmac, shop;
-				// DONE: Use access token to make API call to 'shop' endpoint
+    // DONE: Exchange temporary code for a permanent access token
+    const accessTokenRequestUrl = 'https://' + shop + '/admin/oauth/access_token';
+    const accessTokenPayload = {
+      client_id: apiKey,
+      client_secret: apiSecret,
+      code,
+    };
 
-			})
-			.catch((error) => {
-				res.send(error);
-			});
 
-} else {
-	res.status(400).send('Required parameters missing');
-}
+        request.post(accessTokenRequestUrl, { json: accessTokenPayload })
+        .then((accessTokenResponse) => {
+
+          tokenn = accessTokenResponse.access_token;
+  				hmacc = hmac;
+
+  		// tokenn = accessTokenResponse.access_token;
+          //return postRequest(tokenn, hmacc, shop)
+					const shopRequestUrl = 'https://' + shop + '/admin/api/2020-01/products.json';
+				  const shopRequestHeaders = {
+				    'X-Shopify-Access-Token': tokenn,
+
+				  };
+				  request.get('https://06e4ebfa.ngrok.io', {headers: shopRequestHeaders})
+				  .then((shopResponse) => {
+				        res.send(shopResponse);
+				      })
+				      .catch(error=>{
+				        console.log(error)
+				      })
+							//return postRequest(tokenn, hmacc, shop)				//	return tokenn, hmac, shop;
+          // DONE: Use access token to make API call to 'shop' endpoint
+
+        })
+        .catch((error) => {
+          res.send(error);
+        });
+
+  } else {
+    res.status(400).send('Required parameters missing');
+  }
 });
 
-app.post('/addToShopify', (req, res)=>{
+app.post('/addproduct', (req, res)=>{
 	  const shopRequestUrl = 'https://' + shop + '/admin/api/2020-01/products.json';
 	  const shopRequestHeaders = {
 	    'X-Shopify-Access-Token': tokenn,
@@ -143,13 +148,60 @@ app.post('/addToShopify', (req, res)=>{
 	    'X-Shopify-API-Version': '2020-01'
 	  };
 
-request.post(shopRequestUrl, { headers: shopRequestHeaders, json:req.body})
+
+	  request.post(shopRequestUrl, { headers: shopRequestHeaders, json:req.body})
 	  .then((shopResponse) => {
-	    res.send("product added")
+	    console.log(shopResponse);
 	  })
 	  .catch((error) => {
 	    console.log(error);
 	  });
+
+})
+
+app.get('/webhook', (req, res)=>{
+
+	const webhookUrl = 'https://' + shop + '/admin/api/2020-01/webhooks.json';
+	const webhookHeaders = {
+		'X-Shopify-Access-Token': tokenn,
+		'X-Shopify-Topic': 'orders/create',
+		'X-Shopify-Hmac-Sha256': hmacc,
+		'X-Shopify-Shop-Domain': shop,
+		'X-Shopify-API-Version': '2020-01',
+		'Content-Type': 'application/json'
+	};
+	const webhookPayload = {
+		webhook: {
+			topic: 'orders/create',
+			address: `https://06e4ebfa.ngrok.io/store/${shop}/orders/create`,
+			format: 'json'
+		}
+	};
+	request
+		.post(webhookUrl, {
+			headers: webhookHeaders,
+			json: webhookPayload
+		})
+		.then((shopResponse) => {
+			console.log('webhook topic :');
+			console.log("now save this")
+			console.log("fial response is", shopResponse)
+
+		})
+		.catch((error) => {
+			console.log('309 error-->', error);
+		});
+
+});
+
+app.post('/store/:shop/:topic/:subtopic', function(request, response) {
+	const shop = request.params.shop;
+	let topic = request.params.topic;
+	const subtopic = request.params.subtopic;
+	topic = topic + '/' + subtopic;
+	console.log('topic -->', topic);
+
+console.log("order details", request.body);
 })
 
  if (process.env.NODE_ENV === 'production') {
