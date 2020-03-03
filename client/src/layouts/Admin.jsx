@@ -108,7 +108,7 @@ class Admin extends Component {
   }
   render() {
     if (this.state.isLoggedIn===false) {
-      return <Redirect to="/login-access"/>
+      return <Redirect to="/login-admin"/>
     }
     return (
       <div className="wrapper">

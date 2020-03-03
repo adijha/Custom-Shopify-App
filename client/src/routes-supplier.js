@@ -19,6 +19,9 @@ import Dashboard from "./views/Dashboard.jsx";
 import AddOnProduct from "./views/AddProduct.jsx"
 import ProductList from "./views/ProductList.jsx"
 import CsvProduct from "./views/CsvProduct.jsx"
+import ShopifyProduct from "./views/ShopifyProduct.jsx"
+import ProductLayout from "./layouts/Products.jsx";
+
 
 
 
@@ -49,6 +52,20 @@ const dashboardRoutes = [
     name: "Csv Added Product",
     icon: "pe-7s-bell",
     component: CsvProduct,
+    layout: "/supplier"
+  },
+  {
+    path: "/shopifyproduct",
+    name: "Shopify Products",
+    icon: "pe-7s-bell",
+    component: ShopifyProduct,
+    layout: "/supplier"
+  },
+  {
+    path: "/collection",
+    name: "Products Colection",
+    icon: "pe-7s-bell",
+    component: ProductLayout,
     layout: "/supplier"
   }
 

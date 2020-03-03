@@ -108,7 +108,7 @@ class Supplier extends Component {
   }
   render() {
     if (this.state.isLoggedIn===false) {
-      return <Redirect to="/login-access"/>
+      return <Redirect to="/login-supplier"/>
     }
     return (
       <div className="wrapper">

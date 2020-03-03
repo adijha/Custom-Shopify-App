@@ -15,7 +15,7 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders';
-const forwardingAddress = "https://26ebb261.ngrok.io";
+const forwardingAddress = "https://c15f7817.ngrok.io";
 let hmacc,tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
@@ -126,7 +126,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://26ebb261.ngrok.io/webhook')
+				  request.get('https://c15f7817.ngrok.io/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -146,6 +146,7 @@ app.get('/shopify/callback', (req, res) => {
   }
 });
 
+//Add product to shopify
 app.post('/addToShopify', (req, res)=>{
 	  const shopRequestUrl = 'https://' + shop + '/admin/api/2020-01/products.json';
 	  const shopRequestHeaders = {
@@ -167,6 +168,70 @@ app.post('/addToShopify', (req, res)=>{
 
 })
 
+//get product list from shopify
+app.get('/shopifyProduct', (req, res)=>{
+  console.log(tokenn)
+  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products.json';
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  };
+  request.get(shopRequestUrl, {headers:shopRequestHeaders})
+  .then(data=>{
+    console.log(data, "product is")
+    res.send(data);
+  })
+  .catch(error=>{
+    console.log("shopify product error", error);
+  })
+})
+
+//update request shopify product
+app.put('/ShopifyProduct/:id', (req, res)=>{
+  console.log("token is", tokenn)
+  console.log(req.body)
+   const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
+   console.log("url is", shopRequestUrl);
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  };
+  request.put(shopRequestUrl, {headers: shopRequestHeaders, json:req.body})
+  .then(data=>{
+    console.log("update shopify product is ", data)
+    res.send(data)
+  })
+  .catch(error=>{
+    console.log("shopify error update is", error)
+  })
+})
+
+app.delete('/shopifyProduct/:id', (req, res)=>{
+  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  };
+  request.delete(shopRequestUrl, {headers: shopRequestHeaders})
+  .then(data=>{
+    console.log("delete shopify product is ", data)
+    res.send(data)
+  })
+  .catch(error=>{
+    console.log("shopify error delete is", error)
+  })
+})
+
+//create webhook
 app.get('/webhook', (req, res)=>{
 
 	const webhookUrl = 'https://' + shop + '/admin/api/2020-01/webhooks.json';
@@ -181,7 +246,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://26ebb261.ngrok.io/store/${shop}/orders/create`,
+			address: `https://c15f7817.ngrok.io/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
@@ -194,6 +259,7 @@ app.get('/webhook', (req, res)=>{
 			console.log('webhook topic :');
 			console.log("now save this")
 			console.log("fial response is", shopResponse)
+      res.send(shopResponse)
 
 		})
 		.catch((error) => {
@@ -202,6 +268,7 @@ app.get('/webhook', (req, res)=>{
 
 });
 
+//order create callback api
 app.post('/store/:shop/:topic/:subtopic', function(request, response) {
 	const shop = request.params.shop;
 	let topic = request.params.topic;

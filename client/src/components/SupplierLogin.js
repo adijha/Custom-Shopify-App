@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom';
 import '../assets/css/Login.css'
 
 
-const Login = () => {
+const SupplierLogin = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,6 +30,7 @@ const Login = () => {
     .post('/api/login', obj)
     .then(data=>{
       const token =  localStorage.setItem("token", data.data);
+        setStatus("Login Success")
         setisLoggedIn(true)
 
     })
@@ -42,7 +43,7 @@ const Login = () => {
     {isLoggedIn===true?(<Redirect to = "/auth"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
-    <h2>Login</h2>
+    <h2>Supplier Login</h2>
 
       <form onSubmit={userLogin}>
         <div className="email">
@@ -73,4 +74,4 @@ const Login = () => {
   )
 }
 
-export default Login;
+export default SupplierLogin;
