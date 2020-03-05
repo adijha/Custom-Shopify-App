@@ -122,9 +122,7 @@ const AddInShopify = (t) =>{
       console.log("post response is", res)
       setMsg("Product Added in Shopify App")
     })
-    .catch(error=>{
-      console.log(error)
-    })
+    
 
 }
 
