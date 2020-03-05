@@ -120,7 +120,6 @@ const AddInShopify = (t) =>{
     .post('/addToShopify', product)
     .then(data=>{
       if (data.status==200){
-      console.log("post response is", res)
       setMsg("Product Added in Shopify")
     }
     })
