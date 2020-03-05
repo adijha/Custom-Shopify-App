@@ -66,14 +66,14 @@ const dashboardRoutes = [
     name: "orders",
     icon: "pe-7s-bell",
     component: Orders,
-    layout: "/admin"
+    layout: "/supplier"
   },
   {
     path: "/fullfilled",
     name: "Fulfilled Orders",
     icon: "pe-7s-bell",
     component: FulfilledOrders,
-    layout: "/admin"
+    layout: "/supplier"
   },
   {
     path: "/collection",
