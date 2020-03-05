@@ -20,6 +20,8 @@ import SupplierList from "./views/SupplierList.jsx";
 import Supplier from "./views/Supplier.jsx";
 import AdminProduct from "./views/AdminProduct.jsx"
 import Category from "./views/Category.jsx"
+import Orders from "./views/Orders.jsx"
+import FulfilledOrders from "./views/FulfilledOrders.jsx"
 
 const dashboardRoutes = [
 
@@ -56,6 +58,14 @@ const dashboardRoutes = [
     path: "/orders",
     name: "orders",
     icon: "pe-7s-bell",
+    component: Orders,
+    layout: "/admin"
+  },
+  {
+    path: "/fullfilled",
+    name: "Fulfilled Orders",
+    icon: "pe-7s-bell",
+    component: FulfilledOrders,
     layout: "/admin"
   },
   {

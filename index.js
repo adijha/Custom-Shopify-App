@@ -14,11 +14,13 @@ const fileUpload = require('express-fileupload');
 const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
-const scopes = 'read_products, write_products, read_orders';
-const forwardingAddress = "https://c15f7817.ngrok.io";
+const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
+const forwardingAddress = "https://398a5825.ngrok.io";
 let hmacc,tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
+const Orders = require('./model/Orders');
+
 //Import Route
  const authRoute = require('./routes/auth');
 // const postroute = require('./routes/posts');
@@ -45,7 +47,7 @@ app.use('/api', authRoute);
 //Shopify Install route
 app.get('/', (req, res)=>{
   console.log(" / hit ")
-  request.get('https://26ebb261.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
+  request.get('https://398a5825.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
   .then(response=>{
     console.log(response)
   })
@@ -126,7 +128,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://c15f7817.ngrok.io/webhook')
+				  request.get('https://398a5825.ngrok.io/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -231,6 +233,67 @@ app.delete('/shopifyProduct/:id', (req, res)=>{
   })
 })
 
+//get Orders list
+
+app.get('/orders', (req, res)=>{
+  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/orders.json'
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  };
+
+  request.get(shopRequestUrl, {headers: shopRequestHeaders})
+  .then(data=>{
+    res.send(data)
+    console.log(data)
+  })
+  .catch(error=>{
+    console.log("order details eroor is", error)
+  })
+})
+
+//fulfill single orders
+app.post('/orders/:id', (req, res)=>{
+  console.log(req.params.id)
+  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/orders/'+req.params.id+'/fulfillments.json'
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  };
+
+  request.post(shopRequestUrl, {headers: shopRequestHeaders, json:req.body})
+  .then(data=>{
+    res.send(data)
+    console.log(data)
+  })
+  .catch(error=>{
+    console.log("ordre fulfil order is", error);
+  })
+})
+
+//get fulfilled Orders
+app.get('/fulfilledOrders', (req, res)=>{
+  const shopRequestUrl = `https://demo-mojito.myshopify.com/admin/api/2020-01/orders.json?status=closed` ;
+  const shopRequestHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01'
+  }
+  request.get(shopRequestUrl, {headers:shopRequestHeaders})
+  .then(data=>{
+    console.log(data)
+    res.send(data)
+  })
+})
+
 //create webhook
 app.get('/webhook', (req, res)=>{
 
@@ -246,7 +309,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://c15f7817.ngrok.io/store/${shop}/orders/create`,
+			address: `https://398a5825.ngrok.io/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
@@ -269,15 +332,71 @@ app.get('/webhook', (req, res)=>{
 });
 
 //order create callback api
-app.post('/store/:shop/:topic/:subtopic', function(request, response) {
+app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
+
 	const shop = request.params.shop;
 	let topic = request.params.topic;
 	const subtopic = request.params.subtopic;
 	topic = topic + '/' + subtopic;
 	console.log('topic -->', topic);
+  const productDetails = [];
+//console.log("order details", request.body);
 
-console.log("order details", request.body);
+  request.body.line_items.forEach((item, i) => {
+    productDetails.push({
+      id: item.product_id,
+      name: item.name,
+      quantity:item.quantity
+    })
+  });
+
+    // const OrderDetails = {
+    //   product_name: request.body.id,
+    //   currency:request.body.currency,
+    //   price: request.body.total_price,
+    //   created_on:request.body.created_at,
+    //   products: productDetails,
+    //   customer:{
+    //     name:request.body.customer.first_name + request.body.customer.last_name,
+    //     email:request.body.email,
+    //     address:request.body.shipping_address.address1 + request.body.shipping_address.address2,
+    //     city: request.body.shipping_address.city,
+    //     zip:request.body.shipping_address.zip,
+    //     phone:request.body.shipping_address.phone
+    //   }
+    // }
+    const orders = new Orders({
+      product_name: request.body.id,
+      currency:request.body.currency,
+      price: request.body.total_price,
+      created_on:request.body.created_at,
+      products: productDetails,
+      customer:{
+        name:request.body.customer.first_name + request.body.customer.last_name,
+        email:request.body.email,
+        address:request.body.shipping_address.address1 + request.body.shipping_address.address2,
+        city: request.body.shipping_address.city,
+        zip:request.body.shipping_address.zip,
+        phone:request.body.shipping_address.phone
+      }
+    })
+
+    try{
+      if (request.body) {
+        const data = await orders.save()
+        console.log("Orders Saved Successfully")
+        response.end()
+      }
+    }
+    catch(error){
+      console.log("orders saved error", error)
+    }
+
+
 })
+
+//get shopify orders
+
 
  if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
@@ -285,5 +404,8 @@ console.log("order details", request.body);
 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 	});
  }
+
+
+
 
 app.listen(process.env.PORT || 5000, () => console.log('server is listening on 5000...'));

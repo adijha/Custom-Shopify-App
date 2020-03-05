@@ -134,7 +134,7 @@ const HtmlConvert = (data) =>{
 
 
   return(
-    <div className="">
+    <div className="" style={{overflowX:"hidden"}}>
       <div >
         <h2 className="text-center">Product <span style={{color: "#ff9f1a"}}>Collection</span></h2>
 
@@ -150,7 +150,7 @@ const HtmlConvert = (data) =>{
           </select>
           </li>
           <li>
-            <a href="https://c15f7817.ngrok.io/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
+            <a href="https://01c0ae05.ngrok.io/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
           </li>
 
         </ul>
