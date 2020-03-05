@@ -45,13 +45,13 @@ app.use('/api', authRoute);
 //app.use('/shopify', postroute);
 
 //Shopify Install route
-app.get('/', (req, res)=>{
-  console.log(" / hit ")
-  request.get('https://398a5825.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
-  .then(response=>{
-    console.log(response)
-  })
-})
+// app.get('/', (req, res)=>{
+//   console.log(" / hit ")
+//   request.get('https://398a5825.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
+//   .then(response=>{
+//     console.log(response)
+//   })
+// })
 app.get('/shopify', (req, res) => {
   console.log("inside /shopify");
   const shop = req.query.shop;
