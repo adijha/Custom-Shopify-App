@@ -127,10 +127,6 @@ const AddInShopify = (t) =>{
 
 }
 
-const HtmlConvert = (data) =>{
-  return <div dangerouslySetInnerHTML={{__html: data}} />
-}
-
 
   return(
     <div className="" style={{overflowX:"hidden"}}>
@@ -149,7 +145,7 @@ const HtmlConvert = (data) =>{
           </select>
           </li>
           <li>
-            <a href="https://01c0ae05.ngrok.io/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
+            <a href="https://demo-mojito.herokuapp.com//shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
           </li>
 
         </ul>

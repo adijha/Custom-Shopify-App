@@ -16,7 +16,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
 const forwardingAddress = "https://demo-mojito.herokuapp.com";
-let hmacc,tokenn;
+let hmacc, tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
 const Orders = require('./model/Orders');
@@ -40,18 +40,17 @@ mongoose.connect(process.env.DB_CONNECT, { useNewUrlParser: true, useUnifiedTopo
 // }));
 //Middleware
 app.use(express.json());
+
 //Route Middleware
 app.use('/api', authRoute);
 //app.use('/shopify', postroute);
 
 //Shopify Install route
-// app.get('/', (req, res)=>{
-//   console.log(" / hit ")
-//   request.get('https://398a5825.ngrok.io/shopify?shop=demo-mojito.myshopify.com')
-//   .then(response=>{
-//     console.log(response)
-//   })
-// })
+app.get('/', (req, res)=>{
+  res.sendFile(path.join(__dirname, './public', 'index.html'));
+});
+
+
 app.get('/shopify', (req, res) => {
   console.log("inside /shopify");
   const shop = req.query.shop;
