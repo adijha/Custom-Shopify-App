@@ -45,11 +45,7 @@ app.use(express.json());
 app.use('/api', authRoute);
 //app.use('/shopify', postroute);
 
-//Shopify Install route
-app.get('/', (req, res)=>{
-  res.sendFile(path.join(__dirname, './public', 'index.html'));
-});
-
+//Shopify install and token generate route
 
 app.get('/shopify', (req, res) => {
   console.log("inside /shopify");
