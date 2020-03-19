@@ -112,7 +112,8 @@ const AddInShopify = (t) =>{
         "title": t.name,
         "body_html": t.description,
         "vendor": "Demo-Mojito",
-        "product_type": t.category
+        "product_type": t.category,
+        "price":t.price
       }
 
 }
@@ -145,7 +146,7 @@ const AddInShopify = (t) =>{
           </select>
           </li>
           <li>
-            <a href="https://demo-mojito.herokuapp.com//shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
+            <a href="https://demo-mojito.herokuapp.com/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
           </li>
 
         </ul>
@@ -227,7 +228,6 @@ const AddInShopify = (t) =>{
                   <ul className="preview-thumbnail nav nav-tabs">
                     <li className="active"><a data-target="#pic-1" data-toggle="tab"><img src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`} /></a></li>
                     <li><a data-target="#pic-2" data-toggle="tab"><img src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`} /></a></li>
-
 
                   </ul>
                 </div>

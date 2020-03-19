@@ -6,9 +6,11 @@ const User = require('../model/User');
 const Products = require('../model/Products');
 const CsvTest = require('../model/CsvTest');
 const Category = require('../model/Category')
+const Margin = require('../model/Margin')
 const {userValidation} = require('../validation');
 const fileUpload = require('express-fileupload');
 const csv=require('csvtojson');
+
 const upload = multer({
 	storage: multer.memoryStorage()
 })
@@ -114,6 +116,36 @@ router.post('/login', async (req, res)=>{
 
 /*Product Part*/
 
+//add margin
+router.post('/addMargin', async (req, res)=>{
+
+	const margin = new Margin({
+		margin: req.body.margin
+	})
+
+	try {
+		const newMargin = await margin.save();
+		console.log("new margin is", newMargin)
+		res.json("new margin added");
+	}
+	 catch (error) {
+		console.log("margin added error is ", error)
+	}
+
+});
+
+//get Margin liste
+router.get('/margin', async (req, res)=>{
+
+	try {
+		const margin = await Margin.find({});
+		res.json(margin)
+	} catch (error) {
+		console.log("error in get margin", error)
+	}
+
+})
+
 //category add
 router.post('/addCategory', async (req, res)=>{
 
@@ -131,6 +163,9 @@ router.post('/addCategory', async (req, res)=>{
 
 })
 
+
+
+//get category
 router.get('/totalCategory', async (req, res)=>{
 	try {
 		const categories = await Category.find({});
