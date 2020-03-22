@@ -40,7 +40,10 @@ const ProductSchema = mongoose.Schema({
   productImage:[{
     imgName: String,
     imgBufferData: String
-  }]
+  }],
+  uploaded_on:{
+    type: Date
+  }
 })
 
 module.exports = mongoose.model('Products', ProductSchema);

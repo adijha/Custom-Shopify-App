@@ -378,6 +378,7 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
 
     try{
       if (request.body) {
+        console.log("order details custom is:", orders);
         const data = await orders.save()
         console.log("Orders Saved Successfully")
         response.end()
@@ -390,7 +391,6 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
 
 })
 
-//get shopify orders
 
 
  if (process.env.NODE_ENV === 'production') {

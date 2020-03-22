@@ -21,6 +21,7 @@ import Supplier from "./views/Supplier.jsx";
 import AdminProduct from "./views/AdminProduct.jsx"
 import Category from "./views/Category.jsx"
 import Margin from "./views/Margin.jsx"
+import AutoMargin from "./views/AutoMargin.jsx"
 
 
 const dashboardRoutes = [
@@ -68,6 +69,14 @@ const dashboardRoutes = [
     name: "Product Margins",
     icon: "pe-7s-bell",
     component: Margin,
+    layout: "/admin"
+  },
+
+  {
+    path: "/AutoMargin",
+    name: "Product Auto Margins",
+    icon: "pe-7s-bell",
+    component: AutoMargin,
     layout: "/admin"
   }
 ];

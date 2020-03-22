@@ -219,7 +219,8 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	 category:req.body.category,
 	 code:req.body.code,
 	 weight:req.body.weight,
-	 productImage: imgData
+	 productImage: imgData,
+	 uploaded_on: Date()
  });
   console.log(product , "product is");
   console.log("req.body", req.body);
@@ -293,6 +294,38 @@ router.delete('/product/:id', async (req, res)=>{
 	} catch (e) {
 		res.json({ message: error.message });
 
+	}
+})
+
+
+//update all products with some margin by Admin
+
+router.patch('/addMargin', (req, res)=>{
+	let sellingPrice = req.body.sellingPrice;
+	console.log("sellling Price is", sellingPrice)
+	const data = Products.find({})
+	console.log(data, "from update Margin")
+
+
+
+})
+
+
+//last 10 days products Added
+
+router.get('/analyticProduct', async (req, res)=>{
+	try {
+		const data = await Products.find(
+{
+    "uploaded_on":
+    {
+        $gte: (new Date((new Date()).getTime() - (10 * 24 * 60 * 60 * 1000)))
+    }
+}
+).sort({ "date": -1 })
+console.log("analytic product data", data)
+} catch (error) {
+		console.log(error);
 	}
 })
 

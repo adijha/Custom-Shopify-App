@@ -106,6 +106,15 @@ const handleCategory = (e)=>{
 
 const AddInShopify = (t) =>{
 
+  let imageArray = []
+
+  t.productImage.forEach((item, i) => {
+    imageArray.push({
+      attachment:item.imgBufferData
+    })
+  });
+
+
   let product={
 
       "product": {
@@ -113,10 +122,12 @@ const AddInShopify = (t) =>{
         "body_html": t.description,
         "vendor": "Demo-Mojito",
         "product_type": t.category,
-        "price":t.price
+        "price":t.price,
+        "images": imageArray[0]
       }
 
 }
+  console.log("product added for shopify is", product);
      axios
     .post('/addToShopify', product)
     .then(data=>{
@@ -145,9 +156,7 @@ const AddInShopify = (t) =>{
             <option value="desc">Sort: High to Low</option>
           </select>
           </li>
-          <li>
-            <a href="https://demo-mojito.herokuapp.com/shopify?shop=demo-mojito.myshopify.com" target="_blank">Token</a>
-          </li>
+        
 
         </ul>
 
