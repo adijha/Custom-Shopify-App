@@ -4,11 +4,22 @@ import axios from 'axios'
 const AutoMargin =()=>{
   const [marginList, setMarginList] = useState([])
   const [margin, setMargin] = useState('');
+  const [product, setProduct] = useState([])
 
 useEffect(()=>{
-  getProducts()
+  getProducts();
+  ProductList()
 }, [])
 
+const ProductList = () =>{
+
+  axios.get('/api/product')
+  .then(result=>{
+    console.log("product List", result.data)
+    setProduct(result.data)
+
+  })
+}
 
 const getProducts = () =>{
   axios.get('/api/margin')
@@ -21,13 +32,21 @@ const getProducts = () =>{
 const updatePrice = (e) =>{
   e.preventDefault()
   console.log(margin)
-  let obj = {
-    margin: margin
-  }
-  axios.patch('/api/productPrice', obj)
-  .then(response=>{
-    console.log(response)
-  })
+
+
+  product.forEach((item, i) => {
+    const newPrice = item.price + item.price*margin/100;
+    let obj = {
+      price: newPrice,
+      margin: margin
+    }
+    axios.patch('/api/productPrice/'+item._id, obj)
+    .then(response=>{
+      console.log(response)
+    })
+  });
+
+
 
 }
 

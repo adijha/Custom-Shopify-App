@@ -10,6 +10,8 @@ const Margin = require('../model/Margin')
 const {userValidation} = require('../validation');
 const fileUpload = require('express-fileupload');
 const csv=require('csvtojson');
+const request = require('request-promise');
+
 
 const upload = multer({
 	storage: multer.memoryStorage()
@@ -300,12 +302,28 @@ router.delete('/product/:id', async (req, res)=>{
 
 //update all products with some margin by Admin
 
-router.patch('/productPrice', (req, res)=>{
-	let margin = req.body.margin;
-	console.log("sellling Price is", margin)
-	// const data = Products.find({})
-	// console.log(data, "from update Margin")
+router.patch('/productPrice/:id', async (req, res)=>{
+	let id = req.params.id
+	let price = req.body.price;
+	console.log("sellling Price is", price)
+	console.log("product id", id);
 
+	// const data = await Products.find({})
+	// //console.log(data, "from update Margin")
+	//
+	// data.forEach((item, i) => {
+	// 	console.log(item.price)
+	// 	const updateData =  Products.updateOne({_id: item._id}, {$set: {price: item.price+item.price*margin/100}})
+	// 	console.log(updateData, "update Price")
+	// });
+
+try {
+	const updatePrice = await Products.updateOne(
+		{_id: id}, {$set: {price: price}})
+		res.json("saved updated price is")
+} catch (error) {
+	console.log("update price error is:", error);
+}
 
 
 })

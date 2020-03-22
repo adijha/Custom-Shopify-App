@@ -156,7 +156,7 @@ const AddInShopify = (t) =>{
             <option value="desc">Sort: High to Low</option>
           </select>
           </li>
-        
+
 
         </ul>
 
@@ -206,7 +206,7 @@ const AddInShopify = (t) =>{
                      <div className="price-details col-md-6">
 
                        <h1><b>{list.name}</b></h1>
-                       <span className="price-new"><b>&#8377;</b>{list.price}</span>
+                       <span className="price-new"><b>&#8377;</b>{list.price.toFixed(1)}</span>
 
                      </div>
                    </div>
