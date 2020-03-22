@@ -300,11 +300,11 @@ router.delete('/product/:id', async (req, res)=>{
 
 //update all products with some margin by Admin
 
-router.patch('/addMargin', (req, res)=>{
-	let sellingPrice = req.body.sellingPrice;
-	console.log("sellling Price is", sellingPrice)
-	const data = Products.find({})
-	console.log(data, "from update Margin")
+router.patch('/productPrice', (req, res)=>{
+	let margin = req.body.margin;
+	console.log("sellling Price is", margin)
+	// const data = Products.find({})
+	// console.log(data, "from update Margin")
 
 
 

@@ -3,6 +3,7 @@ import axios from 'axios'
 
 const AutoMargin =()=>{
   const [marginList, setMarginList] = useState([])
+  const [margin, setMargin] = useState('');
 
 useEffect(()=>{
   getProducts()
@@ -17,9 +18,13 @@ const getProducts = () =>{
   })
 }
 
-const updatePrice = () =>{
-
-  axios.patch('/api/addMargin', marginList)
+const updatePrice = (e) =>{
+  e.preventDefault()
+  console.log(margin)
+  let obj = {
+    margin: margin
+  }
+  axios.patch('/api/productPrice', obj)
   .then(response=>{
     console.log(response)
   })
@@ -29,10 +34,12 @@ const updatePrice = () =>{
 
 
   return (
+    <div>
+    <form onSubmit={updatePrice}>
     <div className="text-center" style={{width: "70%"}}>
     <select className="form-control" id="product_category"
-     value={marginList}
-            onChange={(e)=>setMarginList(e.target.value)}
+     value={margin}
+            onChange={(e)=>setMargin(e.target.value)}
              placeholder="select add margin of Product"
 >
     {marginList.map((item, i)=>{
@@ -43,8 +50,10 @@ const updatePrice = () =>{
     })}
     </select>
     <div className="text-center" style={{width:"30%"}}>
-    <button className="btn btn-primary" onClick={()=>updatePrice}>Update Price </button>
+    <button className="btn btn-primary" >Update Price </button>
     </div>
+    </div>
+    </form>
     </div>
   )
 }

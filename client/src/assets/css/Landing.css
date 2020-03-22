@@ -7,110 +7,29 @@ body {
   margin-left: 1rem;
 }
 
-
-
-.col-item
-{
-    border: 1px solid #E1E1E1;
-    border-radius: 5px;
-    background: #FFF;
+.how-section1{
+    margin-top:-15%;
+    padding: 10%;
 }
-.col-item .photo img
-{
-    margin: 0 auto;
-    width: 100%;
+.how-section1 h4{
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 30px;
 }
-
-.col-item .info
-{
-    padding: 10px;
-    border-radius: 0 0 5px 5px;
-    margin-top: 1px;
+.how-section1 .subheading{
+    color: #3931af;
+    font-size: 20px;
 }
-
-.col-item:hover .info {
-    background-color: #F5F5DC;
-}
-.col-item .price
+.how-section1 .row
 {
-    /*width: 50%;*/
-    float: left;
-    margin-top: 5px;
+    margin-top: 10%;
 }
-
-.col-item .price h5
+.how-img
 {
-    line-height: 20px;
-    margin: 0;
-}
-
-.price-text-color
-{
-    color: #219FD1;
-}
-
-.col-item .info .rating
-{
-    color: #777;
-}
-
-.col-item .rating
-{
-    /*width: 50%;*/
-    float: left;
-    font-size: 17px;
-    text-align: right;
-    line-height: 52px;
-    margin-bottom: 10px;
-    height: 52px;
-}
-
-.col-item .separator
-{
-    border-top: 1px solid #E1E1E1;
-}
-
-.clear-left
-{
-    clear: left;
-}
-
-.col-item .separator p
-{
-    line-height: 20px;
-    margin-bottom: 0;
-    margin-top: 10px;
     text-align: center;
 }
-
-.col-item .separator p i
-{
-    margin-right: 5px;
-}
-.col-item .btn-add
-{
-    width: 50%;
-    float: left;
-}
-
-.col-item .btn-add
-{
-    border-right: 1px solid #E1E1E1;
-}
-
-.col-item .btn-details
-{
-    width: 50%;
-    float: left;
-    padding-left: 10px;
-}
-.controls
-{
-    margin-top: 20px;
-}
-[data-slide="prev"]
-{
-    margin-right: 10px;
+.how-img img{
+    width: 40%;
 }
 
 .aboutus-section {
