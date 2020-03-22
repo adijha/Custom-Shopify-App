@@ -27,7 +27,7 @@ const getchPage = ()=>{
 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav" style={{position:"relative", display:"flex", padding:"2rem", marginLeft:"1rem", float:"right", fontSize:"20px"}}>
-      <a class="nav-item nav-link" href="#home">Home </a>
+    { /*  <a class="nav-item nav-link" href="#home">Home </a>
       <br/>
       <a class="nav-item nav-link" href="#about">About</a>
       <br/>
@@ -35,6 +35,7 @@ const getchPage = ()=>{
       <br/>
       <a class="nav-item nav-link" href="#pricing">Pricing</a>
       <br/>
+    */}
       <ul className="nav navbar-nav">
          <li className="dropdown " style={{marginTop:"-15px"}}>
            <a href="#" className="dropdown-toggle" data-toggle="dropdown">Login <span className="glyphicon glyphicon-user pull-right" /></a>
@@ -68,6 +69,120 @@ const getchPage = ()=>{
        </section>
 
 
+       <section id="services" style={{position:"relative", backgroundColor:"#D3D3D3"}}>
+       <div className="container-fluid">
+         <h2 className="section-title mb-2 h1">Why choose us ?</h2>
+         <p className="text-center text-muted h5">Having and managing a correct marketing strategy is crucial in a fast moving market.</p>
+         <div className="row mt-5">
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-1">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-2">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-3">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+         </div>
+         <div className="row">
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-4">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-5">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
+             <div className="card">
+               <div className="card-block block-6">
+                 <h3 className="card-title">Special title</h3>
+                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       </section>
+
+    <section>
+
+    <div className="container">
+           <h4 className="text-center" style={{fontSize: "60px"}}>How it works</h4>
+           <div className="row">
+             <div className="col-md-12">
+               <div className="main-timeline2">
+                 <div className="timeline">
+                   <span className="icon fa fa-globe" />
+                   <a href="#" className="timeline-content">
+                     <h3 className="title">Web Designer</h3>
+                     <p className="description">
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
+                     </p>
+                   </a>
+                 </div>
+                 <div className="timeline">
+                   <span className="icon fa fa-rocket" />
+                   <a href="#" className="timeline-content">
+                     <h3 className="title">Web Developer</h3>
+                     <p className="description">
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
+                     </p>
+                   </a>
+                 </div>
+                 <div className="timeline">
+                   <span className="icon fa fa-briefcase" />
+                   <a href="#" className="timeline-content">
+                     <h3 className="title">Web Designer</h3>
+                     <p className="description">
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
+                     </p>
+                   </a>
+                 </div>
+                 <div className="timeline">
+                   <span className="icon fa fa-mobile" />
+                   <a href="#" className="timeline-content">
+                     <h3 className="title">Web Developer</h3>
+                     <p className="description">
+                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
+                     </p>
+                   </a>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+    </section>
 
      <section id="pricing" className="container-fluid">
      <div className="row" style={{position:"relative", marginTop:"-8rem"}}>
