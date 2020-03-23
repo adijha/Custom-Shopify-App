@@ -167,6 +167,9 @@ const deleteProduct = (data)=>{
         </div>
       </div>
 
+    
+
+
       <div className="card card-update" >
         <div className="form-group">
           <label for="product_description">Detail Description</label>

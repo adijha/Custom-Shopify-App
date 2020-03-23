@@ -23,7 +23,8 @@ const getchPage = ()=>{
     <div>
     <div  style={{overflowX: "hidden"}}>
     <nav className="navbar navbar-light bg-light" >
-<a className="navbar-brand" href="#" style={{padding:"2rem"}}>Logo</a>
+<a className="navbar-brand" href="#" style={{padding:"2rem"}}>
+  <img src={require('../assets/img/NewLogo.png')} style={{width:"30%", position:"relative", margin:"-11rem -8rem "}}/> </a>
 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav" style={{position:"relative", display:"flex", padding:"2rem", marginLeft:"1rem", float:"right", fontSize:"20px"}}>
@@ -50,7 +51,7 @@ const getchPage = ()=>{
   </div>
 </nav>
 
-
+        <br/>
        <section id="home" style={{marginTop:"-10rem"}}>
        <div className="row">
          <div className="col-md-5" style={{marginLeft: "30px"}}>
