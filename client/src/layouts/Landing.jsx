@@ -24,10 +24,10 @@ const getchPage = ()=>{
     <div  style={{overflowX: "hidden"}}>
     <nav className="navbar navbar-light bg-light" >
 <a className="navbar-brand" href="#" style={{padding:"2rem"}}>
-  <img src={require('../assets/img/NewLogo.png')} style={{width:"30%", position:"relative", margin:"-11rem -8rem "}}/> </a>
+  <img src={require('../assets/img/NewLogo.png')} /> </a>
 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav" style={{position:"relative", display:"flex", padding:"2rem", marginLeft:"1rem", float:"right", fontSize:"20px"}}>
+    <div class="navbar-nav" style={{}}>
     { /*  <a class="nav-item nav-link" href="#home">Home </a>
       <br/>
       <a class="nav-item nav-link" href="#about">About</a>
@@ -37,8 +37,8 @@ const getchPage = ()=>{
       <a class="nav-item nav-link" href="#pricing">Pricing</a>
       <br/>
     */}
-      <ul className="nav navbar-nav">
-         <li className="dropdown " style={{marginTop:"-15px"}}>
+      <ul className="nav navbar-nav login">
+         <li className="dropdown " style={{}}>
            <a href="#" className="dropdown-toggle" data-toggle="dropdown">Login <span className="glyphicon glyphicon-user pull-right" /></a>
            <ul className="dropdown-menu" style={{minWidth: "125px"}}>
              <li className="text-center" style={{float:"left"}}><a href="/login-admin" className="text-center">Admin <span className="glyphicon glyphicon-cog pull-left" /></a></li>
