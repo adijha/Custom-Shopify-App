@@ -15,7 +15,7 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = "https://demo-mojito.myshopify.com";
+const forwardingAddress = "https://demo-mojito.herokuapp.com";
 let hmacc, tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
@@ -123,7 +123,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://demo-mojito.myshopify.com/webhook')
+				  request.get('https://demo-mojito.herokuapp.com/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -304,7 +304,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://demo-mojito.myshopify.com/store/${shop}/orders/create`,
+			address: `https://demo-mojito.herokuapp.com/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
