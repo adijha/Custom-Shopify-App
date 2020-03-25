@@ -20,6 +20,9 @@ const AddProduct = () => {
   const [code, setCode] = useState("");
   const [status, setStatus] = useState("")
   const [categoryList, setCategoryList] = useState([])
+  const [size, setSize] = useState("")
+  const [color, setColors] = useState("")
+  const [tag, setTag]= useState("")
 
   const token = localStorage.getItem("token")
   const decode = jwt_decode(token)
@@ -51,6 +54,9 @@ useEffect(()=>{
     data.append("description", description)
     data.append("category", category)
     data.append("code", code)
+    data.append("size", size)
+    data.append("color", color)
+    data.append("tag", tag)
 console.log("data", data)
    axios
     .post('/api/addProduct', data)
@@ -192,6 +198,41 @@ console.log("data", data)
             />
           </div>
         </div>
+
+        <div className="card card-input" >
+          <h3 className="text-center">Variants</h3>
+          <div className="form-group">
+            <label for="product_size">Size</label>
+            <input type="text"
+                    value={size}
+                    onChange={(e)=>setSize(e.target.value)}
+                   className="form-control"
+                   id="product_size"
+                   placeholder="Enter Differnet sizes seperated by ',' commas"
+              />
+          </div>
+          <div className="form-group">
+            <label for="product_colors">Colors</label>
+            <input type="text"
+                    value={color}
+                    onChange={(e)=>setColors(e.target.value)}
+                   className="form-control"
+                   id="product_colors"
+                   placeholder="Enter Differnet colors seperated by ',' commas"
+              />
+          </div>
+          <div className="form-group">
+            <label for="product_colors">Tags</label>
+            <input type="text"
+                    value={tag}
+                    onChange={(e)=>setTag(e.target.value)}
+                   className="form-control"
+                   id="product_colors"
+                   placeholder="Enter Differnet Tags seperated by ',' commas"
+              />
+          </div>
+        </div>
+
         <div className="card card-input" >
           <div className="form-group">
             <label for="product_description">Detail Description</label>

@@ -199,7 +199,10 @@ router.delete('/category/:id', async (req, res)=>{
 //Add Product
 router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	const files = await req.files;
-	 console.log("files is ", req.files);
+	 //console.log("files is ", req.files);
+
+
+
 
 	let imgData=[];
 
@@ -210,7 +213,7 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 			imgBufferData:  file.buffer.toString('base64')
 		})
 	})
-	console.log("imageDatais", imgData)
+	//console.log("imageDatais", imgData)
 	const product = await new Products({
 	 supplier_id: req.body.supplier_id,
 	 name: req.body.name,
@@ -222,10 +225,13 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	 code:req.body.code,
 	 weight:req.body.weight,
 	 productImage: imgData,
-	 uploaded_on: Date()
+	 uploaded_on: Date(),
+	 size: req.body.size,
+	 color: req.body.color,
+	 tag:req.body.tag
  });
-  console.log(product , "product is");
-  console.log("req.body", req.body);
+ //  console.log(product , "product is");
+ //  console.log("req.body", req.body);
  // console.log(typeof(imgData));
  //console.log("product object is", product)
 	 try {

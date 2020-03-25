@@ -114,6 +114,22 @@ const AddInShopify = (t) =>{
     })
   });
 
+let tagArray = t.tag.split(", ");
+let colorArray = t.color.split(", ")
+let sizeArray = t.size.split(", ")
+let colorVariant = []
+
+colorArray.forEach((single, j) => {
+
+  colorVariant.push({
+    "option1" :single,
+    "price":t.price,
+    "size":t.size,
+    "inventory_quantity": t.quantity,
+    "sku":t.code
+  })
+});
+
 
   let product={
 
@@ -122,8 +138,9 @@ const AddInShopify = (t) =>{
         "body_html": t.description,
         "vendor": "Demo-Mojito",
         "product_type": t.category,
-        "price":t.price,
-        "images": imageArray[0]
+        "tags": tagArray,
+        "variants":colorVariant
+
       }
 
 }
@@ -135,6 +152,7 @@ const AddInShopify = (t) =>{
       setMsg("Product Added in Shopify")
     }
     })
+
 
 
 }

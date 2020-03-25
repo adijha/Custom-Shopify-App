@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import Modal from "react-responsive-modal";
+import "../assets/css/shopifyProduct.css";
 
 import axios from 'axios';
 
@@ -20,6 +21,9 @@ const ShopifyProduct = () => {
   const [status, setStatus] = useState("")
   const [itemId, setItemId] = useState("")
   const [open, setOpen] = useState(false)
+  const [tag, setTag] = useState("")
+  const [varian, setVarian] = useState([])
+  const [selling, setSelling] = useState('')
 
   useEffect(()=>{
     getShopifyProduct()
@@ -34,11 +38,14 @@ const ShopifyProduct = () => {
 
   const updateProductOpen = async (item) =>{
     let id = item.id;
+    let tagString = item.tags.toString();
     console.log(id);
     setCode(item.id)
     setName(item.title)
     setDescription(item.body_html)
     setCategory(item.product_type)
+    setTag(tagString)
+    setVarian(item.variants)
 
     setOpen(true)
 
@@ -46,15 +53,37 @@ const ShopifyProduct = () => {
 
 const UpdateProduct = async (e)=>{
   e.preventDefault();
-    const product = {
-      "product":{
-      "id": code,
-      "title": name,
-      "body_html": description,
-      "product_type": category
-    }
+  let tagArray = tag.split(", ")
+
+  let newVariant = []
+
+  varian.forEach((single, j) => {
+
+    newVariant.push({
+      "option1" :single.title,
+      "price":selling,
+      "sku":single.code
+    })
+  });
+
+
+    let product={
+
+        "product": {
+          "title": name,
+          "body_html": description,
+          "vendor": "Demo-Mojito",
+          "product_type": category,
+          "tags": tagArray,
+          "variants":newVariant
+
+        }
+
   }
-  console.log(product, "product is shopify")
+
+
+
+  console.log(product, "Update product is shopify")
     await axios.put('/ShopifyProduct/'+code, product)
     .then(data=>{
       console.log(data)
@@ -133,7 +162,7 @@ const deleteProduct = (data)=>{
     <form onSubmit={UpdateProduct}>
       <div className="card card-update" >
         <div className="form-group">
-          <label for="product_id">ID/SKU</label>
+          <label for="product_id">Shopify Product ID</label>
           <input type="text"
                   value={code}
                   onChange={(e)=>setCode(e.target.value)}
@@ -155,7 +184,7 @@ const deleteProduct = (data)=>{
           />
         </div>
         <div className="form-group">
-          <label for="product_category">Category</label>
+          <label for="product_category">Product Type</label>
           <input type="text"
                   value={category}
                   onChange={(e)=>setCategory(e.target.value)}
@@ -167,7 +196,62 @@ const deleteProduct = (data)=>{
         </div>
       </div>
 
-    
+      <div className="card card-update" >
+      <h3 className="text-center">Variants</h3>
+
+      <div className="form-group">
+        <label for="product_tag">Tags</label>
+        <input type="text"
+                value={tag}
+                onChange={(e)=>setTag(e.target.value)}
+                className="form-control"
+                id="product_tag"
+                placeholder="Enter Tags of Product seperated by Commas"
+                required
+        />
+      </div>
+
+      <div className="form-group">
+        <table className="variant">
+        <thead>
+        <tr>
+          <th className="th-variant">Title</th>
+          <th className="th-variant">SKU</th>
+          <th className="th-variant">Retail Price</th>
+          <th className="th-variant">Selling Price</th>
+          <th className="th-variant">Profit</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+              {varian.map((sss, i)=>{
+                return(
+                  <tr key={i}>
+                  <td  className="td-variant">{sss.title}</td>
+                  <td className="td-variant">&#8377; {sss.price}</td>
+                  <td className="td-variant">{sss.sku}</td>
+                  <td className="td-variant"><input type="number"
+                          value={selling}
+                          onChange={(e)=>setSelling(e.target.value)}
+                          className="form-control"
+                          id="product_tag"
+                          placeholder="selling Price"/></td>
+                  <td className="td-variant">&#8377; {selling-sss.price}</td>
+                  </tr>
+                )
+              })}
+
+
+
+        </tbody>
+
+        </table>
+
+      </div>
+
+      </div>
+
 
 
       <div className="card card-update" >
@@ -182,6 +266,9 @@ const deleteProduct = (data)=>{
                     required
           />
         </div>
+
+
+
       </div>
       <div className="card-button">
         <button

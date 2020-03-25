@@ -43,6 +43,15 @@ const ProductSchema = mongoose.Schema({
   }],
   uploaded_on:{
     type: Date
+  },
+  color:{
+    type:String
+  },
+  size:{
+    type:String
+  },
+  tag:{
+    type:String
   }
 })
 

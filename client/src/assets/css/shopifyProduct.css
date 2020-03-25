@@ -1,0 +1,4 @@
+.variant .th-variant, .td-variant{
+  border: 1px solid black;
+  width: 20%;
+}
