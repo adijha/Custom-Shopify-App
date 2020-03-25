@@ -54,33 +54,6 @@ const dashboardRoutes = [
     icon: "pe-7s-bell",
     component: CsvProduct,
     layout: "/supplier"
-  },
-  {
-    path: "/shopifyproduct",
-    name: "Shopify Products",
-    icon: "pe-7s-bell",
-    component: ShopifyProduct,
-    layout: "/supplier"
-  },{
-    path: "/orders",
-    name: "orders",
-    icon: "pe-7s-bell",
-    component: Orders,
-    layout: "/supplier"
-  },
-  {
-    path: "/fullfilled",
-    name: "Fulfilled Orders",
-    icon: "pe-7s-bell",
-    component: FulfilledOrders,
-    layout: "/supplier"
-  },
-  {
-    path: "/collection",
-    name: "Products Colection",
-    icon: "pe-7s-bell",
-    component: ProductLayout,
-    layout: "/supplier"
   }
 
 ];
