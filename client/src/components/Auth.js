@@ -9,7 +9,7 @@ const Auth = () =>{
 
   return(
     <div>
-    {decode.category==="admin"?(<Redirect to= "/admin/dashboard"/>):(<Redirect to= "/supplier/dashboard"/>)}
+    {decode.category==="admin"?(<Redirect to= "/admin/dashboard"/>):(<Redirect to= "/merchant/dashboard"/>)}
     </div>
   )
 

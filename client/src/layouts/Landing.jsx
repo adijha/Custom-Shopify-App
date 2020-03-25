@@ -26,7 +26,7 @@ const getchPage = ()=>{
 <a className="navbar-brand" href="#" style={{padding:"2rem"}}>
   <img src={require('../assets/img/NewLogo.png')} /> </a>
 
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+  <div class="newClass collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav" style={{}}>
     { /*  <a class="nav-item nav-link" href="#home">Home </a>
       <br/>
@@ -43,7 +43,7 @@ const getchPage = ()=>{
            <ul className="dropdown-menu" style={{minWidth: "125px"}}>
              <li className="text-center" style={{float:"left"}}><a href="/login-admin" className="text-center">Admin <span className="glyphicon glyphicon-cog pull-left" /></a></li>
              <li><a href="/login-supplier" style={{float:"left"}}>Supplier <span className="glyphicon glyphicon-stats pull-left" /></a></li>
-
+             <li><a href="/login-merchant" style={{float:"left"}}>Merchant <span className="glyphicon glyphicon-stats pull-left" /></a></li>
            </ul>
          </li>
        </ul>
@@ -277,7 +277,7 @@ const getchPage = ()=>{
 
      </section>
 
-     <footer className="footer" style={{backgroundColor:"black"}}>
+     <footer className="footer landingFooter" style={{backgroundColor:"black"}}>
        <div className="container bottom_border">
          <div className="row">
            <div className=" col-sm-4 col-md col-sm-4  col-12 col">

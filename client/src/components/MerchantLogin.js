@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {Redirect} from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
 import '../assets/css/Login.css'
 
 
-const SupplierLogin = () => {
+const MerchantLogin = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +16,7 @@ const SupplierLogin = () => {
 
    useEffect(() => {
      const token = localStorage.getItem("token")
+
     if (token) {
     setisLoggedIn(true)
     }
@@ -40,10 +43,10 @@ const SupplierLogin = () => {
   }
   return(
     <div className="wrapper" id="wrapper-login" >
-    {isLoggedIn===true?(<Redirect to = "/supplier/dashboard"/>):(
+    {isLoggedIn===true?(<Redirect to = "/auth"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
-    <h2>Supplier Login</h2>
+    <h2>Merchant Login</h2>
 
       <form onSubmit={userLogin}>
         <div className="email">
@@ -74,4 +77,4 @@ const SupplierLogin = () => {
   )
 }
 
-export default SupplierLogin;
+export default MerchantLogin;
