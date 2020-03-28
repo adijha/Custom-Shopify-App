@@ -15,14 +15,13 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
 import { Grid, Row, Col } from "react-bootstrap";
 
 import { Card } from "../components/Card/Card.jsx";
 import { StatsCard } from "../components/StatsCard/StatsCard.jsx";
 import { Tasks } from "../components/Tasks/Tasks.jsx";
-import axios from 'axios'
 import {
   dataPie,
   legendPie,
@@ -36,20 +35,53 @@ import {
   legendBar
 } from "../variables/Variables.jsx";
 
-class Dashboard extends Component {
-  createLegend(json) {
-    var legend = [];
-    for (var i = 0; i < json["names"].length; i++) {
-      var type = "fa fa-circle text-" + json["types"][i];
-      legend.push(<i className={type} key={i} />);
-      legend.push(" ");
-      legend.push(json["names"][i]);
-    }
-    return legend;
-  }
+import axios from 'axios';
 
-  
-  render() {
+ const CopyDashboard = ()=>{
+   const [count, setCount]=useState("")
+   const [revenue, setRevenue] = useState("")
+   const [timeGraph, setTimeGraph] = useState({});
+   const [revDataGraph, setRevDataGraph] = useState([]);
+
+   useEffect(()=>{
+     fetchData();
+     revenueData()
+     fetchingTimeData()
+   },[])
+  // createLegend(json) {
+  //   var legend = [];
+  //   for (var i = 0; i < json["names"].length; i++) {
+  //     var type = "fa fa-circle text-" + json["types"][i];
+  //     legend.push(<i className={type} key={i} />);
+  //     legend.push(" ");
+  //     legend.push(json["names"][i]);
+  //   }
+  //   return legend;
+  // }
+
+ const fetchData = ()=>{
+  axios.get('/ordersData').
+  then(data=>{
+    setCount(data.data)
+    console.log(data)
+  })
+}
+
+const revenueData = ()=>{
+  axios.get('/revenue')
+  .then(da=>{
+    console.log("revenue", da.data)
+    setRevenue(da.data)
+  })
+}
+const fetchingTimeData = () =>{
+  axios.get('/timeGraph')
+  .then(data=>{
+    console.log({labels:data.data})
+    setTimeGraph({labels: data.data})
+  })
+}
+
     return (
       <div className="content">
         <Grid fluid>
@@ -57,8 +89,8 @@ class Dashboard extends Component {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
-                statsText="Capacity"
-                statsValue="105GB"
+                statsText="Total Orders"
+                statsValue={count}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -67,24 +99,16 @@ class Dashboard extends Component {
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Revenue"
-                statsValue="$1,345"
+                statsValue= {revenue}
                 statsIcon={<i className="fa fa-calendar-o" />}
                 statsIconText="Last day"
               />
             </Col>
+
             <Col lg={3} sm={6}>
               <StatsCard
-                bigIcon={<i className="pe-7s-graph1 text-danger" />}
-                statsText="Errors"
-                statsValue="23"
-                statsIcon={<i className="fa fa-clock-o" />}
-                statsIconText="In the last hour"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="fa fa-twitter text-info" />}
-                statsText="Followers"
+                bigIcon={<i className="fa fa-user text-info" />}
+                statsText="Merchants"
                 statsValue="+45"
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
@@ -96,24 +120,24 @@ class Dashboard extends Component {
               <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
-                title="Users Behavior"
+                title="Revenue"
                 category="24 Hours performance"
                 stats="Updated 3 minutes ago"
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={dataSales}
+                      data={timeGraph}
                       type="Line"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
                     />
                   </div>
                 }
-                legend={
-                  <div className="legend">{this.createLegend(legendSales)}</div>
-                }
+
               />
             </Col>
+            </Row>
+            {/*
             <Col md={4}>
               <Card
                 statsIcon="fa fa-clock-o"
@@ -175,10 +199,11 @@ class Dashboard extends Component {
               />
             </Col>
           </Row>
+            */}
         </Grid>
       </div>
     );
-  }
+
 }
 
-export default Dashboard;
+export default CopyDashboard;

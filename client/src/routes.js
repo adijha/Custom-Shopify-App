@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "./views/Dashboard.jsx";
+import CopyDashboard from "./views/CopyDashboard.jsx";
 import SupplierList from "./views/SupplierList.jsx";
 import Supplier from "./views/Supplier.jsx";
 import AdminProduct from "./views/AdminProduct.jsx"
@@ -30,7 +30,7 @@ const dashboardRoutes = [
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
-    component: Dashboard,
+    component: CopyDashboard,
     layout: "/admin"
   },
   {

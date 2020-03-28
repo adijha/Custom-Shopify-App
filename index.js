@@ -15,11 +15,12 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = "https://demo-mojito.herokuapp.com";
+const forwardingAddress = "https://d3e2ec29.ngrok.io";
 let hmacc, tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
 const Orders = require('./model/Orders');
+const ProductCopy = require('./model/ProductCopy');
 
 //Import Route
  const authRoute = require('./routes/auth');
@@ -123,7 +124,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://demo-mojito.herokuapp.com/webhook')
+				  request.get('https://d3e2ec29.ngrok.io/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -157,7 +158,14 @@ app.post('/addToShopify', (req, res)=>{
 
 	  request.post(shopRequestUrl, { headers: shopRequestHeaders, json:req.body})
 	  .then((shopResponse) => {
-	    console.log(shopResponse);
+     try {
+        const makeCopy = new ProductCopy(shopResponse);
+        const savedCopy = makeCopy.save();
+        console.log("saved Copy of Shopify product is", savedCopy)
+      }
+      catch (error) {
+        console.log("shopify saved product copy is", error);
+      }
 	  })
 	  .catch((error) => {
 	    console.log(error);
@@ -304,7 +312,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://demo-mojito.herokuapp.com/store/${shop}/orders/create`,
+			address: `https://d3e2ec29.ngrok.io/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
@@ -326,6 +334,59 @@ app.get('/webhook', (req, res)=>{
 
 });
 
+
+app.get('/ordersData', async(req, res)=>{
+  // const shopRequestUrl = `https://demo-mojito.myshopify.com/admin/api/2020-01/orders/count.json` ;
+  // const shopRequestHeaders = {
+  //   'X-Shopify-Access-Token': tokenn,
+  //   'Content-Type': 'application/json',
+  //   'X-Shopify-Hmac-Sha256': hmacc,
+  //   'X-Shopify-Shop-Domain': shop,
+  //   'X-Shopify-API-Version': '2020-01'
+  // }
+  // request.get(shopRequestUrl, {headers:shopRequestHeaders})
+  // .then(data=>{
+  //   console.log(data)
+  //   res.send(data)
+  // })
+
+  try {
+    const data = await Orders.find({})
+    console.log(data.length)
+    res.status(200).json(data.length)
+  } catch (error) {
+    console.log(error, "orderData api");
+  }
+})
+
+
+app.get('/revenue', async(req, res)=>{
+  const priceCal = [];
+  const data = await Orders.find({});
+
+  data.forEach((item, i) => {
+    priceCal.push(item.price)
+  });
+
+const sumPrice = priceCal.reduce((a,b)=>a+b, 0)
+res.status(200).json(sumPrice)
+console.log("price cal array is", sumPrice)
+
+})
+
+
+app.get('/timeGraph', async (req, res)=>{
+  const timeData = []
+  const data = await Orders.find({})
+
+  data.forEach((item, i) => {
+    timeData.push(item.created_on.toDateString())
+  });
+  var uniqueItems = Array.from(new Set(timeData))
+  console.log("filter Array", uniqueItems);
+  res.status(200).json(uniqueItems);
+})
+
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
 
@@ -334,6 +395,7 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
 	const subtopic = request.params.subtopic;
 	topic = topic + '/' + subtopic;
 	console.log('topic -->', topic);
+  console.log("request.body of Orders", request.body)
   const productDetails = [];
 //console.log("order details", request.body);
 
@@ -361,6 +423,7 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
     //   }
     // }
     const orders = new Orders({
+      vendor:request.body.vendor,
       product_name: request.body.id,
       currency:request.body.currency,
       price: request.body.total_price,

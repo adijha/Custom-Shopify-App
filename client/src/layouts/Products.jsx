@@ -2,6 +2,7 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import { Grid, Row, Col, Table, DropdownButton } from "react-bootstrap";
 import Modal from "react-responsive-modal";
+import jwt_decode from 'jwt-decode';
 
 
 import Card from "../components/Card/Card.jsx";
@@ -19,6 +20,8 @@ const [search, setSearch] = useState('');
 const [msg, setMsg] = useState('')
 const [status, setStatus] = useState('');
 const [category, setCategory] = useState([])
+const token = localStorage.getItem("token")
+let decode = jwt_decode(token)
 
 useEffect(()=>{
   getProductList();
@@ -118,6 +121,9 @@ let tagArray = t.tag.split(", ");
 let colorArray = t.color.split(", ")
 let sizeArray = t.size.split(", ")
 let colorVariant = []
+let str = decode.email;
+  let VendorString = str.substring(0, str.lastIndexOf("@"));
+
 
 colorArray.forEach((single, j) => {
 
@@ -136,7 +142,7 @@ colorArray.forEach((single, j) => {
       "product": {
         "title": t.name,
         "body_html": t.description,
-        "vendor": "Demo-Mojito",
+        "vendor": VendorString,
         "product_type": t.category,
         "tags": tagArray,
         "variants":colorVariant
@@ -148,9 +154,9 @@ colorArray.forEach((single, j) => {
      axios
     .post('/addToShopify', product)
     .then(data=>{
-      if (data.status==200){
+
       setMsg("Product Added in Shopify")
-    }
+
     })
 
 

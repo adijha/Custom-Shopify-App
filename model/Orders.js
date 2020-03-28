@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const OrderSchema = mongoose.Schema({
+  vendor:{type:String},
   product_name: {type: String},
   currency:{type: String},
   created_on:Date,
