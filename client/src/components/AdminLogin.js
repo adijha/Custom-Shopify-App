@@ -12,11 +12,12 @@ const AdminLogin = () => {
   const [isLoggedIn, setisLoggedIn] = useState(false);
 
 
-   useEffect(() => {
-     const token = localStorage.getItem("token")
-    if (token) {
-    setisLoggedIn(true)
-    }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+   if (token) {
+   setisLoggedIn(true)
+   }
 },[])
 
   const userLogin = (e) =>{
@@ -27,20 +28,19 @@ const AdminLogin = () => {
     }
     console.log(obj)
     axios
-    .post('/api/login', obj)
+    .post('/api/adminLogin', obj)
     .then(data=>{
       const token =  localStorage.setItem("token", data.data);
         setStatus("Login Success")
         setisLoggedIn(true)
-
     })
     .catch(err=>{
-      setStatus(err.message)
+      setStatus("User Id Password Not Matched with Admin")
     })
   }
   return(
     <div className="wrapper" id="wrapper-login" >
-    {isLoggedIn===true?(<Redirect to = "/auth"/>):(
+    {isLoggedIn===true?(<Redirect to = "/admin/dashboard"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
     <h2>Admin Login</h2>

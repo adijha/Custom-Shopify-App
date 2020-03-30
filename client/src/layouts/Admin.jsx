@@ -41,7 +41,7 @@ class Admin extends Component {
     };
     const token = localStorage.getItem("token")
     const decode = jwt_decode(token)
-    if (token && decode.category==="admin") {
+    if (token) {
     this.state.isLoggedIn = true
     }
   }

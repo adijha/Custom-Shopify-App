@@ -25,7 +25,7 @@ import { Tasks } from "../components/Tasks/Tasks.jsx";
 import {
   dataPie,
   legendPie,
-  dataSales,
+
   optionsSales,
   responsiveSales,
   legendSales,
@@ -40,13 +40,12 @@ import axios from 'axios';
  const CopyDashboard = ()=>{
    const [count, setCount]=useState("")
    const [revenue, setRevenue] = useState("")
-   const [timeGraph, setTimeGraph] = useState({});
-   const [revDataGraph, setRevDataGraph] = useState([]);
+   const [graphPlot, setGraphPlot] = useState({});
 
    useEffect(()=>{
      fetchData();
      revenueData()
-     fetchingTimeData()
+     fetchingRevenueGraph()
    },[])
   // createLegend(json) {
   //   var legend = [];
@@ -74,19 +73,35 @@ const revenueData = ()=>{
     setRevenue(da.data)
   })
 }
-const fetchingTimeData = () =>{
-  axios.get('/timeGraph')
-  .then(data=>{
-    console.log({labels:data.data})
-    setTimeGraph({labels: data.data})
+// const fetchingTimeData = () =>{
+//   axios.get('/timeGraph')
+//   .then(data=>{
+//     console.log({labels:data.data})
+//     setTimeGraph({labels: data.data})
+//   })
+// }
+
+const fetchingRevenueGraph = () =>{
+  axios.get('/newTimeGraph')
+  .then(response=>{
+    var  data =  {
+        labels: response.data.date,
+        series: [response.data.price]
+      };
+    //console.log(newDataSales);
+    setGraphPlot(data)
+    //console.log(datasales);
   })
 }
 
+
+
     return (
+      <div>
       <div className="content">
         <Grid fluid>
           <Row>
-            <Col lg={3} sm={6}>
+            <Col lg={4} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
                 statsText="Total Orders"
@@ -95,7 +110,7 @@ const fetchingTimeData = () =>{
                 statsIconText="Updated now"
               />
             </Col>
-            <Col lg={3} sm={6}>
+            <Col lg={4} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Revenue"
@@ -105,7 +120,7 @@ const fetchingTimeData = () =>{
               />
             </Col>
 
-            <Col lg={3} sm={6}>
+            <Col lg={4} sm={6}>
               <StatsCard
                 bigIcon={<i className="fa fa-user text-info" />}
                 statsText="Merchants"
@@ -120,14 +135,14 @@ const fetchingTimeData = () =>{
               <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
-                title="Revenue"
+                title="Total Revenue"
                 category="24 Hours performance"
                 stats="Updated 3 minutes ago"
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={timeGraph}
-                      type="Line"
+                      data={graphPlot}
+                      type="Bar"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
                     />
@@ -201,6 +216,7 @@ const fetchingTimeData = () =>{
           </Row>
             */}
         </Grid>
+      </div>
       </div>
     );
 

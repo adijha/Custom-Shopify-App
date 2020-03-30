@@ -16,7 +16,6 @@ const MerchantLogin = () => {
 
    useEffect(() => {
      const token = localStorage.getItem("token")
-
     if (token) {
     setisLoggedIn(true)
     }
@@ -30,7 +29,7 @@ const MerchantLogin = () => {
     }
     console.log(obj)
     axios
-    .post('/api/login', obj)
+    .post('/api/merchantLogin', obj)
     .then(data=>{
       const token =  localStorage.setItem("token", data.data);
         setStatus("Login Success")
@@ -38,12 +37,12 @@ const MerchantLogin = () => {
 
     })
     .catch(err=>{
-      setStatus(err.message)
+      setStatus("User Id Password not matched with merchant account")
     })
   }
   return(
     <div className="wrapper" id="wrapper-login" >
-    {isLoggedIn===true?(<Redirect to = "/auth"/>):(
+    {isLoggedIn===true?(<Redirect to = "/merchant/dashboard"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
     <h2>Merchant Login</h2>

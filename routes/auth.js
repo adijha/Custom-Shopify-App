@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const User = require('../model/User');
+const AdminUser = require('../model/AdminUser');
+const MerchantUser = require('../model/MerchantUser');
 const Products = require('../model/Products');
 const CsvTest = require('../model/CsvTest');
 const Category = require('../model/Category')
@@ -17,7 +19,123 @@ const upload = multer({
 	storage: multer.memoryStorage()
 })
 
+//Admin Registration
 
+router.post('/admin', async (req, res)=>{
+
+	//let validate the data
+	const {error} = userValidation(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+
+	//user email already exists
+	const emailExist = await AdminUser.findOne({email: req.body.email})
+	if (emailExist) return res.status(400).send("Email Already Exists");
+
+	//hash the password
+	const salt = await bcrypt.genSalt(10);
+	const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+
+	const adminUser = new AdminUser({
+		email: req.body.email,
+		password: hashPassword
+	});
+
+	try{
+		const savedUser = await adminUser.save();
+		res.send(savedUser);
+	}
+	catch(err){
+		res.status(400).send(err);
+	}
+});
+
+
+//Admin Generate Token for login
+router.post('/adminLogin', async (req, res)=>{
+
+	//let validate the data
+	const {error} = userValidation(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	//if email exist
+	const user = await AdminUser.findOne({email: req.body.email})
+	if (!user) return res.status(400).send("Wrong Email Entered");
+
+	//check password is correct
+	const validPassword = await bcrypt.compare(req.body.password, user.password);
+	if (!validPassword) return res.status(400).send("Invalid Password");
+
+	//create and assign token
+	let userInfo = {
+		id: user._id,
+		email: user.email,
+		category: user.category
+	}
+	const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
+	res.send(token);
+
+})
+
+
+//merchant sign up
+router.post('/merchant', async (req, res)=>{
+
+	//let validate the data
+	const {error} = userValidation(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	//user email already exists
+	const emailExist = await MerchantUser.findOne({email: req.body.email})
+	if (emailExist) return res.status(400).send("Email Already Exists");
+
+	//hash the password
+	const salt = await bcrypt.genSalt(10);
+	const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+
+	const merchantUser = new MerchantUser({
+		email: req.body.email,
+		password: hashPassword
+	});
+
+	try{
+		const savedUser = await merchantUser.save();
+		res.send(savedUser);
+	}
+	catch(err){
+		res.status(400).send(err);
+	}
+});
+
+
+//login and generate token
+
+router.post('/merchantLogin', async (req, res)=>{
+
+	//let validate the data
+	const {error} = userValidation(req.body);
+	if (error) return res.status(400).send(error.details[0].message);
+
+	//if email exist
+	const user = await MerchantUser.findOne({email: req.body.email})
+	if (!user) return res.status(400).send("Wrong Email Entered");
+
+	//check password is correct
+	const validPassword = await bcrypt.compare(req.body.password, user.password);
+	if (!validPassword) return res.status(400).send("Invalid Password");
+
+	//create and assign token
+	let userInfo = {
+		id: user._id,
+		email: user.email
+	}
+
+	const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
+	res.send(token);
+
+});
 
 /*Supplier Part*/
 
@@ -113,6 +231,18 @@ router.post('/login', async (req, res)=>{
 	res.send(token);
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

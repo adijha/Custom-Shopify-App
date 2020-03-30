@@ -15,7 +15,7 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = "https://d3e2ec29.ngrok.io";
+const forwardingAddress = "https://demo-mojito.herokuapp.com";
 let hmacc, tokenn;
 let shop=`demo-mojito.myshopify.com`;
 let topic = 'orders/create'
@@ -124,7 +124,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://d3e2ec29.ngrok.io/webhook')
+				  request.get('https://demo-mojito.herokuapp.com/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -312,7 +312,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://d3e2ec29.ngrok.io/store/${shop}/orders/create`,
+			address: `https://demo-mojito.herokuapp.com/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
@@ -374,18 +374,71 @@ console.log("price cal array is", sumPrice)
 
 })
 
+//
+// app.get('/timeGraph', async (req, res)=>{
+//   const timeData = []
+//   const data = await Orders.find({})
+//
+//   data.forEach((item, i) => {
+//     timeData.push(item.created_on.toDateString())
+//   });
+//   var uniqueItems = Array.from(new Set(timeData))
+//   console.log("filter Array", uniqueItems);
+//   res.status(200).json(uniqueItems);
+// })
 
-app.get('/timeGraph', async (req, res)=>{
-  const timeData = []
+
+
+
+
+//
+app.get('/newTimeGraph', async (req, res)=>{
+  const timeData = []; //Date and price
+  let newAray = []
+  const priceArray = [];
+  let tempprice =[];
+  let tempVariable;
+  let calAdd =0;
+
   const data = await Orders.find({})
 
   data.forEach((item, i) => {
-    timeData.push(item.created_on.toDateString())
+    newAray.push(item.created_on.toDateString())
   });
-  var uniqueItems = Array.from(new Set(timeData))
-  console.log("filter Array", uniqueItems);
-  res.status(200).json(uniqueItems);
+
+  //var uniqueItems = Array.from(new Set(newAray)) // distinct value of dates
+
+  data.forEach((item, i) => {
+    timeData.push({date:item.created_on.toDateString(),
+                  price: item.price})
+  });
+
+newAray = [...new Set(newAray)];
+
+
+  newAray.forEach((item, i) => {
+    console.log({item})
+    timeData.forEach((dash, i) => {
+      if (item==dash.date) {
+        calAdd+=dash.price
+      }
+
+    });
+    priceArray.push(calAdd)
+    //console.log("add sum is", calAdd)
+  });
+  let graphData = {
+    date:newAray,
+    price:priceArray
+  }
+  res.status(200).json(graphData)
+  console.log("Final Array is", graphData)
+
 })
+
+
+
+
 
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function(request, response) {

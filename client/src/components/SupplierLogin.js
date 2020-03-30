@@ -35,7 +35,7 @@ const SupplierLogin = () => {
 
     })
     .catch(err=>{
-      setStatus(err.message)
+      setStatus("User Id Password Not Matched with Supplier Account")
     })
   }
   return(
