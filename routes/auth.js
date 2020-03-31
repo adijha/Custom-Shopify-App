@@ -137,6 +137,15 @@ router.post('/merchantLogin', async (req, res)=>{
 
 });
 
+router.get('/merchant', async (req, res)=>{
+	try {
+		const data = await MerchantUser.find()
+		res.json(data)
+	} catch (error) {
+		res.json({message: error});
+	}
+})
+
 /*Supplier Part*/
 
 //Register Account

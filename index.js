@@ -391,7 +391,7 @@ console.log("price cal array is", sumPrice)
 
 
 
-//
+//Revenue per day
 app.get('/newTimeGraph', async (req, res)=>{
   const timeData = []; //Date and price
   let newAray = []
@@ -432,12 +432,53 @@ newAray = [...new Set(newAray)];
     price:priceArray
   }
   res.status(200).json(graphData)
-  console.log("Final Array is", graphData)
+  //console.log("Final Array is", graphData)
 
 })
 
+//Revenue by State
 
+app.get('/statePie', async (req, res)=>{
+  const stateData = []; //Date and price
+  let newAray = []
+  const priceArray = [];
+  let tempprice =[];
+  let tempVariable;
+  let calAdd =0;
 
+  const data = await Orders.find({})
+
+  data.forEach((item, i) => {
+    newAray.push(item.customer.city)
+  });
+
+  data.forEach((item, i) => {
+    stateData.push({state:item.customer.city,
+                  price: item.price})
+  });
+
+newAray = [...new Set(newAray)];
+//console.log({newAray});
+
+//
+  newAray.forEach((item, i) => {
+    console.log({item})
+    stateData.forEach((dash, i) => {
+      if (item===dash.state) {
+        calAdd+=dash.price}
+    });
+     priceArray.push(calAdd)
+    // console.log("add sum is", calAdd)
+  });
+  // console.log({priceArray});
+  let pieData = {
+    state:newAray,
+    price:priceArray
+  }
+  res.status(200).json(pieData)
+  console.log("Final Array is", pieData)
+
+})
 
 
 //order create callback api

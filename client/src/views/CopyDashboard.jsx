@@ -41,11 +41,16 @@ import axios from 'axios';
    const [count, setCount]=useState("")
    const [revenue, setRevenue] = useState("")
    const [graphPlot, setGraphPlot] = useState({});
+   const [piePlot, setPiePlot] = useState({});
+   const [mCount, setMCount] = useState("")
+
 
    useEffect(()=>{
      fetchData();
      revenueData()
      fetchingRevenueGraph()
+     fetchingRevenuePie()
+     merchantCount()
    },[])
   // createLegend(json) {
   //   var legend = [];
@@ -73,13 +78,15 @@ const revenueData = ()=>{
     setRevenue(da.data)
   })
 }
-// const fetchingTimeData = () =>{
-//   axios.get('/timeGraph')
-//   .then(data=>{
-//     console.log({labels:data.data})
-//     setTimeGraph({labels: data.data})
-//   })
-// }
+
+const merchantCount = () =>{
+  axios.get('/api/merchant')
+  .then(data=>{
+    console.log("merchant count", data.data.length)
+    setMCount(data.data.length)
+
+  })
+}
 
 const fetchingRevenueGraph = () =>{
   axios.get('/newTimeGraph')
@@ -94,6 +101,18 @@ const fetchingRevenueGraph = () =>{
   })
 }
 
+const fetchingRevenuePie = () =>{
+  axios.get('/statePie')
+  .then(response=>{
+    var  data =  {
+        labels: response.data.state,
+        series: response.data.price
+      };
+    console.log("pie chart data", data);
+    setPiePlot(data)
+    //console.log(datasales);
+  })
+}
 
 
     return (
@@ -124,7 +143,7 @@ const fetchingRevenueGraph = () =>{
               <StatsCard
                 bigIcon={<i className="fa fa-user text-info" />}
                 statsText="Merchants"
-                statsValue="+45"
+                statsValue={mCount}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -151,28 +170,25 @@ const fetchingRevenueGraph = () =>{
 
               />
             </Col>
-            </Row>
-            {/*
             <Col md={4}>
               <Card
                 statsIcon="fa fa-clock-o"
-                title="Email Statistics"
-                category="Last Campaign Performance"
+                title="Revenue by category"
+                category="District Wise"
                 stats="Campaign sent 2 days ago"
                 content={
                   <div
                     id="chartPreferences"
                     className="ct-chart ct-perfect-fourth"
                   >
-                    <ChartistGraph data={dataPie} type="Pie" />
+                    <ChartistGraph data={piePlot} type="Pie" />
                   </div>
                 }
-                legend={
-                  <div className="legend">{this.createLegend(legendPie)}</div>
-                }
+
               />
             </Col>
           </Row>
+          {/*
 
           <Row>
             <Col md={6}>
