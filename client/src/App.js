@@ -9,7 +9,7 @@ import SupplierLayout from "./layouts/Supplier.jsx";
 import ProductLayout from "./layouts/Products.jsx";
 import LandingLayout from "./layouts/Landing.jsx";
 import MerchantLayout from "./layouts/Merchant.jsx";
-
+import MerchantSignup from './views/MerchantSignup.jsx';
 
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
           <Route exact path="/login-admin" component={ALogin}/>
           <Route exact path="/login-supplier" component={SLogin}/>
           <Route exact path="/login-merchant" component={MLogin}/>
+          <Route exact path="/merchantSignup" component={MerchantSignup}/>
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
           <Route path='/auth' component={Auth}/>
           <Route path='/supplier' render={props => <SupplierLayout {...props} />}/>

@@ -60,7 +60,7 @@ const getchPage = ()=>{
            <p className="text-muted">Streamlined hiring. GetLance’s sophisticated algorithms highlight projects you’re a great fit for.
              Top Rated and Rising Talent programs. Enjoy higher visibility with the added status of prestigious programs.
              Do substantial work with top clients. GetLance pricing encourages freelancers to use GetLance for repeat relationships with their clients.</p>
-             <button className="btn btn-primary" style={{width:"50%"}}> <a href="#"> Sign Up</a></button>
+             <button className="btn btn-primary" style={{width:"50%"}}> <a href="/merchantSignup"> Sign Up</a></button>
          </div>
 
          <div className="col-md-6 how-img">
