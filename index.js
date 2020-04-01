@@ -479,6 +479,12 @@ newAray = [...new Set(newAray)];
 
 })
 
+app.get('/categoryRevenue', (req, res)=>{
+
+  const data = Orders.find({})
+  console.log({data})
+})
+
 
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function(request, response) {

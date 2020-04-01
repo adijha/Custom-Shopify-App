@@ -41,7 +41,7 @@ class Supplier extends Component {
     };
     const token = localStorage.getItem("token")
     const decode = jwt_decode(token)
-    if (token && decode.category==="supplier") {
+    if (token ) {
     this.state.isLoggedIn = true
     }
   }
