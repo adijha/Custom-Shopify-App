@@ -33,7 +33,7 @@ const dashboardRoutes = [
     icon: "pe-7s-graph",
     component: Dashboard,
     layout: "/merchant"
-  },*/}
+  },*/},
   {
     path: "/collection",
     name: "Products Colection",
