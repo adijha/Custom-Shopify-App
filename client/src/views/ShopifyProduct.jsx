@@ -3,7 +3,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import Modal from "react-responsive-modal";
 import "../assets/css/shopifyProduct.css";
-
+import jwt_decode from 'jwt-decode';
 import axios from 'axios';
 
 
@@ -29,8 +29,16 @@ const ShopifyProduct = () => {
     getShopifyProduct()
   }, [])
 
+  const token = localStorage.getItem("token")
+  let decode = jwt_decode(token)
+  let str = decode.email;
+    let VendorString = str.substring(0, str.lastIndexOf("@"));
+    console.log(VendorString);
+
+
   const getShopifyProduct = () =>{
-    axios.get('/ShopifyProduct')
+
+    axios.get('/ShopifyProduct/'+VendorString )
     .then(data=>{
       setProducts(data.data.products)
     })
@@ -84,7 +92,7 @@ const UpdateProduct = async (e)=>{
 
 
   console.log(product, "Update product is shopify")
-    await axios.put('/ShopifyProduct/'+code, product)
+    await axios.put('/ShopifyProduct/'+VendorString+'/'+code, product)
     .then(data=>{
       console.log(data)
       setStatus("Product Updated Successfully")
@@ -95,7 +103,7 @@ const UpdateProduct = async (e)=>{
 }
 
 const deleteProduct = (data)=>{
-  axios.delete('/ShopifyProduct/'+data.id)
+  axios.delete('/ShopifyProduct/'+VendorString+'/'+data.id)
   .then(data=>{
     console.log(data)
     setStatus("product deleted Successfully")

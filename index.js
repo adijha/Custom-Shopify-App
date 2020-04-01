@@ -17,7 +17,7 @@ const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
 const forwardingAddress = "https://demo-mojito.herokuapp.com";
 let hmacc, tokenn;
-let shop=`demo-mojito.myshopify.com`;
+let shop;
 let topic = 'orders/create'
 const Orders = require('./model/Orders');
 const ProductCopy = require('./model/ProductCopy');
@@ -50,7 +50,7 @@ app.use('/api', authRoute);
 
 app.get('/shopify', (req, res) => {
   console.log("inside /shopify");
-  const shop = req.query.shop;
+   shop = req.query.shop;
   if (shop) {
     const state = nonce();
     const redirectUri = forwardingAddress + '/shopify/callback';
@@ -174,9 +174,9 @@ app.post('/addToShopify', (req, res)=>{
 })
 
 //get product list from shopify
-app.get('/shopifyProduct', (req, res)=>{
-  console.log(tokenn)
-  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products.json';
+app.get('/shopifyProduct/:VendorString', (req, res)=>{
+
+  const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/products.json';
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
@@ -184,9 +184,9 @@ app.get('/shopifyProduct', (req, res)=>{
     'X-Shopify-Shop-Domain': shop,
     'X-Shopify-API-Version': '2020-01'
   };
-  request.get(shopRequestUrl, {headers:shopRequestHeaders})
+  request.get(shopRequestUrl)
   .then(data=>{
-    console.log(data, "product is")
+    //console.log(data, "product is")
     res.send(data);
   })
   .catch(error=>{
@@ -195,16 +195,16 @@ app.get('/shopifyProduct', (req, res)=>{
 })
 
 //update request shopify product
-app.put('/ShopifyProduct/:id', (req, res)=>{
+app.put('/ShopifyProduct/:VendorString/:id', (req, res)=>{
   console.log("token is", tokenn)
   console.log(req.body)
-   const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
+   const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
    console.log("url is", shopRequestUrl);
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
   request.put(shopRequestUrl, {headers: shopRequestHeaders, json:req.body})
@@ -217,13 +217,13 @@ app.put('/ShopifyProduct/:id', (req, res)=>{
   })
 })
 
-app.delete('/shopifyProduct/:id', (req, res)=>{
-  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
+app.delete('/shopifyProduct/:VendorString/:id', (req, res)=>{
+  const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/products/'+req.params.id+'.json';
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
   request.delete(shopRequestUrl, {headers: shopRequestHeaders})
@@ -238,13 +238,13 @@ app.delete('/shopifyProduct/:id', (req, res)=>{
 
 //get Orders list
 
-app.get('/orders', (req, res)=>{
-  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/orders.json'
+app.get('/orders/:VendorString', (req, res)=>{
+  const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/orders.json'
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
 
@@ -259,14 +259,14 @@ app.get('/orders', (req, res)=>{
 })
 
 //fulfill single orders
-app.post('/orders/:id', (req, res)=>{
+app.post('/orders/:VendorString/:id', (req, res)=>{
   console.log(req.params.id)
-  const shopRequestUrl = 'https://demo-mojito.myshopify.com/admin/api/2020-01/orders/'+req.params.id+'/fulfillments.json'
+  const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/orders/'+req.params.id+'/fulfillments.json'
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
 
@@ -281,13 +281,13 @@ app.post('/orders/:id', (req, res)=>{
 })
 
 //get fulfilled Orders
-app.get('/fulfilledOrders', (req, res)=>{
-  const shopRequestUrl = `https://demo-mojito.myshopify.com/admin/api/2020-01/orders.json?status=closed` ;
+app.get('/fulfilledOrders/:VendorString', (req, res)=>{
+  const shopRequestUrl = 'https://'+req.params.VendorString+'.myshopify.com/admin/api/2020-01/orders.json?status=closed' ;
   const shopRequestHeaders = {
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   }
   request.get(shopRequestUrl, {headers:shopRequestHeaders})
@@ -458,25 +458,24 @@ app.get('/statePie', async (req, res)=>{
   });
 
 newAray = [...new Set(newAray)];
-//console.log({newAray});
 
-//
+
   newAray.forEach((item, i) => {
-    console.log({item})
     stateData.forEach((dash, i) => {
       if (item===dash.state) {
-        calAdd+=dash.price}
+        calAdd+=dash.price
+      }
     });
-     priceArray.push(calAdd)
-    // console.log("add sum is", calAdd)
+      priceArray.push(calAdd)
+  //    console.log("add sum is", calAdd)
   });
   // console.log({priceArray});
   let pieData = {
     state:newAray,
     price:priceArray
   }
-  res.status(200).json(pieData)
-  console.log("Final Array is", pieData)
+   res.status(200).json(pieData)
+  // console.log("Final Array is", pieData)
 
 })
 
@@ -497,27 +496,14 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
     productDetails.push({
       id: item.product_id,
       name: item.name,
-      quantity:item.quantity
+      quantity:item.quantity,
+      price: item.price,
+      sku:item.sku,
+      store:item.vendor
     })
   });
 
-    // const OrderDetails = {
-    //   product_name: request.body.id,
-    //   currency:request.body.currency,
-    //   price: request.body.total_price,
-    //   created_on:request.body.created_at,
-    //   products: productDetails,
-    //   customer:{
-    //     name:request.body.customer.first_name + request.body.customer.last_name,
-    //     email:request.body.email,
-    //     address:request.body.shipping_address.address1 + request.body.shipping_address.address2,
-    //     city: request.body.shipping_address.city,
-    //     zip:request.body.shipping_address.zip,
-    //     phone:request.body.shipping_address.phone
-    //   }
-    // }
     const orders = new Orders({
-      vendor:request.body.vendor,
       product_name: request.body.id,
       currency:request.body.currency,
       price: request.body.total_price,

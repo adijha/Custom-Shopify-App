@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import axios from 'axios'
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
+import jwt_decode from 'jwt-decode';
 
 
 
@@ -14,8 +15,15 @@ useEffect(()=>{
 getOrderDetails();
 }, [])
 
+const token = localStorage.getItem("token")
+let decode = jwt_decode(token)
+let str = decode.email;
+  let VendorString = str.substring(0, str.lastIndexOf("@"));
+  console.log(VendorString);
+
+
 const getOrderDetails = ()=>{
-  axios.get('/orders',)
+  axios.get('/orders/'+VendorString)
   .then(data=>{
     console.log("data is orders", data.data.orders)
     setOrderDetails(data.data.orders)
@@ -45,7 +53,7 @@ console.log("data is", data)
 }
 
 
-axios.post('/orders/'+data.id, fulfilObject)
+axios.post('/orders/'+VendorString+'/'+data.id, fulfilObject)
 .then(response=>{
   if (response.status == 200) {
     console.log("orders fulfiled", response)
