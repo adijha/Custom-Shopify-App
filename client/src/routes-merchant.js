@@ -27,13 +27,13 @@ import FulfilledOrders from "./views/FulfilledOrders.jsx"
 
 
 const dashboardRoutes = [
-  {
+{/*}  {
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
     component: Dashboard,
     layout: "/merchant"
-  },
+  },*/}
   {
     path: "/collection",
     name: "Products Colection",
