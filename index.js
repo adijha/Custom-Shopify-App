@@ -20,6 +20,7 @@ let hmacc, tokenn;
 let shop;
 let topic = 'orders/create'
 const Orders = require('./model/Orders');
+const Products = require('./model/Products');
 const ProductCopy = require('./model/ProductCopy');
 
 //Import Route
@@ -479,10 +480,83 @@ newAray = [...new Set(newAray)];
 
 })
 
-app.get('/categoryRevenue', (req, res)=>{
+app.get('/categoryRevenue', async (req, res)=>{
+let obj = []
+let categoryArray =[]
+let priceArray=[]
+let finalArray=[]
+  const data = await Orders.find({})
 
-  const data = Orders.find({})
-  console.log({data})
+  data.forEach((item, i) => {
+    item.products.forEach((sss, i) => {
+      if (sss.sku!==undefined) {
+        obj.push({
+          sku:sss.sku,
+          price:parseInt(sss.price)
+        })
+      }
+    });
+
+  });
+
+  var holder = {};
+
+  obj.forEach(function(d) {
+    if (holder.hasOwnProperty(d.sku)) {
+      holder[d.sku] = holder[d.sku] + d.price;
+    } else {
+      holder[d.sku] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ sku: prop, price: holder[prop] });
+  }
+
+  console.log({obj2});
+
+const productData =  await Products.find({})
+productData.forEach((sk, i) => {
+  obj2.forEach((cat, i) => {
+    if (sk.code===cat.sku) {
+      categoryArray.push({category:sk.category, price:cat.price})
+    }
+  });
+
+});
+var holder1 ={}
+
+categoryArray.forEach(function(d) {
+  if (holder1.hasOwnProperty(d.category)) {
+    holder1[d.category] = holder1[d.category] + d.price;
+  } else {
+    holder1[d.category] = d.price;
+  }
+});
+
+
+for (var prop in holder1) {
+  finalArray.push({ category: prop, price: holder1[prop] });
+}
+
+let arrCategory=[]
+let arrRevenue =[]
+
+finalArray.forEach((sepArray, i) => {
+  arrCategory.push(sepArray.category)
+  arrRevenue.push(sepArray.price)
+});
+
+
+let categoryRevenue =  {
+  category:arrCategory,
+  revenue:arrRevenue
+}
+
+res.status(200).json(categoryRevenue);
+
 })
 
 
@@ -521,7 +595,9 @@ app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
         address:request.body.shipping_address.address1 + request.body.shipping_address.address2,
         city: request.body.shipping_address.city,
         zip:request.body.shipping_address.zip,
-        phone:request.body.shipping_address.phone
+        phone:request.body.shipping_address.phone,
+        state: request.body.shipping_address.province,
+        country: request.body.shipping_address.country
       }
     })
 

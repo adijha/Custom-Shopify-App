@@ -43,6 +43,7 @@ import axios from 'axios';
    const [graphPlot, setGraphPlot] = useState({});
    const [piePlot, setPiePlot] = useState({});
    const [mCount, setMCount] = useState("")
+   const [categoryPie, setCategoryPie] = useState({})
 
 
    useEffect(()=>{
@@ -51,6 +52,7 @@ import axios from 'axios';
      fetchingRevenueGraph()
      fetchingRevenuePie()
      merchantCount()
+     fetchingCategoryRevenue()
    },[])
   // createLegend(json) {
   //   var legend = [];
@@ -114,6 +116,18 @@ const fetchingRevenuePie = () =>{
   })
 }
 
+const fetchingCategoryRevenue = () =>{
+  axios.get('/categoryRevenue')
+  .then(response=>{
+    var data = {
+      labels: response.data.category,
+      series: response.data.revenue
+    }
+    setCategoryPie(data)
+    console.log("Category wise Pie chart", data);
+  })
+}
+
 
     return (
       <div>
@@ -173,7 +187,7 @@ const fetchingRevenuePie = () =>{
             <Col md={4}>
               <Card
                 statsIcon="fa fa-clock-o"
-                title="Revenue by category"
+                title="Revenue"
                 category="District Wise"
                 stats="Campaign sent 2 days ago"
                 content={
@@ -188,6 +202,25 @@ const fetchingRevenuePie = () =>{
               />
             </Col>
           </Row>
+          <Row>
+          <Col md={4}>
+            <Card
+              statsIcon="fa fa-clock-o"
+              title="Revenue by category"
+              category="Category Wise"
+              stats="Campaign sent 2 days ago"
+              content={
+                <div
+                  id="chartPreferences"
+                  className="ct-chart ct-perfect-fourth"
+                >
+                  <ChartistGraph data={categoryPie} type="Pie" />
+                </div>
+              }
+
+            />
+          </Col>
+        </Row>
           {/*
 
           <Row>
