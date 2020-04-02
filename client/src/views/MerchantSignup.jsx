@@ -61,6 +61,10 @@ const addMerchant = e =>{
            <div className='submit'>
              <button className="btn btn-primary">Create Account</button>
            </div>
+
+           <div style={{marginTop: "10px", width: "100%", display: "flex", flexWrap: "wrap"}}>
+             <button className="btn btn-info"><a href="/login-merchant">Login</a></button>
+           </div>
            <div className="info">{status}</div>
 
          </form>
