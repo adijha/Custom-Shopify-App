@@ -17,7 +17,7 @@
 */
 import React, { Component, useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import { Card } from "../components/Card/Card.jsx";
 import { StatsCard } from "../components/StatsCard/StatsCard.jsx";
@@ -27,7 +27,7 @@ import jwt_decode from 'jwt-decode';
 import {
   dataPie,
   legendPie,
-
+dataSales,
   optionsSales,
   responsiveSales,
   legendSales,
@@ -43,7 +43,7 @@ import axios from 'axios';
    const [productCount, setProductCount]=useState("")
    const [revenue, setRevenue]= useState("")
    const [order, setOrder] = useState("")
-
+   const [topProducts, setTopProducts] = useState([])
    const token = localStorage.getItem("token")
    const decode = jwt_decode(token);
 
@@ -52,6 +52,7 @@ import axios from 'axios';
      getProductData()
      income()
      totalOrders()
+     top()
    },[])
 
    const getProductData = () =>{
@@ -75,6 +76,13 @@ import axios from 'axios';
      .then(ord=>{
        console.log("orders are", ord.data);
        setOrder(ord.data)
+     })
+   }
+
+   const top = ()=>{
+     axios.get('/topProducts/'+decode.id)
+     .then(response=>{
+       setTopProducts(response.data)
      })
    }
 
@@ -113,7 +121,7 @@ import axios from 'axios';
               />
             </Col>
           </Row>
-          {/*
+
           <Row>
             <Col md={8}>
               <Card
@@ -125,7 +133,7 @@ import axios from 'axios';
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={graphPlot}
+                      data={dataSales}
                       type="Bar"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
@@ -135,6 +143,44 @@ import axios from 'axios';
 
               />
             </Col>
+            </Row>
+
+            <Row>
+            <Col md={8}>
+            <Card
+              title="Top Selling Products"
+              ctTableFullWidth
+              ctTableResponsive
+              content={
+                <Table striped hover size="sm">
+                  <thead >
+                    <tr>
+                      <th>Sku</th>
+                      <th>Title</th>
+                      <th>Price</th>
+                      <th>Purchased in Nos</th>
+                      <th>Income</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {topProducts.map((item, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{item.sku}</td>
+                          <td>{item.name}</td>
+                          <td>{item.price}</td>
+                          <td>{item.count}</td>
+                          <td>{item.revenue}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              }
+            />
+            </Col>
+            </Row>
+            {/*
             <Col md={4}>
               <Card
                 statsIcon="fa fa-clock-o"
