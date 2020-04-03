@@ -441,42 +441,47 @@ newAray = [...new Set(newAray)];
 
 app.get('/statePie', async (req, res)=>{
   const stateData = []; //Date and price
-  let newAray = []
+  let stateArray = []
   const priceArray = [];
-  let tempprice =[];
-  let tempVariable;
-  let calAdd =0;
 
   const data = await Orders.find({})
 
-  data.forEach((item, i) => {
-    newAray.push(item.customer.city)
-  });
 
   data.forEach((item, i) => {
     stateData.push({state:item.customer.city,
                   price: item.price})
   });
 
-newAray = [...new Set(newAray)];
+  var holder = {};
 
-
-  newAray.forEach((item, i) => {
-    stateData.forEach((dash, i) => {
-      if (item===dash.state) {
-        calAdd+=dash.price
-      }
-    });
-      priceArray.push(calAdd)
-  //    console.log("add sum is", calAdd)
+  stateData.forEach(function(d) {
+    if (holder.hasOwnProperty(d.state)) {
+      holder[d.state] = holder[d.state] + d.price;
+    } else {
+      holder[d.state] = d.price;
+    }
   });
-  // console.log({priceArray});
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ state: prop, price: holder[prop] });
+  }
+
+  //console.log({obj2});
+
+  obj2.forEach((item, i) => {
+    stateArray.push(item.state)
+    priceArray.push(item.price)
+  });
+
+
   let pieData = {
-    state:newAray,
+    state:stateArray,
     price:priceArray
   }
    res.status(200).json(pieData)
-  // console.log("Final Array is", pieData)
+   //console.log("Final Array is", pieData)
 
 })
 

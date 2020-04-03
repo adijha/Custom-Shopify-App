@@ -99,6 +99,10 @@ const fetchingRevenueGraph = () =>{
       };
     //console.log(newDataSales);
     setGraphPlot(data)
+
+    let highValue = response.data.price.reduce((a, b)=>a+b, 0)
+    console.log(~~highValue, "highValue");
+
     //console.log(datasales);
   })
 }
@@ -124,10 +128,21 @@ const fetchingCategoryRevenue = () =>{
       series: response.data.revenue
     }
     setCategoryPie(data)
+
     console.log("Category wise Pie chart", data);
   })
 }
 
+
+var optionsGraphPlot = {
+ high: 100000,
+ low: 10,
+ axisX: {
+   labelInterpolationFnc: function(value, index) {
+     return index % 2 === 0 ? value : null;
+   }
+ }
+};
 
     return (
       <div>
@@ -176,7 +191,7 @@ const fetchingCategoryRevenue = () =>{
                     <ChartistGraph
                       data={graphPlot}
                       type="Bar"
-                      options={optionsSales}
+                      options={optionsGraphPlot}
                       responsiveOptions={responsiveSales}
                     />
                   </div>
@@ -188,7 +203,7 @@ const fetchingCategoryRevenue = () =>{
               <Card
                 statsIcon="fa fa-clock-o"
                 title="Revenue"
-                category="District Wise"
+                category="State Wise"
                 stats="Campaign sent 2 days ago"
                 content={
                   <div

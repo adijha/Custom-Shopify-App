@@ -64,7 +64,7 @@ const addSuplier = e =>{
              <small>Password must be eight characters in length.</small>
            </div>
            <div className='submit'>
-             <button>Create</button>
+             <button className="btn btn-primary">Create</button>
            </div>
            <div className="info">{status}</div>
 
