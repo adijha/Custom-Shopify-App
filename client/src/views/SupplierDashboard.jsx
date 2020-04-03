@@ -41,6 +41,7 @@ import axios from 'axios';
 
  const SupplierDashboard = ()=>{
    const [productCount, setProductCount]=useState("")
+   const [revenue, setRevenue]= useState("")
 
    const token = localStorage.getItem("token")
    const decode = jwt_decode(token);
@@ -48,6 +49,7 @@ import axios from 'axios';
 
    useEffect(()=>{
      getProductData()
+     income()
    },[])
 
    const getProductData = () =>{
@@ -56,6 +58,13 @@ import axios from 'axios';
      .then(products=>{
        console.log(products.data.length);
        setProductCount(products.data.length)
+     })
+   }
+
+   const income = ()=>{
+     axios.get('/supplierRevenue/'+decode.id)
+     .then(rev=>{
+       setRevenue(rev.data)
      })
    }
 
@@ -78,7 +87,7 @@ import axios from 'axios';
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Total Revenue"
-                statsValue= "Text"
+                statsValue= {revenue}
                 statsIcon={<i className="fa fa-calendar-o" />}
                 statsIconText="Last day"
               />

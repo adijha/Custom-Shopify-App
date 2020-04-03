@@ -565,6 +565,66 @@ res.status(200).json(categoryRevenue);
 })
 
 
+//supplier revenue
+app.get('/supplierRevenue/:id', async (req, res)=>{
+  console.log("id is", req.params.id);
+    let itemArray =[];
+
+    const data = await Orders.find({});
+
+    data.forEach((item, i) => {
+        item.products.forEach((sss, i) => {
+          if (sss.sku!==undefined) {
+            itemArray.push({
+              sku:sss.sku,
+              count:1
+            })
+          }
+        });
+
+      });
+
+      var holder = {};
+
+      itemArray.forEach(function(d) {
+        if (holder.hasOwnProperty(d.sku)) {
+          holder[d.sku] = holder[d.sku] + d.count;
+        } else {
+          holder[d.sku] = d.count;
+        }
+      });
+
+      var obj2 = [];
+
+      for (var prop in holder) {
+        obj2.push({ sku: prop, count: holder[prop] });
+      }
+
+      let calPrice =[]
+      const productData = await Products.find({"supplier_id":req.params.id})
+
+      console.log(productData.length);
+
+      obj2.forEach((arr, i) => {
+        productData.forEach((product, j) => {
+          if (product.code==arr.sku) {
+
+            let countPrice=product.price*arr.count;
+
+            calPrice.push(
+              ~~countPrice
+            )
+          }
+        });
+
+      });
+      console.log({calPrice});
+      let income = calPrice.reduce((a, b)=>a+b)
+      console.log(income);
+      res.status(200).json(income)
+})
+
+
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
 
