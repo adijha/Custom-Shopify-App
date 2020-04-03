@@ -42,6 +42,7 @@ import axios from 'axios';
  const SupplierDashboard = ()=>{
    const [productCount, setProductCount]=useState("")
    const [revenue, setRevenue]= useState("")
+   const [order, setOrder] = useState("")
 
    const token = localStorage.getItem("token")
    const decode = jwt_decode(token);
@@ -50,6 +51,7 @@ import axios from 'axios';
    useEffect(()=>{
      getProductData()
      income()
+     totalOrders()
    },[])
 
    const getProductData = () =>{
@@ -65,6 +67,14 @@ import axios from 'axios';
      axios.get('/supplierRevenue/'+decode.id)
      .then(rev=>{
        setRevenue(rev.data)
+     })
+   }
+
+   const totalOrders = ()=>{
+     axios.get('/supplierOrders/'+decode.id)
+     .then(ord=>{
+       console.log("orders are", ord.data);
+       setOrder(ord.data)
      })
    }
 
@@ -97,7 +107,7 @@ import axios from 'axios';
               <StatsCard
                 bigIcon={<i className="fa fa-user text-info" />}
                 statsText="Total Orders"
-                statsValue="Text"
+                statsValue={order}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
