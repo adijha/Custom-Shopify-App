@@ -17,7 +17,7 @@
 */
 import React, { Component, useEffect, useState } from "react";
 import ChartistGraph from "react-chartist";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Table } from "react-bootstrap";
 
 import { Card } from "../components/Card/Card.jsx";
 import { StatsCard } from "../components/StatsCard/StatsCard.jsx";
@@ -44,6 +44,7 @@ import axios from 'axios';
    const [piePlot, setPiePlot] = useState({});
    const [mCount, setMCount] = useState("")
    const [categoryPie, setCategoryPie] = useState({})
+   const [sellingProducts, setSellingProducts] = useState([])
 
 
    useEffect(()=>{
@@ -53,6 +54,7 @@ import axios from 'axios';
      fetchingRevenuePie()
      merchantCount()
      fetchingCategoryRevenue()
+     topProducts()
    },[])
   // createLegend(json) {
   //   var legend = [];
@@ -144,6 +146,13 @@ var optionsGraphPlot = {
  }
 };
 
+const topProducts = ()=>{
+  axios.get('/topSelling')
+  .then(response=>{
+    setSellingProducts(response.data)
+  })
+}
+
     return (
       <div>
       <div className="content">
@@ -234,6 +243,39 @@ var optionsGraphPlot = {
               }
 
             />
+          </Col>
+          <Col md={8}>
+          <Card
+            title="Top Selling Products"
+            ctTableFullWidth
+            ctTableResponsive
+            content={
+              <Table striped hover size="sm">
+                <thead >
+                  <tr>
+                    <th>Sku</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Purchased in Nos</th>
+                    <th>Income</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sellingProducts.map((item, key) => {
+                    return (
+                      <tr key={key}>
+                        <td>{item.sku}</td>
+                        <td>{item.name}</td>
+                        <td>{item.price}</td>
+                        <td>{item.count}</td>
+                        <td>{item.revenue}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            }
+          />
           </Col>
         </Row>
           {/*
