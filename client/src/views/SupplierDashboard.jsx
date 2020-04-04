@@ -43,7 +43,9 @@ import axios from 'axios';
    const [productCount, setProductCount]=useState("")
    const [revenue, setRevenue]= useState("")
    const [order, setOrder] = useState("")
+   const [graphPlot, setGraphPlot] = useState({})
    const [topProducts, setTopProducts] = useState([])
+
    const token = localStorage.getItem("token")
    const decode = jwt_decode(token);
 
@@ -52,6 +54,7 @@ import axios from 'axios';
      getProductData()
      income()
      totalOrders()
+     graphData()
      top()
    },[])
 
@@ -76,6 +79,17 @@ import axios from 'axios';
      .then(ord=>{
        console.log("orders are", ord.data);
        setOrder(ord.data)
+     })
+   }
+
+   const graphData = () =>{
+     axios.get('/supplierGraphRevenue/'+decode.id)
+     .then(response=>{
+       let data = {
+         labels: response.data.date,
+         series: [response.data.revenue]
+       }
+       setGraphPlot(data)
      })
    }
 
@@ -123,7 +137,7 @@ import axios from 'axios';
           </Row>
 
           <Row>
-            <Col md={8}>
+            <Col md={7}>
               <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
@@ -133,7 +147,7 @@ import axios from 'axios';
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={dataSales}
+                      data={graphPlot}
                       type="Bar"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
@@ -143,10 +157,8 @@ import axios from 'axios';
 
               />
             </Col>
-            </Row>
 
-            <Row>
-            <Col md={8}>
+            <Col md={5}>
             <Card
               title="Top Selling Products"
               ctTableFullWidth
@@ -159,7 +171,6 @@ import axios from 'axios';
                       <th>Title</th>
                       <th>Price</th>
                       <th>Purchased in Nos</th>
-                      <th>Income</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -170,7 +181,6 @@ import axios from 'axios';
                           <td>{item.name}</td>
                           <td>{item.price}</td>
                           <td>{item.count}</td>
-                          <td>{item.revenue}</td>
                         </tr>
                       );
                     })}

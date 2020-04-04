@@ -831,41 +831,76 @@ app.get('/topProducts/:id', async (req, res)=>{
 
 //Graph for supplier Revenue
 
-// app.get('/supplierGraphRevenue/:id', async (req, res)=>{
-//
-//   console.log("id is", req.params.id);
-//     let itemArray =[];
-//
-//     const data = await Orders.find({});
-//
-//     data.forEach((item, i) => {
-//         item.products.forEach((sss, i) => {
-//           if (sss.sku!==undefined) {
-//             itemArray.push({
-//               sku:sss.sku,
-//               date: item.created_on.toDateString(),
-//               count:sss.quantity
-//             })
-//           }
-//         });
-//
-//       });
-//
-//     // console.log({itemArray});
-//       var holder = {};
-//       let obj2=[]
-//       itemArray.forEach(function(d) {
-//         if (d.date===d.date) {
-//           if (d.sku===d.sku) {
-//             d.count+=d.count
-//           }
-//
-//         }
-//         obj2.push({date: d.date, sku:d.sku, count:d.count})
-//
-//       });
-//       console.log({obj2});
-// })
+app.get('/supplierGraphRevenue/:id', async (req, res)=>{
+
+  console.log("id is", req.params.id);
+    let itemArray =[];
+
+    const data = await Orders.find({});
+
+    data.forEach((item, i) => {
+        item.products.forEach((sss, i) => {
+          if (sss.sku!==undefined) {
+            itemArray.push({
+              sku:sss.sku,
+              date: item.created_on.toDateString(),
+              price: 0
+            })
+          }
+        });
+
+      });
+
+  //console.log({itemArray});
+
+  const productData = await Products.find({"supplier_id":req.params.id})
+  let newArray = []
+
+  itemArray.forEach((dash, i) => {
+    productData.forEach((item, i) => {
+      if (item.code === dash.sku) {
+        newArray.push({
+          date: dash.date,
+          price: item.price
+        })
+      }
+    });
+
+  });
+
+
+  var holder = {};
+
+  newArray.forEach(function(d) {
+    if (holder.hasOwnProperty(d.date)) {
+      holder[d.date] = holder[d.date] + d.price;
+    } else {
+      holder[d.date] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ date: prop, price: holder[prop] });
+  }
+
+  let dateArray = []
+  let revenueArray = []
+
+  obj2.forEach((seperate, i) => {
+    dateArray.push(seperate.date)
+    revenueArray.push(seperate.price)
+
+  });
+  let finalGraphObj = {
+    date: dateArray,
+    revenue: revenueArray
+  }
+  //console.log({finalGraphObj});
+  res.status(200).json(finalGraphObj);
+
+})
 
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function(request, response) {
