@@ -145,9 +145,7 @@ colorArray.forEach((single, j) => {
         "vendor": VendorString,
         "product_type": t.category,
         "tags": tagArray,
-        "variants":colorVariant,
-        "Images":imageArray
-
+        "variants":colorVariant
       }
 
 }

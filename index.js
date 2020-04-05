@@ -634,7 +634,106 @@ app.get('/topSelling', async (req, res)=>{
 
 
 
+//Admin Analytics 2
+app.get('/orderTime',async (req, res)=>{
 
+  let timeData = []
+
+  const data = await Orders.find({});
+
+
+
+  data.forEach((item, i) => {
+    timeData.push({date:item.created_on.toDateString(),
+                  count: 1})
+  });
+
+
+
+  console.log({timeData});
+
+  var holder = {};
+
+  timeData.forEach(function(d) {
+    if (holder.hasOwnProperty(d.date)) {
+      holder[d.date] = holder[d.date] + d.count;
+    } else {
+      holder[d.date] = d.count;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ date: prop, count: holder[prop] });
+  }
+  //console.log({obj2});
+
+  let timeArray =[]
+  let countArray = []
+
+  obj2.forEach((item, i) => {
+    timeArray.push(item.date)
+    countArray.push(item.count)
+  });
+
+  let finalObj = {
+    date: timeArray,
+    orders: countArray
+  }
+  console.log(finalObj);
+  res.status(200).json(finalObj)
+})
+
+
+//State wise ordersData
+
+app.get('/stateOrderGraph', async (req, res)=>{
+
+  const stateData = []; //Date and price
+  let stateArray = []
+  const countArray = [];
+
+  const data = await Orders.find({})
+
+
+  data.forEach((item, i) => {
+    stateData.push({state:item.customer.city,
+                  count:1})
+  });
+
+  console.log({stateData});
+  var holder = {};
+
+  stateData.forEach(function(d) {
+    if (holder.hasOwnProperty(d.state)) {
+      holder[d.state] = holder[d.state] + d.count;
+    } else {
+      holder[d.state] = d.count;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ state: prop, count: holder[prop] });
+  }
+
+  console.log({obj2});
+
+  obj2.forEach((item, i) => {
+    stateArray.push(item.state)
+    countArray.push(item.count)
+  });
+  //
+  //
+  let finalObj = {
+    state:stateArray,
+    order:countArray
+  }
+   res.status(200).json(finalObj)
+  //  //console.log("Final Array is", pieData)
+})
 
 
 /*Supplier Analytics*/

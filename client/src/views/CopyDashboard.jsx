@@ -44,6 +44,8 @@ import axios from 'axios';
    const [piePlot, setPiePlot] = useState({});
    const [mCount, setMCount] = useState("")
    const [categoryPie, setCategoryPie] = useState({})
+   const [orderCount, setOrderCount] = useState({})
+   const [stateOrder, setStateOrder] = useState({})
    const [sellingProducts, setSellingProducts] = useState([])
 
 
@@ -54,6 +56,8 @@ import axios from 'axios';
      fetchingRevenuePie()
      merchantCount()
      fetchingCategoryRevenue()
+     getOrderCount()
+     stateCountOrder()
      topProducts()
    },[])
   // createLegend(json) {
@@ -141,10 +145,53 @@ var optionsGraphPlot = {
  low: 10,
  axisX: {
    labelInterpolationFnc: function(value, index) {
-     return index % 2 === 0 ? value : null;
+     return index % 1 === 0 ? value : null;
    }
  }
 };
+
+var orderCountGraphPlot = {
+ high: 40,
+ low: 0,
+ axisX: {
+   labelInterpolationFnc: function(value, index) {
+     return index % 1 === 0 ? value : null;
+   }
+ }
+};
+
+var stateOrderCountGraphPlot = {
+ high: 90,
+ low: 0,
+ axisX: {
+   labelInterpolationFnc: function(value, index) {
+     return index % 1 === 0 ? value : null;
+   }
+ }
+};
+
+const getOrderCount = () =>{
+  axios.get('/orderTime')
+  .then(response=>{
+    let data = {
+      labels: response.data.date,
+      series: [response.data.orders]
+    }
+    setOrderCount(data)
+  })
+}
+
+const stateCountOrder = ()=>{
+  axios.get('/stateOrderGraph')
+  .then(response=>{
+    let data = {
+      labels: response.data.state,
+      series: [response.data.order]
+    }
+    setStateOrder(data)
+
+  })
+}
 
 const topProducts = ()=>{
   axios.get('/topSelling')
@@ -245,6 +292,54 @@ const topProducts = ()=>{
             />
           </Col>
           <Col md={8}>
+            <Card
+              statsIcon="fa fa-history"
+              id="chartHours"
+              title="Orders"
+              category="Day Wise"
+              stats="Updated 3 minutes ago"
+              content={
+                <div className="ct-chart">
+                  <ChartistGraph
+                    data={orderCount}
+                    type="Line"
+                    options={orderCountGraphPlot}
+                    responsiveOptions={responsiveSales}
+                  />
+                </div>
+              }
+
+            />
+          </Col>
+          </Row>
+
+
+          <Row>
+          <Col md={8}>
+            <Card
+              statsIcon="fa fa-history"
+              id="chartHours"
+              title="Orders"
+              category="State Wise"
+              stats="Updated 3 minutes ago"
+              content={
+                <div className="ct-chart">
+                  <ChartistGraph
+                    data={stateOrder}
+                    type="Bar"
+                    options={stateOrderCountGraphPlot}
+                    responsiveOptions={responsiveSales}
+                  />
+                </div>
+              }
+
+            />
+          </Col>
+          </Row>
+
+
+          <Row>
+          <Col md={8}>
           <Card
             title="Top Selling Products"
             ctTableFullWidth
@@ -257,7 +352,6 @@ const topProducts = ()=>{
                     <th>Title</th>
                     <th>Price</th>
                     <th>Purchased in Nos</th>
-                    <th>Income</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -268,7 +362,6 @@ const topProducts = ()=>{
                         <td>{item.name}</td>
                         <td>{item.price}</td>
                         <td>{item.count}</td>
-                        <td>{item.revenue}</td>
                       </tr>
                     );
                   })}
