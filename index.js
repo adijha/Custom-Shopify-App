@@ -182,7 +182,7 @@ app.get('/shopifyProduct/:VendorString', (req, res)=>{
     'X-Shopify-Access-Token': tokenn,
     'Content-Type': 'application/json',
     'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
   request.get(shopRequestUrl)
