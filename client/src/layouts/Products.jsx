@@ -28,7 +28,11 @@ useEffect(()=>{
   getCategoryList();
 },[])
 
-
+const token = localStorage.getItem("token")
+let decode = jwt_decode(token)
+let str = decode.email;
+  let VendorString = str.substring(0, str.lastIndexOf("@"));
+  console.log(VendorString);
 
 const getProductList = () =>{
     axios
@@ -151,7 +155,7 @@ colorArray.forEach((single, j) => {
 }
   console.log("product added for shopify is", product);
      axios
-    .post('/addToShopify', product)
+    .post('/addToShopify/'+VendorString, product)
     .then(data=>{
 
       setMsg("Product Added in Shopify")
