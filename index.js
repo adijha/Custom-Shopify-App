@@ -15,7 +15,7 @@ const csv=require('csvtojson')
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes = 'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = "https://demo-mojito.herokuapp.com";
+const forwardingAddress = "https://36b74d06.ngrok.io";
 let hmacc, tokenn;
 let shop;
 let topic = 'orders/create'
@@ -125,7 +125,7 @@ app.get('/shopify/callback', (req, res) => {
 				    'X-Shopify-Access-Token': tokenn,
 
 				  };
-				  request.get('https://demo-mojito.herokuapp.com/webhook')
+				  request.get('https://36b74d06.ngrok.io/webhook')
 				  .then((shopResponse) => {
 				        res.send(shopResponse);
 				      })
@@ -185,7 +185,7 @@ app.get('/shopifyProduct/:VendorString', (req, res)=>{
     'X-Shopify-Shop-Domain': req.params.VendorString+'.myshopify.com',
     'X-Shopify-API-Version': '2020-01'
   };
-  request.get(shopRequestUrl)
+  request.get(shopRequestUrl, {headers: shopRequestHeaders})
   .then(data=>{
     //console.log(data, "product is")
     res.send(data);
@@ -313,7 +313,7 @@ app.get('/webhook', (req, res)=>{
 	const webhookPayload = {
 		webhook: {
 			topic: 'orders/create',
-			address: `https://demo-mojito.herokuapp.com/store/${shop}/orders/create`,
+			address: `https://36b74d06.ngrok.io/store/${shop}/orders/create`,
 			format: 'json'
 		}
 	};
