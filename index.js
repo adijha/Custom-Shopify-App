@@ -156,7 +156,7 @@ app.post('/addToShopify/:VendorString', (req, res)=>{
 	    'X-Shopify-API-Version': '2020-01'
 	  };
 
-
+    console.log(req.body)
 	  request.post(shopRequestUrl, { headers: shopRequestHeaders, json:req.body})
 	  .then((shopResponse) => {
      try {

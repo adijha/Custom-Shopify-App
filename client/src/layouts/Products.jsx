@@ -28,8 +28,6 @@ useEffect(()=>{
   getCategoryList();
 },[])
 
-const token = localStorage.getItem("token")
-let decode = jwt_decode(token)
 let str = decode.email;
   let VendorString = str.substring(0, str.lastIndexOf("@"));
   console.log(VendorString);
