@@ -13,7 +13,7 @@ const {userValidation} = require('../validation');
 const fileUpload = require('express-fileupload');
 const csv=require('csvtojson');
 const request = require('request-promise');
-
+const Orders = require('../model/Orders');
 
 const upload = multer({
 	storage: multer.memoryStorage()
@@ -538,6 +538,64 @@ console.log("analytic product data", data)
 		}
 	})
 
+
+//Supplier Order List from merchant
+
+router.get('/ordersList/:id', async (req, res)=>{
+
+  console.log("id is", req.params.id);
+    let itemArray =[];
+
+    const data = await Orders.find({});
+    data.forEach((item, i) => {
+        item.products.forEach((sss, i) => {
+          if (sss.sku!==undefined) {
+            itemArray.push({
+							id:item.product_name,
+              sku:sss.sku,
+              quantity:sss.quantity,
+							customer: item.customer
+            })
+          }
+        });
+
+      });
+
+		//	console.log(JSON.stringify({itemArray}));
+
+
+			//
+      let makeList =[]
+
+      const productData = await Products.find({"supplier_id":req.params.id})
+
+      console.log(productData.length);
+
+      itemArray.forEach((arr, i) => {
+        productData.forEach((product, j) => {
+          if (product.code==arr.sku) {
+
+						let dataObj = {
+							id: arr.id,
+							customer: arr.customer,
+							sku: arr.sku,
+							name: product.name,
+							quantity: arr.quantity
+						}
+
+            makeList.push(
+							dataObj
+            )
+          }
+        });
+
+      });
+      console.log({makeList});
+			res.status(200).json(makeList)
+    // let totalOrders =   calOrder.reduce((a,b)=>a+b, 0)
+    // console.log(totalOrders);
+    //   res.status(200).json(totalOrders)
+})
 
 
 module.exports = router;

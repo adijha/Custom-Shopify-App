@@ -23,6 +23,7 @@ import ShopifyProduct from "./views/ShopifyProduct.jsx"
 import ProductLayout from "./layouts/Products.jsx";
 import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
+import SupplierOrders from "./views/SupplierOrders.jsx"
 
 
 
@@ -53,6 +54,13 @@ const dashboardRoutes = [
     name: "Csv Added Product",
     icon: "pe-7s-bell",
     component: CsvProduct,
+    layout: "/supplier"
+  },
+  {
+    path: "/SupplierOrders",
+    name: "Orders",
+    icon: "pe-7s-bell",
+    component: SupplierOrders,
     layout: "/supplier"
   }
 
