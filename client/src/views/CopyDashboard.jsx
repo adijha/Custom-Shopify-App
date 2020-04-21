@@ -47,6 +47,7 @@ import axios from 'axios';
    const [orderCount, setOrderCount] = useState({})
    const [stateOrder, setStateOrder] = useState({})
    const [sellingProducts, setSellingProducts] = useState([])
+   const [categoryList, setCategoryList] = useState([])
 
 
    useEffect(()=>{
@@ -59,6 +60,7 @@ import axios from 'axios';
      getOrderCount()
      stateCountOrder()
      topProducts()
+     getCategory()
    },[])
   // createLegend(json) {
   //   var legend = [];
@@ -70,6 +72,15 @@ import axios from 'axios';
   //   }
   //   return legend;
   // }
+
+  const getCategory = ()=>{
+    axios
+    .get('/api/totalCategory')
+    .then(data=>{
+      console.log("category list is", data.data)
+      setCategoryList(data.data)
+    })
+  }
 
  const fetchData = ()=>{
   axios.get('/ordersData').

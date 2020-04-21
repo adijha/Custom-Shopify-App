@@ -52,34 +52,35 @@ const getchPage = ()=>{
 </nav>
 
         <br/>
-       <section id="home" style={{marginTop:"-10rem"}}>
-       <div className="row">
-         <div className="col-md-5" style={{marginLeft: "30px"}}>
-           <h4>Dummy Text</h4>
-           <h4 className="subheading">GetLance makes it easy to connect with clients and begin doing great work.</h4>
-           <p className="text-muted">Streamlined hiring. GetLance’s sophisticated algorithms highlight projects you’re a great fit for.
-             Top Rated and Rising Talent programs. Enjoy higher visibility with the added status of prestigious programs.
-             Do substantial work with top clients. GetLance pricing encourages freelancers to use GetLance for repeat relationships with their clients.</p>
-             <button className="btn btn-primary" style={{width:"50%"}}> <a href="/merchantSignup"> Sign Up</a></button>
-         </div>
+        <section className="about-us py-5 " id="about-us" style={{padding:"0"}}>
+         <div className="container mt-5">
+           <div className="row">
+             <div className="col-md-7">
+               <h1 className="text-success">Welcome to MelisXpress!</h1>
+               <hr />
+               <h4>Discover large variety of viral products for your store in seconds.</h4>
+               <br/>
+               <p>Start your 7 days free trial<br/>(100% Secure)</p>
 
-         <div className="col-md-6 how-img">
-           <img src="https://image.ibb.co/cHgKnU/Work_Section2_freelance_img2.png" className="rounded-circle img-fluid" alt="" />
+               <button type="button" className="btn btn-success" style={{minWidth:"20%"}}>Sign Up</button>
+             </div>
+             <div className="col-md-5">
+               <img src="http://themebubble.com/demo/marketingpro/wp-content/uploads/2016/10/seo-slide.png " alt="" />
+             </div>
+           </div>
          </div>
-       </div>
        </section>
 
 
-       <section id="services" style={{position:"relative", backgroundColor:"#D3D3D3"}}>
+       <section id="services" style={{position:"relative"}}>
        <div className="container-fluid">
          <h2 className="section-title mb-2 h1">Why choose us ?</h2>
-         <p className="text-center text-muted h5">Having and managing a correct marketing strategy is crucial in a fast moving market.</p>
          <div className="row mt-5">
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-1">
-                 <h3 className="card-title">Special title</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <h3 className="card-title">Automation</h3>
+                 <p className="card-text">Save time with our OneClick fulfillment feature.</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
              </div>
@@ -87,7 +88,7 @@ const getchPage = ()=>{
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-2">
-                 <h3 className="card-title">Special title</h3>
+                 <h3 className="card-title">Branded Package</h3>
                  <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
@@ -96,8 +97,8 @@ const getchPage = ()=>{
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-3">
-                 <h3 className="card-title">Special title</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <h3 className="card-title">Thank Your Letter</h3>
+                 <p className="card-text">MelisXpress allows branded thank you letters for your store.</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
              </div>
@@ -107,8 +108,8 @@ const getchPage = ()=>{
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-4">
-                 <h3 className="card-title">Special title</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <h3 className="card-title">Branded Invoice</h3>
+                 <p className="card-text">MelisXpress provides branded Invoice for customer’s trust.</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
              </div>
@@ -116,8 +117,8 @@ const getchPage = ()=>{
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-5">
-                 <h3 className="card-title">Special title</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <h3 className="card-title">Private Label</h3>
+                 <p className="card-text">MelisXpress gives option for high volume stores.</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
              </div>
@@ -125,8 +126,8 @@ const getchPage = ()=>{
            <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
              <div className="card">
                <div className="card-block block-6">
-                 <h3 className="card-title">Special title</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                 <h3 className="card-title">Faster Shipping</h3>
+                 <p className="card-text"> MelisXpress ships your products at highest priority .</p>
                  <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
                </div>
              </div>

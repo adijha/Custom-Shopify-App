@@ -522,7 +522,13 @@ let finalArray=[]
 
   console.log({obj2});
 
-const productData =  await Products.find({})
+
+
+const productData =  await Products.find({"category": req.body.category})
+
+
+
+
 productData.forEach((sk, i) => {
   obj2.forEach((cat, i) => {
     if (sk.code===cat.sku) {
