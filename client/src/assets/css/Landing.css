@@ -237,6 +237,135 @@ section .section-title{
 	transition: .5s all ease;
 }
 
+/*================ features area two css ==============*/
+.features_tab_inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.features_tab_inner .features_tab_left {
+  width: 50%;
+  float: left;
+}
+
+.features_tab_inner .features_tab_left .features_tab {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: 70px;
+  padding-top: 20px;
+  border: 0px;
+  position: relative;
+  width: auto;
+  left: 0;
+  bottom: 0;
+  text-align: left;
+  display: block;
+}
+
+.features_tab_inner .features_tab_left .features_tab li {
+  margin: 0px 0px 10px;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: 25px 50px 25px 80px;
+  height: 100%;
+  text-indent: inherit;
+  border-radius: 5px;
+  -webkit-transition: all 0.2s linear;
+  -o-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+  border: 1px solid #eee;
+  position: relative;
+}
+
+.features_tab_inner .features_tab_left .features_tab li .tab_icon {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+}
+
+.features_tab_inner .features_tab_left .features_tab li .heading {
+  font-size: 18px;
+  line-height: 28px;
+  color: #555555;
+  font-weight: 600;
+  display: block;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.features_tab_inner .features_tab_left .features_tab li .summary {
+  font-size: 15px;
+  line-height: 25px;
+  color: #555555;
+}
+
+.features_tab_inner .features_tab_left .features_tab li.active, .features_tab_inner .features_tab_left .features_tab li:hover, .features_tab_inner .features_tab_left .features_tab li:focus {
+  background-color: white;
+  -webkit-box-shadow: 0px 8px 26px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 8px 26px 2px rgba(0, 0, 0, 0.05);
+}
+
+.features_tab_inner .features_tab_right {
+  width: 50%;
+  float: left;
+}
+
+.features_tab_inner .features_tab_right .carousel-inner {
+  padding-right: 10px;
+  text-align: center;
+  -webkit-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  -o-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  position: relative;
+  padding-left: 10px;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.features_tab_inner .features_tab_right .carousel-inner .carousel-item {
+  opacity: 0;
+  left: 30px;
+  -webkit-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  -o-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  padding-bottom: 23px;
+  padding-top: 10px;
+}
+
+.features_tab_inner .features_tab_right .carousel-inner img {
+  -webkit-box-shadow: 0px 0px 23px -4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 23px -4px rgba(0, 0, 0, 0.25);
+  position: relative;
+  -webkit-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  -o-transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  transition: all 0.625s cubic-bezier(0, 0, 0.2, 1);
+  max-width: 100%;
+}
+
+.features_tab_inner .features_tab_right .carousel-inner .active {
+  opacity: 1;
+  visibility: visible;
+  display: block;
+  left: 0;
+  -webkit-transition: all 0.6s linear;
+  -o-transition: all 0.6s linear;
+  transition: all 0.6s linear;
+}
+
+.features_tab_inner .features_tab_right .carousel-inner .active img {
+  left: 0;
+  opacity: 1;
+}
+
+
+
 .main-timeline2{padding-top:50px;overflow:hidden;position:relative}
 .main-timeline2:before{content:"";width:7px;height:100%;background:#084772;margin:0 auto;position:absolute;top:80px;left:0;right:0}
 .main-timeline2 .timeline{width:50%;float:left;padding:20px 60px;border-top:7px solid #084772;border-right:7px solid #084772;border-radius:0 30px 0 0;position:relative;right:-3.5px}

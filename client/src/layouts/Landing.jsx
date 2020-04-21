@@ -139,50 +139,58 @@ const getchPage = ()=>{
     <section>
 
     <div className="container">
-           <h4 className="text-center" style={{fontSize: "60px"}}>How it works</h4>
-           <div className="row">
-             <div className="col-md-12">
-               <div className="main-timeline2">
-                 <div className="timeline">
-                   <span className="icon fa fa-globe" />
-                   <a href="#" className="timeline-content">
-                     <h3 className="title">Web Designer</h3>
-                     <p className="description">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
-                     </p>
-                   </a>
-                 </div>
-                 <div className="timeline">
-                   <span className="icon fa fa-rocket" />
-                   <a href="#" className="timeline-content">
-                     <h3 className="title">Web Developer</h3>
-                     <p className="description">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
-                     </p>
-                   </a>
-                 </div>
-                 <div className="timeline">
-                   <span className="icon fa fa-briefcase" />
-                   <a href="#" className="timeline-content">
-                     <h3 className="title">Web Designer</h3>
-                     <p className="description">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
-                     </p>
-                   </a>
-                 </div>
-                 <div className="timeline">
-                   <span className="icon fa fa-mobile" />
-                   <a href="#" className="timeline-content">
-                     <h3 className="title">Web Developer</h3>
-                     <p className="description">
-                       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer malesuada tellus lorem, et condimentum neque commodo quis.
-                     </p>
-                   </a>
-                 </div>
-               </div>
-             </div>
-           </div>
+      <img src={require('../assets/img/hiw.png')}/>
          </div>
+<br/>
+         <div id="carouselExampleIndicators" className="carousel slide features_tab_inner" data-ride="carousel">
+       <div className="features_tab_left">
+         <ol className="carousel-indicators nav nav-tabs features_tab">
+           <li data-target="#carouselExampleIndicators" data-slide-to={0} className="active">
+             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon.png" alt="" />
+             <span className="heading">Work with top level suppliers</span>
+             <span className="summary">MelisXpress has found the top level suppliers in the Industry <br/>for you to have the best quality of products for your customer satisfaction & scale your brand without any trouble.
+                <small>
+                <br/>- 100% Best Quality Guaranteed.
+                <br/>- 100% Reliable Suppliers.
+                <br/>- Gives You Priority.
+                <br/>- Highly Experienced.</small>
+              </span>
+
+           </li>
+           <li data-target="#carouselExampleIndicators" data-slide-to={1} className>
+             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon3.png" alt="" />
+             <span className="heading">Easy To Scale</span>
+             <span className="summary">MelisXpress is not only fulfill orders but provides you winning products everyday which saves your time & makes it easy to scale.
+             <br/>
+             - <strong>Winning Products: </strong> Our product research team adds winning products everyday for you.
+            <br/> - <strong> Request product: </strong> If you have any winning product we will source out for you with just 1 click with quality control.
+             </span>
+           </li>
+
+           <li data-target="#carouselExampleIndicators" data-slide-to={2} className>
+             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon8.png" alt="" />
+             <span className="heading">Our customers are our biggest fans</span>
+             <span className="summary">We always ensure that our clients are satisfied in everything, we take the
+           responsibility for the best quality of products & services.</span>
+           </li>
+
+         </ol>
+       </div>
+       <div className="features_tab_right">
+         <div className="carousel-inner" style={{width:"-moz-max-content"}}>
+           <div className="carousel-item active">
+             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
+           </div>
+           <div className="carousel-item">
+             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
+           </div>
+           <div className="carousel-item">
+             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
+           </div>
+
+         </div>
+       </div>
+     </div>
 
     </section>
 
@@ -319,16 +327,9 @@ const getchPage = ()=>{
          </div>
        </div>
        <div className="container">
-         <ul className="foote_bottom_ul_amrc">
-           <li><a href="http://webenlance.com">Home</a></li>
-           <li><a href="http://webenlance.com">About</a></li>
-           <li><a href="http://webenlance.com">Services</a></li>
-           <li><a href="http://webenlance.com">Pricing</a></li>
-           <li><a href="http://webenlance.com">Blog</a></li>
-           <li><a href="http://webenlance.com">Contact</a></li>
-         </ul>
+        <br/>
          {/*foote_bottom_ul_amrc ends here*/}
-         <p className="text-center">Copyright @2020 | Designed With by Developer <a href="#">Your Company Name</a></p>
+         <p className="text-center">Copyright @2020 | Designed With by Developer <a href="#">MelisXpress</a></p>
          <ul className="social_footer_ul">
            <li><a href="http://webenlance.com"><i className="fab fa-facebook-f" /></a></li>
            <li><a href="http://webenlance.com"><i className="fab fa-twitter" /></a></li>
