@@ -62,7 +62,7 @@ const getchPage = ()=>{
                <br/>
                <p>Start your 7 days free trial<br/>(100% Secure)</p>
 
-               <button type="button" className="btn btn-success" style={{minWidth:"20%"}}>Sign Up</button>
+               <button type="button" className="btn btn-success" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
              </div>
              <div className="col-md-5">
                <img src="http://themebubble.com/demo/marketingpro/wp-content/uploads/2016/10/seo-slide.png " alt="" />
