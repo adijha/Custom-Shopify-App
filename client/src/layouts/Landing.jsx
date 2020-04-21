@@ -24,7 +24,7 @@ const getchPage = ()=>{
     <div  style={{overflowX: "hidden"}}>
     <nav className="navbar navbar-light bg-light" >
 <a className="navbar-brand" href="#" style={{padding:"2rem"}}>
-  <img src={require('../assets/img/NewLogo.png')} /> </a>
+  <img src={require('../assets/img/latestLogo.png')} style={{width:"100%", margin: "-17rem -5rem"}}/> </a>
 
   <div class="newClass collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav" style={{}}>
