@@ -229,7 +229,7 @@ const topProducts = ()=>{
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Revenue"
-                statsValue= {revenue}
+                statsValue= {'$'+revenue}
                 statsIcon={<i className="fa fa-calendar-o" />}
                 statsIconText="Last day"
               />

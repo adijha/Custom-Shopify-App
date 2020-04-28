@@ -7,7 +7,6 @@ import "../assets/css/addProduct.css"
 
 
 const AddProduct = () => {
-
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -125,7 +124,7 @@ const AddProduct = () => {
           <div className="form-group">
             <label for="product_description">Detail Description</label>
 
-            <ReactQuill value={description}
+            <ReactQuill theme="snow" value={description}
               onChange={(value) => setDescription(value.toString())} />
           </div>
           <div className="form-group">
