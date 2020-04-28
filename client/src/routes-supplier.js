@@ -24,6 +24,7 @@ import ProductLayout from "./layouts/Products.jsx";
 import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
 import SupplierOrders from "./views/SupplierOrders.jsx"
+import Settings from "./views/Settings.jsx"
 
 
 
@@ -61,6 +62,13 @@ const dashboardRoutes = [
     name: "Orders",
     icon: "pe-7s-bell",
     component: SupplierOrders,
+    layout: "/supplier"
+  },
+  {
+    path: "/Settings",
+    name: "Settings",
+    icon: "pe-7s-bell",
+    component: Settings,
     layout: "/supplier"
   }
 
