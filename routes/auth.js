@@ -197,7 +197,6 @@ router.patch('/update', async (req, res)=>{
 	const salt = await bcrypt.genSalt(10);
 	const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-
 	const updateUser = {
 		supplier_id: req.body.supplier_id,
 		email: req.body.email,
@@ -240,10 +239,6 @@ router.post('/login', async (req, res)=>{
 	res.send(token);
 
 })
-
-
-
-
 
 
 

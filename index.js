@@ -111,7 +111,6 @@ app.get('/shopify/callback', (req, res) => {
       code,
     };
 
-
         request.post(accessTokenRequestUrl, { json: accessTokenPayload })
         .then((accessTokenResponse) => {
 
@@ -525,7 +524,6 @@ let finalArray=[]
 
 
 const productData =  await Products.find({"category": req.body.category})
-
 
 
 
@@ -1006,9 +1004,6 @@ app.get('/supplierGraphRevenue/:id', async (req, res)=>{
   res.status(200).json(finalGraphObj);
 
 })
-
-
-
 
 
 
