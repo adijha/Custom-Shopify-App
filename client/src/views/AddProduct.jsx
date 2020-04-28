@@ -105,24 +105,12 @@ const AddProduct = () => {
         setCategoryList(data.data)
       })
   }
-
   return (
-
     <div className="container-fluid">
       <br />
       <form onSubmit={addProduct}>
         <div className="card card-input" >
-          <div className="form-group">
-            <label for="product_id">ID/SKU</label>
-            <input type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="form-control"
-              id="product_id"
-              placeholder="Enter Unique Id of Product"
-              required
-            />
-          </div>
+          
           <div className="form-group">
             <label for="product_name">Title</label>
             <input type="text"
@@ -135,20 +123,21 @@ const AddProduct = () => {
             />
           </div>
           <div className="form-group">
-            <label for="product_category">Category</label>
-            <select className="form-control" id="product_category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Enter category of Product"
-            >
-              {categoryList.map((item, i) => {
-                return (
-                  <option key={i}>{item.category}</option>
-                )
-              })}
-            </select>
+            <label for="product_description">Detail Description</label>
 
+            <ReactQuill value={description}
+              onChange={(value) => setDescription(value.toString())} />
           </div>
+          <div className="form-group">
+            <label for="productImage">Image upload</label>
+            <input type="file"
+              name="productImage"
+              className="form-control"
+              onChange={(e) => setProductImage(e.target.files)}
+              multiple accept="image/*"
+            />
+          </div>
+         
         </div>
         <div className="card card-input" >
           <div className="form-group">
@@ -234,20 +223,30 @@ const AddProduct = () => {
 
         <div className="card card-input" >
           <div className="form-group">
-            <label for="product_description">Detail Description</label>
-
-            <ReactQuill value={description}
-              onChange={(value) => setDescription(value.toString())} />
+            <label for="product_category">Category</label>
+            <select className="form-control" id="product_category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="Enter category of Product">
+              {categoryList.map((item, i) => {
+                return (
+                  <option key={i}>{item.category}</option>
+                )
+              })}
+            </select>
           </div>
           <div className="form-group">
-            <label for="productImage">Image upload</label>
-            <input type="file"
-              name="productImage"
+            <label for="product_id">ID/SKU</label>
+            <input type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
               className="form-control"
-              onChange={(e) => setProductImage(e.target.files)}
-              multiple accept="image/*"
+              id="product_id"
+              placeholder="Enter Unique Id of Product"
+              required
             />
           </div>
+        
         </div>
         <div className="card-button">
           <button

@@ -32,22 +32,13 @@ const getOrderList = ()=>{
         <Row>
           <Col md={12}>
             <Card
-              title="Order List"
-              category={"Total Orders :"+ orderList.length}
+              title="Accounts Settings"
+              // category={"Total Orders :"+ orderList.length}
               ctTableFullWidth
               ctTableResponsive
               content={
                 <Table striped hover size="sm">
-                  <thead >
-                    <tr>
-                      <th>Id</th>
-                      <th>SKU</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>DElivery Add.</th>
-                      <th>Track No.</th>
-                    </tr>
-                  </thead>
+                 
                   <tbody>
                     {orderList.map((item, key) => {
                       return (
