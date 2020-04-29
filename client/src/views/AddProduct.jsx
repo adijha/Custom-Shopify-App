@@ -30,7 +30,35 @@ const AddProduct = () => {
   useEffect(() => {
     getCategoryList();
   }, [])
+  let Editor={}
+  Editor.modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }, { 'font': [] }],
+      ['bold'],
+      ['italic'],
+      ['underline'],
+      ['strike'],
+      ['blockquote'],
 
+      // ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+
+      [{ 'list': 'ordered' }],
+      [{ 'list': 'bullet' }],
+      [{ 'indent': '+1' }],
+      [{ 'indent': '-1' }],
+      ['link'],
+      ['video'],
+      ['image'],
+     
+    ]
+  }
+  
+  Editor.formats = [
+    'header', 'font', 'size',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'video'
+  ]
 
   //Add Product
   const addProduct = e => {
@@ -124,8 +152,24 @@ const AddProduct = () => {
           <div className="form-group">
             <label for="product_description">Detail Description</label>
 
-            <ReactQuill theme="snow" value={description}
-              onChange={(value) => setDescription(value.toString())} />
+            {/* <ReactQuill
+              theme="snow"
+              value={description}
+              onChange={(value) => setDescription(value.toString())} /> */}
+            
+
+            <ReactQuill
+              theme={'snow'}
+              onChange={(value) => {
+                setDescription(value)
+              console.log({value})
+              
+              }}
+              value={description}
+              modules={Editor.modules}
+              formats={Editor.formats}
+              placeholder={'Write something'}
+            />
           </div>
           <div className="form-group">
             <label for="productImage">Image upload</label>
