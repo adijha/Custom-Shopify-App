@@ -22,7 +22,8 @@ const AddProduct = () => {
   const [size, setSize] = useState("")
   const [color, setColors] = useState("")
   const [tag, setTag] = useState("")
-
+  const [varien, setVarien] = useState(false)
+const [option1, setOption1] = useState('')
   const token = localStorage.getItem("token")
   const decode = jwt_decode(token)
 
@@ -128,6 +129,51 @@ const AddProduct = () => {
         setCategoryList(data.data)
       })
   }
+
+  //tags
+  const TagsInput = props => {
+    const [tags, setTags] = useState(props.tags);
+    const removeTags = indexToRemove => {
+      setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+    };
+    const addTags = event => {
+      if (event.target.value !== "") {
+        let value = event.target.value.replace(/,/g, '')
+        setTags([...tags, value]);
+        props.selectedTags([...tags, value]);
+        event.target.value = "";
+      }
+    };
+    return (
+      <div className="tags-input">
+        <ul id="tags">
+          {tags.map((tag, index) => (
+            <li key={index} className="tag">
+              <span className='tag-title'>{tag}</span>
+              <span className='tag-close-icon'
+                onClick={() => removeTags(index)}
+              >
+                x
+						</span>
+            </li>
+          ))}
+        </ul>
+        <input
+          type="text"
+          onKeyUp={event =>
+
+            event.key === "," ? addTags(event) : null}
+          placeholder="Press ',' to add tags"
+        />
+      </div>
+    );
+  };
+
+  const selectedTags = tags => {
+    console.log(tags);
+  };
+
+
   return (
     <div className="container-fluid">
       <br />
@@ -173,7 +219,7 @@ const AddProduct = () => {
           <div className="form-group">
             <p style={{
               marginBottom: 4,
-              fontSize:15 
+              fontSize: 15
             }}>PRICE</p>
             <div class="form-control " style={{
               border: '1px solid #ddd',
@@ -186,7 +232,7 @@ const AddProduct = () => {
                 min="0" value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 id="product_price"
-                style={{ border: 'none',width:'40vw' }}
+                style={{ border: 'none', width: '48vw' }}
                 placeholder="Enter Price"
                 required />
             </div>
@@ -229,38 +275,61 @@ const AddProduct = () => {
           </div>
         </div>
 
-        <div className="card card-input" >
-          <h3 className="text-center">Variants</h3>
-          <div className="form-group">
-            <label for="product_size">Size</label>
-            <input type="text"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className="form-control"
-              id="product_size"
-              placeholder="Enter Differnet sizes seperated by ',' commas"
-            />
+        <div className="card card-input py-0 ll" >
+          <h4 className="text-left" style={{ margin: 0, marginBottom: 15 }}>Variants</h4>
+
+          <label class="containerr">This product has multiple options, like different sizes or colors
+            <input type="checkbox" onChange={() => {
+              varien ? setVarien(false) : setVarien(true)
+            }} value={varien} />
+            <span class="checkmarkk" ></span>
+          </label>
+          <h5>Option 1</h5>
+          <div >
+            <div>              
+            <select style={{width:150,height:40,border:'1px solid grey',borderRadius:5,marginBottom:13}} value={option1} onChange={(value)=>setOption1(value)}>
+            <option value="grapefruit">Color</option>
+            <option value="lime">Lime</option>
+            <option value="coconut">Coconut</option>
+            <option value="mango">Mango</option>
+            </select></div>
+
+            <TagsInput selectedTags={selectedTags} tags={['red','green','blue','gray']} />
           </div>
-          <div className="form-group">
-            <label for="product_colors">Colors</label>
-            <input type="text"
-              value={color}
-              onChange={(e) => setColors(e.target.value)}
-              className="form-control"
-              id="product_colors"
-              placeholder="Enter Differnet colors seperated by ',' commas"
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_colors">Tags</label>
-            <input type="text"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-              className="form-control"
-              id="product_colors"
-              placeholder="Enter Differnet Tags seperated by ',' commas"
-            />
-          </div>
+
+
+          {varien ? <>
+            <div className="form-group" style={{ marginTop: 20 }}>
+              <label for="product_size">Size</label>
+              <input type="text"
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                className="form-control"
+                id="product_size"
+                placeholder="Enter Differnet sizes seperated by ',' commas"
+              />
+            </div>
+            <div className="form-group">
+              <label for="product_colors">Colors</label>
+              <input type="text"
+                value={color}
+                onChange={(e) => setColors(e.target.value)}
+                className="form-control"
+                id="product_colors"
+                placeholder="Enter Differnet colors seperated by ',' commas"
+              />
+            </div>
+            <div className="form-group">
+              <label for="product_colors">Tags</label>
+              <input type="text"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                className="form-control"
+                id="product_colors"
+                placeholder="Enter Differnet Tags seperated by ',' commas"
+              />
+            </div>
+          </> : null}
         </div>
 
         <div className="card card-input" >
