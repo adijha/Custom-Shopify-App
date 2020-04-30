@@ -7,9 +7,7 @@
 .card-button{
   width: 31%;
   margin: auto;
-
 }
-
 .card .form-group label{
   color: #2F4F4F;
   font-size: 14px;
@@ -23,3 +21,11 @@
   font-size: medium;
   font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
 }
+.ql-editor {
+  min-height: 15em;
+}
+
+/* .icon-wrapp {
+border-right: #2F4F4F 1px solid;
+padding-right: 10px;
+} */

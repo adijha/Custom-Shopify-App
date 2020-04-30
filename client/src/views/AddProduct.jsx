@@ -30,18 +30,15 @@ const AddProduct = () => {
   useEffect(() => {
     getCategoryList();
   }, [])
-  let Editor={}
+  let Editor = {}
   Editor.modules = {
     toolbar: [
-      [{ 'header': [1, 2, false] }, { 'font': [] }],
+      [{ 'header': [1, 2, false] }],
       ['bold'],
       ['italic'],
       ['underline'],
       ['strike'],
       ['blockquote'],
-
-      // ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-
       [{ 'list': 'ordered' }],
       [{ 'list': 'bullet' }],
       [{ 'indent': '+1' }],
@@ -49,12 +46,11 @@ const AddProduct = () => {
       ['link'],
       ['video'],
       ['image'],
-     
     ]
   }
-  
+
   Editor.formats = [
-    'header', 'font', 'size',
+    'header', 'size',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
     'list', 'bullet', 'indent',
     'link', 'image', 'video'
@@ -137,7 +133,7 @@ const AddProduct = () => {
       <br />
       <form onSubmit={addProduct}>
         <div className="card card-input" >
-          
+
           <div className="form-group">
             <label for="product_name">Title</label>
             <input type="text"
@@ -151,20 +147,10 @@ const AddProduct = () => {
           </div>
           <div className="form-group">
             <label for="product_description">Detail Description</label>
-
-            {/* <ReactQuill
-              theme="snow"
-              value={description}
-              onChange={(value) => setDescription(value.toString())} /> */}
-            
-
             <ReactQuill
               theme={'snow'}
-              onChange={(value) => {
-                setDescription(value)
-              console.log({value})
-              
-              }}
+              onChange={(value) => setDescription(value)}
+              style={{ minHeight: '18em' }}
               value={description}
               modules={Editor.modules}
               formats={Editor.formats}
@@ -180,22 +166,35 @@ const AddProduct = () => {
               multiple accept="image/*"
             />
           </div>
-         
+
         </div>
         <div className="card card-input" >
+
           <div className="form-group">
-            <label for="product_price">Price</label>
-            <input type="number"
-              min="0" value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="form-control"
-              id="product_price"
-              placeholder="Enter Price of Product"
-              required
-            />
+            <p style={{
+              marginBottom: 4,
+              fontSize:15 
+            }}>PRICE</p>
+            <div class="form-control " style={{
+              border: '1px solid #ddd',
+              display: 'flex',
+              flexDirection: 'row'
+            }}>
+              <span class="icon-wrapp" ><i class="input-icon fa fa-usd"></i></span>
+              <input class="input-with-icon" id="form-name"
+                type="number"
+                min="0" value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id="product_price"
+                style={{ border: 'none',width:'40vw' }}
+                placeholder="Enter Price"
+                required />
+            </div>
           </div>
+
           <div className="form-group">
             <label for="product_quantity">Quantity</label>
+
             <input type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -289,7 +288,7 @@ const AddProduct = () => {
               required
             />
           </div>
-        
+
         </div>
         <div className="card-button">
           <button
