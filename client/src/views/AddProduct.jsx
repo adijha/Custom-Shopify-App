@@ -333,20 +333,17 @@ const AddProduct = () => {
               <TagsInput selectedTags={selectedTags} tags={[]} />
             </div>
           </> : null}
+          {!moreOption1 ?
+            <div onClick={() => {
+              if (moreOption) {
+                setMoreOption1(true)
+              } else {
+                setMoreOption(true)
+              }
+            }}
+              style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
 
-          <div onClick={() => {
-            if (moreOption) {
-              setMoreOption1(true)
-
-            } else {
-
-              setMoreOption(true)
-            }
-
-          }}
-            style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
-
-          >More Option</div>
+            >More Option</div> : null}
           {varien ? <>
             <div className="form-group" style={{ marginTop: 20 }}>
               <label for="product_size">Size</label>
