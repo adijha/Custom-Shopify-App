@@ -287,6 +287,8 @@ const AddProduct = () => {
             }} value={varien} />
             <span class="checkmarkk" ></span>
           </label>
+          
+          {varien ? <>
           <h5>Option 1</h5>
           <div >
             <div>
@@ -344,8 +346,8 @@ const AddProduct = () => {
               style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
 
             >More Option</div> : null}
-          {varien ? <>
-            <div className="form-group" style={{ marginTop: 20 }}>
+          
+            {/* <div className="form-group" style={{ marginTop: 20 }}>
               <label for="product_size">Size</label>
               <input type="text"
                 value={size}
@@ -374,8 +376,11 @@ const AddProduct = () => {
                 id="product_colors"
                 placeholder="Enter Differnet Tags seperated by ',' commas"
               />
-            </div>
+            </div> */}
           </> : null}
+
+
+
         </div>
 
         <div className="card card-input" >
