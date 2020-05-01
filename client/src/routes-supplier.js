@@ -39,21 +39,21 @@ const dashboardRoutes = [
   {
     path: "/products",
     name: "Products",
-    icon: "pe-7s-bell",
+    icon: "pe-7s-shopbag",
     component: ProductList,
     layout: "/supplier"
   },
   {
     path: "/addProduct",
     name: "Add Product",
-    icon: "pe-7s-bell",
+    icon: "pe-7s-upload",
     component: AddOnProduct,
     layout: "/supplier"
   },
   {
     path: "/CSvProduct",
     name: "Csv Added Product",
-    icon: "pe-7s-bell",
+    icon: "pe-7s-ticket",
     component: CsvProduct,
     layout: "/supplier"
   },
@@ -67,7 +67,7 @@ const dashboardRoutes = [
   {
     path: "/Settings",
     name: "Settings",
-    icon: "pe-7s-bell",
+    icon: "pe-7s-config",
     component: Settings,
     layout: "/supplier"
   }
