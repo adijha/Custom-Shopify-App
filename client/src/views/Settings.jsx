@@ -9,10 +9,15 @@ import Card from "../components/Card/Card.jsx";
 
 
 const SupplierOrders = () => {
-  const token = localStorage.getItem("token")
-  const decode = jwt_decode(token);
-  const [orderList, setOrderList] = useState([])
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [status, setStatus] = useState('')
 
+  const token = localStorage.getItem("token")
+  const decode = jwt_decode(token)
   useEffect(() => {
     getOrderList()
   }, [])
@@ -20,9 +25,35 @@ const SupplierOrders = () => {
   const getOrderList = () => {
     axios.get('/api/ordersList/' + decode.id)
       .then(data => {
-        setOrderList(data.data)
+
       })
   }
+
+  const updateSettings = e => {
+    e.preventDefault();
+
+    const data = new FormData()
+    data.append("supplier_id", decode.id)
+    data.append("name", name)
+    data.append("username", username)
+    data.append("email", email)
+    data.append("location", location)
+    data.append("password", password)
+
+    console.log("data", data)
+    axios
+      .post('/api/settings', data)
+      .then(item => {
+        if (item) {
+          console.log(item.config)
+          setStatus("Product Added Successfully")
+        }
+      })
+      .catch(err => {
+        console.log("add product error is:", err.message)
+      })
+  }
+
 
 
   return (
@@ -37,123 +68,75 @@ const SupplierOrders = () => {
               ctTableFullWidth
               ctTableResponsive
               content={
-                <div className="container bootstrap snippets">
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-9">
-                      <form className="form-horizontal">
-                        <div className="panel panel-default">
-                          <div className="panel-body text-center">
-                            <img
-                              src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                              className="img-circle profile-avatar"
-                              alt="User avatar"
-                            />
-                          </div>
-                        </div>
-                        <div className="panel panel-default">
-                          <div className="panel-heading">
-                            <h4 className="panel-title">User info</h4>
-                          </div>
-                          <div className="panel-body">
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Location</label>
-                              <div className="col-sm-10">
-                                <select className="form-control">
-                                  <option selected>Select country</option>
-                                  <option>Belgium</option>
-                                  <option>Canada</option>
-                                  <option>Denmark</option>
-                                  <option>Estonia</option>
-                                  <option>France</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Company name</label>
-                              <div className="col-sm-10">
-                                <input type="text" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Position</label>
-                              <div className="col-sm-10">
-                                <input type="text" className="form-control" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="panel panel-default">
-                          <div className="panel-heading">
-                            <h4 className="panel-title">Contact info</h4>
-                          </div>
-                          <div className="panel-body">
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Work number</label>
-                              <div className="col-sm-10">
-                                <input type="tel" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Mobile number</label>
-                              <div className="col-sm-10">
-                                <input type="tel" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">E-mail address</label>
-                              <div className="col-sm-10">
-                                <input type="email" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Work address</label>
-                              <div className="col-sm-10">
-                                <textarea rows={3} className="form-control" defaultValue={""} />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="panel panel-default">
-                          <div className="panel-heading">
-                            <h4 className="panel-title">Security</h4>
-                          </div>
-                          <div className="panel-body">
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">Current password</label>
-                              <div className="col-sm-10">
-                                <input type="password" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <label className="col-sm-2 control-label">New password</label>
-                              <div className="col-sm-10">
-                                <input type="password" className="form-control" />
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <div className="col-sm-10 col-sm-offset-2">
-                                <div className="checkbox">
-                                  <input type="checkbox" id="checkbox_1" />
-                                  <label htmlFor="checkbox_1">Make this account public</label>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="form-group">
-                              <div className="col-sm-10 col-sm-offset-2">
-                                <button type="submit" className="btn btn-primary">
-                                  Submit
-                </button>
-                                <button type="reset" className="btn btn-default">
-                                  Cancel
-                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
+                <form onSubmit={updateSettings}>
+                  <div className="card card-input" style={{ marginTop: 30 }} >
+
+
+
+                    <div className="form-group">
+                      <label for="product_name">Full Name</label>
+
+                      <input type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_name"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label for="product_quantity">Username</label>
+                      <input type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_username"
+                        placeholder="@username"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label for="product_location">Location</label>
+
+                      <input type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_location"
+                        placeholder="Short Address"
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label for="product_email">Email</label>
+                      <input type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="form-control"
+                        id="product_email"
+                        placeholder="example@any.com"
+
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label for="product_password">Password</label>
+                      <input type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="form-control"
+                        id="product_password"
+                        placeholder="******"
+
+                      />
                     </div>
                   </div>
-                </div>
+                </form>
+
+
 
               }
             />
