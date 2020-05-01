@@ -298,9 +298,9 @@ const AddProduct = () => {
                 <option value="title">Title</option>
               </select></div>
 
-            <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
+            <TagsInput selectedTags={selectedTags} tags={[]} />
           </div>
-          
+
           {moreOption ?
             <>
               <h5>Option 2</h5>
@@ -314,10 +314,10 @@ const AddProduct = () => {
                     <option value="title">Title</option>
                   </select></div>
 
-                <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
+                <TagsInput selectedTags={selectedTags} tags={[]} />
               </div></>
             : null}
-          
+
           {moreOption1 ? <>
             <h5>Option 3</h5>
             <div >
@@ -330,7 +330,7 @@ const AddProduct = () => {
                   <option value="title">Title</option>
                 </select></div>
 
-              <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
+              <TagsInput selectedTags={selectedTags} tags={[]} />
             </div>
           </> : null}
 
@@ -344,8 +344,8 @@ const AddProduct = () => {
             }
 
           }}
-          style={{height:30,width:130,backgroundColor:'#3e3e3e',borderRadius:3,color:'white',fontSize:18,display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer',marginTop:12}}
-          
+            style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
+
           >More Option</div>
           {varien ? <>
             <div className="form-group" style={{ marginTop: 20 }}>
