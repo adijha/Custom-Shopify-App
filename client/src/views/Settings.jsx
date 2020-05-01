@@ -69,10 +69,8 @@ const SupplierOrders = () => {
               ctTableResponsive
               content={
                 <form onSubmit={updateSettings}>
+                  <div className="status text-center">{status}</div>
                   <div className="card card-input" style={{ marginTop: 30 }} >
-
-
-
                     <div className="form-group">
                       <label for="product_name">Full Name</label>
 
@@ -133,6 +131,8 @@ const SupplierOrders = () => {
 
                       />
                     </div>
+
+                    <button className="btn btn-primary btn-sm" type="submit" name="button">submit</button>
                   </div>
                 </form>
 
