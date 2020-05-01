@@ -23,9 +23,13 @@ const AddProduct = () => {
   const [color, setColors] = useState("")
   const [tag, setTag] = useState("")
   const [varien, setVarien] = useState(false)
-const [option1, setOption1] = useState('')
+  const [option1, setOption1] = useState('')
+  const [option2, setOption2] = useState('')
+  const [option3, setOption3] = useState('')
   const token = localStorage.getItem("token")
   const decode = jwt_decode(token)
+  const [moreOption, setMoreOption] = useState(false)
+  const [moreOption1, setMoreOption1] = useState(false)
 
 
   useEffect(() => {
@@ -179,7 +183,6 @@ const [option1, setOption1] = useState('')
       <br />
       <form onSubmit={addProduct}>
         <div className="card card-input" >
-
           <div className="form-group">
             <label for="product_name">Title</label>
             <input type="text"
@@ -286,18 +289,64 @@ const [option1, setOption1] = useState('')
           </label>
           <h5>Option 1</h5>
           <div >
-            <div>              
-            <select style={{width:150,height:40,border:'1px solid grey',borderRadius:5,marginBottom:13}} value={option1} onChange={(value)=>setOption1(value)}>
-            <option value="grapefruit">Color</option>
-            <option value="lime">Lime</option>
-            <option value="coconut">Coconut</option>
-            <option value="mango">Mango</option>
-            </select></div>
+            <div>
+              <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
+                <option value="color">Color</option>
+                <option value="size">Size</option>
+                <option value="style">Style</option>
+                <option value="material">Material</option>
+                <option value="title">Title</option>
+              </select></div>
 
-            <TagsInput selectedTags={selectedTags} tags={['red','green','blue','gray']} />
+            <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
           </div>
+          
+          {moreOption ?
+            <>
+              <h5>Option 2</h5>
+              <div >
+                <div>
+                  <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
+                    <option value="color">Color</option>
+                    <option value="size">Size</option>
+                    <option value="style">Style</option>
+                    <option value="material">Material</option>
+                    <option value="title">Title</option>
+                  </select></div>
 
+                <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
+              </div></>
+            : null}
+          
+          {moreOption1 ? <>
+            <h5>Option 3</h5>
+            <div >
+              <div>
+                <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
+                  <option value="color">Color</option>
+                  <option value="size">Size</option>
+                  <option value="style">Style</option>
+                  <option value="material">Material</option>
+                  <option value="title">Title</option>
+                </select></div>
 
+              <TagsInput selectedTags={selectedTags} tags={['red', 'green', 'blue', 'gray']} />
+            </div>
+          </> : null}
+
+          <div onClick={() => {
+            if (moreOption) {
+              setMoreOption1(true)
+
+            } else {
+
+              setMoreOption(true)
+            }
+
+          }}
+          style={{height:30,width:130,backgroundColor:'#3e3e3e',borderRadius:3,color:'white',fontSize:18,display:'flex',justifyContent:'center',alignItems:'center',cursor:'pointer',marginTop:12}}
+          
+          >More Option</div>
           {varien ? <>
             <div className="form-group" style={{ marginTop: 20 }}>
               <label for="product_size">Size</label>
