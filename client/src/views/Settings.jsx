@@ -4,7 +4,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Modal from 'react-responsive-modal';
 import '../assets/css/settings.css';
-
+import { NotificationManager } from 'react-notifications'
 import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 
@@ -25,47 +25,32 @@ const SupplierOrders = () => {
 
 	const getSupplierProfile = () => {
 		axios.get('/supplierProfile' + decode.id).then((res) => {
-			console.log(res.data);
 
+			// console.log(res.data);
+			setEmail(res.data.email)
+			setId(res.data.supplier_id)
+			setName(res.data.name)
+			setLocation(res.data.location)
+			// NotificationManager.error('user.alreadyExist')
 		});
-
-
-
-		// axios.get('/stateOrderGraph')
-		// 	.then(response => {
-		// 		let data = {
-		// 			labels: response.data.state,
-		// 			series: [response.data.order]
-		// 		}
-		// 		console.log({ data })
-
-		// 	})
-
 	};
 
-	const updateSettings = (e) => {
+
+	const updateSettings = async (e) => {
 		e.preventDefault();
 
-		const data = new FormData();
-		data.append('supplier_id', decode.id);
-		data.append('name', name);
-		// data.append('id', id);
-		data.append('email', email);
-		data.append('location', location);
-		data.append('password', password);
+		try {
+			let res = await axios
+				.post('/settingsUpdate', { location, name, id })
+			NotificationManager.success('Settings Updated Successfully')
+		} catch (error) {
+			NotificationManager.error('something unusual happened')
+			console.error(error)
+		}
 
-		console.log('data', data);
-		axios
-			.post('/api/settings', data)
-			.then((item) => {
-				if (item) {
-					console.log(item.config);
-					setStatus('Settings Updated Successfully');
-				}
-			})
-			.catch((err) => {
-				console.log('add product error is:', err.message);
-			});
+
+
+
 	};
 
 	return (

@@ -1,5 +1,7 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
 import ALogin from './components/AdminLogin'
 import SLogin from './components/SupplierLogin'
 import MLogin from './components/MerchantLogin'
@@ -15,20 +17,21 @@ import MerchantSignup from './views/MerchantSignup.jsx';
 function App() {
   return (
     <BrowserRouter>
-    <div className="App">
+      <div className="App">
         <Switch>
-          <Route exact path="/" component={LandingLayout}/>
-          <Route exact path="/login-admin" component={ALogin}/>
-          <Route exact path="/login-supplier" component={SLogin}/>
-          <Route exact path="/login-merchant" component={MLogin}/>
-          <Route exact path="/merchantSignup" component={MerchantSignup}/>
+          <Route exact path="/" component={LandingLayout} />
+          <Route exact path="/login-admin" component={ALogin} />
+          <Route exact path="/login-supplier" component={SLogin} />
+          <Route exact path="/login-merchant" component={MLogin} />
+          <Route exact path="/merchantSignup" component={MerchantSignup} />
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
-          <Route path='/auth' component={Auth}/>
-          <Route path='/supplier' render={props => <SupplierLayout {...props} />}/>
-          <Route path='/merchant' render={props => <MerchantLayout {...props} />}/>
+          <Route path='/auth' component={Auth} />
+          <Route path='/supplier' render={props => <SupplierLayout {...props} />} />
+          <Route path='/merchant' render={props => <MerchantLayout {...props} />} />
 
         </Switch>
-    </div>
+      </div>
+        <NotificationContainer />
     </BrowserRouter>
   );
 }
