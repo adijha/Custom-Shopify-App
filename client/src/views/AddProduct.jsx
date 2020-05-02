@@ -149,12 +149,17 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    document.getElementById("myAnchor").focus()
-  },[tags])
+    if (varien)
+      document.getElementById("myAnchor").focus()
+  }, [tags])
   useEffect(() => {
-    if(moreOption)
-    document.getElementById("myAnchor1").focus()
-  },[tag1])
+    if (moreOption)
+      document.getElementById("myAnchor1").focus()
+  }, [tag1])
+  useEffect(() => {
+    if (moreOption1)
+      document.getElementById("myAnchor2").focus()
+  }, [tag2])
 
   //tags
   const TagsInput = (props) => {
@@ -200,10 +205,6 @@ const AddProduct = () => {
   };
 
   const TagsInput1 = (props) => {
-    // const [tags, setTags] = useState(props.tags);
-    // setTags(props.tags)
-
-
     const removeTag1 = (indexToRemove) => {
       setTag1([...tag1.filter((_, index) => index !== indexToRemove)]);
     };
@@ -218,7 +219,7 @@ const AddProduct = () => {
     };
     return (
       <div className="tags-input">
-        <ul id="tag1">
+        <ul id="tags">
           {tag1.map((tag, index) => (
             <li key={index} className="tag">
               <span className="tag-title">{tag}</span>
@@ -240,49 +241,51 @@ const AddProduct = () => {
       </div>
     );
   };
-
-
-  // const TagsInput1 = (props) => {
-  //   const [tags1, setTags1] = useState(props.tags1);
-  //   const removeTags1 = (indexToRemove) => {
-  //     setTags1([...tags1.filter((_, index) => index !== indexToRemove)]);
-  //   };
-  //   const addTags1 = (event) => {
-  //     if (event.target.value !== "") {
-  //       let value = event.target.value.replace(/,/g, "");
-  //       setTags1([...tags1, value]);
-  //       props.selectedTags1([...tags1, value]);
-  //       event.target.value = "";
-  //     }
-  //   };
-  //   return (
-  //     <div className="tags-input">
-  //       <ul id="tags">
-  //         {tags1.map((tag, index) => (
-  //           <li key={index} className="tag">
-  //             <span className="tag-title">{tag}</span>
-  //             <span
-  //               className="tag-close-icon"
-  //               onClick={() => removeTags1(index)}
-  //             >
-  //               x
-  //             </span>
-  //           </li>
-  //         ))}
-  //       </ul>
-  //       <input
-  //         type="text"
-  //         onKeyUp={(event) => (event.key === "," ? addTags1(event) : null)}
-  //         placeholder="Press ',' to add tags"
-  //       />
-  //     </div>
-  //   );
-  // };
+  const TagsInput2 = (props) => {
+    const removeTag2 = (indexToRemove) => {
+      setTag2([...tag2.filter((_, index) => index !== indexToRemove)]);
+    };
+    const addTag2 = (event) => {
+      if (event.target.value !== "") {
+        let value = event.target.value.replace(/,/g, "");
+        setTag2([...tag2, value]);
+        props.selectedTag2([...tag2, value]);
+        // document.getElementById("myAnchor").focus()
+        event.target.value = "";
+      }
+    };
+    return (
+      <div className="tags-input">
+        <ul id="tags">
+          {tag2.map((tag, index) => (
+            <li key={index} className="tag">
+              <span className="tag-title">{tag}</span>
+              <span
+                className="tag-close-icon"
+                onClick={() => removeTag2(index)}
+              >
+                x
+              </span>
+            </li>
+          ))}
+        </ul>
+        <input
+          type="text"
+          id="myAnchor2"
+          onKeyUp={(event) => (event.key === "," ? addTag2(event) : null)}
+          placeholder="Press ',' to add tags"
+        />
+      </div>
+    );
+  };
 
   const selectedTags = (tags) => {
     console.log(tags);
   };
   const selectedTag1 = (tags) => {
+    console.log(tags);
+  };
+  const selectedTag2 = (tags) => {
     console.log(tags);
   };
 
@@ -333,12 +336,11 @@ const AddProduct = () => {
 
               {moreOption ? (
                 <>
-                  
-                    <div>
-                      <h5>Option 2</h5>
-                    </div>
-                    <h5>cancel</h5>
-                  
+                  <div>
+                    <h5>Option 2</h5>
+                  </div>
+                  <h5>cancel</h5>
+
                   <div>
                     <div>
                       <select
@@ -386,8 +388,7 @@ const AddProduct = () => {
                         <option value="title">Title</option>
                       </select>
                     </div>
-
-                    {/* <TagsInput2 selectedTags2={selectedTags2} tags={[]} /> */}
+                    <TagsInput2 selectedTag2={selectedTag2} tag2={[]} />
                   </div>
                 </>
               ) : null}
@@ -451,7 +452,7 @@ const AddProduct = () => {
             </>
           ) : null}
         </div>
-{/* 
+        {/* 
         <div className="card card-input">
           <div className="form-group">
             <label for="product_category">Category</label>
@@ -480,7 +481,7 @@ const AddProduct = () => {
             />
           </div>
         </div> */}
-{/* 
+        {/* 
         <div className="card card-input">
           <div className="form-group">
             <label for="product_name">Title</label>
@@ -618,7 +619,7 @@ const AddProduct = () => {
         </form>
       </div>
       <br /> */}
-     
+
     </div>
   );
 };
