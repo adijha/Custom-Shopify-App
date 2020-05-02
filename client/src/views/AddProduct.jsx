@@ -22,6 +22,8 @@ const AddProduct = () => {
   const [size, setSize] = useState("")
   const [color, setColors] = useState("")
   const [tag, setTag] = useState("")
+  const [tag1, setTag1] = useState("")
+  const [tag2, setTag2] = useState("")
   const [varien, setVarien] = useState(false)
   const [option1, setOption1] = useState('')
   const [option2, setOption2] = useState('')
@@ -136,7 +138,10 @@ const AddProduct = () => {
 
   //tags
   const TagsInput = props => {
+
     const [tags, setTags] = useState(props.tags);
+    // props.option1 ?
+
     const removeTags = indexToRemove => {
       setTags([...tags.filter((_, index) => index !== indexToRemove)]);
     };
@@ -175,6 +180,7 @@ const AddProduct = () => {
 
   const selectedTags = tags => {
     console.log(tags);
+    console.log({ tag });
   };
 
 
@@ -231,7 +237,7 @@ const AddProduct = () => {
             }}>
               <span class="icon-wrapp" ><i class="input-icon fa fa-usd"></i></span>
               <input class="input-with-icon" id="form-name"
-                type="number"
+                type="text"
                 min="0" value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 id="product_price"
@@ -243,7 +249,6 @@ const AddProduct = () => {
 
           <div className="form-group">
             <label for="product_quantity">Quantity</label>
-
             <input type="number"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
@@ -287,41 +292,9 @@ const AddProduct = () => {
             }} value={varien} />
             <span class="checkmarkk" ></span>
           </label>
-          
+
           {varien ? <>
-          <h5>Option 1</h5>
-          <div >
-            <div>
-              <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
-                <option value="color">Color</option>
-                <option value="size">Size</option>
-                <option value="style">Style</option>
-                <option value="material">Material</option>
-                <option value="title">Title</option>
-              </select></div>
-
-            <TagsInput selectedTags={selectedTags} tags={[]} />
-          </div>
-
-          {moreOption ?
-            <>
-              <h5>Option 2</h5>
-              <div >
-                <div>
-                  <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
-                    <option value="color">Color</option>
-                    <option value="size">Size</option>
-                    <option value="style">Style</option>
-                    <option value="material">Material</option>
-                    <option value="title">Title</option>
-                  </select></div>
-
-                <TagsInput selectedTags={selectedTags} tags={[]} />
-              </div></>
-            : null}
-
-          {moreOption1 ? <>
-            <h5>Option 3</h5>
+            <h5>Option 1</h5>
             <div >
               <div>
                 <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
@@ -332,21 +305,59 @@ const AddProduct = () => {
                   <option value="title">Title</option>
                 </select></div>
 
-              <TagsInput selectedTags={selectedTags} tags={[]} />
+              <TagsInput selectedTags={selectedTags} option1 tags={[]} />
             </div>
-          </> : null}
-          {!moreOption1 ?
-            <div onClick={() => {
-              if (moreOption) {
-                setMoreOption1(true)
-              } else {
-                setMoreOption(true)
-              }
-            }}
-              style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
 
-            >More Option</div> : null}
-          
+            {moreOption ?
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                  <div >
+
+                    <h5>Option 2</h5>
+                  </div>
+                  <h5>cancel</h5>
+                </div>
+                <div >
+                  <div>
+                    <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
+                      <option value="color">Color</option>
+                      <option value="size">Size</option>
+                      <option value="style">Style</option>
+                      <option value="material">Material</option>
+                      <option value="title">Title</option>
+                    </select></div>
+
+                  <TagsInput selectedTags={selectedTags} option2 tags={[]} />
+                </div></>
+              : null}
+
+            {moreOption1 ? <>
+              <h5>Option 3</h5>
+              <div >
+                <div>
+                  <select style={{ width: 150, height: 40, border: '1px solid grey', borderRadius: 5, marginBottom: 13 }} onChange={(value) => setOption1(value)}>
+                    <option value="color">Color</option>
+                    <option value="size">Size</option>
+                    <option value="style">Style</option>
+                    <option value="material">Material</option>
+                    <option value="title">Title</option>
+                  </select></div>
+
+                <TagsInput selectedTags={selectedTags} option3 tags={[]} />
+              </div>
+            </> : null}
+            {!moreOption1 ?
+              <div onClick={() => {
+                if (moreOption) {
+                  setMoreOption1(true)
+                } else {
+                  setMoreOption(true)
+                }
+              }}
+                style={{ height: 30, width: 130, backgroundColor: '#3e3e3e', borderRadius: 3, color: 'white', fontSize: 18, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginTop: 12 }}
+
+              >More Option</div> : null}
+
             {/* <div className="form-group" style={{ marginTop: 20 }}>
               <label for="product_size">Size</label>
               <input type="text"

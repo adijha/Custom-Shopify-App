@@ -6,23 +6,41 @@ import Modal from 'react-responsive-modal';
 import '../assets/css/settings.css';
 
 import Card from '../components/Card/Card.jsx';
+import CustomButton from '../components/CustomButton/CustomButton';
 
 const SupplierOrders = () => {
-	const [ name, setName ] = useState('');
-	const [ location, setLocation ] = useState('');
-	const [ username, setUsername ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const [ email, setEmail ] = useState('');
-	const [ status, setStatus ] = useState('');
+	const [name, setName] = useState('');
+	const [location, setLocation] = useState('');
+	const [id, setId] = useState('');
+	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('');
+	const [status, setStatus] = useState('');
 
 	const token = localStorage.getItem('token');
 	const decode = jwt_decode(token);
 	useEffect(() => {
-		getOrderList();
+		getSupplierProfile();
+		setId(decode.id)
 	}, []);
 
-	const getOrderList = () => {
-		axios.get('/api/ordersList/' + decode.id).then((data) => {});
+	const getSupplierProfile = () => {
+		axios.get('/supplierProfile' + decode.id).then((res) => {
+			console.log(res.data);
+
+		});
+
+
+
+		// axios.get('/stateOrderGraph')
+		// 	.then(response => {
+		// 		let data = {
+		// 			labels: response.data.state,
+		// 			series: [response.data.order]
+		// 		}
+		// 		console.log({ data })
+
+		// 	})
+
 	};
 
 	const updateSettings = (e) => {
@@ -31,7 +49,7 @@ const SupplierOrders = () => {
 		const data = new FormData();
 		data.append('supplier_id', decode.id);
 		data.append('name', name);
-		data.append('username', username);
+		// data.append('id', id);
 		data.append('email', email);
 		data.append('location', location);
 		data.append('password', password);
@@ -42,7 +60,7 @@ const SupplierOrders = () => {
 			.then((item) => {
 				if (item) {
 					console.log(item.config);
-					setStatus('Product Added Successfully');
+					setStatus('Settings Updated Successfully');
 				}
 			})
 			.catch((err) => {
@@ -64,8 +82,33 @@ const SupplierOrders = () => {
 									<div className='status text-center'>{status}</div>
 									<div className='card card-input' style={{ marginTop: 30 }}>
 										<div className='form-group'>
-											<label for='product_name'>Full Name</label>
+											<label for='product_email'>Email</label>
+											<input
+												type='email'
+												value={email}
+												onChange={(e) => setEmail(e.target.value)}
+												className='form-control'
+												id='product_email'
+												placeholder='example@any.com'
+												disabled="disabled"
+											/>
 
+										</div>
+										<div className='form-group'>
+											<label for='product_quantity'>Supplier ID</label>
+											<input
+												type='text'
+												value={id}
+												onChange={(e) => setId(e.target.value)}
+												min='0'
+												className='form-control'
+												id='product_id'
+												placeholder='@id'
+												disabled="disabled"
+											/>
+										</div>
+										<div className='form-group'>
+											<label for='product_name'>Full Name</label>
 											<input
 												type='text'
 												value={name}
@@ -74,19 +117,6 @@ const SupplierOrders = () => {
 												className='form-control'
 												id='product_name'
 												placeholder='Your Name'
-												required
-											/>
-										</div>
-										<div className='form-group'>
-											<label for='product_quantity'>Username</label>
-											<input
-												type='text'
-												value={username}
-												onChange={(e) => setUsername(e.target.value)}
-												min='0'
-												className='form-control'
-												id='product_username'
-												placeholder='@username'
 												required
 											/>
 										</div>
@@ -101,21 +131,9 @@ const SupplierOrders = () => {
 												className='form-control'
 												id='product_location'
 												placeholder='Short Address'
-												required
 											/>
 										</div>
-										<div className='form-group'>
-											<label for='product_email'>Email</label>
-											<input
-												type='email'
-												value={email}
-												onChange={(e) => setEmail(e.target.value)}
-												className='form-control'
-												id='product_email'
-												placeholder='example@any.com'
-											/>
-										</div>
-										<div className='form-group'>
+										{/* <div className='form-group'>
 											<label for='product_password'>Password</label>
 											<input
 												type='password'
@@ -125,11 +143,10 @@ const SupplierOrders = () => {
 												id='product_password'
 												placeholder='******'
 											/>
-										</div>
-
-										<button className='btn btn-primary btn-sm' type='submit' name='button'>
-											submit
-										</button>
+										</div> */}
+										<CustomButton round fill type='submit' name='button'>
+											Update Profile
+										</CustomButton>
 									</div>
 								</form>
 							}
