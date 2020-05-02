@@ -1077,14 +1077,48 @@ app.post('/store/:shop/:topic/:subtopic', async function (request, response) {
 
 })
 
-
+//settings get 
 app.get('/supplierProfile:id', async (req, res) => {
-  console.log(req.params.id);
-  let supp = await User.find({"supplier_id": req.params.id})
-  res.send(supp);
-  console.log({ supp });
+  try {
+
+    let supp = await User.findOne({ _id: req.params.id })
+    res.send(supp);
+  } catch (error) {
+    console.error(error)
+  }
 
 });
+
+//update settings
+app.post('/settingsUpdate', (req, res) => {
+  console.log(req.body);
+
+  User.findOneAndUpdate(
+    {
+      supplier_id: req.body.id
+    },
+    {
+      name: req.body.name,
+      location: req.body.location
+    },
+    {
+      new: true,
+      useFindAndModify: false
+    },
+    (err, result) => {
+      if (!err) {
+        res.sendStatus(200)
+      } else {
+        console.log('error ', err);
+      }
+    }
+  );
+
+
+
+
+});
+
 
 
 
