@@ -148,6 +148,10 @@ const AddProduct = () => {
     });
   };
 
+  useEffect(() => {
+    document.getElementById("myAnchor").focus()
+  },[tags])
+
   //tags
   const TagsInput = (props) => {
     // const [tags, setTags] = useState(props.tags);
@@ -162,6 +166,7 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTags([...tags, value]);
         props.selectedTags([...tags, value]);
+        // document.getElementById("myAnchor").focus()
         event.target.value = "";
       }
     };
@@ -182,48 +187,49 @@ const AddProduct = () => {
         </ul>
         <input
           type="text"
+          id="myAnchor"
           onKeyUp={(event) => (event.key === "," ? addTags(event) : null)}
           placeholder="Press ',' to add tags"
         />
       </div>
     );
   };
-  const TagsInput1 = (props) => {
-    const [tags1, setTags1] = useState(props.tags);
-    const removeTags1 = (indexToRemove) => {
-      setTags1([...tags1.filter((_, index) => index !== indexToRemove)]);
-    };
-    const addTags1 = (event) => {
-      if (event.target.value !== "") {
-        let value = event.target.value.replace(/,/g, "");
-        setTags1([...tags1, value]);
-        props.selectedTags1([...tags1, value]);
-        event.target.value = "";
-      }
-    };
-    return (
-      <div className="tags-input">
-        <ul id="tags">
-          {tags1.map((tag, index) => (
-            <li key={index} className="tag">
-              <span className="tag-title">{tag}</span>
-              <span
-                className="tag-close-icon"
-                onClick={() => removeTags1(index)}
-              >
-                x
-              </span>
-            </li>
-          ))}
-        </ul>
-        <input
-          type="text"
-          onKeyUp={(event) => (event.key === "," ? addTags1(event) : null)}
-          placeholder="Press ',' to add tags"
-        />
-      </div>
-    );
-  };
+  // const TagsInput1 = (props) => {
+  //   const [tags1, setTags1] = useState(props.tags1);
+  //   const removeTags1 = (indexToRemove) => {
+  //     setTags1([...tags1.filter((_, index) => index !== indexToRemove)]);
+  //   };
+  //   const addTags1 = (event) => {
+  //     if (event.target.value !== "") {
+  //       let value = event.target.value.replace(/,/g, "");
+  //       setTags1([...tags1, value]);
+  //       props.selectedTags1([...tags1, value]);
+  //       event.target.value = "";
+  //     }
+  //   };
+  //   return (
+  //     <div className="tags-input">
+  //       <ul id="tags">
+  //         {tags1.map((tag, index) => (
+  //           <li key={index} className="tag">
+  //             <span className="tag-title">{tag}</span>
+  //             <span
+  //               className="tag-close-icon"
+  //               onClick={() => removeTags1(index)}
+  //             >
+  //               x
+  //             </span>
+  //           </li>
+  //         ))}
+  //       </ul>
+  //       <input
+  //         type="text"
+  //         onKeyUp={(event) => (event.key === "," ? addTags1(event) : null)}
+  //         placeholder="Press ',' to add tags"
+  //       />
+  //     </div>
+  //   );
+  // };
 
   const selectedTags = (tags) => {
     console.log(tags);
@@ -309,7 +315,7 @@ const AddProduct = () => {
                       </select>
                     </div>
 
-                    <TagsInput1 selectedTags={selectedTags1} tags={[]} />
+                    <TagsInput1 selectedTags1={selectedTags1} tags1={[]} />
                   </div>
                 </>
               ) : null}
@@ -401,7 +407,7 @@ const AddProduct = () => {
             </>
           ) : null}
         </div>
-
+{/* 
         <div className="card card-input">
           <div className="form-group">
             <label for="product_category">Category</label>
@@ -429,8 +435,8 @@ const AddProduct = () => {
               required
             />
           </div>
-        </div>
-
+        </div> */}
+{/* 
         <div className="card card-input">
           <div className="form-group">
             <label for="product_name">Title</label>
@@ -531,7 +537,7 @@ const AddProduct = () => {
               placeholder="Enter Available warranty of Product"
             />
           </div>
-        </div>
+        </div> */}
 
         <div className="card-button">
           <button type="submit" className="btn btn-primary btn-sm">
@@ -539,7 +545,7 @@ const AddProduct = () => {
           </button>
         </div>
       </form>
-      <br />
+      {/* <br />
       <div className="container-fluid">
         <form onSubmit={addCSvProduct}>
           <div className="card card-input">
@@ -567,7 +573,7 @@ const AddProduct = () => {
           </div>
         </form>
       </div>
-      <br />
+      <br /> */}
      
     </div>
   );
