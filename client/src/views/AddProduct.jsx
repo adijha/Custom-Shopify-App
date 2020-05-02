@@ -23,8 +23,8 @@ const AddProduct = () => {
   const [size, setSize] = useState("");
   const [color, setColors] = useState("");
   const [tags, setTags] = useState([]);
-  const [tag1, setTag1] = useState("");
-  const [tag2, setTag2] = useState("");
+  const [tag1, setTag1] = useState([]);
+  const [tag2, setTag2] = useState([]);
   const [varien, setVarien] = useState(true);
   const [option1, setOption1] = useState("");
   const [option2, setOption2] = useState("");
@@ -151,6 +151,10 @@ const AddProduct = () => {
   useEffect(() => {
     document.getElementById("myAnchor").focus()
   },[tags])
+  useEffect(() => {
+    if(moreOption)
+    document.getElementById("myAnchor1").focus()
+  },[tag1])
 
   //tags
   const TagsInput = (props) => {
@@ -194,6 +198,50 @@ const AddProduct = () => {
       </div>
     );
   };
+
+  const TagsInput1 = (props) => {
+    // const [tags, setTags] = useState(props.tags);
+    // setTags(props.tags)
+
+
+    const removeTag1 = (indexToRemove) => {
+      setTag1([...tag1.filter((_, index) => index !== indexToRemove)]);
+    };
+    const addTag1 = (event) => {
+      if (event.target.value !== "") {
+        let value = event.target.value.replace(/,/g, "");
+        setTag1([...tag1, value]);
+        props.selectedTag1([...tag1, value]);
+        // document.getElementById("myAnchor").focus()
+        event.target.value = "";
+      }
+    };
+    return (
+      <div className="tags-input">
+        <ul id="tag1">
+          {tag1.map((tag, index) => (
+            <li key={index} className="tag">
+              <span className="tag-title">{tag}</span>
+              <span
+                className="tag-close-icon"
+                onClick={() => removeTag1(index)}
+              >
+                x
+              </span>
+            </li>
+          ))}
+        </ul>
+        <input
+          type="text"
+          id="myAnchor1"
+          onKeyUp={(event) => (event.key === "," ? addTag1(event) : null)}
+          placeholder="Press ',' to add tags"
+        />
+      </div>
+    );
+  };
+
+
   // const TagsInput1 = (props) => {
   //   const [tags1, setTags1] = useState(props.tags1);
   //   const removeTags1 = (indexToRemove) => {
@@ -234,7 +282,7 @@ const AddProduct = () => {
   const selectedTags = (tags) => {
     console.log(tags);
   };
-  const selectedTags1 = (tags) => {
+  const selectedTag1 = (tags) => {
     console.log(tags);
   };
 
@@ -242,7 +290,6 @@ const AddProduct = () => {
     <div className="container-fluid">
       <br />
       <form onSubmit={addProduct}>
-
         <div className="card card-input py-0 ll">
           <h4 className="text-left" style={{ margin: 0, marginBottom: 15 }}>
             Variants
@@ -251,7 +298,6 @@ const AddProduct = () => {
             This product has multiple options, like different sizes or colors
             <input type="checkbox"
               value={varien}
-
               onChange={() => {
                 varien ? setVarien(false) : setVarien(true);
               }}
@@ -287,14 +333,12 @@ const AddProduct = () => {
 
               {moreOption ? (
                 <>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-around" }}
-                  >
+                  
                     <div>
                       <h5>Option 2</h5>
                     </div>
                     <h5>cancel</h5>
-                  </div>
+                  
                   <div>
                     <div>
                       <select
@@ -315,7 +359,7 @@ const AddProduct = () => {
                       </select>
                     </div>
 
-                    <TagsInput1 selectedTags1={selectedTags1} tags1={[]} />
+                    <TagsInput1 selectedTag1={selectedTag1} tags1={[]} />
                   </div>
                 </>
               ) : null}
