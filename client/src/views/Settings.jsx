@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Row, Col} from "react-bootstrap";
+import { Grid, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import "../assets/css/settings.css";
@@ -24,7 +24,7 @@ const SupplierOrders = () => {
 
 	const getSupplierProfile = () => {
 		axios.get("/supplierProfile" + decode.id).then((res) => {
-			// console.log(res.data);
+			console.log(res.data);
 			setEmail(res.data.email);
 			setId(res.data.supplier_id);
 			setName(res.data.name);
