@@ -5,6 +5,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode'
 import "../assets/css/addProduct.css"
 
+import { NotificationManager } from "react-notifications";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -88,25 +89,27 @@ const AddProduct = () => {
     data.append("color", color)
     data.append("tag", tag)
     console.log("data", data)
-    axios
-      .post('/api/addProduct', data)
-      .then(item => {
-        if (item) {
-          console.log(item.config)
-          setStatus("Product Added Successfully")
-          setName("")
-          setPrice("")
-          setQuantity("")
-          setWarranty("")
-          setDescription("")
-          setCategory("")
-          setCode("")
-          setProductImage([])
-        }
-      })
-      .catch(err => {
-        console.log("add product error is:", err.message)
-      })
+    // axios
+    //   .post('/api/addProduct', data)
+    //   .then(item => {
+    //     if (item) {
+    //       console.log(item.config)
+    //       setStatus("Product Added Successfully")
+    //       setName("")
+    //       setPrice("")
+    //       setQuantity("")
+    //       setWarranty("")
+    //       setDescription("")
+    //       setCategory("")
+    //       setCode("")
+    //       setProductImage([])
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log("add product error is:", err.message)
+    //   })
+
+    NotificationManager.error('We are improving varient section, until you cannot add product')
   }
 
   //Add Product from CSV File
