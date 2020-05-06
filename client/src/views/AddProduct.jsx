@@ -422,7 +422,7 @@ const AddProduct = () => {
                 }}
               >
                 <h5>Option 1</h5>
-                <h5 onClick={() => varien(false)}>cancel</h5>
+                <h5 onClick={() => setVarien(false)}>cancel</h5>
               </div>
               <div>
                 <div>
@@ -471,8 +471,8 @@ const AddProduct = () => {
                         }}
                         onChange={(value) => setOption1(value)}
                       >
-                        <option value="color">Color</option>
                         <option value="size">Size</option>
+                        <option value="color">Color</option>
                         <option value="style">Style</option>
                         <option value="material">Material</option>
                         <option value="title">Title</option>
@@ -494,7 +494,7 @@ const AddProduct = () => {
                     }}
                   >
                     <h5>Option 3</h5>
-                    <h5 onClick={() => moreOption1(false)}>cancel</h5>
+                    <h5 onClick={() => setMoreOption1(false)}>cancel</h5>
                   </div>
                   <div>
                     <div>
@@ -508,10 +508,10 @@ const AddProduct = () => {
                         }}
                         onChange={(value) => setOption1(value)}
                       >
+                        <option value="material">Material</option>
                         <option value="color">Color</option>
                         <option value="size">Size</option>
                         <option value="style">Style</option>
-                        <option value="material">Material</option>
                         <option value="title">Title</option>
                       </select>
                     </div>
