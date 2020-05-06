@@ -205,7 +205,6 @@ const AddProduct = () => {
   }, [tag2]);
 
   //tags
-  // const TagsInput = (props) => {
   const removeTags = (indexToRemove) => {
     setTags([...tags.filter((_, index) => index !== indexToRemove)]);
   };
@@ -226,14 +225,10 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTag1([...tag1, value]);
         selectedTag1([...tag1, value]);
-        // props.selectedTag1([value]);
         event.target.value = "";
       }
     };
-    
-     
-  
-  const TagsInput2 = (props) => {
+
     const removeTag2 = (indexToRemove) => {
       setTag2([...tag2.filter((_, index) => index !== indexToRemove)]);
     };
@@ -241,34 +236,12 @@ const AddProduct = () => {
       if (event.target.value !== "") {
         let value = event.target.value.replace(/,/g, "");
         setTag2([...tag2, value]);
-        props.selectedTag2([...tag2, value]);
+        selectedTag2([...tag2, value]);
         event.target.value = "";
       }
     };
-    return (
-      <div className="tags-input">
-        <ul id="tags">
-          {tag2.map((tag, index) => (
-            <li key={index} className="tag">
-              <span className="tag-title">{tag}</span>
-              <span
-                className="tag-close-icon"
-                onClick={() => removeTag2(index)}
-              >
-                x
-              </span>
-            </li>
-          ))}
-        </ul>
-        <input
-          type="text"
-          id="myAnchor2"
-          onKeyUp={(event) => (event.key === "," ? addTag2(event) : null)}
-          placeholder="Press ',' to add tags"
-        />
-      </div>
-    );
-  };
+
+  
   const logcombo = (params) => {
     console.log(tags);
     console.log(tag1);
@@ -536,7 +509,27 @@ const AddProduct = () => {
                         <option value="title">Title</option>
                       </select>
                     </div>
-                    <TagsInput2 selectedTag2={selectedTag2} tag2={[]} />
+                    <div className="tags-input">
+                      <ul id="tags">
+                        {tag2.map((tag, index) => (
+                          <li key={index} className="tag">
+                            <span className="tag-title">{tag}</span>
+                            <span
+                              className="tag-close-icon"
+                              onClick={() => removeTag2(index)}
+                            >
+                              x
+              </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <input
+                        type="text"
+                        id="myAnchor2"
+                        onKeyUp={(event) => (event.key === "," ? addTag2(event) : null)}
+                        placeholder="Press ',' to add tags"
+                      />
+                    </div>
                   </div>
                 </>
               ) : null}
