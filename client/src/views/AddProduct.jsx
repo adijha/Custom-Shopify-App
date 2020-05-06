@@ -147,7 +147,7 @@ const AddProduct = () => {
       arg = arguments,
       max = arg.length - 1;
     function helper(arr, i) {
-      for (var j = 0, l = arg[i].length; j < l; j++) {
+      for (var j = 0, l = arg[i].length;j < l;j++) {
         var a = arr.slice(0); // clone arr
         a.push(arg[i][j]);
         if (i == max) r.push(a);
@@ -157,10 +157,10 @@ const AddProduct = () => {
     helper([], 0);
 
     let res = [];
-    for (let i = 0; i < r.length; i++) {
+    for (let i = 0;i < r.length;i++) {
       const e = r[i];
       let str = "";
-      for (let j = 0; j < e.length; j++) {
+      for (let j = 0;j < e.length;j++) {
         const element = e[j];
         if (str == "") {
           str = element;
@@ -184,12 +184,16 @@ const AddProduct = () => {
   useEffect(() => {
     if (varien) document.getElementById("myAnchor").focus();
   }, [tags]);
+
   useEffect(() => {
     handelDelete();
+
   }, [tags]);
+
   useEffect(() => {
     if (moreOption) document.getElementById("myAnchor1").focus();
   }, [tag1]);
+
   useEffect(() => {
     handelDelete();
   }, [tag1]);
@@ -529,6 +533,16 @@ const AddProduct = () => {
                   More Option
                 </div>
               ) : null}
+
+              {!combo ? null :
+                <div>
+                  {combo.map(item =>
+                    <div>
+                      <h4>{item}</h4>
+                    </div>
+                  )}
+                </div>
+              }
 
               {/* <div className="form-group" style={{ marginTop: 20 }}>
               <label for="product_size">Size</label>
