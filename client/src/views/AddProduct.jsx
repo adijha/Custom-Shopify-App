@@ -337,6 +337,7 @@ const AddProduct = () => {
   };
 
   const handelDelete = () => {
+    //! normal user flow
     if (tags.length != 0 && tag1.length == 0 && tag2.length == 0) {
       let r = makeCombo(tags);
       setCombo(r);
@@ -349,11 +350,37 @@ const AddProduct = () => {
       let r = makeCombo(tags, tag1, tag2);
       setCombo(r);
     }
-    //!empty bug fixing
-    // if (tags.length == 0) {
-    //   let r = makeCombo(tag1, tag2);
-    //   setCombo(r);
-    // }
+    //! one empty array two not empty
+    if (tags.length == 0 && tag1.length != 0 && tag2.length != 0) {
+      let r = makeCombo(tag1, tag2);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length == 0 && tag2.length != 0) {
+      let r = makeCombo(tags, tag2);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length != 0 && tag2.length == 0) {
+      let r = makeCombo(tags, tag1);
+      setCombo(r);
+    }
+    //! two empty array one not empty
+    if (tags.length == 0 && tag1.length != 0 && tag2.length == 0) {
+      let r = makeCombo(tag1);
+      setCombo(r);
+    }
+    if (tags.length == 0 && tag1.length == 0 && tag2.length != 0) {
+      let r = makeCombo(tag2);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length == 0 && tag2.length == 0) {
+      let r = makeCombo(tags);
+      setCombo(r);
+    }
+    //! all empty array
+    if (tags.length == 0 && tag1.length == 0 && tag2.length == 0) {
+      let r = makeCombo([]);
+      setCombo(r);
+    }
   };
 
   const selectedTag1 = (tag1) => {
