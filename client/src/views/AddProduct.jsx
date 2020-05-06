@@ -34,7 +34,7 @@ const AddProduct = () => {
   const decode = jwt_decode(token);
   const [moreOption, setMoreOption] = useState(false);
   const [moreOption1, setMoreOption1] = useState(false);
-  const [combo, setCombo] = useState([])
+  const [combo, setCombo] = useState([]);
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -141,6 +141,38 @@ const AddProduct = () => {
       });
   };
 
+  //making commination from tags ,tag1,tag2 array
+  function makeCombo() {
+    var r = [],
+      arg = arguments,
+      max = arg.length - 1;
+    function helper(arr, i) {
+      for (var j = 0, l = arg[i].length; j < l; j++) {
+        var a = arr.slice(0); // clone arr
+        a.push(arg[i][j]);
+        if (i == max) r.push(a);
+        else helper(a, i + 1);
+      }
+    }
+    helper([], 0);
+
+    let res = [];
+    for (let i = 0; i < r.length; i++) {
+      const e = r[i];
+      let str = "";
+      for (let j = 0; j < e.length; j++) {
+        const element = e[j];
+        if (str == "") {
+          str = element;
+        } else str = str + " / " + element;
+      }
+      r[i] = str;
+      res = r;
+    }
+
+    return res;
+  }
+
   //Fetch category List
   const getCategoryList = () => {
     axios.get("/api/totalCategory").then((data) => {
@@ -150,17 +182,23 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    if (varien)
-      document.getElementById("myAnchor").focus()
-  }, [tags])
+    if (varien) document.getElementById("myAnchor").focus();
+  }, [tags]);
   useEffect(() => {
-    if (moreOption)
-      document.getElementById("myAnchor1").focus()
-  }, [tag1])
+    handelDelete();
+  }, [tags]);
   useEffect(() => {
-    if (moreOption1)
-      document.getElementById("myAnchor2").focus()
-  }, [tag2])
+    if (moreOption) document.getElementById("myAnchor1").focus();
+  }, [tag1]);
+  useEffect(() => {
+    handelDelete();
+  }, [tag1]);
+  useEffect(() => {
+    if (moreOption1) document.getElementById("myAnchor2").focus();
+  }, [tag2]);
+  useEffect(() => {
+    handelDelete();
+  }, [tag2]);
 
   //tags
   const TagsInput = (props) => {
@@ -209,6 +247,7 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTag1([...tag1, value]);
         props.selectedTag1([...tag1, value]);
+        // props.selectedTag1([value]);
         event.target.value = "";
       }
     };
@@ -256,7 +295,10 @@ const AddProduct = () => {
               <span className="tag-title">{tag}</span>
               <span
                 className="tag-close-icon"
-                onClick={() => removeTag2(index)}>x</span>
+                onClick={() => removeTag2(index)}
+              >
+                x
+              </span>
             </li>
           ))}
         </ul>
@@ -269,45 +311,81 @@ const AddProduct = () => {
       </div>
     );
   };
-const logcombo = (params) => {
-  console.log({combo});
-}
-let hol=[]
-  const selectedTags = (tag) => {
-    console.log(tag);
-    if (!moreOption || !moreOption1) {
-hol.push(tag)
-      setCombo(hol)
-      console.log('----first combo',combo);
-    }
-  };
-  const selectedTag1 = (tag) => {
-    console.log(tag);
-
-    if (!moreOption1 || !moreOption1) {
-     
-      let c = [];
-      tags.forEach(function (a1) {
-        tag1.forEach(function (a2) {
-          c.push(a1 +" "+ a2);
-        });
-      });
-
-      setCombo(c)
-      console.log('----secondCombo combo',c);
-    
-    }
-  };
-  const selectedTag2 = (tags) => {
+  const logcombo = (params) => {
     console.log(tags);
-    var c = tags.map((e, i)=> {
-      return [e , tag1[i]];
-    });
-    setCombo(c)
-    console.log('----secondCombo combo', c);
+    console.log(tag1);
+    console.log(tag2);
+    console.log(combo);
+    console.log(" ");
   };
 
- 
+  const selectedTags = (tag) => {
+    if (!moreOption || !moreOption1) {
+      if (tag.length != 0 && tag1.length == 0 && tag2.length == 0) {
+        let r = makeCombo(tag);
+        setCombo(r);
+      }
+      if (tags.length != 0 && tag1.length != 0 && tag2.length == 0) {
+        let r = makeCombo(tags, tag1);
+        setCombo(r);
+      }
+      if (tags.length != 0 && tag1.length != 0 && tag2.length != 0) {
+        let r = makeCombo(tags, tag1, tag2);
+        setCombo(r);
+      }
+    }
+  };
+
+  const handelDelete = () => {
+    if (tags.length != 0 && tag1.length == 0 && tag2.length == 0) {
+      let r = makeCombo(tags);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length != 0 && tag2.length == 0) {
+      let r = makeCombo(tags, tag1);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length != 0 && tag2.length != 0) {
+      let r = makeCombo(tags, tag1, tag2);
+      setCombo(r);
+    }
+    //!empty bug fixing
+    // if (tags.length == 0) {
+    //   let r = makeCombo(tag1, tag2);
+    //   setCombo(r);
+    // }
+  };
+
+  const selectedTag1 = (tag1) => {
+    if (!moreOption1) {
+      if (tags.length != 0 && tag1.length == 0 && tag2.length == 0) {
+        let r = makeCombo(tags);
+        setCombo(r);
+      }
+      if (tags.length != 0 && tag1.length != 0 && tag2.length == 0) {
+        let r = makeCombo(tags, tag1);
+        setCombo(r);
+      }
+      if (tags.length != 0 && tag1.length != 0 && tag2.length != 0) {
+        let r = makeCombo(tags, tag1, tag2);
+        setCombo(r);
+      }
+    }
+  };
+  const selectedTag2 = (tag2) => {
+    if (tags.length != 0 && tag1.length == 0 && tag2.length == 0) {
+      let r = makeCombo(tags);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length != 0 && tag2.length == 0) {
+      let r = makeCombo(tags, tag1);
+      setCombo(r);
+    }
+    if (tags.length != 0 && tag1.length != 0 && tag2.length != 0) {
+      let r = makeCombo(tags, tag1, tag2);
+      setCombo(r);
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -319,7 +397,8 @@ hol.push(tag)
           </h4>
           <label class="containerr">
             This product has multiple options, like different sizes or colors
-            <input type="checkbox"
+            <input
+              type="checkbox"
               value={varien}
               onChange={() => {
                 varien ? setVarien(false) : setVarien(true);
@@ -328,12 +407,18 @@ hol.push(tag)
             <span class="checkmarkk"></span>
           </label>
 
-          <div onClick={()=>logcombo()}>logcombo</div>
+          <div onClick={() => logcombo()}>logcombo</div>
           {varien ? (
             <>
-              <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
-                  <h5>Option 1</h5>
-                  <h5 onClick={()=>varien(false)}>cancel</h5>
+              <div
+                style={{
+                  maxWidth: 480,
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
+              >
+                <h5>Option 1</h5>
+                <h5 onClick={() => varien(false)}>cancel</h5>
               </div>
               <div>
                 <div>
@@ -343,7 +428,7 @@ hol.push(tag)
                       height: 40,
                       border: "1px solid grey",
                       borderRadius: 5,
-                      marginBottom: 13
+                      marginBottom: 13,
                     }}
                     onChange={(value) => setOption1(value)}
                   >
@@ -360,10 +445,16 @@ hol.push(tag)
 
               {moreOption ? (
                 <>
-                  <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
-                  <h5>Option 2</h5>
-                  <h5 onClick={()=>setMoreOption(false)}>cancel</h5>
-              </div>
+                  <div
+                    style={{
+                      maxWidth: 480,
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <h5>Option 2</h5>
+                    <h5 onClick={() => setMoreOption(false)}>cancel</h5>
+                  </div>
                   <div>
                     <div>
                       <select
@@ -391,10 +482,16 @@ hol.push(tag)
 
               {moreOption1 ? (
                 <>
-                  <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
-                  <h5>Option 3</h5>
-                  <h5 onClick={()=>moreOption1(false)}>cancel</h5>
-              </div>
+                  <div
+                    style={{
+                      maxWidth: 480,
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <h5>Option 3</h5>
+                    <h5 onClick={() => moreOption1(false)}>cancel</h5>
+                  </div>
                   <div>
                     <div>
                       <select
@@ -427,7 +524,9 @@ hol.push(tag)
                       setMoreOption(true);
                     }
                   }}
-                  className="meraButton">More Option
+                  className="meraButton"
+                >
+                  More Option
                 </div>
               ) : null}
 
@@ -631,7 +730,6 @@ hol.push(tag)
         </form>
       </div>
       <br /> */}
-
     </div>
   );
 };
