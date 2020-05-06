@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import "../assets/css/addProduct.css";
 
 import { NotificationManager } from "react-notifications";
+import CustomButton from "../components/CustomButton/CustomButton";
 
 const AddProduct = () => {
   const [name, setName] = useState("");
@@ -33,7 +34,7 @@ const AddProduct = () => {
   const decode = jwt_decode(token);
   const [moreOption, setMoreOption] = useState(false);
   const [moreOption1, setMoreOption1] = useState(false);
-
+  const [combo, setCombo] = useState([])
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -163,10 +164,6 @@ const AddProduct = () => {
 
   //tags
   const TagsInput = (props) => {
-    // const [tags, setTags] = useState(props.tags);
-    // setTags(props.tags)
-
-
     const removeTags = (indexToRemove) => {
       setTags([...tags.filter((_, index) => index !== indexToRemove)]);
     };
@@ -175,7 +172,6 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTags([...tags, value]);
         props.selectedTags([...tags, value]);
-        // document.getElementById("myAnchor").focus()
         event.target.value = "";
       }
     };
@@ -213,7 +209,6 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTag1([...tag1, value]);
         props.selectedTag1([...tag1, value]);
-        // document.getElementById("myAnchor").focus()
         event.target.value = "";
       }
     };
@@ -250,7 +245,6 @@ const AddProduct = () => {
         let value = event.target.value.replace(/,/g, "");
         setTag2([...tag2, value]);
         props.selectedTag2([...tag2, value]);
-        // document.getElementById("myAnchor").focus()
         event.target.value = "";
       }
     };
@@ -262,10 +256,7 @@ const AddProduct = () => {
               <span className="tag-title">{tag}</span>
               <span
                 className="tag-close-icon"
-                onClick={() => removeTag2(index)}
-              >
-                x
-              </span>
+                onClick={() => removeTag2(index)}>x</span>
             </li>
           ))}
         </ul>
@@ -279,14 +270,40 @@ const AddProduct = () => {
     );
   };
 
-  const selectedTags = (tags) => {
-    console.log(tags);
+  const selectedTags = (tag) => {
+
+    console.log(tag);
+    if (!moreOption || !moreOption1) {
+      setCombo(tags)
+      console.log('----first combo',combo);
+    }
   };
-  const selectedTag1 = (tags) => {
-    console.log(tags);
+  const selectedTag1 = (tag) => {
+    console.log(tag);
+
+    if (!moreOption1 || !moreOption1) {
+      // var c = tags.map((e, i) =>{
+      //   return [e, tag1[i]];
+      // });
+      let c = [];
+      tags.forEach(function (a1) {
+        tag1.forEach(function (a2) {
+          c.push(a1 +" "+ a2);
+        });
+      });
+
+      setCombo(c)
+      console.log('----secondCombo combo',c);
+      // console.log(c)
+    }
   };
   const selectedTag2 = (tags) => {
     console.log(tags);
+    var c = tags.map((e, i)=> {
+      return [e , tag1[i]];
+    });
+    setCombo(c)
+    console.log('----secondCombo combo', c);
   };
 
   return (
@@ -339,7 +356,7 @@ const AddProduct = () => {
                   <div>
                     <h5>Option 2</h5>
                   </div>
-                  <h5>cancel</h5>
+                  <CustomButton>cancel</CustomButton>
 
                   <div>
                     <div>
@@ -401,21 +418,7 @@ const AddProduct = () => {
                       setMoreOption(true);
                     }
                   }}
-                  style={{
-                    height: 30,
-                    width: 130,
-                    backgroundColor: "#3e3e3e",
-                    borderRadius: 3,
-                    color: "white",
-                    fontSize: 18,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    marginTop: 12,
-                  }}
-                >
-                  More Option
+                  className="meraButton">More Option
                 </div>
               ) : null}
 
