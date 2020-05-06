@@ -218,7 +218,6 @@ const AddProduct = () => {
     }
   };
 
-  const TagsInput1 = (props) => {
     const removeTag1 = (indexToRemove) => {
       setTag1([...tag1.filter((_, index) => index !== indexToRemove)]);
     };
@@ -226,35 +225,14 @@ const AddProduct = () => {
       if (event.target.value !== "") {
         let value = event.target.value.replace(/,/g, "");
         setTag1([...tag1, value]);
-        props.selectedTag1([...tag1, value]);
+        selectedTag1([...tag1, value]);
         // props.selectedTag1([value]);
         event.target.value = "";
       }
     };
-    return (
-      <div className="tags-input">
-        <ul id="tags">
-          {tag1.map((tag, index) => (
-            <li key={index} className="tag">
-              <span className="tag-title">{tag}</span>
-              <span
-                className="tag-close-icon"
-                onClick={() => removeTag1(index)}
-              >
-                x
-              </span>
-            </li>
-          ))}
-        </ul>
-        <input
-          type="text"
-          id="myAnchor1"
-          onKeyUp={(event) => (event.key === "," ? addTag1(event) : null)}
-          placeholder="Press ',' to add tags"
-        />
-      </div>
-    );
-  };
+    
+     
+  
   const TagsInput2 = (props) => {
     const removeTag2 = (indexToRemove) => {
       setTag2([...tag2.filter((_, index) => index !== indexToRemove)]);
@@ -413,7 +391,6 @@ const AddProduct = () => {
             />
             <span class="checkmarkk"></span>
           </label>
-
           <div onClick={() => logcombo()}>logcombo</div>
           {varien ? (
             <>
@@ -501,7 +478,27 @@ const AddProduct = () => {
                         <option value="title">Title</option>
                       </select>
                     </div>
-
+                    <div className="tags-input">
+                      <ul id="tags">
+                        {tag1.map((tag, index) => (
+                          <li key={index} className="tag">
+                            <span className="tag-title">{tag}</span>
+                            <span
+                              className="tag-close-icon"
+                              onClick={() => removeTag1(index)}
+                            >
+                              x
+              </span>
+                          </li>
+                        ))}
+                      </ul>
+                      <input
+                        type="text"
+                        id="myAnchor1"
+                        onKeyUp={(event) => (event.key === "," ? addTag1(event) : null)}
+                        placeholder="Press ',' to add tags"
+                      />
+                    </div>
 
                     {/* <TagsInput1 selectedTag1={selectedTag1} tags1={[]} /> */}
                   </div>
