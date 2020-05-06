@@ -343,7 +343,7 @@ hol.push(tag)
                       height: 40,
                       border: "1px solid grey",
                       borderRadius: 5,
-                      marginBottom: 13,
+                      marginBottom: 13
                     }}
                     onChange={(value) => setOption1(value)}
                   >
