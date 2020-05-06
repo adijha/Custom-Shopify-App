@@ -205,41 +205,17 @@ const AddProduct = () => {
   }, [tag2]);
 
   //tags
-  const TagsInput = (props) => {
-    const removeTags = (indexToRemove) => {
-      setTags([...tags.filter((_, index) => index !== indexToRemove)]);
-    };
-    const addTags = (event) => {
-      if (event.target.value !== "") {
-        let value = event.target.value.replace(/,/g, "");
-        setTags([...tags, value]);
-        props.selectedTags([...tags, value]);
-        event.target.value = "";
-      }
-    };
-    return (
-      <div className="tags-input">
-        <ul id="tags">
-          {tags.map((tag, index) => (
-            <li key={index} className="tag">
-              <span className="tag-title">{tag}</span>
-              <span
-                className="tag-close-icon"
-                onClick={() => removeTags(index)}
-              >
-                x
-              </span>
-            </li>
-          ))}
-        </ul>
-        <input
-          type="text"
-          id="myAnchor"
-          onKeyUp={(event) => (event.key === "," ? addTags(event) : null)}
-          placeholder="Press ',' to add tags"
-        />
-      </div>
-    );
+  // const TagsInput = (props) => {
+  const removeTags = (indexToRemove) => {
+    setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+  };
+  const addTags = (event) => {
+    if (event.target.value !== "") {
+      let value = event.target.value.replace(/,/g, "");
+      setTags([...tags, value]);
+      selectedTags([...tags, value]);
+      event.target.value = "";
+    }
   };
 
   const TagsInput1 = (props) => {
@@ -470,8 +446,28 @@ const AddProduct = () => {
                     <option value="title">Title</option>
                   </select>
                 </div>
-
-                <TagsInput selectedTags={selectedTags} tags={[]} />
+                <div className="tags-input">
+                  <ul id="tags">
+                    {tags.map((tag, index) => (
+                      <li key={index} className="tag">
+                        <span className="tag-title">{tag}</span>
+                        <span
+                          className="tag-close-icon"
+                          onClick={() => removeTags(index)}
+                        >
+                          x
+              </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <input
+                    type="text"
+                    id="myAnchor"
+                    onKeyUp={(event) => (event.key === "," ? addTags(event) : null)}
+                    placeholder="Press ',' to add tags"
+                  />
+                </div>
+                {/* <TagsInput selectedTags={selectedTags} tags={[]} /> */}
               </div>
 
               {moreOption ? (
@@ -506,7 +502,8 @@ const AddProduct = () => {
                       </select>
                     </div>
 
-                    <TagsInput1 selectedTag1={selectedTag1} tags1={[]} />
+
+                    {/* <TagsInput1 selectedTag1={selectedTag1} tags1={[]} /> */}
                   </div>
                 </>
               ) : null}
