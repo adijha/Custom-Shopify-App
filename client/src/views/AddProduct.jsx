@@ -269,12 +269,15 @@ const AddProduct = () => {
       </div>
     );
   };
-
+const logcombo = (params) => {
+  console.log({combo});
+}
+let hol=[]
   const selectedTags = (tag) => {
-
     console.log(tag);
     if (!moreOption || !moreOption1) {
-      setCombo(tags)
+hol.push(tag)
+      setCombo(hol)
       console.log('----first combo',combo);
     }
   };
@@ -282,9 +285,7 @@ const AddProduct = () => {
     console.log(tag);
 
     if (!moreOption1 || !moreOption1) {
-      // var c = tags.map((e, i) =>{
-      //   return [e, tag1[i]];
-      // });
+     
       let c = [];
       tags.forEach(function (a1) {
         tag1.forEach(function (a2) {
@@ -294,7 +295,7 @@ const AddProduct = () => {
 
       setCombo(c)
       console.log('----secondCombo combo',c);
-      // console.log(c)
+    
     }
   };
   const selectedTag2 = (tags) => {
@@ -305,6 +306,8 @@ const AddProduct = () => {
     setCombo(c)
     console.log('----secondCombo combo', c);
   };
+
+ 
 
   return (
     <div className="container-fluid">
@@ -325,9 +328,13 @@ const AddProduct = () => {
             <span class="checkmarkk"></span>
           </label>
 
+          <div onClick={()=>logcombo()}>logcombo</div>
           {varien ? (
             <>
-              <h5>Option 1</h5>
+              <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
+                  <h5>Option 1</h5>
+                  <h5 onClick={()=>varien(false)}>cancel</h5>
+              </div>
               <div>
                 <div>
                   <select
@@ -353,11 +360,10 @@ const AddProduct = () => {
 
               {moreOption ? (
                 <>
-                  <div>
-                    <h5>Option 2</h5>
-                  </div>
-                  <CustomButton>cancel</CustomButton>
-
+                  <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
+                  <h5>Option 2</h5>
+                  <h5 onClick={()=>setMoreOption(false)}>cancel</h5>
+              </div>
                   <div>
                     <div>
                       <select
@@ -385,7 +391,10 @@ const AddProduct = () => {
 
               {moreOption1 ? (
                 <>
+                  <div style={{maxWidth:480,display:'flex',justifyContent:'space-between'}}>
                   <h5>Option 3</h5>
+                  <h5 onClick={()=>moreOption1(false)}>cancel</h5>
+              </div>
                   <div>
                     <div>
                       <select
