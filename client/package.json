@@ -10,6 +10,8 @@
     "bootstrap": "3.3.7",
     "chartist": "0.10.1",
     "draft-js": "^0.11.4",
+    "eslint": "^6.8.0",
+    "global": "^4.4.0",
     "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
