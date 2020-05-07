@@ -32,7 +32,7 @@ class CustomButton extends Component {
       "btn-round": round
     });
 
-    return <Button className={btnClasses} {...rest} />;
+    return <Button className={btnClasses} {...rest} style={{ backgroundColor:"#3E3E3E"}} />;
   }
 }
 

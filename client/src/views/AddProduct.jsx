@@ -22,12 +22,12 @@ const AddProduct = () => {
   const [status, setStatus] = useState('')
   const [categoryList, setCategoryList] = useState([])
   const [size, setSize] = useState('')
-  const [color, setColors] = useState('')
-  const [tag, setTag] = useState('')
+  // const [color, setColors] = useState('')
+  // const [tag, setTag] = useState('')
   const [tag0, setTag0] = useState([])
   const [tag1, setTag1] = useState([])
   const [tag2, setTag2] = useState([])
-  const [varien, setVarien] = useState(true)
+  const [varien, setVarien] = useState(false)
   const [option1, setOption1] = useState('')
   const [option2, setOption2] = useState('')
   const [option3, setOption3] = useState('')
@@ -40,6 +40,7 @@ const AddProduct = () => {
   const [prices, setPrices] = useState([])
   const [quantities, setQuantities] = useState([])
   const [skus, setSkus] = useState([])
+  const [options, setOptions] = useState([])
   useEffect(() => {
     getCategoryList()
   }, [])
@@ -78,10 +79,25 @@ const AddProduct = () => {
     'video',
   ]
 
+  const showOpt = (params) => {
+    console.log(options)
+  }
+
   //Add Product
   const addProduct = (e) => {
     e.preventDefault()
-
+    let hooli1 = {};
+    hooli1.name = option1
+    hooli1.values = tag0
+    setOptions([...options,hooli1])
+    let hooli2 = {};
+    hooli2.name = option1
+    hooli2.values = tag1
+    setOptions([...options,hooli2])
+    let hooli3 = {};
+    hooli3.name = option1
+    hooli3.values = tag2 
+    setOptions([...options,hooli3])
     const data = new FormData()
     data.append('productImage', productImage[0])
     data.append('productImage', productImage[1])
@@ -100,9 +116,13 @@ const AddProduct = () => {
     data.append('category', category)
     data.append('code', code)
     data.append('size', size)
-    data.append('color', color)
+    data.append('varients', varients)
+    data.append('options', options)
+
+    console.log(options);
+
+    // data.append('color', color)
     // data.append("tag", tag);
-    console.log('data', data)
     // axios
     //   .post('/api/addProduct', data)
     //   .then(item => {
@@ -121,7 +141,6 @@ const AddProduct = () => {
     //     }
     //   })
     //   .catch(err => {
-    //     console.log("add product error is:", err.message)
     //   })
 
     NotificationManager.error(
@@ -138,11 +157,9 @@ const AddProduct = () => {
     axios
       .post('/api/product/csv', scvdata)
       .then((item) => {
-        console.log('file uploaded')
         setStatus('File uploaded Successfully')
       })
       .catch((error) => {
-        console.log('csv product :', error.message)
       })
   }
 
@@ -181,7 +198,6 @@ const AddProduct = () => {
   //Fetch category List
   const getCategoryList = () => {
     axios.get('/api/totalCategory').then((data) => {
-      console.log('category list is', data.data)
       setCategoryList(data.data)
     })
   }
@@ -234,7 +250,6 @@ const AddProduct = () => {
     console.log(tag1)
     console.log(tag2)
     console.log(combo)
-    console.log(' ')
   }
   const logVarients = (params) => {
     console.log({ varients });
@@ -339,6 +354,145 @@ const AddProduct = () => {
     <div className='container-fluid'>
       <br />
       <form onSubmit={addProduct}>
+
+        <div className="card card-input">
+          <div className="form-group">
+            <label for="product_name">Title</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="form-control"
+              id="product_name"
+              placeholder="Enter Title of Product"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_description">Detail Description</label>
+            <ReactQuill
+              theme={"snow"}
+              onChange={(value) => setDescription(value)}
+              style={{ minHeight: "18em" }}
+              value={description}
+              modules={Editor.modules}
+              formats={Editor.formats}
+              placeholder={"Write something"}
+            />
+          </div>
+          <div className="form-group">
+            <label for="productImage">Image upload</label>
+            <input
+              type="file"
+              name="productImage"
+              className="form-control"
+              onChange={(e) => setProductImage(e.target.files)}
+              multiple
+              accept="image/*"
+            />
+          </div>
+        </div>
+        <div className="card card-input">
+          <div className="form-group">
+            <label for="product_category">Category</label>
+            <select
+              className="form-control"
+              id="product_category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="Enter category of Product">
+              {categoryList.map((item, i) => {
+                return <option key={i}>{item.category}</option>;
+              })}
+            </select>
+          </div>
+          <div className="form-group">
+            <label for="product_id">ID/SKU</label>
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="form-control"
+              id="product_id"
+              placeholder="Enter Unique Id of Product"
+              required
+            />
+          </div>
+        </div>
+        <div className="card card-input">
+          <div className="form-group">
+            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
+            <div
+              class="form-control "
+              style={{
+                border: "1px solid #ddd",
+                display: "flex",
+                flexDirection: "row",
+              }}>
+              <span class="icon-wrapp">
+                <i class="input-icon fa fa-usd"></i>
+              </span>
+              <input
+                class="input-with-icon"
+                id="form-name"
+                type="text"
+                min="0"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id="product_price"
+                style={{ border: "none", width: "48vw" }}
+                placeholder="Enter Price"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label for="product_quantity">Quantity</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              min="0"
+              className="form-control"
+              id="product_quantity"
+              placeholder="Enter Available Quanity of Product"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Weight</label>
+            <input
+              type="number"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="form-control"
+              id="product_warranty"
+              placeholder="Enter Weight of Product in Grams"
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Warranty</label>
+            <input
+              type="text"
+              value={warranty}
+              onChange={(e) => setWarranty(e.target.value)}
+              className="form-control"
+              id="product_warranty"
+              placeholder="Enter Available warranty of Product"
+            />
+          </div>
+          <div className="form-group" style={{ marginTop: 20 }}>
+            <label for="product_size">Size</label>
+            <input type="text"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="form-control"
+              id="product_size"
+              placeholder="Enter Differnet sizes seperated by ',' commas"
+            />
+          </div>
+        </div>
         <div className='card card-input py-0 ll'>
           <h4 className='text-left' style={{ margin: 0, marginBottom: 15 }}>
             Variants
@@ -355,7 +509,7 @@ const AddProduct = () => {
             <span class='checkmarkk'></span>
           </label>
           <div style={{ display: 'flex' }}>
-            <div className="meraButton" onClick={() => logcombo()}>logcombo</div>
+            <div className="meraButton" onClick={() => showOpt()}>showOpt</div>
             <div className="meraButton" onClick={() => logVarients()}>logVarients</div>
           </div>
           {varien ? (
@@ -534,26 +688,25 @@ const AddProduct = () => {
                 </div>
               ) : null}
 
-              {!true ? null : (
+              {!combo ? null : (
                 <div>
                   <h4>Preview</h4>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: "row" }}>
+                  <div style={{ display: 'flex', flexDirection: "row" }}>
                     <h5 style={{
-                      marginRight: 20
+                      flex: 1
                     }}>Varient</h5>
                     <h5 style={{
-                      marginRight: 20
+                      flex: 1, marginLeft: -28
                     }}>Price</h5>
                     <h5 style={{
-                      marginRight: 20
+                      flex: 1, marginLeft: -30
                     }}>Quantity</h5>
                     <h5 style={{
-                      marginRight: 20
+                      flex: 1, marginRight: -50
                     }}>SKU</h5>
                   </div>
-                  {["a/1/x", "c/2/y", "b/3/z"].map((item, index) => (
+                  {combo.map((item, index) => (
                     <div key={index}>
-
                       <div style={{ display: 'flex', justifyContent: "space-evenly", flexDirection: "row" }}>
                         <h5 style={{ flex: 1, marginRight: 13 }}> {item} </h5>
                         <input type="text"
@@ -577,9 +730,8 @@ const AddProduct = () => {
                             ])
                           }}
                           className="form-control"
-                          id="product_price"
-
-                        /><input type="number"
+                          id="product_price" />
+                        <input type="number"
                           onChange={(e) => {
                             let hola = item.split('/')
                             let hooli = {}
@@ -596,7 +748,6 @@ const AddProduct = () => {
                               ...varients, hooli
                             ])
                             setQuantities([...quantities, e.target.value])
-
                           }}
                           className="form-control"
                           id="product_size"
@@ -627,178 +778,16 @@ const AddProduct = () => {
                   ))}
                 </div>
               )}
-              <div className="form-group" style={{ marginTop: 20 }}>
-                <label for="product_size">Size</label>
-                <input type="text"
-                  value={size}
-                  onChange={(e) => setSize(e.target.value)}
-                  className="form-control"
-                  id="product_size"
-                  placeholder="Enter Differnet sizes seperated by ',' commas"
-                />
-              </div>
-              <div className="form-group">
-                <label for="product_colors">Colors</label>
-                <input type="text"
-                  value={color}
-                  onChange={(e) => setColors(e.target.value)}
-                  className="form-control"
-                  id="product_colors"
-                  placeholder="Enter Differnet colors seperated by ',' commas"
-                />
-              </div>
-              <div className="form-group">
-                <label for="product_colors">Tags</label>
-                <input type="text"
-                  value={tag}
-                  onChange={(e) => setTag(e.target.value)}
-                  className="form-control"
-                  id="product_colors"
-                  placeholder="Enter Differnet Tags seperated by ',' commas"
-                />
-              </div>
             </>
           ) : null}
-        </div>
-        {/* 
-        <div className="card card-input">
-          <div className="form-group">
-            <label for="product_category">Category</label>
-            <select
-              className="form-control"
-              id="product_category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Enter category of Product"
-            >
-              {categoryList.map((item, i) => {
-                return <option key={i}>{item.category}</option>;
-              })}
-            </select>
-          </div>
-          <div className="form-group">
-            <label for="product_id">ID/SKU</label>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="form-control"
-              id="product_id"
-              placeholder="Enter Unique Id of Product"
-              required
-            />
-          </div>
-        </div> */}
-        {/* 
-        <div className="card card-input">
-          <div className="form-group">
-            <label for="product_name">Title</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="form-control"
-              id="product_name"
-              placeholder="Enter Title of Product"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_description">Detail Description</label>
-            <ReactQuill
-              theme={"snow"}
-              onChange={(value) => setDescription(value)}
-              style={{ minHeight: "18em" }}
-              value={description}
-              modules={Editor.modules}
-              formats={Editor.formats}
-              placeholder={"Write something"}
-            />
-          </div>
-          <div className="form-group">
-            <label for="productImage">Image upload</label>
-            <input
-              type="file"
-              name="productImage"
-              className="form-control"
-              onChange={(e) => setProductImage(e.target.files)}
-              multiple
-              accept="image/*"
-            />
-          </div>
-        </div>
-        <div className="card card-input">
-          <div className="form-group">
-            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
-            <div
-              class="form-control "
-              style={{
-                border: "1px solid #ddd",
-                display: "flex",
-                flexDirection: "row",
-              }}>
-              <span class="icon-wrapp">
-                <i class="input-icon fa fa-usd"></i>
-              </span>
-              <input
-                class="input-with-icon"
-                id="form-name"
-                type="text"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                id="product_price"
-                style={{ border: "none", width: "48vw" }}
-                placeholder="Enter Price"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label for="product_quantity">Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              min="0"
-              className="form-control"
-              id="product_quantity"
-              placeholder="Enter Available Quanity of Product"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_warranty">Weight</label>
-            <input
-              type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Weight of Product in Grams"
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_warranty">Warranty</label>
-            <input
-              type="text"
-              value={warranty}
-              onChange={(e) => setWarranty(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Available warranty of Product"
-            />
-          </div>
-        </div> */}
-
-        <div className='card-button'>
-          <CustomButton round fill type='submit'>
-            Save Product
+          <div className='card-button' style={{ marginTop: 20 }}>
+            <CustomButton round fill type='submit'>
+              Save Product
           </CustomButton>
+          </div>
         </div>
       </form>
-      {/* <br />
+      <br />
       <div className="container-fluid">
         <form onSubmit={addCSvProduct}>
           <div className="card card-input">
@@ -815,18 +804,16 @@ const AddProduct = () => {
                 encType="multipart/form-data"
               />
               <br />
-              <button
-                className="btn btn-primary btn-sm"
-                type="submit"
-                name="button"
-              >
-                submit
-              </button>
+              <div className='card-button'>
+                <CustomButton round fill type='submit'>
+                  Upload Products
+                </CustomButton>
+              </div>
             </div>
           </div>
         </form>
       </div>
-      <br /> */}
+      <br />
     </div>
   )
 }
