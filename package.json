@@ -24,6 +24,7 @@
 		"express": "^4.17.1",
 		"express-fileupload": "^1.1.6",
 		"express-session": "^1.17.0",
+		"global": "^4.4.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.7.13",
 		"morgan": "^1.10.0",
@@ -34,6 +35,6 @@
 		"request-promise": "^4.2.5"
 	},
 	"devDependencies": {
-		"nodemon": "^2.0.1"
+		"nodemon": "^2.0.3"
 	}
 }

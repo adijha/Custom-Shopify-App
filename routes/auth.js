@@ -333,10 +333,7 @@ router.delete('/category/:id', async (req, res)=>{
 //Add Product
 router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	const files = await req.files;
-	 //console.log("files is ", req.files);
-
-
-
+	 console.log("files is ", req.files);
 
 	let imgData=[];
 
@@ -361,17 +358,19 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	 productImage: imgData,
 	 uploaded_on: Date(),
 	 size: req.body.size,
-	 color: req.body.color,
-	 tag:req.body.tag
+	 options:req.body.options,
+	 varients:req.body.varients,
+	//  color: req.body.color,
+	//  tag:req.body.tag
  });
- //  console.log(product , "product is");
+  console.log(product , "product is");
  //  console.log("req.body", req.body);
- // console.log(typeof(imgData));
+ console.log(typeof(imgData));
  //console.log("product object is", product)
 	 try {
-
 		const newProduct = await product.save();
-		//console.log("post response", JSON.stringify(product))
+		console.log({newProduct})
+		console.log("post response", JSON.stringify(product))
 		res.json(newProduct);
 	 } catch (error) {
 		res.json({message: error})

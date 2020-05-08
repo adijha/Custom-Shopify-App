@@ -118,30 +118,28 @@ const AddProduct = () => {
     data.append('size', size)
     data.append('varients', varients)
     data.append('options', options)
-
-    console.log(options);
-
     // data.append('color', color)
     // data.append("tag", tag);
-    // axios
-    //   .post('/api/addProduct', data)
-    //   .then(item => {
-    //     if (item) {
-    //       NotificationManager.success("Product Added Successfully");
-    //       console.log(item.config)
-    //       setStatus("Product Added Successfully")
-    //       setName("")
-    //       setPrice("")
-    //       setQuantity("")
-    //       setWarranty("")
-    //       setDescription("")
-    //       setCategory("")
-    //       setCode("")
-    //       setProductImage([])
-    //     }
-    //   })
-    //   .catch(err => {
-    //   })
+    axios
+      .post('/api/addProduct', data)
+      .then(item => {
+        if (item) {
+          console.log(item.data)
+          NotificationManager.success("Product Added Successfully");
+          console.log(item.config)
+          setStatus("Product Added Successfully")
+          // setName("")
+          // setPrice("")
+          // setQuantity("")
+          // setWarranty("")
+          // setDescription("")
+          // setCategory("")
+          // setCode("")
+          // setProductImage([])
+        }
+      })
+      .catch(err => {
+      })
 
     NotificationManager.error(
       'We are improving varient section, until you cannot add product'
@@ -352,6 +350,10 @@ const AddProduct = () => {
 
   return (
     <div className='container-fluid'>
+      <div style={{ display: 'flex' }}>
+            <div className="meraButton" onClick={() => showOpt()}>test Option</div>
+            <div className="meraButton" onClick={() => logVarients()}>log Varients</div>
+          </div>
       <br />
       <form onSubmit={addProduct}>
 
@@ -508,10 +510,6 @@ const AddProduct = () => {
             />
             <span class='checkmarkk'></span>
           </label>
-          <div style={{ display: 'flex' }}>
-            <div className="meraButton" onClick={() => showOpt()}>showOpt</div>
-            <div className="meraButton" onClick={() => logVarients()}>logVarients</div>
-          </div>
           {varien ? (
             <>
               <div
@@ -710,7 +708,9 @@ const AddProduct = () => {
                       <div style={{ display: 'flex', justifyContent: "space-evenly", flexDirection: "row" }}>
                         <h5 style={{ flex: 1, marginRight: 13 }}> {item} </h5>
                         <input type="text"
-                          onChange={(e) => {
+                          style={{flex:1}}
+
+onChange={(e) => {
                             let hola = item.split('/')
                             let hooli = {}
                             if (hola[0]) {
@@ -751,6 +751,7 @@ const AddProduct = () => {
                           }}
                           className="form-control"
                           id="product_size"
+                          style={{flex:1}}
 
                         /><input type="text"
                           onChange={(e) => {
@@ -772,6 +773,7 @@ const AddProduct = () => {
                           }}
                           className="form-control"
                           id="product_size"
+                          style={{flex:1}}
                         />
                       </div>
                     </div>
