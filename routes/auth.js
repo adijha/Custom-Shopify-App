@@ -364,16 +364,16 @@ router.post('/addProduct',upload.array('productImage'),async (req, res)=>{
 	//  tag:req.body.tag
  });
   console.log(product , "product is");
- //  console.log("req.body", req.body);
+  console.log("req.body", req.body);
  console.log(typeof(imgData));
  //console.log("product object is", product)
 	 try {
 		const newProduct = await product.save();
-		console.log({newProduct})
 		console.log("post response", JSON.stringify(product))
-		res.json(newProduct);
+		res.status(200).send('Success');
 	 } catch (error) {
-		res.json({message: error})
+		res.status(500).send(`Failed because of${error}`);
+		console.log(error)
 	 }
  });
 

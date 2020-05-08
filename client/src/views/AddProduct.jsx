@@ -9,19 +9,19 @@ import { NotificationManager } from 'react-notifications'
 import CustomButton from '../components/CustomButton/CustomButton'
 
 const AddProduct = () => {
-  const [name, setName] = useState('')
-  const [price, setPrice] = useState('')
-  const [quantity, setQuantity] = useState('')
-  const [warranty, setWarranty] = useState('')
-  const [weight, setWeight] = useState('')
+  const [name, setName] = useState('brush')
+  const [price, setPrice] = useState('123')
+  const [quantity, setQuantity] = useState('21')
+  const [warranty, setWarranty] = useState('2121')
+  const [weight, setWeight] = useState('21')
   const [description, setDescription] = useState('')
   const [category, setCategory] = useState('')
   const [productImage, setProductImage] = useState([])
   const [csvData, setCsvData] = useState([])
-  const [code, setCode] = useState('')
+  const [code, setCode] = useState('122121')
   const [status, setStatus] = useState('')
   const [categoryList, setCategoryList] = useState([])
-  const [size, setSize] = useState('')
+  const [size, setSize] = useState('2112')
   // const [color, setColors] = useState('')
   // const [tag, setTag] = useState('')
   const [tag0, setTag0] = useState([])
@@ -113,21 +113,23 @@ const AddProduct = () => {
     data.append('warranty', warranty)
     data.append('weight', weight)
     data.append('description', description)
-    data.append('category', category)
+    data.append('category', 'Beauty')
     data.append('code', code)
     data.append('size', size)
     data.append('varients', varients)
     data.append('options', options)
     // data.append('color', color)
     // data.append("tag", tag);
+
+    console.log({data})
+    console.log({category})
     axios
       .post('/api/addProduct', data)
-      .then(item => {
-        if (item) {
-          console.log(item.data)
+      .then(res => {
+        if (res.data.includes('Success')) {
           NotificationManager.success("Product Added Successfully");
-          console.log(item.config)
-          setStatus("Product Added Successfully")
+          console.log("cong",res.config)
+          // setStatus("Product Added Successfully")
           // setName("")
           // setPrice("")
           // setQuantity("")
@@ -139,17 +141,18 @@ const AddProduct = () => {
         }
       })
       .catch(err => {
-      })
-
-    NotificationManager.error(
-      'We are improving varient section, until you cannot add product'
-    )
+        console.log(err)
+        NotificationManager.error(
+          'We are improving varient section, until you cannot add product'
+          )
+        })
   }
 
   //Add Product from CSV File
   const addCSvProduct = (e) => {
     e.preventDefault()
     const scvdata = new FormData()
+    console.log(csvData)
     scvdata.append('file', csvData[0])
     scvdata.append('supplier_id', decode.id)
     axios
@@ -350,10 +353,10 @@ const AddProduct = () => {
 
   return (
     <div className='container-fluid'>
-      <div style={{ display: 'flex' }}>
+      {/* <div style={{ display: 'flex' }}>
             <div className="meraButton" onClick={() => showOpt()}>test Option</div>
             <div className="meraButton" onClick={() => logVarients()}>log Varients</div>
-          </div>
+          </div> */}
       <br />
       <form onSubmit={addProduct}>
 
@@ -401,10 +404,15 @@ const AddProduct = () => {
               className="form-control"
               id="product_category"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              placeholder="Enter category of Product">
+              onChange={(value) => {
+                setCategory('Beauty')
+                // console.log('---',e)
+                // console.log('tar',e.target)
+                // console.log({category})
+              }}
+              placeholder="Enter category">
               {categoryList.map((item, i) => {
-                return <option key={i}>{item.category}</option>;
+                return <option key={i} value={item.category}>{item.category}</option>;
               })}
             </select>
           </div>
