@@ -8,19 +8,19 @@ import { NotificationManager } from "react-notifications";
 import CustomButton from "../components/CustomButton/CustomButton";
 
 const AddProduct = () => {
-  const [name, setName] = useState("brush");
-  const [price, setPrice] = useState("123");
-  const [quantity, setQuantity] = useState("21");
-  const [warranty, setWarranty] = useState("2121");
-  const [weight, setWeight] = useState("21");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [warranty, setWarranty] = useState("");
+  const [weight, setWeight] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [productImage, setProductImage] = useState([]);
   const [csvData, setCsvData] = useState([]);
-  const [code, setCode] = useState("122121");
+  const [code, setCode] = useState("");
   const [status, setStatus] = useState("");
   const [categoryList, setCategoryList] = useState([]);
-  const [size, setSize] = useState("2112");
+  const [size, setSize] = useState("");
   // const [color, setColors] = useState('')
   // const [tag, setTag] = useState('')
 
