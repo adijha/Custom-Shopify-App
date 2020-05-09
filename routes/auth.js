@@ -2,7 +2,6 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
-
 const User = require("../model/User");
 const AdminUser = require("../model/AdminUser");
 const MerchantUser = require("../model/MerchantUser");
@@ -16,16 +15,15 @@ const csv = require("csvtojson");
 const request = require("request-promise");
 const Orders = require("../model/Orders");
 
-const storage = multer.diskStorage({
-  destination: "./files",
-  filename(req, file, cb) {
-    cb(null, `${new Date()}-${file.originalname}`);
-  },
-});
+// const storage = multer.diskStorage({
+//   destination: "./files",
+//   filename(req, file, cb) {
+//     cb(null, `${new Date()}-${file.originalname}`);
+//   },
+// });
 
 const upload = multer({
-  storage: multer.memoryStorage(),
-  // dest: 'uploads/'
+  storage: multer.memoryStorage()
 });
 
 //Admin Registration
@@ -450,7 +448,7 @@ router.post("/product/csv", upload.single("file"), async (req, res) => {
   // console.log("filess", req.file);
   // console.log("file", req.files.file);
   // console.log("file path is", req.files.file.tempFilePath);
-  const csvFilePath = req.file.tempFilePath;
+  const csvFilePath = req.file.path;
   csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {

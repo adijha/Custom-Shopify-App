@@ -4,7 +4,6 @@ import "react-quill/dist/quill.snow.css"; // ES6
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import "../assets/css/addProduct.css";
-
 import { NotificationManager } from "react-notifications";
 import CustomButton from "../components/CustomButton/CustomButton";
 
@@ -133,12 +132,35 @@ const AddProduct = () => {
       })
       .catch((err) => {
         console.log(err);
-        NotificationManager.error(
-          "We are improving varient section, until you cannot add product"
-        );
+        NotificationManager.error("There is a problem with your entries");
         setVarients([]);
       });
   };
+
+  // function csvJSON(csv){
+
+  //   var lines=csv.split("\n");
+
+  //   var result = [];
+
+  //   var headers=lines[0].split(",");
+
+  //   for(var i=1;i<lines.length;i++){
+
+  //     var obj = {};
+  //     var currentline=lines[i].split(",");
+
+  //     for(var j=0;j<headers.length;j++){
+  //       obj[headers[j]] = currentline[j];
+  //     }
+
+  //     result.push(obj);
+
+  //   }
+
+  //   //return result; //JavaScript object
+  //   return JSON.stringify(result); //JSON
+  // }
 
   //Add Product from CSV File
   const addCSvProduct = (e) => {
@@ -155,7 +177,7 @@ const AddProduct = () => {
         NotificationManager.success("File uploaded Successfully");
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         NotificationManager.error("There is a problem with this csv");
       });
   };
@@ -841,6 +863,9 @@ const AddProduct = () => {
                 <br />
                 <strong>Or Upload CSV File</strong>
               </p>
+
+              <input type="file" id="csvfileinput" accept=".csv" />
+              <div id="fileContents"></div>
               <input
                 type="file"
                 className="form-control text-center"
