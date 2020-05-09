@@ -106,7 +106,6 @@ const AddProduct = () => {
     data.append("size", size);
     data.append("varients", JSON.stringify(varients));
     data.append("options", JSON.stringify(options));
-    console.log({ varients });
     axios
       .post("/api/addProduct", data)
       .then((res) => {

@@ -299,12 +299,10 @@ router.delete("/category/:id", async (req, res) => {
 //Add Product
 router.post("/addProduct", upload.array("productImage"), async (req, res) => {
   const files = await req.files;
-  console.log("files is ", req.files);
-
   let imgData = [];
 
   files.forEach((file) => {
-    let bufferString = imgData.push({
+    imgData.push({
       imgName: file.mimetype,
       imgBufferData: file.buffer.toString("base64"),
     });
@@ -329,10 +327,7 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
     //  color: req.body.color,
     //  tag:req.body.tag
   });
-  console.log(product, "product is");
-  console.log("req.body", req.body);
-  console.log(typeof imgData);
-  //console.log("product object is", product)
+  
   try {
     const newProduct = await product.save();
     res.status(200).send("Success");
