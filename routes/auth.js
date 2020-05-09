@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+
 const User = require("../model/User");
 const AdminUser = require("../model/AdminUser");
 const MerchantUser = require("../model/MerchantUser");
@@ -15,8 +16,16 @@ const csv = require("csvtojson");
 const request = require("request-promise");
 const Orders = require("../model/Orders");
 
+const storage = multer.diskStorage({
+  destination: "./files",
+  filename(req, file, cb) {
+    cb(null, `${new Date()}-${file.originalname}`);
+  },
+});
+
 const upload = multer({
   storage: multer.memoryStorage(),
+  // dest: 'uploads/'
 });
 
 //Admin Registration
@@ -252,7 +261,6 @@ router.post("/addCategory", async (req, res) => {
   const add = new Category({
     category: req.body.category,
   });
-
   try {
     const newCategory = await add.save();
     console.log(newCategory, "category added");
@@ -329,7 +337,6 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
   //console.log("product object is", product)
   try {
     const newProduct = await product.save();
-    console.log("post response", JSON.stringify(product));
     res.status(200).send("Success");
   } catch (error) {
     res.status(500).send(`Failed because of${error}`);
@@ -438,15 +445,17 @@ router.get("/analyticProduct", async (req, res) => {
 });
 
 //Csv product Add
-router.post("/product/csv", async (req, res) => {
-  console.log("sile", req.files.file);
-  console.log("file path is", req.files.file.tempFilePath);
-  const csvFilePath = req.files.file.tempFilePath;
+router.post("/product/csv", upload.single("file"), async (req, res) => {
+  console.log(req.file);
+  // console.log("filess", req.file);
+  // console.log("file", req.files.file);
+  // console.log("file path is", req.files.file.tempFilePath);
+  const csvFilePath = req.file.tempFilePath;
   csv()
     .fromFile(csvFilePath)
     .then((jsonObj) => {
-      jsonObj.forEach((item) => {
-        //       console.log(item);
+      jsonObj.forEach(async (item) => {
+        console.log(item);
         const csvtest = new CsvTest({
           supplier_id: req.body.supplier_id,
           name: item.construction,
@@ -455,18 +464,16 @@ router.post("/product/csv", async (req, res) => {
           category: item.construction,
         });
         try {
-          const newProduct = csvtest.save();
+          const newProduct = await csvtest.save();
+          if (newProduct) {
+            res.json("product added completed");
+          }
         } catch (error) {
+          res.send(error);
           console.log("catch error is", error);
         }
       });
-      res.json("product added completed");
-    })
-
-    .catch((error) => {
-      res.send(error);
     });
-  console.log("uploaded");
 });
 
 //get CSv product List

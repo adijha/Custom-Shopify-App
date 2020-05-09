@@ -145,14 +145,19 @@ const AddProduct = () => {
     e.preventDefault();
     const scvdata = new FormData();
     console.log(csvData);
+    console.log(csvData[0]);
     scvdata.append("file", csvData[0]);
     scvdata.append("supplier_id", decode.id);
     axios
       .post("/api/product/csv", scvdata)
       .then((item) => {
-        setStatus("File uploaded Successfully");
+        console.log(item);
+        NotificationManager.success("File uploaded Successfully");
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log(error)
+        NotificationManager.error("There is a problem with this csv");
+      });
   };
 
   //making commination from tags ,tag1,tag2 array
@@ -344,14 +349,14 @@ const AddProduct = () => {
 
   return (
     <div className="container-fluid">
-      {/* <div style={{ display: "flex" }}>
+      <div style={{ display: "flex" }}>
         <div className="meraButton" onClick={() => showOpt()}>
           test Option
         </div>
         <div className="meraButton" onClick={() => logVarients()}>
           log Varients
         </div>
-      </div> */}
+      </div>
       <br />
       <form onSubmit={addProduct}>
         <div className="card card-input">
@@ -370,6 +375,7 @@ const AddProduct = () => {
           <div className="form-group">
             <label for="product_description">Detail Description</label>
             <ReactQuill
+              required
               theme={"snow"}
               onChange={(value) => setDescription(value)}
               style={{ minHeight: "18em" }}
@@ -383,6 +389,7 @@ const AddProduct = () => {
             <label for="productImage">Image upload</label>
             <input
               type="file"
+              required
               name="productImage"
               className="form-control"
               onChange={(e) => setProductImage(e.target.files)}
@@ -838,7 +845,12 @@ const AddProduct = () => {
                 type="file"
                 className="form-control text-center"
                 name="avatar"
-                onChange={(e) => setCsvData(e.target.files)}
+                onChange={(e) => {
+                  console.log(e.target);
+                  console.log(e.target.value);
+                  console.log(e.target.files);
+                  setCsvData(e.target.files);
+                }}
                 encType="multipart/form-data"
               />
               <br />
