@@ -78,11 +78,6 @@ const AddProduct = () => {
     "video",
   ];
 
-  const showOpt = (params) => {
-    console.log({ category });
-    console.log({ option1 });
-  };
-
   //Add Product
   const addProduct = (e) => {
     e.preventDefault();
@@ -136,31 +131,6 @@ const AddProduct = () => {
         setVarients([]);
       });
   };
-
-  // function csvJSON(csv){
-
-  //   var lines=csv.split("\n");
-
-  //   var result = [];
-
-  //   var headers=lines[0].split(",");
-
-  //   for(var i=1;i<lines.length;i++){
-
-  //     var obj = {};
-  //     var currentline=lines[i].split(",");
-
-  //     for(var j=0;j<headers.length;j++){
-  //       obj[headers[j]] = currentline[j];
-  //     }
-
-  //     result.push(obj);
-
-  //   }
-
-  //   //return result; //JavaScript object
-  //   return JSON.stringify(result); //JSON
-  // }
 
   //Add Product from CSV File
   const addCSvProduct = (e) => {
@@ -264,16 +234,6 @@ const AddProduct = () => {
       event.target.value = "";
     }
   };
-  const logcombo = () => {
-    console.log(tag0);
-    console.log(tag1);
-    console.log(tag2);
-    console.log(combo);
-  };
-  const logVarients = (params) => {
-    console.log({ varients });
-  };
-
   const selectedTags = (tag) => {
     if (!moreOption || !moreOption1) {
       if (tag.length != 0 && tag1.length == 0 && tag2.length == 0) {
@@ -371,14 +331,6 @@ const AddProduct = () => {
 
   return (
     <div className="container-fluid">
-      <div style={{ display: "flex" }}>
-        <div className="meraButton" onClick={() => showOpt()}>
-          test Option
-        </div>
-        <div className="meraButton" onClick={() => logVarients()}>
-          log Varients
-        </div>
-      </div>
       <br />
       <form onSubmit={addProduct}>
         <div className="card card-input">
@@ -863,8 +815,6 @@ const AddProduct = () => {
                 <br />
                 <strong>Or Upload CSV File</strong>
               </p>
-
-              <input type="file" id="csvfileinput" accept=".csv" />
               <div id="fileContents"></div>
               <input
                 type="file"
@@ -877,6 +827,7 @@ const AddProduct = () => {
                   setCsvData(e.target.files);
                 }}
                 encType="multipart/form-data"
+                accept=".csv"
               />
               <br />
               <div className="card-button">

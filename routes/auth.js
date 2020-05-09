@@ -23,7 +23,7 @@ const Orders = require("../model/Orders");
 // });
 
 const upload = multer({
-  storage: multer.memoryStorage()
+  storage: multer.memoryStorage(),
 });
 
 //Admin Registration
@@ -444,35 +444,59 @@ router.get("/analyticProduct", async (req, res) => {
 
 //Csv product Add
 router.post("/product/csv", upload.single("file"), async (req, res) => {
-  console.log(req.file);
-  // console.log("filess", req.file);
-  // console.log("file", req.files.file);
-  // console.log("file path is", req.files.file.tempFilePath);
-  const csvFilePath = req.file.path;
-  csv()
-    .fromFile(csvFilePath)
-    .then((jsonObj) => {
-      jsonObj.forEach(async (item) => {
-        console.log(item);
-        const csvtest = new CsvTest({
-          supplier_id: req.body.supplier_id,
-          name: item.construction,
-          price: item.policyID,
-          quantity: item.point_granularity,
-          category: item.construction,
-        });
-        try {
-          const newProduct = await csvtest.save();
-          if (newProduct) {
-            res.json("product added completed");
-          }
-        } catch (error) {
-          res.send(error);
-          console.log("catch error is", error);
-        }
-      });
-    });
+  
+  let list_csv = await csv().fromString(req.file.buffer.toString());
+  // console.log({ list_csv });
+  // const csvFilePath = req.file.path;
+  
+  // csv()
+  //   .fromFile(csvFilePath)
+  //   .then((jsonObj) => {
+    
+    
+    list_csv= JSON.stringify(list_csv)
+    list_csv= JSON.parse(list_csv)
+    // console.log("file", list_csv);
+    console.log( typeof list_csv)
+  list_csv.forEach(async (item,index) => {
+    index===1?
+    console.log(item["Body (HTML)"])
+    :null;
+    // const csvtest = new CsvTest({
+    //   supplier_id: req.body.supplier_id,
+    //   name: item.Title,
+    //   type: item.Type,
+    //   tags: item.Tags,
+    //   option1: item.["Option1 Name"],
+    //   option1: item.["Option1 Value"],
+    //   option2: item.["Option2 Name"],
+    //   option2: item.["Option2 Value"],
+    //   option3: item.["Option3 Name"],
+    //   option3: item.["Option3 Value"],
+//varients
+// varient: item
+// productImage:item["Image Src"]
+
+
+
+    //   tags: item.Tags,
+    //   description:item["Body (HTML)"]
+    //   price: item.policyID,
+    //   quantity: item.point_granularity,
+    //   category: item.construction,
+    // });
+    // try {
+    //   const newProduct = await csvtest.save();
+    //   if (newProduct) {
+    //     res.json("product added completed");
+    //   }
+    // } catch (error) {
+    //   res.send(error);
+    //   console.log("catch error is", error);
+    // }
+  });
 });
+// });
 
 //get CSv product List
 router.get("/csv/product", async (req, res) => {
