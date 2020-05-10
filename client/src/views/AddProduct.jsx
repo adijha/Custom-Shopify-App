@@ -23,7 +23,6 @@ const AddProduct = () => {
   const [size, setSize] = useState("");
   // const [color, setColors] = useState('')
   // const [tag, setTag] = useState('')
-
   const [tag0, setTag0] = useState([]);
   const [tag1, setTag1] = useState([]);
   const [tag2, setTag2] = useState([]);
@@ -135,19 +134,22 @@ const AddProduct = () => {
   const addCSvProduct = (e) => {
     e.preventDefault();
     const scvdata = new FormData();
-    console.log(csvData);
-    console.log(csvData[0]);
     scvdata.append("file", csvData[0]);
     scvdata.append("supplier_id", decode.id);
     axios
       .post("/api/product/csv", scvdata)
-      .then((item) => {
-        console.log(item);
-        NotificationManager.success("File uploaded Successfully");
+      .then((res) => {
+        if (res.data.includes("Success")) {
+          NotificationManager.success("File uploaded Successfully");
+        } else {
+          NotificationManager.error(
+            res.data.error || "There is a problem with this csv"
+          );
+        }
       })
       .catch((error) => {
         console.log(error);
-        NotificationManager.error("There is a problem with this csv");
+        NotificationManager.error(error || "There is a problem with this csv");
       });
   };
 
