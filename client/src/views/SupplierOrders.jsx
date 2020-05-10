@@ -103,10 +103,7 @@ const SupplierOrders = () => {
                             <td>{item.sku}</td>
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
-                            <td>
-                              {item.customer.address},{item.customer.city}-
-                              {item.customer.zip}, Mob. no.-
-                              {item.customer.phone}
+                            <td>{item.customer.city}
                             </td>
                             <td>
                               <input type="text" name="track_details" />
@@ -117,24 +114,35 @@ const SupplierOrders = () => {
                               </button>
                             </td>
                           </tr>
+
+
+
+
+                          
+
+
                           {expand === item.id ? (
-                            <>
-                              <tr
-                                style={{
-                                  backgroundColor: "#ffffff",
-                                  borderColor: "#ededed",
-                                  border: "1 px",
-                                  display:'flex'
-                                  ,
-                                  justifyContent:'space-evenly'
-                                }}
-                                key={key}
-                              >
-                                <tc>Customer Details</tc>
-                                <tc>Order Details</tc>
-                              </tr>
-                            </>
+                           <tr
+                           key={key}
+                           onClick={() => {
+                             setExpand(item.id);
+                           }}
+                         >
+                           <td colSpan="3">{item.id}</td>
+                           <td colSpan="3">
+                           {item.customer.address},{item.customer.city}-
+                              {item.customer.zip}
+                           </td>
+                         </tr>
                           ) : null}
+
+
+
+
+
+
+
+
                         </>
                       );
                     })}
