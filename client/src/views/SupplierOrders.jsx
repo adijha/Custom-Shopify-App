@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import Modal from "react-responsive-modal";
-
 import Card from "../components/Card/Card.jsx";
 
 const SupplierOrders = () => {
@@ -17,9 +15,8 @@ const SupplierOrders = () => {
   }, []);
 
   const getOrderList = () => {
-    axios.get("/api/ordersList/" + decode.id).then((data) => {
-      setOrderList(data.data);
-      console.log(data.data);
+    axios.get("/api/ordersList/" + decode.id).then((res) => {
+      setOrderList(res.data);
     });
   };
 
