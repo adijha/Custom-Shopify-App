@@ -9,6 +9,7 @@ import Card from "../components/Card/Card.jsx";
 const SupplierOrders = () => {
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
+  const [expand, setExpand] = useState("");
   const [orderList, setOrderList] = useState([
     {
       customer: {
@@ -19,7 +20,7 @@ const SupplierOrders = () => {
         phone: 7821915962,
         zip: 122010,
       },
-      id: "2148014227535",
+      id: "21480142275",
       name: "New Product variants",
       quantity: 1,
       sku: "SKU1001",
@@ -33,7 +34,7 @@ const SupplierOrders = () => {
         phone: 7821915962,
         zip: 122010,
       },
-      id: "2148014227535",
+      id: "214801422753",
       name: "New Product variants",
       quantity: 1,
       sku: "SKU1001",
@@ -76,15 +77,16 @@ const SupplierOrders = () => {
               ctTableFullWidth
               ctTableResponsive
               content={
-                <Table striped hover size="sm">
+                <Table hover size="sm">
                   <thead>
                     <tr>
-                      <th>Id</th>
+                      <th>Order Id</th>
                       <th>SKU</th>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>DElivery Add.</th>
-                      <th>Track No.</th>
+                      <th>Customer</th>
+                      <th>Payment Status</th>
+                      <th>Fulfillment Status</th>
+                      <th>Total Amount</th>
+                      <th>Invoice</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -94,22 +96,19 @@ const SupplierOrders = () => {
                           <tr
                             key={key}
                             onClick={() => {
-                              console.log("item", item.name);
+                              setExpand(item.id);
                             }}
                           >
                             <td>{item.id}</td>
                             <td>{item.sku}</td>
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
-
                             <td>
                               {item.customer.address},{item.customer.city}-
                               {item.customer.zip}, Mob. no.-
                               {item.customer.phone}
                             </td>
-
                             <td>
-                              {" "}
                               <input type="text" name="track_details" />
                             </td>
                             <td>
@@ -118,15 +117,24 @@ const SupplierOrders = () => {
                               </button>
                             </td>
                           </tr>
-                          <tr
-                            key={key}
-                            onClick={() => {
-                              console.log("item", item.name);
-                            }}
-                          >
-                            <td>Customer Details</td>
-                            <td>Order Details</td>
-                          </tr>
+                          {expand === item.id ? (
+                            <>
+                              <tr
+                                style={{
+                                  backgroundColor: "#ffffff",
+                                  borderColor: "#ededed",
+                                  border: "1 px",
+                                  display:'flex'
+                                  ,
+                                  justifyContent:'space-evenly'
+                                }}
+                                key={key}
+                              >
+                                <tc>Customer Details</tc>
+                                <tc>Order Details</tc>
+                              </tr>
+                            </>
+                          ) : null}
                         </>
                       );
                     })}
