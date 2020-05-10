@@ -76,7 +76,6 @@ const AddProduct = () => {
     "image",
     "video",
   ];
-
   //Add Product
   const addProduct = (e) => {
     e.preventDefault();
@@ -110,7 +109,6 @@ const AddProduct = () => {
       .then((res) => {
         if (res.data.includes("Success")) {
           NotificationManager.success("Product Added Successfully");
-          console.log("cong", res.config);
           setStatus("Product Added Successfully");
           setName("");
           setPrice("");
@@ -121,11 +119,16 @@ const AddProduct = () => {
           setCode("");
           setProductImage([]);
           setVarients([]);
+        } else {
+          NotificationManager.error(
+            res.data.error || "There is a problem with your entries"
+          );
         }
       })
       .catch((err) => {
-        console.log(err);
-        NotificationManager.error("There is a problem with your entries");
+        NotificationManager.error(
+          err || "There is a problem with your entries"
+        );
         setVarients([]);
       });
   };
@@ -148,7 +151,6 @@ const AddProduct = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
         NotificationManager.error(error || "There is a problem with this csv");
       });
   };
@@ -181,7 +183,6 @@ const AddProduct = () => {
       r[i] = str;
       res = r;
     }
-
     return res;
   }
 
