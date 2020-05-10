@@ -1,0 +1,101 @@
+.order-container {
+  height: 100vh;
+  width: 100vw;
+}
+.order-container .topbox {
+  height: 300px;
+  background: #c8e0ec;
+}
+.order-container .table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.order-container .table .header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  height: 30px;
+  width: 100%;
+  border-bottom: 1px solid #d3d3d3;
+}
+.order-container .table .header .shadow {
+  position: absolute;
+  top: 31px;
+}
+.order-container .table .header .hcol {
+  display: flex;
+  background-color: #e5e8eb;
+  border-color: #dfdfdf;
+  justify-content: space-between;
+  padding: 0 7px;
+  height: 30px;
+  align-items: center;
+  cursor: pointer;
+  color: #1f384d;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.5);
+  width: 100%;
+}
+.order-container .table .header.fixed {
+  background: #e5e8eb;
+  z-index: 99;
+  position: fixed;
+  top: 0px;
+}
+.order-container .table .header.fixed .shadow {
+  height: 3px;
+  width: 100%;
+  background: 0 0
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAECAYAAABP2FU6AAAAF0lEQVR4AWPUkNeSBhHCjJoK2twgFisAFagCCp3pJlAAAAAASUVORK5CYII=)
+    repeat-x;
+}
+.order-container .table ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  position: absolute;
+  top: 32px;
+  width: 100%;
+}
+.order-container .table ul li {
+  width: 100%;
+  min-height: 83px;
+  border-bottom: 1px solid #dfdfdf;
+}
+.order-container .table ul li .heading {
+  display: flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: 100%;
+  height: 83px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.order-container .table ul li .heading .col {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 10px;
+  height: 83px;
+  border-right: 1px solid #dfdfdf;
+}
+.order-container .table ul li .content {
+  width: 100%;
+  height: 0px;
+  opacity: 0;
+  transition: height 0.3s;
+}
+.order-container .table ul li.open .heading {
+  background: #4d98bc;
+  color: #fff;
+}
+.order-container .table ul li.open .heading .col {
+  border: none;
+}
+.order-container .table ul li.open .content {
+  height: 300px;
+  opacity: 1;
+}

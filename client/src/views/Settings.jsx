@@ -14,7 +14,6 @@ const SupplierOrders = () => {
 	const [password, setPassword] = useState("");
 	const [email, setEmail] = useState("");
 	const [status, setStatus] = useState("");
-
 	const token = localStorage.getItem("token");
 	const decode = jwt_decode(token);
 	useEffect(() => {
