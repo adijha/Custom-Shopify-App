@@ -448,7 +448,7 @@ app.get("/newTimeGraph", async (req, res) => {
   newAray.forEach((item, i) => {
     console.log({ item });
     timeData.forEach((dash, i) => {
-      if (item == dash.date) {
+      if (item === dash.date) {
         calAdd += dash.price;
       }
     });
@@ -628,7 +628,7 @@ app.get("/topSelling", async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code == arr.sku) {
+      if (product.code === arr.sku) {
         let countItem = product.price * arr.count;
 
         calOrder.push({
@@ -788,7 +788,7 @@ app.get("/supplierRevenue/:id", async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code == arr.sku) {
+      if (product.code === arr.sku) {
         let countPrice = product.price * arr.count;
 
         calPrice.push(~~countPrice);
@@ -845,7 +845,7 @@ app.get("/supplierOrders/:id", async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code == arr.sku) {
+      if (product.code === arr.sku) {
         let countItem = arr.count;
 
         calOrder.push(countItem);
@@ -901,7 +901,7 @@ app.get("/topProducts/:id", async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code == arr.sku) {
+      if (product.code === arr.sku) {
         let countItem = product.price * arr.count;
 
         calOrder.push({

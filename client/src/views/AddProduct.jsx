@@ -164,7 +164,7 @@ const AddProduct = () => {
       for (var j = 0, l = arg[i].length; j < l; j++) {
         var a = arr.slice(0); // clone arr
         a.push(arg[i][j]);
-        if (i == max) r.push(a);
+        if (i === max) r.push(a);
         else helper(a, i + 1);
       }
     }
@@ -176,7 +176,7 @@ const AddProduct = () => {
       let str = "";
       for (let j = 0; j < e.length; j++) {
         const element = e[j];
-        if (str == "") {
+        if (str === "") {
           str = element;
         } else str = str + " / " + element;
       }
@@ -238,11 +238,11 @@ const AddProduct = () => {
   };
   const selectedTags = (tag) => {
     if (!moreOption || !moreOption1) {
-      if (tag.length != 0 && tag1.length == 0 && tag2.length == 0) {
+      if (tag.length != 0 && tag1.length === 0 && tag2.length === 0) {
         let r = makeCombo(tag);
         setCombo(r);
       }
-      if (tag0.length != 0 && tag1.length != 0 && tag2.length == 0) {
+      if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
         let r = makeCombo(tag0, tag1);
         setCombo(r);
       }
@@ -255,11 +255,11 @@ const AddProduct = () => {
 
   const handelDelete = () => {
     //! normal user flow
-    if (tag0.length != 0 && tag1.length == 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
       let r = makeCombo(tag0);
       setCombo(r);
     }
-    if (tag0.length != 0 && tag1.length != 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
       let r = makeCombo(tag0, tag1);
       setCombo(r);
     }
@@ -268,33 +268,33 @@ const AddProduct = () => {
       setCombo(r);
     }
     //! one empty array two not empty
-    if (tag0.length == 0 && tag1.length != 0 && tag2.length != 0) {
+    if (tag0.length === 0 && tag1.length != 0 && tag2.length != 0) {
       let r = makeCombo(tag1, tag2);
       setCombo(r);
     }
-    if (tag0.length != 0 && tag1.length == 0 && tag2.length != 0) {
+    if (tag0.length != 0 && tag1.length === 0 && tag2.length != 0) {
       let r = makeCombo(tag0, tag2);
       setCombo(r);
     }
-    if (tag0.length != 0 && tag1.length != 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
       let r = makeCombo(tag0, tag1);
       setCombo(r);
     }
     //! two empty array one not empty
-    if (tag0.length == 0 && tag1.length != 0 && tag2.length == 0) {
+    if (tag0.length === 0 && tag1.length != 0 && tag2.length === 0) {
       let r = makeCombo(tag1);
       setCombo(r);
     }
-    if (tag0.length == 0 && tag1.length == 0 && tag2.length != 0) {
+    if (tag0.length === 0 && tag1.length === 0 && tag2.length != 0) {
       let r = makeCombo(tag2);
       setCombo(r);
     }
-    if (tag0.length != 0 && tag1.length == 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
       let r = makeCombo(tag0);
       setCombo(r);
     }
     //! all empty array
-    if (tag0.length == 0 && tag1.length == 0 && tag2.length == 0) {
+    if (tag0.length === 0 && tag1.length === 0 && tag2.length === 0) {
       let r = makeCombo([]);
       setCombo(r);
     }
@@ -302,11 +302,11 @@ const AddProduct = () => {
 
   const selectedTag1 = (tag1) => {
     if (!moreOption1) {
-      if (tag0.length != 0 && tag1.length == 0 && tag2.length == 0) {
+      if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
         let r = makeCombo(tag0);
         setCombo(r);
       }
-      if (tag0.length != 0 && tag1.length != 0 && tag2.length == 0) {
+      if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
         let r = makeCombo(tag0, tag1);
         setCombo(r);
       }
@@ -317,11 +317,11 @@ const AddProduct = () => {
     }
   };
   const selectedTag2 = (tag2) => {
-    if (tag0.length != 0 && tag1.length == 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
       let r = makeCombo(tag0);
       setCombo(r);
     }
-    if (tag0.length != 0 && tag1.length != 0 && tag2.length == 0) {
+    if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
       let r = makeCombo(tag0, tag1);
       setCombo(r);
     }
