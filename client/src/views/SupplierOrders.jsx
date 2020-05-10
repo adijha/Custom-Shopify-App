@@ -10,65 +10,10 @@ const SupplierOrders = () => {
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
   const [expand, setExpand] = useState("");
-  const [orderList, setOrderList] = useState([
-    {
-      customer: {
-        address: "28 A, N-3, Mojitolabs, DLF phase 2, Gurugramnull",
-        city: "Gurugram",
-        email: "devadityajha@gmail.com",
-        name: "AdityaJha",
-        phone: 7821915962,
-        zip: 122010,
-      },
-      id: "21480142275",
-      name: "New Product variants",
-      quantity: 1,
-      sku: "SKU1001",
-      paymentStatus: "cod",
-      fullfillmentStaus: "not yet",
-      amount: "200",
-      invoice: "null",
-    },
-    {
-      customer: {
-        address: "28 A, N-3, Mojitolabs, DLF phase 2, Gurugramnull",
-        city: "Gurugram",
-        email: "devadityajha@gmail.com",
-        name: "AdityaJha",
-        phone: 7821915962,
-        zip: 122010,
-      },
-      id: "214801422753",
-      name: "New Product variants",
-      quantity: 1,
-      sku: "SKU1001",
-      paymentStatus: "cod",
-      fullfillmentStaus: "not yet",
-      amount: "200",
-      invoice: "null",
-    },
-    {
-      customer: {
-        address: "28 A, N-3, Mojitolabs, DLF phase 2, Gurugramnull",
-        city: "Gurugram",
-        email: "devadityajha@gmail.com",
-        name: "AdityaJha",
-        phone: 7821915962,
-        zip: 122010,
-      },
-      id: "2148014227535",
-      name: "New Product variants",
-      quantity: 1,
-      sku: "SKU1001",
-      paymentStatus: "cod",
-      fullfillmentStaus: "not yet",
-      amount: "200",
-      invoice: "null",
-    },
-  ]);
+  const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
-    // getOrderList();
+    getOrderList();
   }, []);
 
   const getOrderList = () => {
@@ -108,34 +53,32 @@ const SupplierOrders = () => {
                           <tr
                             key={key}
                             onClick={() => {
-                              setExpand(item.id);
+                              if (expand === item.id) {
+                                setExpand(null);
+                              } else {
+                                setExpand(item.id);
+                              }
                             }}
                           >
-                            <td>{item.id}</td>
-                            <td>{item.sku}</td>
-                            <td>{item.customer.name}</td>
-                            <td>{item.paymentStatus}</td>
-                            <td>{item.fullfillmentStaus}</td>
-                            <td>{item.amount}</td>
-                            <td>{item.invoice}</td>
+                            <td>{item.id || "none"}</td>
+                            <td>{item.sku || "none"}</td>
+                            <td>{item.customer.name || "none"}</td>
+                            <td>{item.paymentStatus || "none"}</td>
+                            <td>{item.fullfillmentStaus || "none"}</td>
+                            <td>{item.amount || "none"}</td>
+                            <td>{item.invoice || "none"}</td>
                           </tr>
 
                           {expand === item.id ? (
-                            <tr
-                              key={key}
-                              onClick={() => {
-                                setExpand(item.id);
-                              }}
-                            >
-                              {/* <td colSpan="1"></td> */}
-                              <td colSpan="3">
+                            <tr key={9898989}>
+                              <td colSpan="4">
                                 <th>Customer Setails</th>
                                 <tr>Name :- {item.customer.name}</tr>
                                 <tr>Email :- {item.customer.email}</tr>
                                 <tr>Phone :- {item.customer.phone}</tr>
                                 <tr>Address :- {item.customer.address}</tr>
                               </td>
-                              <td></td>
+
                               <td colSpan="3">
                                 <th>Order Details</th>
                                 <tr>Name :- {item.name}</tr>
