@@ -24,6 +24,10 @@ const SupplierOrders = () => {
       name: "New Product variants",
       quantity: 1,
       sku: "SKU1001",
+      paymentStatus: "cod",
+      fullfillmentStaus: "not yet",
+      amount: "200",
+      invoice: "null",
     },
     {
       customer: {
@@ -38,6 +42,10 @@ const SupplierOrders = () => {
       name: "New Product variants",
       quantity: 1,
       sku: "SKU1001",
+      paymentStatus: "cod",
+      fullfillmentStaus: "not yet",
+      amount: "200",
+      invoice: "null",
     },
     {
       customer: {
@@ -52,6 +60,10 @@ const SupplierOrders = () => {
       name: "New Product variants",
       quantity: 1,
       sku: "SKU1001",
+      paymentStatus: "cod",
+      fullfillmentStaus: "not yet",
+      amount: "200",
+      invoice: "null",
     },
   ]);
 
@@ -101,48 +113,38 @@ const SupplierOrders = () => {
                           >
                             <td>{item.id}</td>
                             <td>{item.sku}</td>
-                            <td>{item.name}</td>
-                            <td>{item.quantity}</td>
-                            <td>{item.customer.city}
-                            </td>
-                            <td>
-                              <input type="text" name="track_details" />
-                            </td>
-                            <td>
-                              <button className="btn btn-primary btn-sm">
-                                Deliver
-                              </button>
-                            </td>
+                            <td>{item.customer.name}</td>
+                            <td>{item.paymentStatus}</td>
+                            <td>{item.fullfillmentStaus}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.invoice}</td>
                           </tr>
 
-
-
-
-                          
-
-
                           {expand === item.id ? (
-                           <tr
-                           key={key}
-                           onClick={() => {
-                             setExpand(item.id);
-                           }}
-                         >
-                           <td colSpan="3">{item.id}</td>
-                           <td colSpan="3">
-                           {item.customer.address},{item.customer.city}-
-                              {item.customer.zip}
-                           </td>
-                         </tr>
+                            <tr
+                              key={key}
+                              onClick={() => {
+                                setExpand(item.id);
+                              }}
+                            >
+                              {/* <td colSpan="1"></td> */}
+                              <td colSpan="3">
+                                <th>Customer Setails</th>
+                                <tr>Name :- {item.customer.name}</tr>
+                                <tr>Email :- {item.customer.email}</tr>
+                                <tr>Phone :- {item.customer.phone}</tr>
+                                <tr>Address :- {item.customer.address}</tr>
+                              </td>
+                              <td></td>
+                              <td colSpan="3">
+                                <th>Order Details</th>
+                                <tr>Name :- {item.name}</tr>
+                                <tr>Varient :- {item.email}</tr>
+                                <tr>Quantity :- {item.quantity}</tr>
+                                <tr>Paid :- {item.address}</tr>
+                              </td>
+                            </tr>
                           ) : null}
-
-
-
-
-
-
-
-
                         </>
                       );
                     })}
