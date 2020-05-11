@@ -191,7 +191,7 @@ router.patch("/update", async (req, res) => {
     email: req.body.email,
     password: hashPassword,
   };
-  console.log(updateUser);
+  // console.log(updateUser);
   try {
     const data = await User.updateOne(
       { _id: req.body._id },
@@ -307,8 +307,6 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
       imgBufferData: file.buffer.toString("base64"),
     });
   });
-  // let prod = JSON.parse(req.body.)
-  //console.log("imageDatais", imgData)
   const product = await new Products({
     supplier_id: req.body.supplier_id,
     name: req.body.name,
@@ -500,7 +498,7 @@ router.get("/csv/product", async (req, res) => {
 //Supplier Order List from merchant
 
 router.get("/ordersList/:id", async (req, res) => {
-  console.log("id is", req.params.id);
+  // console.log("id is", req.params.id);
   let itemArray = [];
   const data = await Orders.find({});
   // console.log({data})
@@ -521,14 +519,11 @@ router.get("/ordersList/:id", async (req, res) => {
     });
   });
 
-  //	console.log(JSON.stringify({itemArray}));
-
-  //
   let makeList = [];
 
   const productData = await Products.find({ supplier_id: req.params.id });
 
-  console.log({ productData });
+  // console.log({ productData });
 
   itemArray.forEach((item, i) => {
     productData.forEach((product, j) => {
@@ -549,7 +544,7 @@ router.get("/ordersList/:id", async (req, res) => {
       }
     });
   });
-  console.log({ makeList });
+  // console.log({ makeList });
   res.status(200).json(makeList);
   // let totalOrders =   calOrder.reduce((a,b)=>a+b, 0)
   // console.log(totalOrders);
