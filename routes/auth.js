@@ -327,7 +327,7 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
     //  color: req.body.color,
     //  tag:req.body.tag
   });
-
+  
   try {
     const newProduct = await product.save();
     res.status(200).send("Success");
@@ -439,20 +439,24 @@ router.get("/analyticProduct", async (req, res) => {
 
 //Csv product Add
 router.post("/product/csv", upload.single("file"), async (req, res) => {
+  
   let list_csv = await csv().fromString(req.file.buffer.toString());
   // console.log({ list_csv });
   // const csvFilePath = req.file.path;
-
+  
   // csv()
   //   .fromFile(csvFilePath)
   //   .then((jsonObj) => {
-
-  list_csv = JSON.stringify(list_csv);
-  list_csv = JSON.parse(list_csv);
-  // console.log("file", list_csv);
-  console.log(typeof list_csv);
-  list_csv.forEach(async (item, index) => {
-    index === 1 ? console.log(item["Body (HTML)"]) : null;
+    
+    
+    list_csv= JSON.stringify(list_csv)
+    list_csv= JSON.parse(list_csv)
+    // console.log("file", list_csv);
+    console.log( typeof list_csv)
+  list_csv.forEach(async (item,index) => {
+    index===1?
+    console.log(item["Body (HTML)"])
+    :null;
     // const csvtest = new CsvTest({
     //   supplier_id: req.body.supplier_id,
     //   name: item.Title,
@@ -464,9 +468,11 @@ router.post("/product/csv", upload.single("file"), async (req, res) => {
     //   option2: item.["Option2 Value"],
     //   option3: item.["Option3 Name"],
     //   option3: item.["Option3 Value"],
-    //varients
-    // varient: item
-    // productImage:item["Image Src"]
+//varients
+// varient: item
+// productImage:item["Image Src"]
+
+
 
     //   tags: item.Tags,
     //   description:item["Body (HTML)"]
@@ -502,16 +508,17 @@ router.get("/csv/product", async (req, res) => {
 router.get("/ordersList/:id", async (req, res) => {
   console.log("id is", req.params.id);
   let itemArray = [];
-
   const data = await Orders.find({});
+  // console.log({data})
   data.forEach((item, i) => {
-    item.products.forEach((sss, i) => {
-      if (sss.sku !== undefined) {
+    item.products.forEach((subItem, i) => {
+      if (subItem.sku !== undefined) {
         itemArray.push({
           id: item.product_name,
-          sku: sss.sku,
-          quantity: sss.quantity,
+          sku: subItem.sku,
+          quantity: subItem.quantity,
           customer: item.customer,
+          
         });
       }
     });
@@ -524,17 +531,19 @@ router.get("/ordersList/:id", async (req, res) => {
 
   const productData = await Products.find({ supplier_id: req.params.id });
 
-  console.log(productData.length);
+  console.log({productData});
 
-  itemArray.forEach((arr, i) => {
+  itemArray.forEach((item, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+      if (product.code == item.sku) {
         let dataObj = {
-          id: arr.id,
-          customer: arr.customer,
-          sku: arr.sku,
+          id: item.id,
+          customer: item.customer,
+          sku: item.sku,
           name: product.name,
-          quantity: arr.quantity,
+          price: product.price,
+          quantity: item.quantity,
+          
         };
 
         makeList.push(dataObj);

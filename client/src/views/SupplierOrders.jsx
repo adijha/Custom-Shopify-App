@@ -62,7 +62,7 @@ const SupplierOrders = () => {
                             <td>{item.customer.name || "none"}</td>
                             <td>{item.paymentStatus || "none"}</td>
                             <td>{item.fullfillmentStaus || "none"}</td>
-                            <td>{item.amount || "none"}</td>
+                            <td>{item.price || "none"}</td>
                             <td>{item.invoice || "none"}</td>
                           </tr>
 
@@ -81,7 +81,7 @@ const SupplierOrders = () => {
                                 <tr>Name :- {item.name}</tr>
                                 <tr>Varient :- {item.email}</tr>
                                 <tr>Quantity :- {item.quantity}</tr>
-                                <tr>Paid :- {item.address}</tr>
+                                <tr>Paid :- {item.paid}</tr>
                               </td>
                             </tr>
                           ) : null}
