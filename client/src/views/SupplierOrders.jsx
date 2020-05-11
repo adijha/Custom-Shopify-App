@@ -17,6 +17,7 @@ const SupplierOrders = () => {
   const getOrderList = () => {
     axios.get("/api/ordersList/" + decode.id).then((res) => {
       setOrderList(res.data);
+      console.log(res.data);
     });
   };
 
