@@ -1027,6 +1027,10 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
       phone: request.body.shipping_address.phone,
       state: request.body.shipping_address.province,
       country: request.body.shipping_address.country,
+      varient: request.body.varient,
+      quantity: request.body.line_items.quantity,
+      paid: request.body.total_price,
+      fulfillmentStatus: request.body.fulfillment_status,
     },
   });
 
