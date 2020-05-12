@@ -120,15 +120,15 @@ const AddProduct = () => {
           setProductImage([]);
           setVarients([]);
         } else {
-          NotificationManager.error(
-            res.data.error || "There is a problem with your entries"
-          );
+          res.data.error
+            ? NotificationManager.error(res.data.error.toString())
+            : NotificationManager.error("There is a problem with your entries");
         }
       })
       .catch((err) => {
-        NotificationManager.error(
-          err || "There is a problem with your entries"
-        );
+        err
+          ? NotificationManager.error(err.toString())
+          : NotificationManager.error("There is a problem with your entries");
         setVarients([]);
       });
   };
@@ -145,13 +145,15 @@ const AddProduct = () => {
         if (res.data.includes("Success")) {
           NotificationManager.success("File uploaded Successfully");
         } else {
-          NotificationManager.error(
-            res.data.error || "There is a problem with this csv"
-          );
+          res.data.error
+            ? NotificationManager.error(res.data.error.toString())
+            : NotificationManager.error("There is a problem with this csv");
         }
       })
       .catch((error) => {
-        NotificationManager.error(error || "There is a problem with this csv");
+        error
+          ? NotificationManager.error(error.toString())
+          : NotificationManager.error("There is a problem with this csv");
       });
   };
 

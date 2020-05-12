@@ -448,9 +448,9 @@ router.post("/product/csv", upload.single("file"), async (req, res) => {
   list_csv = JSON.stringify(list_csv);
   list_csv = JSON.parse(list_csv);
   // console.log("file", list_csv);
-  console.log(typeof list_csv);
+  // console.log(typeof list_csv);
   list_csv.forEach(async (item, index) => {
-    index === 1 ? console.log(item["Body (HTML)"]) : null;
+    index === 1 ? console.log(item) : null;
     // const csvtest = new CsvTest({
     //   supplier_id: req.body.supplier_id,
     //   name: item.Title,
