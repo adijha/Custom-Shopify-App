@@ -520,8 +520,7 @@ const AddProduct = () => {
                   display: 'flex',
                   justifyContent: 'space-between',
                 }}
-              >
-              </div>
+              ></div>
               <div>
                 <div>
                   <select
@@ -756,42 +755,65 @@ const AddProduct = () => {
                         }}
                       >
                         <h5 style={{ flex: 1, marginRight: 13 }}> {item} </h5>
-                        <input
-                          type='text'
-                          style={{ flex: 1 }}
-                          onChange={(e) => {
-                            let hola = item.split('/');
-                            let hooli = {};
-                            if (hola[0]) {
-                              hooli.option1 = hola[0];
-                            }
-                            if (hola[1]) {
-                              hooli.option2 = hola[1];
-                            }
-                            if (hola[2]) {
-                              hooli.option3 = hola[2];
-                            }
-                            setVarients([...varients, hooli]);
-                            setPrices([...prices, e.target.value]);
-                          }}
-                          className='form-control'
-                          id='product_price'
-                        />
+                        <div style={{ display: 'flex', flex: 1 }}>
+                          <h5
+                            style={{
+                              border: '1px solid #E3E3E3',
+                              width: 20,
+                              height: 40,
+                              marginTop: 0,
+                              borderRightWidth: 0,
+                              borderRadius: '4px',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              borderTopRightRadius: 0,
+                              borderBottomRightRadius: 0,
+                            }}
+                          >
+                            $
+                          </h5>
+                          <input
+                            type='text'
+                            style={{
+                              flex: 1,
+                              borderTopLeftRadius: 0,
+                              borderBottomLeftRadius: 0,
+                            }}
+                            onChange={(e) => {
+                              let targets = item.split('/');
+                              let item = {};
+                              if (targets[0]) {
+                                item.option1 = targets[0];
+                              }
+                              if (targets[1]) {
+                                item.option2 = targets[1];
+                              }
+                              if (targets[2]) {
+                                item.option3 = targets[2];
+                              }
+                              setVarients([...varients, item]);
+                              setPrices([...prices, e.target.value]);
+                            }}
+                            className='form-control'
+                            id='product_price'
+                          />
+                        </div>
                         <input
                           type='number'
                           onChange={(e) => {
-                            let hola = item.split('/');
-                            let hooli = {};
-                            if (hola[0]) {
-                              hooli.option1 = hola[0];
+                            let targets = item.split('/');
+                            let item = {};
+                            if (targets[0]) {
+                              item.option1 = targets[0];
                             }
-                            if (hola[1]) {
-                              hooli.option2 = hola[1];
+                            if (targets[1]) {
+                              item.option2 = targets[1];
                             }
-                            if (hola[2]) {
-                              hooli.option3 = hola[2];
+                            if (targets[2]) {
+                              item.option3 = targets[2];
                             }
-                            setVarients([...varients, hooli]);
+                            setVarients([...varients, item]);
                             setQuantities([...quantities, e.target.value]);
                           }}
                           className='form-control'
@@ -801,18 +823,18 @@ const AddProduct = () => {
                         <input
                           type='text'
                           onChange={(e) => {
-                            let hola = item.split('/');
-                            let hooli = {};
-                            if (hola[0]) {
-                              hooli.option1 = hola[0];
+                            let targets = item.split('/');
+                            let item = {};
+                            if (targets[0]) {
+                              item.option1 = targets[0];
                             }
-                            if (hola[1]) {
-                              hooli.option2 = hola[1];
+                            if (targets[1]) {
+                              item.option2 = targets[1];
                             }
-                            if (hola[2]) {
-                              hooli.option3 = hola[2];
+                            if (targets[2]) {
+                              item.option3 = targets[2];
                             }
-                            setVarients([...varients, hooli]);
+                            setVarients([...varients, item]);
                             setSkus([...skus, e.target.value]);
                           }}
                           className='form-control'
