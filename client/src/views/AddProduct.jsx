@@ -1,36 +1,36 @@
-import React, { useState, useEffect } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // ES6
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import "../assets/css/addProduct.css";
-import { NotificationManager } from "react-notifications";
-import CustomButton from "../components/CustomButton/CustomButton";
+import React, { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // ES6
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import '../assets/css/addProduct.css';
+import { NotificationManager } from 'react-notifications';
+import CustomButton from '../components/CustomButton/CustomButton';
 
 const AddProduct = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [warranty, setWarranty] = useState("");
-  const [weight, setWeight] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [warranty, setWarranty] = useState('');
+  const [weight, setWeight] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
   const [productImage, setProductImage] = useState([]);
   const [csvData, setCsvData] = useState([]);
-  const [code, setCode] = useState("");
-  const [status, setStatus] = useState("");
+  const [code, setCode] = useState('');
+  const [status, setStatus] = useState('');
   const [categoryList, setCategoryList] = useState([]);
-  const [size, setSize] = useState("");
+  const [size, setSize] = useState('');
   // const [color, setColors] = useState('')
   // const [tag, setTag] = useState('')
   const [tag0, setTag0] = useState([]);
   const [tag1, setTag1] = useState([]);
   const [tag2, setTag2] = useState([]);
   const [varien, setVarien] = useState(false);
-  const [option1, setOption1] = useState("color");
-  const [option2, setOption2] = useState("size");
-  const [option3, setOption3] = useState("material");
-  const token = localStorage.getItem("token");
+  const [option1, setOption1] = useState('color');
+  const [option2, setOption2] = useState('size');
+  const [option3, setOption3] = useState('material');
+  const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
   const [moreOption, setMoreOption] = useState(false);
   const [moreOption1, setMoreOption1] = useState(false);
@@ -46,35 +46,35 @@ const AddProduct = () => {
   Editor.modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
-      ["bold"],
-      ["italic"],
-      ["underline"],
-      ["strike"],
-      ["blockquote"],
-      [{ list: "ordered" }],
-      [{ list: "bullet" }],
-      [{ indent: "+1" }],
-      [{ indent: "-1" }],
-      ["link"],
-      ["video"],
-      ["image"],
+      ['bold'],
+      ['italic'],
+      ['underline'],
+      ['strike'],
+      ['blockquote'],
+      [{ list: 'ordered' }],
+      [{ list: 'bullet' }],
+      [{ indent: '+1' }],
+      [{ indent: '-1' }],
+      ['link'],
+      ['video'],
+      ['image'],
     ],
   };
 
   Editor.formats = [
-    "header",
-    "size",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "indent",
-    "link",
-    "image",
-    "video",
+    'header',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'video',
   ];
   //Add Product
   const addProduct = (e) => {
@@ -85,50 +85,50 @@ const AddProduct = () => {
       { name: option3, values: tag2 },
     ];
     const data = new FormData();
-    data.append("productImage", productImage[0]);
-    data.append("productImage", productImage[1]);
-    data.append("productImage", productImage[2]);
-    data.append("productImage", productImage[3]);
-    data.append("productImage", productImage[4]);
-    data.append("productImage", productImage[5]);
-    data.append("productImage", productImage[6]);
-    data.append("supplier_id", decode.id);
-    data.append("name", name);
-    data.append("price", price);
-    data.append("quantity", quantity);
-    data.append("warranty", warranty);
-    data.append("weight", weight);
-    data.append("description", description);
-    data.append("category", "Beauty");
-    data.append("code", code);
-    data.append("size", size);
-    data.append("varients", JSON.stringify(varients));
-    data.append("options", JSON.stringify(options));
+    data.append('productImage', productImage[0]);
+    data.append('productImage', productImage[1]);
+    data.append('productImage', productImage[2]);
+    data.append('productImage', productImage[3]);
+    data.append('productImage', productImage[4]);
+    data.append('productImage', productImage[5]);
+    data.append('productImage', productImage[6]);
+    data.append('supplier_id', decode.id);
+    data.append('name', name);
+    data.append('price', price);
+    data.append('quantity', quantity);
+    data.append('warranty', warranty);
+    data.append('weight', weight);
+    data.append('description', description);
+    data.append('category', 'Beauty');
+    data.append('code', code);
+    data.append('size', size);
+    data.append('varients', JSON.stringify(varients));
+    data.append('options', JSON.stringify(options));
     axios
-      .post("/api/addProduct", data)
+      .post('/api/addProduct', data)
       .then((res) => {
-        if (res.data.includes("Success")) {
-          NotificationManager.success("Product Added Successfully");
-          setStatus("Product Added Successfully");
-          setName("");
-          setPrice("");
-          setQuantity("");
-          setWarranty("");
-          setDescription("");
-          setCategory("");
-          setCode("");
+        if (res.data.includes('Success')) {
+          NotificationManager.success('Product Added Successfully');
+          setStatus('Product Added Successfully');
+          setName('');
+          setPrice('');
+          setQuantity('');
+          setWarranty('');
+          setDescription('');
+          setCategory('');
+          setCode('');
           setProductImage([]);
           setVarients([]);
         } else {
           res.data.error
             ? NotificationManager.error(res.data.error.toString())
-            : NotificationManager.error("There is a problem with your entries");
+            : NotificationManager.error('There is a problem with your entries');
         }
       })
       .catch((err) => {
         err
           ? NotificationManager.error(err.toString())
-          : NotificationManager.error("There is a problem with your entries");
+          : NotificationManager.error('There is a problem with your entries');
         setVarients([]);
       });
   };
@@ -137,23 +137,23 @@ const AddProduct = () => {
   const addCSvProduct = (e) => {
     e.preventDefault();
     const scvdata = new FormData();
-    scvdata.append("file", csvData[0]);
-    scvdata.append("supplier_id", decode.id);
+    scvdata.append('file', csvData[0]);
+    scvdata.append('supplier_id', decode.id);
     axios
-      .post("/api/product/csv", scvdata)
+      .post('/api/product/csv', scvdata)
       .then((res) => {
-        if (res.data.includes("Success")) {
-          NotificationManager.success("File uploaded Successfully");
+        if (res.data.includes('Success')) {
+          NotificationManager.success('File uploaded Successfully');
         } else {
           res.data.error
             ? NotificationManager.error(res.data.error.toString())
-            : NotificationManager.error("There is a problem with this csv");
+            : NotificationManager.error('There is a problem with this csv');
         }
       })
       .catch((error) => {
         error
           ? NotificationManager.error(error.toString())
-          : NotificationManager.error("There is a problem with this csv");
+          : NotificationManager.error('There is a problem with this csv');
       });
   };
 
@@ -175,12 +175,12 @@ const AddProduct = () => {
     let res = [];
     for (let i = 0; i < r.length; i++) {
       const e = r[i];
-      let str = "";
+      let str = '';
       for (let j = 0; j < e.length; j++) {
         const element = e[j];
-        if (str === "") {
+        if (str === '') {
           str = element;
-        } else str = str + " / " + element;
+        } else str = str + ' / ' + element;
       }
       r[i] = str;
       res = r;
@@ -190,7 +190,7 @@ const AddProduct = () => {
 
   //Fetch category List
   const getCategoryList = () => {
-    axios.get("/api/totalCategory").then((data) => {
+    axios.get('/api/totalCategory').then((data) => {
       setCategoryList(data.data);
     });
   };
@@ -208,22 +208,22 @@ const AddProduct = () => {
     setTag0([...tag0.filter((_, index) => index !== indexToRemove)]);
   };
   const addTag0 = (event) => {
-    if (event.target.value !== "") {
-      let value = event.target.value.replace(/,/g, "");
+    if (event.target.value !== '') {
+      let value = event.target.value.replace(/,/g, '');
       setTag0([...tag0, value]);
       selectedTags([...tag0, value]);
-      event.target.value = "";
+      event.target.value = '';
     }
   };
   const removeTag1 = (indexToRemove) => {
     setTag1([...tag1.filter((_, index) => index !== indexToRemove)]);
   };
   const addTag1 = (event) => {
-    if (event.target.value !== "") {
-      let value = event.target.value.replace(/,/g, "");
+    if (event.target.value !== '') {
+      let value = event.target.value.replace(/,/g, '');
       setTag1([...tag1, value]);
       selectedTag1([...tag1, value]);
-      event.target.value = "";
+      event.target.value = '';
     }
   };
 
@@ -231,11 +231,11 @@ const AddProduct = () => {
     setTag2([...tag2.filter((_, index) => index !== indexToRemove)]);
   };
   const addTag2 = (event) => {
-    if (event.target.value !== "") {
-      let value = event.target.value.replace(/,/g, "");
+    if (event.target.value !== '') {
+      let value = event.target.value.replace(/,/g, '');
       setTag2([...tag2, value]);
       selectedTag2([...tag2, value]);
-      event.target.value = "";
+      event.target.value = '';
     }
   };
   const selectedTags = (tag) => {
@@ -334,59 +334,59 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className='container-fluid'>
       <br />
       <form onSubmit={addProduct}>
-        <div className="card card-input">
-          <div className="form-group">
-            <label for="product_name">Title</label>
+        <div className='card card-input'>
+          <div className='form-group'>
+            <label for='product_name'>Title</label>
             <input
-              type="text"
+              type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="form-control"
-              id="product_name"
-              placeholder="Enter Title of Product"
+              className='form-control'
+              id='product_name'
+              placeholder='Enter Title of Product'
               required
             />
           </div>
-          <div className="form-group">
-            <label for="product_description">Detail Description</label>
+          <div className='form-group'>
+            <label for='product_description'>Detail Description</label>
             <ReactQuill
               required
-              theme={"snow"}
+              theme={'snow'}
               onChange={(value) => setDescription(value)}
-              style={{ minHeight: "18em" }}
+              style={{ minHeight: '18em' }}
               value={description}
               modules={Editor.modules}
               formats={Editor.formats}
-              placeholder={"Write something"}
+              placeholder={'Write something'}
             />
           </div>
-          <div className="form-group">
-            <label for="productImage">Image upload</label>
+          <div className='form-group'>
+            <label for='productImage'>Image upload</label>
             <input
-              type="file"
+              type='file'
               required
-              name="productImage"
-              className="form-control"
+              name='productImage'
+              className='form-control'
               onChange={(e) => setProductImage(e.target.files)}
               multiple
-              accept="image/*"
+              accept='image/*'
             />
           </div>
         </div>
-        <div className="card card-input">
-          <div className="form-group">
-            <label for="product_category">Category</label>
+        <div className='card card-input'>
+          <div className='form-group'>
+            <label for='product_category'>Category</label>
             <select
-              className="form-control"
-              id="product_category"
+              className='form-control'
+              id='product_category'
               value={category}
               onChange={(e) => {
                 setCategory(e.target.value);
               }}
-              placeholder="Enter category"
+              placeholder='Enter category'
             >
               {categoryList.map((item, i) => {
                 return (
@@ -397,121 +397,130 @@ const AddProduct = () => {
               })}
             </select>
           </div>
-          <div className="form-group">
-            <label for="product_id">ID/SKU</label>
+          <div className='form-group'>
+            <label for='product_id'>ID/SKU</label>
             <input
-              type="text"
+              type='text'
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="form-control"
-              id="product_id"
-              placeholder="Enter Unique Id of Product"
+              className='form-control'
+              id='product_id'
+              placeholder='Enter Unique Id of Product'
               required
             />
           </div>
         </div>
-        <div className="card card-input">
-          <div className="form-group">
+        <div className='card card-input'>
+          <div className='form-group'>
             <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
             <div
-              class="form-control "
+              class='form-control '
               style={{
-                border: "1px solid #ddd",
-                display: "flex",
-                flexDirection: "row",
+                border: '1px solid #ddd',
+                display: 'flex',
+                flexDirection: 'row',
               }}
             >
-              <span class="icon-wrapp">
-                <i class="input-icon fa fa-usd"></i>
+              <span class='icon-wrapp'>
+                <i class='input-icon fa fa-usd'></i>
               </span>
               <input
-                class="input-with-icon"
-                id="form-name"
-                type="text"
-                min="0"
+                class='input-with-icon'
+                id='form-name'
+                type='text'
+                min='0'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                id="product_price"
-                style={{ border: "none", width: "48vw" }}
-                placeholder="Enter Price"
+                id='product_price'
+                style={{ border: 'none', width: '48vw' }}
+                placeholder='Enter Price'
                 required
               />
             </div>
           </div>
 
-          <div className="form-group">
-            <label for="product_quantity">Quantity</label>
+          <div className='form-group'>
+            <label for='product_quantity'>Quantity</label>
             <input
-              type="number"
+              type='number'
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              min="0"
-              className="form-control"
-              id="product_quantity"
-              placeholder="Enter Available Quanity of Product"
+              min='0'
+              className='form-control'
+              id='product_quantity'
+              placeholder='Enter Available Quanity of Product'
               required
             />
           </div>
-          <div className="form-group">
-            <label for="product_warranty">Weight</label>
+          <div className='form-group'>
+            <label for='product_warranty'>Weight</label>
             <input
-              type="number"
+              type='number'
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Weight of Product in Grams"
+              className='form-control'
+              id='product_warranty'
+              placeholder='Enter Weight of Product in Grams'
             />
           </div>
-          <div className="form-group">
-            <label for="product_warranty">Warranty</label>
+          <div className='form-group'>
+            <label for='product_warranty'>Warranty</label>
             <input
-              type="text"
+              type='text'
               value={warranty}
               onChange={(e) => setWarranty(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Available warranty of Product"
+              className='form-control'
+              id='product_warranty'
+              placeholder='Enter Available warranty of Product'
             />
           </div>
-          <div className="form-group" style={{ marginTop: 20 }}>
-            <label for="product_size">Size</label>
+          <div className='form-group' style={{ marginTop: 20 }}>
+            <label for='product_size'>Size</label>
             <input
-              type="text"
+              type='text'
               value={size}
               onChange={(e) => setSize(e.target.value)}
-              className="form-control"
-              id="product_size"
-              placeholder="Enter Differnet sizes seperated by ',' commas"
+              className='form-control'
+              id='product_size'
+              placeholder="Enter Different sizes seperated by ',' commas"
             />
           </div>
         </div>
-        <div className="card card-input py-0 ll">
-          <h4 className="text-left" style={{ margin: 0, marginBottom: 15 }}>
+        <div className='card card-input py-0 ll'>
+          <h4 className='text-left' style={{ margin: 0, marginBottom: 15 }}>
             Variants
           </h4>
-          <label class="containerr">
+          <label class='containerr'>
             This product has multiple options, like different sizes or colors
             <input
-              type="checkbox"
+              type='checkbox'
               value={varien}
               onChange={() => {
-                varien ? setVarien(false) : setVarien(true);
+                if (varien) {
+                  setVarien(false);
+                  setTag0([]);
+                  setTag1([]);
+                  setTag2([]);
+                } else {
+                  setVarien(true);
+                  setTag0([]);
+                  setTag1([]);
+                  setTag2([]);
+                }
               }}
             />
-            <span class="checkmarkk"></span>
+            <span class='checkmarkk'></span>
           </label>
           {varien ? (
             <>
               <div
                 style={{
                   maxWidth: 480,
-                  display: "flex",
-                  justifyContent: "space-between",
+                  marginTop: 30,
+                  display: 'flex',
+                  justifyContent: 'space-between',
                 }}
               >
-                <h5>Option 1</h5>
-                <h5 onClick={() => setVarien(false)}>cancel</h5>
               </div>
               <div>
                 <div>
@@ -519,26 +528,26 @@ const AddProduct = () => {
                     style={{
                       width: 150,
                       height: 40,
-                      border: "1px solid grey",
+                      border: '1px solid grey',
                       borderRadius: 5,
                       marginBottom: 13,
                     }}
                     onChange={(e) => setOption1(e.target.value)}
                   >
-                    <option value="color">Color</option>
-                    <option value="size">Size</option>
-                    <option value="style">Style</option>
-                    <option value="material">Material</option>
-                    <option value="title">Title</option>
+                    <option value='color'>Color</option>
+                    <option value='size'>Size</option>
+                    <option value='style'>Style</option>
+                    <option value='material'>Material</option>
+                    <option value='title'>Title</option>
                   </select>
                 </div>
-                <div className="tags-input">
-                  <ul id="tags">
+                <div className='tags-input'>
+                  <ul id='tags'>
                     {tag0.map((tag, index) => (
-                      <li key={index} className="tag">
-                        <span className="tag-title">{tag}</span>
+                      <li key={index} className='tag'>
+                        <span className='tag-title'>{tag}</span>
                         <span
-                          className="tag-close-icon"
+                          className='tag-close-icon'
                           onClick={() => removeTag0(index)}
                         >
                           x
@@ -547,10 +556,10 @@ const AddProduct = () => {
                     ))}
                   </ul>
                   <input
-                    type="text"
-                    id="myAnchor"
+                    type='text'
+                    id='myAnchor'
                     onKeyUp={(event) =>
-                      event.key === "," ? addTag0(event) : null
+                      event.key === ',' ? addTag0(event) : null
                     }
                     placeholder="Press ',' to add tags"
                   />
@@ -562,12 +571,19 @@ const AddProduct = () => {
                   <div
                     style={{
                       maxWidth: 480,
-                      display: "flex",
-                      justifyContent: "space-between",
+                      display: 'flex',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <h5>Option 2</h5>
-                    <h5 onClick={() => setMoreOption(false)}>cancel</h5>
+                    <h5
+                      onClick={() => {
+                        setMoreOption(false);
+                        setTag1([]);
+                      }}
+                    >
+                      cancel
+                    </h5>
                   </div>
                   <div>
                     <div>
@@ -575,39 +591,39 @@ const AddProduct = () => {
                         style={{
                           width: 150,
                           height: 40,
-                          border: "1px solid grey",
+                          border: '1px solid grey',
                           borderRadius: 5,
                           marginBottom: 13,
                         }}
                         onChange={(e) => setOption2(e.target.value)}
                       >
-                        <option value="size">Size</option>
-                        <option value="color">Color</option>
-                        <option value="style">Style</option>
-                        <option value="material">Material</option>
-                        <option value="title">Title</option>
+                        <option value='size'>Size</option>
+                        <option value='color'>Color</option>
+                        <option value='style'>Style</option>
+                        <option value='material'>Material</option>
+                        <option value='title'>Title</option>
                       </select>
                     </div>
-                    <div className="tags-input">
-                      <ul id="tags">
+                    <div className='tags-input'>
+                      <ul id='tags'>
                         {tag1.map((tag, index) => (
-                          <li key={index} className="tag">
-                            <span className="tag-title">{tag}</span>
+                          <li key={index} className='tag'>
+                            <span className='tag-title'>{tag}</span>
                             <span
-                              className="tag-close-icon"
+                              className='tag-close-icon'
                               onClick={() => removeTag1(index)}
                             >
-                              {" "}
+                              {' '}
                               x
                             </span>
                           </li>
                         ))}
                       </ul>
                       <input
-                        type="text"
-                        id="myAnchor1"
+                        type='text'
+                        id='myAnchor1'
                         onKeyUp={(event) =>
-                          event.key === "," ? addTag1(event) : null
+                          event.key === ',' ? addTag1(event) : null
                         }
                         placeholder="Press ',' to add tags"
                       />
@@ -620,12 +636,19 @@ const AddProduct = () => {
                   <div
                     style={{
                       maxWidth: 480,
-                      display: "flex",
-                      justifyContent: "space-between",
+                      display: 'flex',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <h5>Option 3</h5>
-                    <h5 onClick={() => setMoreOption1(false)}>cancel</h5>
+                    <h5
+                      onClick={() => {
+                        setMoreOption1(false);
+                        setTag2([]);
+                      }}
+                    >
+                      cancel
+                    </h5>
                   </div>
                   <div>
                     <div>
@@ -633,26 +656,26 @@ const AddProduct = () => {
                         style={{
                           width: 150,
                           height: 40,
-                          border: "1px solid grey",
+                          border: '1px solid grey',
                           borderRadius: 5,
                           marginBottom: 13,
                         }}
                         onChange={(e) => setOption3(e.target.value)}
                       >
-                        <option value="material">Material</option>
-                        <option value="color">Color</option>
-                        <option value="size">Size</option>
-                        <option value="style">Style</option>
-                        <option value="title">Title</option>
+                        <option value='material'>Material</option>
+                        <option value='color'>Color</option>
+                        <option value='size'>Size</option>
+                        <option value='style'>Style</option>
+                        <option value='title'>Title</option>
                       </select>
                     </div>
-                    <div className="tags-input">
-                      <ul id="tags">
+                    <div className='tags-input'>
+                      <ul id='tags'>
                         {tag2.map((tag, index) => (
-                          <li key={index} className="tag">
-                            <span className="tag-title">{tag}</span>
+                          <li key={index} className='tag'>
+                            <span className='tag-title'>{tag}</span>
                             <span
-                              className="tag-close-icon"
+                              className='tag-close-icon'
                               onClick={() => removeTag2(index)}
                             >
                               x
@@ -661,10 +684,10 @@ const AddProduct = () => {
                         ))}
                       </ul>
                       <input
-                        type="text"
-                        id="myAnchor2"
+                        type='text'
+                        id='myAnchor2'
                         onKeyUp={(event) =>
-                          event.key === "," ? addTag2(event) : null
+                          event.key === ',' ? addTag2(event) : null
                         }
                         placeholder="Press ',' to add tags"
                       />
@@ -681,7 +704,7 @@ const AddProduct = () => {
                       setMoreOption(true);
                     }
                   }}
-                  className="meraButton"
+                  className='meraButton'
                 >
                   More Option
                 </div>
@@ -690,7 +713,7 @@ const AddProduct = () => {
               {!combo ? null : (
                 <div>
                   <h4>Preview</h4>
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <h5
                       style={{
                         flex: 1,
@@ -727,17 +750,17 @@ const AddProduct = () => {
                     <div key={index}>
                       <div
                         style={{
-                          display: "flex",
-                          justifyContent: "space-evenly",
-                          flexDirection: "row",
+                          display: 'flex',
+                          justifyContent: 'space-evenly',
+                          flexDirection: 'row',
                         }}
                       >
                         <h5 style={{ flex: 1, marginRight: 13 }}> {item} </h5>
                         <input
-                          type="text"
+                          type='text'
                           style={{ flex: 1 }}
                           onChange={(e) => {
-                            let hola = item.split("/");
+                            let hola = item.split('/');
                             let hooli = {};
                             if (hola[0]) {
                               hooli.option1 = hola[0];
@@ -751,13 +774,13 @@ const AddProduct = () => {
                             setVarients([...varients, hooli]);
                             setPrices([...prices, e.target.value]);
                           }}
-                          className="form-control"
-                          id="product_price"
+                          className='form-control'
+                          id='product_price'
                         />
                         <input
-                          type="number"
+                          type='number'
                           onChange={(e) => {
-                            let hola = item.split("/");
+                            let hola = item.split('/');
                             let hooli = {};
                             if (hola[0]) {
                               hooli.option1 = hola[0];
@@ -771,14 +794,14 @@ const AddProduct = () => {
                             setVarients([...varients, hooli]);
                             setQuantities([...quantities, e.target.value]);
                           }}
-                          className="form-control"
-                          id="product_size"
+                          className='form-control'
+                          id='product_size'
                           style={{ flex: 1 }}
                         />
                         <input
-                          type="text"
+                          type='text'
                           onChange={(e) => {
-                            let hola = item.split("/");
+                            let hola = item.split('/');
                             let hooli = {};
                             if (hola[0]) {
                               hooli.option1 = hola[0];
@@ -792,8 +815,8 @@ const AddProduct = () => {
                             setVarients([...varients, hooli]);
                             setSkus([...skus, e.target.value]);
                           }}
-                          className="form-control"
-                          id="product_size"
+                          className='form-control'
+                          id='product_size'
                           style={{ flex: 1 }}
                         />
                       </div>
@@ -803,39 +826,39 @@ const AddProduct = () => {
               )}
             </>
           ) : null}
-          <div className="card-button" style={{ marginTop: 20 }}>
-            <CustomButton round fill type="submit">
+          <div className='card-button' style={{ marginTop: 20 }}>
+            <CustomButton round fill type='submit'>
               Save Product
             </CustomButton>
           </div>
         </div>
       </form>
       <br />
-      <div className="container-fluid">
+      <div className='container-fluid'>
         <form onSubmit={addCSvProduct}>
-          <div className="card card-input">
-            <div className="form-group">
-              <p className="text-center">
+          <div className='card card-input'>
+            <div className='form-group'>
+              <p className='text-center'>
                 <br />
                 <strong>Or Upload CSV File</strong>
               </p>
-              <div id="fileContents"></div>
+              <div id='fileContents'></div>
               <input
-                type="file"
-                className="form-control text-center"
-                name="avatar"
+                type='file'
+                className='form-control text-center'
+                name='avatar'
                 onChange={(e) => {
                   console.log(e.target);
                   console.log(e.target.value);
                   console.log(e.target.files);
                   setCsvData(e.target.files);
                 }}
-                encType="multipart/form-data"
-                accept=".csv"
+                encType='multipart/form-data'
+                accept='.csv'
               />
               <br />
-              <div className="card-button">
-                <CustomButton round fill type="submit">
+              <div className='card-button'>
+                <CustomButton round fill type='submit'>
                   Upload Products
                 </CustomButton>
               </div>
