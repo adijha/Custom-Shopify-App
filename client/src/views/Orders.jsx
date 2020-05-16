@@ -27,9 +27,7 @@ const Orders = () => {
 
   const handleClick = (data) => {
     console.log("data is", data);
-
     const line_items_Array = [];
-
     data.line_items.forEach((item, i) => {
       line_items_Array.push({
         id: item.id,

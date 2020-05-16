@@ -178,7 +178,7 @@ const ProductList = () => {
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{item.price}</td>
+                            <td>{'$ ' + item.price}</td>
                             <td style={{ width: '20%' }}>
                               {item.description
                                 ? item.description.replace(/<[^>]*>/g, '')
@@ -280,7 +280,7 @@ const ProductList = () => {
                 min='0'
                 className='form-control'
                 id='product_quantity'
-                placeholder='Enter Available Quanity of Product'
+                placeholder='Enter available quantity of product'
                 required
               />
             </div>
@@ -292,7 +292,7 @@ const ProductList = () => {
                 onChange={(e) => setWarranty(e.target.value)}
                 className='form-control'
                 id='product_warranty'
-                placeholder='Enter Available warranty of Product'
+                placeholder='Enter available warranty of product'
                 required
               />
             </div>
