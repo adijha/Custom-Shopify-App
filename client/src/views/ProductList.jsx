@@ -1,45 +1,82 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Row, Col, Table } from "react-bootstrap";
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import Modal from "react-responsive-modal";
+import React, { useState, useEffect } from 'react';
+import { Grid, Row, Col, Table } from 'react-bootstrap';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import Modal from 'react-responsive-modal';
 
-import Card from "../components/Card/Card.jsx";
-import "../assets/css/productList.css";
+import Card from '../components/Card/Card.jsx';
+import '../assets/css/productList.css';
 
 const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [warranty, setWarranty] = useState("");
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
-  const [code, setCode] = useState("");
-  const [status, setStatus] = useState("");
-  const [itemId, setItemId] = useState("");
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [warranty, setWarranty] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+  const [code, setCode] = useState('');
+  const [status, setStatus] = useState('');
+  const [itemId, setItemId] = useState('');
   const [open, setOpen] = useState(false);
 
   const modalStyle = {
-    margin: "auto",
-    position: "relative",
+    margin: 'auto',
+    position: 'relative',
   };
+
+  let Editor = {};
+  Editor.modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold'],
+      ['italic'],
+      ['underline'],
+      ['strike'],
+      ['blockquote'],
+      [{ list: 'ordered' }],
+      [{ list: 'bullet' }],
+      [{ indent: '+1' }],
+      [{ indent: '-1' }],
+      ['link'],
+      ['video'],
+      ['image'],
+    ],
+  };
+
+  Editor.formats = [
+    'header',
+    'size',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'blockquote',
+    'list',
+    'bullet',
+    'indent',
+    'link',
+    'image',
+    'video',
+  ];
 
   useEffect(() => {
     getProductData();
   }, []);
 
   const getProductData = () => {
-    axios.get("/api/supplier/product/" + decode.id).then((products) => {
+    axios.get('/api/supplier/product/' + decode.id).then((products) => {
       setProductItems(products.data);
     });
   };
 
   const updateProduct = (item) => {
-    console.log("updateProduct", item._id);
+    console.log('updateProduct', item._id);
     setName(item.name);
     setPrice(item.price);
     setQuantity(item.quantity);
@@ -56,10 +93,10 @@ const ProductList = () => {
   };
 
   const deleteProduct = (item) => {
-    console.log("delete" + item._id);
-    axios.delete("/api/product/" + item._id).then((data) => {
+    console.log('delete' + item._id);
+    axios.delete('/api/product/' + item._id).then((data) => {
       if (data) {
-        setStatus("Product Deleted");
+        setStatus('Product Deleted');
         getProductData();
       }
     });
@@ -79,40 +116,40 @@ const ProductList = () => {
     };
     console.log(object);
     axios
-      .patch("/api/product/update", object)
+      .patch('/api/product/update', object)
       .then((data) => {
         if (data) {
-          setStatus("Product Updated Successfully");
-          setName("");
-          setPrice("");
-          setQuantity("");
-          setWarranty("");
-          setDescription("");
-          setCategory("");
-          setCode("");
+          setStatus('Product Updated Successfully');
+          setName('');
+          setPrice('');
+          setQuantity('');
+          setWarranty('');
+          setDescription('');
+          setCategory('');
+          setCode('');
           setOpen(false);
           getProductData();
         }
       })
       .catch((err) => {
-        console.log("update product error is:", err.message);
+        console.log('update product error is:', err.message);
       });
   };
 
   return (
     <div>
       <br />
-      <div id="hideStatus" className="status text-center">
+      <div id='hideStatus' className='status text-center'>
         {status}
       </div>
 
-      <div className="content">
+      <div className='content'>
         <Grid fluid>
           <Row>
             <Col md={12}>
               <Card
-                title="Product List"
-                category={"Total Products :" + productItems.length}
+                title='Product List'
+                category={'Total Products :' + productItems.length}
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -131,9 +168,9 @@ const ProductList = () => {
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
-                            <td style={{ width: "15%" }}>
+                            <td style={{ width: '15%' }}>
                               <img
-                                className="product-logo"
+                                className='product-logo'
                                 src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                               />
                             </td>
@@ -141,12 +178,14 @@ const ProductList = () => {
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td style={{ width: "20%" }}>
-                              {item.description?item.description.replace(/<[^>]*>/g, ""):null}
+                            <td style={{ width: '20%' }}>
+                              {item.description
+                                ? item.description.replace(/<[^>]*>/g, '')
+                                : null}
                             </td>
                             <td>
                               <button
-                                className="btn btn-primary btn-sm"
+                                className='btn btn-primary btn-sm'
                                 onClick={() => updateProduct(item)}
                               >
                                 Edit
@@ -154,7 +193,7 @@ const ProductList = () => {
                             </td>
                             <td>
                               <button
-                                className="btn btn-danger btn-sm"
+                                className='btn btn-danger btn-sm'
                                 onClick={() => deleteProduct(item)}
                               >
                                 Delete
@@ -173,106 +212,107 @@ const ProductList = () => {
       </div>
       <Modal open={open} onClose={() => setOpen(false)}>
         <br />
-        <h3 style={{ color: "red" }} className="text-center">
+        <h3 style={{ color: 'red' }} className='text-center'>
           Edit Product Details:
         </h3>
         <br />
 
         <form style={modalStyle} onSubmit={updateProductItem}>
-          <div className="card card-update">
-            <div className="form-group">
-              <label for="product_id">ID/SKU</label>
+          <div className='card card-update'>
+            <div className='form-group'>
+              <label for='product_id'>ID/SKU</label>
               <input
-                type="text"
+                type='text'
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="form-control"
-                id="product_id"
-                placeholder="Enter Unique Id of Product"
+                className='form-control'
+                id='product_id'
+                placeholder='Enter Unique Id of Product'
                 required
               />
             </div>
-            <div className="form-group">
-              <label for="product_name">Title</label>
+            <div className='form-group'>
+              <label for='product_name'>Title</label>
               <input
-                type="text"
+                type='text'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="form-control"
-                id="product_name"
-                placeholder="Enter Title of Product"
+                className='form-control'
+                id='product_name'
+                placeholder='Enter Title of Product'
                 required
               />
             </div>
-            <div className="form-group">
-              <label for="product_category">Category</label>
+            <div className='form-group'>
+              <label for='product_category'>Category</label>
               <input
-                type="text"
+                type='text'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="form-control"
-                id="product_category"
-                placeholder="Enter category of Product"
+                className='form-control'
+                id='product_category'
+                placeholder='Enter category of Product'
                 required
               />
             </div>
           </div>
-          <div className="card card-update">
-            <div className="form-group">
-              <label for="product_price">Price</label>
+          <div className='card card-update'>
+            <div className='form-group'>
+              <label for='product_price'>Price</label>
               <input
-                type="number"
-                min="0"
+                type='text'
+                min='0'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="form-control"
-                id="product_price"
-                placeholder="Enter Price of Product"
+                className='form-control'
+                id='product_price'
+                placeholder='Enter Price of Product'
                 required
               />
             </div>
-            <div className="form-group">
-              <label for="product_quantity">Quantity</label>
+            <div className='form-group'>
+              <label for='product_quantity'>Quantity</label>
               <input
-                type="number"
+                type='number'
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                min="0"
-                className="form-control"
-                id="product_quantity"
-                placeholder="Enter Available Quanity of Product"
+                min='0'
+                className='form-control'
+                id='product_quantity'
+                placeholder='Enter Available Quanity of Product'
                 required
               />
             </div>
-            <div className="form-group">
-              <label for="product_warranty">Warranty</label>
+            <div className='form-group'>
+              <label for='product_warranty'>Warranty</label>
               <input
-                type="text"
+                type='text'
                 value={warranty}
                 onChange={(e) => setWarranty(e.target.value)}
-                className="form-control"
-                id="product_warranty"
-                placeholder="Enter Available warranty of Product"
+                className='form-control'
+                id='product_warranty'
+                placeholder='Enter Available warranty of Product'
                 required
               />
             </div>
           </div>
-          <div className="card card-update">
-            <div className="form-group">
-              <label for="product_description">Detail Description</label>
-              <textarea
-                className="form-control"
-                rows="6"
+          <div className='card card-update'>
+            <div className='form-group'>
+              <label for='product_description'>Description</label>
+              <ReactQuill
+                required
+                theme={'snow'}
+                onChange={(value) => setDescription(value)}
+                style={{ minHeight: '18em' }}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                id="product_description"
-                placeholder="Enter Description of Product"
-                required
+                modules={Editor.modules}
+                formats={Editor.formats}
+                placeholder={'Write description'}
               />
             </div>
           </div>
-          <div className="card-button">
-            <button type="submit" className="btn btn-primary btn-sm">
+          <div className='card-button'>
+            <button type='submit' className='btn btn-primary btn-sm'>
               Update Product
             </button>
           </div>
