@@ -8,6 +8,7 @@ import Modal from 'react-responsive-modal';
 
 import Card from '../components/Card/Card.jsx';
 import '../assets/css/productList.css';
+import CustomButton from '../components/CustomButton/CustomButton.jsx';
 
 const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
@@ -312,9 +313,9 @@ const ProductList = () => {
             </div>
           </div>
           <div className='card-button'>
-            <button type='submit' className='btn btn-primary btn-sm'>
+            <CustomButton round fill type='submit'>
               Update Product
-            </button>
+            </CustomButton>
           </div>
         </form>
       </Modal>
