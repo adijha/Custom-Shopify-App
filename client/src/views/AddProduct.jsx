@@ -523,7 +523,7 @@ const AddProduct = () => {
               ></div>
               <div>
                 <div>
-                  <select
+                  {/* <select
                     style={{
                       width: 150,
                       height: 40,
@@ -538,7 +538,29 @@ const AddProduct = () => {
                     <option value='style'>Style</option>
                     <option value='material'>Material</option>
                     <option value='title'>Title</option>
-                  </select>
+                  </select> */}
+                  {/* <div> */}
+                  <input
+                    type='text'
+                    name='city'
+                    list='variantOptions'
+                    onChange={(e) => setOption1(e.target.value)}
+                    style={{
+                      width: 150,
+                      height: 40,
+                      border: '1px solid grey',
+                      borderRadius: 5,
+                      marginBottom: 13,
+                    }}
+                  />
+                  <datalist id='variantOptions'>
+                    <option value='color'>Color</option>
+                    <option value='size'>Size</option>
+                    <option value='style'>Style</option>
+                    <option value='material'>Material</option>
+                    <option value='title'>Title</option>
+                  </datalist>
+                  {/* </div> */}
                 </div>
                 <div className='tags-input'>
                   <ul id='tags'>
@@ -586,7 +608,7 @@ const AddProduct = () => {
                   </div>
                   <div>
                     <div>
-                      <select
+                      {/* <select
                         style={{
                           width: 150,
                           height: 40,
@@ -601,7 +623,27 @@ const AddProduct = () => {
                         <option value='style'>Style</option>
                         <option value='material'>Material</option>
                         <option value='title'>Title</option>
-                      </select>
+                      </select> */}
+                      <input
+                        type='text'
+                        name='city'
+                        list='variantOptions'
+                        onChange={(e) => setOption2(e.target.value)}
+                        style={{
+                          width: 150,
+                          height: 40,
+                          border: '1px solid grey',
+                          borderRadius: 5,
+                          marginBottom: 13,
+                        }}
+                      />
+                      {/* <datalist id='variantOptions'>
+                        <option value='color'>Color</option>
+                        <option value='size'>Size</option>
+                        <option value='style'>Style</option>
+                        <option value='material'>Material</option>
+                        <option value='title'>Title</option>
+                      </datalist> */}
                     </div>
                     <div className='tags-input'>
                       <ul id='tags'>
@@ -651,7 +693,7 @@ const AddProduct = () => {
                   </div>
                   <div>
                     <div>
-                      <select
+                      {/* <select
                         style={{
                           width: 150,
                           height: 40,
@@ -666,7 +708,20 @@ const AddProduct = () => {
                         <option value='size'>Size</option>
                         <option value='style'>Style</option>
                         <option value='title'>Title</option>
-                      </select>
+                      </select> */}
+                      <input
+                        type='text'
+                        name='city'
+                        list='variantOptions'
+                        onChange={(e) => setOption3(e.target.value)}
+                        style={{
+                          width: 150,
+                          height: 40,
+                          border: '1px solid grey',
+                          borderRadius: 5,
+                          marginBottom: 13,
+                        }}
+                      />
                     </div>
                     <div className='tags-input'>
                       <ul id='tags'>
