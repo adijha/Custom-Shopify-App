@@ -119,8 +119,7 @@ const SupplierOrders = () => {
                                     style={{
                                       width: 120,
                                       marginRight: 10,
-                                      height: 35,
-                                      marginTop: 10.5,
+                                      height: 35
                                     }}
                                     type='text'
                                     name='track_details'
@@ -129,7 +128,7 @@ const SupplierOrders = () => {
                                   />
 
                                   <div
-                                    className='meraButton'
+                                    className='orderButton'
                                     onClick={updateFulfillment}
                                   >
                                     Fulfill
