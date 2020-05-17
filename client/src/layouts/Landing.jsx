@@ -1,349 +1,791 @@
-import React, {useEffect} from "react";
-import axios from 'axios'
-import {Redirect, Link} from 'react-router-dom';
-import '../assets/css/Landing.css'
+import React, { useEffect } from 'react';
+import axios from 'axios';
+import {
+  Redirect,
+  Link,
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+import '../assets/css/Landing.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/bootstrap/dist/js/bootstrap.js';
+import {
+  Navbar,
+  Nav,
+  NavDropdown,
+  Form,
+  FormControl,
+  Button,
+  Table,
+} from 'react-bootstrap';
 
+const Landing = () => {
+  useEffect(() => {
+    getchPage();
+  }, []);
 
-function Landing() {
-
-useEffect(()=>{
-  getchPage()
-},[])
-
-const getchPage = ()=>{
-  axios.get('/api/analyticProduct')
-  .then(data=>{
-    console.log(data, "product response");
-  })
-}
+  const getchPage = () => {
+    axios.get('/api/analyticProduct').then((data) => {
+      console.log(data, 'product response');
+    });
+  };
 
   return (
-    <div>
-    <div  style={{overflowX: "hidden"}}>
-    <nav className="navbar navbar-light bg-light" >
-<a className="navbar-brand" href="#" style={{padding:"2rem"}}>
-  <img src={require('../assets/img/latestLogo.png')} style={{width:"100%", margin: "-17rem -5rem"}}/> </a>
+    <div style={{ overflow: 'hidden' }}>
+      <div style={{ height: '100px' }}>
+        <Navbar bg='light' expand='lg' style={{ border: 'none' }}>
+          <div className='container'>
+            <div className='row'>
+              <div className='col-md-6'>
+                <Navbar.Brand href='#'>
+                  <img
+                    className='d-inline-block align-top'
+                    src={require('../assets/img/latestLogo.png')}
+                    style={{
+                      float: 'left',
+                      display: 'flex',
+                      height: '300px',
+                      padding: '0',
+                      top: '-12rem',
+                      position: 'relative',
+                    }}
+                  />
+                </Navbar.Brand>
+              </div>
+              <div className='col-md-6' style={{}}>
+                <div
+                  className='collapse navbar-collapse'
+                  id='navbarSupportedContent'
+                  style={{ color: 'blue' }}
+                >
+                  <ul
+                    className='navbar-nav mr-auto'
+                    style={{
+                      position: 'relative',
+                      display: 'inline-block',
+                      float: 'right',
+                      color: 'blue',
+                    }}
+                  >
+                    <li className='nav-item active'>
+                      <a
+                        style={{ color: 'blue' }}
+                        className='nav-link'
+                        href='#'
+                      >
+                        Home <span className='sr-only'>(current)</span>
+                      </a>
+                    </li>
+                    <li className='nav-item'>
+                      <a
+                        style={{ color: 'blue' }}
+                        className='nav-link'
+                        href='#'
+                      >
+                        Link
+                      </a>
+                    </li>
+                    <li>
+                      <Nav
+                        className='mr-auto login'
+                        style={{ color: 'blue', float: 'right' }}
+                      >
+                        <NavDropdown title='Login' id='basic-nav-dropdown'>
+                          <li>
+                            <a
+                              href='/login-admin'
+                              className='text-center'
+                              style={{ float: 'left', color: 'black' }}
+                            >
+                              Admin{' '}
+                              <span className='glyphicon glyphicon-cog pull-left' />
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href='/login-supplier'
+                              style={{ float: 'left', color: 'black' }}
+                            >
+                              Supplier{' '}
+                              <span className='glyphicon glyphicon-stats pull-left' />
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href='/login-merchant'
+                              style={{ float: 'left', color: 'black' }}
+                            >
+                              Merchant{' '}
+                              <span className='glyphicon glyphicon-stats pull-left' />
+                            </a>
+                          </li>
+                        </NavDropdown>
+                      </Nav>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Navbar>
+      </div>
 
-  <div class="newClass collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav" style={{}}>
-    { /*  <a class="nav-item nav-link" href="#home">Home </a>
-      <br/>
-      <a class="nav-item nav-link" href="#about">About</a>
-      <br/>
-      <a class="nav-item nav-link" href="#services">Services</a>
-      <br/>
-      <a class="nav-item nav-link" href="#pricing">Pricing</a>
-      <br/>
-    */}
-      <ul className="nav navbar-nav login">
-         <li className="dropdown " style={{}}>
-           <a href="#" className="dropdown-toggle" data-toggle="dropdown">Login <span className="glyphicon glyphicon-user pull-right" /></a>
-           <ul className="dropdown-menu" style={{minWidth: "125px"}}>
-             <li className="text-center" style={{float:"left"}}><a href="/login-admin" className="text-center">Admin <span className="glyphicon glyphicon-cog pull-left" /></a></li>
-             <li><a href="/login-supplier" style={{float:"left"}}>Supplier <span className="glyphicon glyphicon-stats pull-left" /></a></li>
-             <li><a href="/login-merchant" style={{float:"left"}}>Merchant <span className="glyphicon glyphicon-stats pull-left" /></a></li>
-           </ul>
-         </li>
-       </ul>
-    </div>
-  </div>
-</nav>
+      {/*Banner section*/}
+      <section id='banner'>
+        <div className='container'>
+          <div className='row' style={{ float: 'left', marginTop: '-20rem' }}>
+            <div className='col-sm-6'>
+              <p className='promo-title'>Welcome to Melisxpress</p>
+              <p>
+                Discover large variety of viral products for your store in
+                seconds
+              </p>
 
-        <br/>
-        <section className="about-us py-5 " id="about-us" style={{padding:"0"}}>
-         <div className="container mt-5">
-           <div className="row">
-             <div className="col-md-7">
-               <h1 className="text-success">Welcome to MelisXpress!</h1>
-               <hr />
-               <h4>Discover large variety of viral products for your store in seconds.</h4>
-               <br/>
-               <p>Start your 7 days free trial<br/>(100% Secure)</p>
+              <button
+                type='button'
+                className='btn btn-primary text-center'
+                style={{ minWidth: '20%' }}
+              >
+                <a href='/merchantSignup'>Sign Up</a>
+              </button>
+              <br />
+              <small>(Start your 7 days trial. 100% Secure)</small>
+            </div>
+            <div className='col-sm-6 text-center'>
+              <img
+                className='banner-img'
+                src='http://themebubble.com/demo/marketingpro/wp-content/uploads/2016/10/seo-slide.png '
+                alt=''
+              />
+            </div>
+          </div>
+        </div>
+      </section>
 
-               <button type="button" className="btn btn-success" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
-             </div>
-             <div className="col-md-5">
-               <img src="http://themebubble.com/demo/marketingpro/wp-content/uploads/2016/10/seo-slide.png " alt="" />
-             </div>
-           </div>
-         </div>
-       </section>
+      {/*feature Section*/}
 
+      <section id='Features'>
+        <div className='container '>
+          <div className='row text-center'>
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>
+              <h4 className='text-center'>Faster Shipping</h4>
+              <p className='text-center'>
+                MelisXpress ships your products at highest priority
+              </p>
+            </div>
 
-       <section id="services" style={{position:"relative"}}>
-       <div className="container-fluid">
-         <h2 className="section-title mb-2 h1">Why choose us ?</h2>
-         <div className="row mt-5">
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-1">
-                 <h3 className="card-title">Automation</h3>
-                 <p className="card-text">Save time with our OneClick fulfillment feature.</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-2">
-                 <h3 className="card-title">Branded Package</h3>
-                 <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-3">
-                 <h3 className="card-title">Thank Your Letter</h3>
-                 <p className="card-text">MelisXpress allows branded thank you letters for your store.</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-         </div>
-         <div className="row">
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-4">
-                 <h3 className="card-title">Branded Invoice</h3>
-                 <p className="card-text">MelisXpress provides branded Invoice for customer’s trust.</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-5">
-                 <h3 className="card-title">Private Label</h3>
-                 <p className="card-text">MelisXpress gives option for high volume stores.</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-           <div className="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-4">
-             <div className="card">
-               <div className="card-block block-6">
-                 <h3 className="card-title">Faster Shipping</h3>
-                 <p className="card-text"> MelisXpress ships your products at highest priority .</p>
-                 <a href="javascript:void();" title="Read more" className="read-more">Read more<i className="fa fa-angle-double-right ml-2" /></a>
-               </div>
-             </div>
-           </div>
-         </div>
-       </div>
-       </section>
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>{' '}
+              <h4 className='text-center'>Branded Package</h4>
+              <p className='text-center'>
+                Custom package for all of your products
+              </p>
+            </div>
 
-    <section>
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>
+              <h4 className='text-center'>Automation</h4>
+              <p className='text-center'>
+                Save time with our OneClick fulfillment feature
+              </p>
+            </div>
+          </div>
 
-    <div className="container">
-      <img src={require('../assets/img/hiw.png')}/>
-         </div>
-<br/>
-         <div id="carouselExampleIndicators" className="carousel slide features_tab_inner" data-ride="carousel">
-       <div className="features_tab_left">
-         <ol className="carousel-indicators nav nav-tabs features_tab">
-           <li data-target="#carouselExampleIndicators" data-slide-to={0} className="active">
-             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon.png" alt="" />
-             <span className="heading">Work with top level suppliers</span>
-             <span className="summary">MelisXpress has found the top level suppliers in the Industry <br/>for you to have the best quality of products for your customer satisfaction & scale your brand without any trouble.
-                <small>
-                <br/>- 100% Best Quality Guaranteed.
-                <br/>- 100% Reliable Suppliers.
-                <br/>- Gives You Priority.
-                <br/>- Highly Experienced.</small>
+          <div className='row text-center'>
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>
+              <h4 className='text-center'>Branded Invoice</h4>
+              <p className='text-center'>
+                MelisXpress provides branded Invoice for customer’s trust
+              </p>
+            </div>
+
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>
+              <h4 className='text-center'>Private Label</h4>
+              <p className='text-center'>
+                MelisXpress gives option for high volume stores
+              </p>
+            </div>
+
+            <div className='col-md-4 features'>
+              <svg
+                className='feature-icon'
+                width='24'
+                height='24'
+                viewBox='0 0 24 24'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <g fill='none' fill-rule='evenodd'>
+                  <path d='M0 0h24v24H0z'></path>
+                  <path
+                    d='M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z'
+                    fill='#335EEA'
+                  ></path>
+                  <path
+                    d='M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z'
+                    fill='#335EEA'
+                    opacity='.3'
+                  ></path>
+                </g>
+              </svg>
+              <h4 className='text-center'>Thank You Letter</h4>
+              <p className='text-center'>
+                MelisXpress allows branded thank you letters for your store
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/*How Does Work*/}
+      <section id='work'>
+        <div className='container-fluid'>
+          <h1 className='section-title text-center'>How Does It Works</h1>
+          <div className='row work-flow'>
+            <div className='col-sm-2 working'>
+              <svg
+                style={{ width: '100%', height: '70px' }}
+                className='bi bi-box-arrow-in-down text-center'
+                width='1em'
+                height='1em'
+                viewBox='0 0 16 16'
+                fill='currentColor'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fillRule='evenodd'
+                  d='M4.646 8.146a.5.5 0 01.708 0L8 10.793l2.646-2.647a.5.5 0 01.708.708l-3 3a.5.5 0 01-.708 0l-3-3a.5.5 0 010-.708z'
+                  clipRule='evenodd'
+                />
+                <path
+                  fillRule='evenodd'
+                  d='M8 1a.5.5 0 01.5.5v9a.5.5 0 01-1 0v-9A.5.5 0 018 1z'
+                  clipRule='evenodd'
+                />
+                <path
+                  fillRule='evenodd'
+                  d='M1.5 13.5A1.5 1.5 0 003 15h10a1.5 1.5 0 001.5-1.5v-8A1.5 1.5 0 0013 4h-1.5a.5.5 0 000 1H13a.5.5 0 01.5.5v8a.5.5 0 01-.5.5H3a.5.5 0 01-.5-.5v-8A.5.5 0 013 5h1.5a.5.5 0 000-1H3a1.5 1.5 0 00-1.5 1.5v8z'
+                  clipRule='evenodd'
+                />
+              </svg>
+              <p
+                className='text-center'
+                style={{ fontSize: '20px', marginTop: '20px' }}
+              >
+                1.Get Melixpress
+              </p>
+            </div>
+
+            <div className='direction'></div>
+
+            <div className='col-sm-2 working'>
+              <svg
+                style={{ width: '100%', height: '70px' }}
+                className='bi bi-link-45deg'
+                width='1em'
+                height='1em'
+                viewBox='0 0 16 16'
+                fill='currentColor'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path d='M4.715 6.542L3.343 7.914a3 3 0 104.243 4.243l1.828-1.829A3 3 0 008.586 5.5L8 6.086a1.001 1.001 0 00-.154.199 2 2 0 01.861 3.337L6.88 11.45a2 2 0 11-2.83-2.83l.793-.792a4.018 4.018 0 01-.128-1.287z' />
+                <path d='M5.712 6.96l.167-.167a1.99 1.99 0 01.896-.518 1.99 1.99 0 01.518-.896l.167-.167A3.004 3.004 0 006 5.499c-.22.46-.316.963-.288 1.46z' />
+                <path d='M6.586 4.672A3 3 0 007.414 9.5l.775-.776a2 2 0 01-.896-3.346L9.12 3.55a2 2 0 012.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 00-4.243-4.243L6.586 4.672z' />
+                <path d='M10 9.5a2.99 2.99 0 00.288-1.46l-.167.167a1.99 1.99 0 01-.896.518 1.99 1.99 0 01-.518.896l-.167.167A3.004 3.004 0 0010 9.501z' />
+              </svg>
+              <p
+                className='text-center'
+                style={{ fontSize: '20px', marginTop: '20px' }}
+              >
+                2.Connect to Shopify
+              </p>
+            </div>
+
+            <div className='direction'></div>
+
+            <div className='col-sm-2 working'>
+              <svg
+                style={{ width: '100%', height: '70px' }}
+                className='bi bi-plus-square'
+                width='1em'
+                height='1em'
+                viewBox='0 0 16 16'
+                fill='currentColor'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  d='M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z'
+                  clip-rule='evenodd'
+                />
+                <path
+                  fill-rule='evenodd'
+                  d='M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z'
+                  clip-rule='evenodd'
+                />
+                <path
+                  fill-rule='evenodd'
+                  d='M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z'
+                  clip-rule='evenodd'
+                />
+              </svg>
+              <p
+                className='text-center'
+                style={{ fontSize: '20px', marginTop: '20px' }}
+              >
+                3. Find and import products
+              </p>
+            </div>
+
+            <div className=' direction'></div>
+
+            <div className='col-sm-2 working'>
+              <svg
+                style={{ width: '100%', height: '70px' }}
+                className='bi bi-house'
+                width='1em'
+                height='1em'
+                viewBox='0 0 16 16'
+                fill='currentColor'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  d='M2 13.5V7h1v6.5a.5.5 0 00.5.5h9a.5.5 0 00.5-.5V7h1v6.5a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 012 13.5zm11-11V6l-2-2V2.5a.5.5 0 01.5-.5h1a.5.5 0 01.5.5z'
+                  clip-rule='evenodd'
+                />
+                <path
+                  fill-rule='evenodd'
+                  d='M7.293 1.5a1 1 0 011.414 0l6.647 6.646a.5.5 0 01-.708.708L8 2.207 1.354 8.854a.5.5 0 11-.708-.708L7.293 1.5z'
+                  clip-rule='evenodd'
+                />
+              </svg>
+              <p
+                className='text-center'
+                style={{ fontSize: '20px', marginTop: '20px' }}
+              >
+                4.Make your store look good
+              </p>
+            </div>
+
+            <div className=' direction'></div>
+
+            <div className='col-sm-2 working'>
+              <svg
+                style={{ width: '100%', height: '70px' }}
+                className='bi bi-cursor'
+                width='1em'
+                height='1em'
+                viewBox='0 0 16 16'
+                fill='currentColor'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  d='M14.082 2.182a.5.5 0 01.103.557L8.528 15.467a.5.5 0 01-.917-.007L5.57 10.694.803 8.652a.5.5 0 01-.006-.916l12.728-5.657a.5.5 0 01.556.103zM2.25 8.184l3.897 1.67a.5.5 0 01.262.263l1.67 3.897L12.743 3.52 2.25 8.184z'
+                  clip-rule='evenodd'
+                />
+              </svg>
+              <p
+                className='text-center'
+                style={{ fontSize: '20px', marginTop: '20px' }}
+              >
+                5.Drive Traffic
+              </p>
+            </div>
+          </div>{' '}
+          {/*Row end*/}
+        </div>
+      </section>
+
+      <section style={{ padding: '60px 0' }}>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-5'>
+              <img
+                src='https://landkit.goodthemes.co/assets/img/photos/photo-2.jpg'
+                style={{ borderRadius: '5px' }}
+              />
+              <br />
+              <form style={{ marginTop: '20px' }}>
+                <div className='form-group' style={{ width: '100%' }}>
+                  <input
+                    styletype='email'
+                    className='form-control fields-blank'
+                    id='exampleInputEmail1'
+                    aria-describedby='emailHelp'
+                    placeholder='Name'
+                  />
+                </div>
+                <div className='form-group' style={{ width: '100%' }}>
+                  <input
+                    styletype='email'
+                    className='form-control fields-blank'
+                    id='exampleInputEmail1'
+                    aria-describedby='emailHelp'
+                    placeholder='Email'
+                  />
+                </div>
+                <div className='form-group' style={{ width: '100%' }}>
+                  <input
+                    type='password'
+                    className='form-control fields-blank'
+                    id='exampleInputPassword1'
+                    placeholder='Password'
+                  />
+                </div>
+
+                <button
+                  style={{ backgroundColor: '#90ee90', color: 'black' }}
+                  type='submit'
+                  className='btn btn-success'
+                >
+                  Sign Up
+                </button>
+              </form>
+            </div>
+
+            <div className='col-md-6 about-us'>
+              <p className='about-title'>Work with Top Level Suppliers</p>
+              <p style={{ fontWeight: 'lighter' }}>
+                MelisXpress has found the top level suppliers in the Industry
+                for you to have the best quality of products for your customer
+                satisfaction & scale your brand without any trouble.
+              </p>
+              <ul>
+                <li className='check'>100% Best Quality Guaranteed</li>
+                <li>100% Reliable Suppliers</li>
+                <li>Gives You Priority </li>
+                <li>Highly Experienced</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id='services' style={{ padding: '60px 0' }}>
+        <div className='container'>
+          <div className='row'>
+            <div className='col-md-6'>
+              <p className='service-title'>Easy To Scale</p>
+              <p style={{ fontWeight: 'lighter' }}>
+                MelisXpress is not only fulfill orders but provides you winning
+                products everyday which saves your time & makes it easy to scale
+              </p>
+
+              <div className='card'>
+                <div className='card-block block-1'>
+                  <h3 className='card-title'>Winning Products</h3>
+                  <p className='card-text'>
+                    Our product research team adds winning products everyday for
+                    you.
+                  </p>
+                </div>
+              </div>
+              <div className='card'>
+                <div className='card-block block-2'>
+                  <h3 className='card-title'>Request Product</h3>
+                  <p className='card-text'>
+                    If you have any winning product we will source out for you
+                    with just 1 click with quality control.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className='col-md-6'>
+              <img
+                src='https://landkit.goodthemes.co/assets/img/screenshots/desktop/dashkit.jpg'
+                className='img-fluid'
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id='feedback'>
+        <h1 className='text-center'>Our customers are our biggest fans.</h1>
+        <div className='container' style={{ width: '50%' }}>
+          <p className='feedback-para text-center'>
+            We always ensure that our clients are satisfied in everything, we
+            take the responsibility for the best quality of products & services.
+          </p>
+        </div>
+        <br />
+      </section>
+
+      <section id='pricing' style={{ padding: '60px 0' }}>
+        <h1 className='text-center'>Pricing Plans</h1>
+
+        <div className='container text-center'>
+          <div className='row text-center'>
+            <div className='col-md-6'>
+              <label className='switch text-center' style={{ float: 'right' }}>
+                <input type='checkbox' />
+                <span className='slider round'></span>
+              </label>
+            </div>
+            <div className='col-md-6'>
+              <p style={{ float: 'left' }}>Annuly</p>
+            </div>
+          </div>
+        </div>
+        <div className='container mb-5 mt-5'>
+          <div className='pricing card-deck flex-column flex-md-row mb-3'>
+            <div className='card card-pricing text-center px-3 mb-4'>
+              <span className='h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm'>
+                Basic
               </span>
-
-           </li>
-           <li data-target="#carouselExampleIndicators" data-slide-to={1} className>
-             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon3.png" alt="" />
-             <span className="heading">Easy To Scale</span>
-             <span className="summary">MelisXpress is not only fulfill orders but provides you winning products everyday which saves your time & makes it easy to scale.
-             <br/>
-             - <strong>Winning Products: </strong> Our product research team adds winning products everyday for you.
-            <br/> - <strong> Request product: </strong> If you have any winning product we will source out for you with just 1 click with quality control.
-             </span>
-           </li>
-
-           <li data-target="#carouselExampleIndicators" data-slide-to={2} className>
-             <img className="tab_icon" src="http://wethemez.com/demo/startupkit/img/tab-icon8.png" alt="" />
-             <span className="heading">Our customers are our biggest fans</span>
-             <span className="summary">We always ensure that our clients are satisfied in everything, we take the
-           responsibility for the best quality of products & services.</span>
-           </li>
-
-         </ol>
-       </div>
-       <div className="features_tab_right">
-         <div className="carousel-inner" style={{width:"-moz-max-content"}}>
-           <div className="carousel-item active">
-             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
-           </div>
-           <div className="carousel-item">
-             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
-           </div>
-           <div className="carousel-item">
-             <img src="http://wethemez.com/demo/startupkit/img/features_two6.jpg" alt="" />
-           </div>
-
-         </div>
-       </div>
-     </div>
-
-    </section>
-
-     <section id="pricing" className="container-fluid">
-     <div className="row" style={{position:"relative", marginTop:"-8rem"}}>
-     <h2 className="section-title mb-2 h1">Pricing</h2>
-
-          <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <div className="db-wrapper">
-              <div className="db-pricing-seven">
-                <ul>
-                  <li className="price">
-                    <i className="glyphicon glyphicon-qrcode" />
-                    BASIC - 29 $
-                  </li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
+              <div className='bg-transparent card-header pt-4 border-0'>
+                <h1
+                  className='h4 font-weight-normal text-primary text-center mb-0'
+                  data-pricing-value={15}
+                >
+                  $<span className='price'>19.99</span>
+                  <span className='h6 text-muted ml-2'>/ per month</span>
+                </h1>
+              </div>
+              <div className='card-body pt-0'>
+                <ul className='list-unstyled mb-4'>
+                  <li>Up to 5 users</li>
+                  <li>Basic support on Github</li>
+                  <li>Monthly updates</li>
+                  <li>Free cancelation</li>
                 </ul>
-                <div className="pricing-footer">
-                  <a href="#" className="btn btn-default btn-lg">BUY <i className="glyphicon glyphicon-play-circle" /></a>
-                </div>
+                <button
+                  type='button'
+                  className='btn btn-outline-secondary mb-3'
+                >
+                  Order Now
+                </button>
               </div>
             </div>
-          </div>
-          <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <div className="db-wrapper">
-              <div className="db-pricing-seven">
-                <ul>
-                  <li className="price">
-                    <i className="glyphicon glyphicon-indent-right" />
-                    MEDIUM - 49 $
-                  </li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
+            <div className='card card-pricing popular shadow text-center px-3 mb-4'>
+              <span className='h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm'>
+                Pro
+              </span>
+              <div className='bg-transparent card-header pt-4 border-0'>
+                <h1
+                  className='h4 font-weight-normal text-primary text-center mb-0'
+                  data-pricing-value={30}
+                >
+                  $<span className='price'>69.99</span>
+                  <span className='h6 text-muted ml-2'>/ per month</span>
+                </h1>
+              </div>
+              <div className='card-body pt-0'>
+                <ul className='list-unstyled mb-4'>
+                  <li>Up to 5 users</li>
+                  <li>Basic support on Github</li>
+                  <li>Monthly updates</li>
+                  <li>Free cancelation</li>
                 </ul>
-                <div className="pricing-footer">
-                  <a href="#" className="btn btn-default btn-lg">BUY<i className="glyphicon glyphicon-play-circle" /></a>
-                </div>
+                <a
+                  href='https://www.totoprayogo.com'
+                  target='_blank'
+                  className='btn btn-primary mb-3'
+                >
+                  Order Now
+                </a>
               </div>
             </div>
-          </div>
-          <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <div className="db-wrapper">
-              <div className="db-pricing-seven">
-                <ul>
-                  <li className="price">
-                    <i className="glyphicon glyphicon-list-alt" />
-                    ULTIMATE - 99 $
-                  </li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
-                </ul>
-                <div className="pricing-footer">
-                  <a href="#" className="btn btn-default btn-lg">BUY <i className="glyphicon glyphicon-play-circle" /></a>
-                </div>
+            <div className='card card-pricing text-center px-3 mb-4'>
+              <span className='h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm'>
+                Plus +
+              </span>
+              <div className='bg-transparent card-header pt-4 border-0'>
+                <h1
+                  className='h4 font-weight-normal text-primary text-center mb-0'
+                  data-pricing-value={45}
+                >
+                  $<span className='price'>129.99</span>
+                  <span className='h6 text-muted ml-2'>/ per month</span>
+                </h1>
               </div>
-            </div>
-          </div>
-          <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
-            <div className="db-wrapper">
-              <div className="db-pricing-seven">
-                <ul>
-                  <li className="price">
-                    <i className="glyphicon glyphicon-align-justify" />
-                    EXTENDED - 199 $
-                  </li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
-                  <li>Web Designing</li>
-                  <li>Logo Assesment</li>
-                  <li>Digital Marketing</li>
+              <div className='card-body pt-0'>
+                <ul className='list-unstyled mb-4'>
+                  <li>Up to 5 users</li>
+                  <li>Basic support on Github</li>
+                  <li>Monthly updates</li>
+                  <li>Free cancelation</li>
                 </ul>
-                <div className="pricing-footer">
-                  <a href="#" className="btn btn-default btn-lg">BUY <i className="glyphicon glyphicon-play-circle" /></a>
-                </div>
+                <button
+                  type='button'
+                  className='btn btn-outline-secondary mb-3'
+                >
+                  Order now
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </section>
 
-     </section>
-
-     <footer className="footer landingFooter" style={{backgroundColor:"black"}}>
-       <div className="container bottom_border">
-         <div className="row">
-           <div className=" col-sm-4 col-md col-sm-4  col-12 col">
-             <h5 className="headin5_amrc col_white_amrc pt2">Find us</h5>
-             {/*headin5_amrc*/}
-             <p className="mb10">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-             <p><i className="fa fa-location-arrow" /> 9878/25 sec 9 rohini 35 </p>
-             <p><i className="fa fa-phone" />  +91-9999878398</p>
-             <p><i className="fa fa fa-envelope" /> info@example.com</p>
-           </div>
-           <div className=" col-sm-4 col-md  col-6 col">
-             <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
-             {/*headin5_amrc*/}
-             <ul className="footer_ul_amrc">
-               <li><a href="http://webenlance.com">Image Rectoucing</a></li>
-               <li><a href="http://webenlance.com">Clipping Path</a></li>
-               <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
-               <li><a href="http://webenlance.com">Ebay &amp; Amazon</a></li>
-               <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
-               <li><a href="http://webenlance.com">Image Cropping</a></li>
-             </ul>
-             {/*footer_ul_amrc ends here*/}
-           </div>
-           <div className=" col-sm-4 col-md  col-6 col">
-             <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
-             {/*headin5_amrc*/}
-             <ul className="footer_ul_amrc">
-               <li><a href="http://webenlance.com">Remove Background</a></li>
-               <li><a href="http://webenlance.com">Shadows &amp; Mirror Reflection</a></li>
-               <li><a href="http://webenlance.com">Logo Design</a></li>
-               <li><a href="http://webenlance.com">Vectorization</a></li>
-               <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
-               <li><a href="http://webenlance.com">Image Cropping</a></li>
-             </ul>
-             {/*footer_ul_amrc ends here*/}
-           </div>
-
-         </div>
-       </div>
-       <div className="container">
-        <br/>
-         {/*foote_bottom_ul_amrc ends here*/}
-         <p className="text-center">Copyright @2020 | Designed With by Developer <a href="#">MelisXpress</a></p>
-         <ul className="social_footer_ul">
-           <li><a href="http://webenlance.com"><i className="fab fa-facebook-f" /></a></li>
-           <li><a href="http://webenlance.com"><i className="fab fa-twitter" /></a></li>
-           <li><a href="http://webenlance.com"><i className="fab fa-linkedin" /></a></li>
-           <li><a href="http://webenlance.com"><i className="fab fa-instagram" /></a></li>
-         </ul>
-         {/*social_footer_ul ends here*/}
-       </div>
-     </footer>
-
-       </div>
-</div>
-
-
+      <section id='footer'>
+        <footer id='footer-Section'>
+          <div className='footer-top-layout'>
+            <div className='container'>
+              <div className='row'>
+                <div className=' col-lg-8 col-lg-offset-2'>
+                  <div className='col-sm-4'>
+                    <div className='footer-col-item'>
+                      <h4>Go Travel Cloud</h4>
+                      <address>
+                        501,507 your company address
+                        <br />
+                        400015 Maharashtra, UK
+                      </address>
+                    </div>
+                  </div>
+                  <div className='col-sm-4'>
+                    <div className='footer-col-item'>
+                      <h4>Reach Us</h4>
+                      <div className='item-contact'>
+                        {' '}
+                        <a href='tel:630-885-9200'>
+                          <span className='link-id'>P</span>:
+                          <span>630-885-9200</span>
+                        </a>{' '}
+                        <a href='tel:630-839.2006'>
+                          <span className='link-id'>F</span>:
+                          <span>630-839.2006</span>
+                        </a>{' '}
+                        <a href='mailto:info@brandcatmedia.com'>
+                          <span className='link-id'>E</span>:
+                          <span>info@brandcatmedia.com</span>
+                        </a>{' '}
+                      </div>
+                    </div>
+                  </div>
+                  <div className='col-sm-4'>
+                    <div className='footer-col-item'>
+                      <h4>Sign up for Newsletter</h4>
+                      <form className='signUpNewsletter' action method='get'>
+                        <input
+                          name
+                          className='gt-email form-control'
+                          placeholder='You@youremail.com'
+                          type='text'
+                        />
+                        <input
+                          name
+                          className='btn-go'
+                          defaultValue='Go'
+                          type='button'
+                        />
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='footer-bottom-layout'>
+            <div className='copyright-tag'>
+              Copyright © 2017 company name. All Rights Reserved.
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
   );
-}
+};
 export default Landing;
