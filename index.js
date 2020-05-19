@@ -319,41 +319,6 @@ app.post("/orders/:VendorString/:id", (req, res) => {
 });
 
 
-//supplier orders fulfill and add tracking no.
-app.post('/suppOrderFulfill/:store/:id', (req, res)=>{
-  console.log("supplier order fulfill", req.params.id);
-  const jsonData = req.body
-  const orderID = req.params.id;
-  const trackno = req.body.fulfillment.tracking_number
-
-request.post("https://499297f8.ngrok.io/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
-.then(data=>{
-
-Orders.findOneAndUpdate(
-  {
-    product_name: orderID,
-  },
-  {
-    tracking_number: trackno
-  },
-  {
-    new: true,
-    useFindAndModify: false,
-  },
-  (err, result) => {
-    if (!err) {
-      res.json("success");
-    } else {
-      console.log("error ", err);
-    }
-  }
-);
-})
-.catch(error=>{
-  console.log(error.message);
-})
-})
-
 
 //get fulfilled Orders
 app.get("/fulfilledOrders/:VendorString", (req, res) => {
@@ -1121,6 +1086,42 @@ app.post("/settingsUpdate", (req, res) => {
     }
   );
 });
+
+//supplier orders fulfill and add tracking no.
+app.post('/suppOrderFulfill/:store/:id', (req, res)=>{
+  console.log("supplier order fulfill", req.params.id);
+  const jsonData = req.body
+  const orderID = req.params.id;
+  const trackno = req.body.fulfillment.tracking_number
+
+request.post("https://499297f8.ngrok.io/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
+.then(data=>{
+
+Orders.findOneAndUpdate(
+  {
+    product_name: orderID,
+  },
+  {
+    tracking_number: trackno
+  },
+  {
+    new: true,
+    useFindAndModify: false,
+  },
+  (err, result) => {
+    if (!err) {
+      res.json("success");
+    } else {
+      console.log("error ", err);
+    }
+  }
+);
+})
+.catch(error=>{
+  console.log(error.message);
+})
+})
+
 
 
 
