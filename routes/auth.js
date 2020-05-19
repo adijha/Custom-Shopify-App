@@ -503,6 +503,7 @@ router.get("/ordersList/:id", async (req, res) => {
       if (subItem.sku !== undefined) {
         itemArray.push({
           id: item.product_name,
+          productId:subItem.id,
           sku: subItem.sku,
           quantity: subItem.quantity,
           customer: item.customer,
@@ -510,6 +511,8 @@ router.get("/ordersList/:id", async (req, res) => {
           paid: item.paid,
           paymentStatus: item.paymentStatus,
           fulfillmentStatus: item.fulfillmentStatus,
+          store:subItem.store,
+          paymentMode:item.paymentMode
         });
       }
     });
@@ -526,6 +529,7 @@ router.get("/ordersList/:id", async (req, res) => {
       if (product.code == item.sku) {
         let dataObj = {
           id: item.id,
+          productId: item.productId,
           customer: item.customer,
           sku: item.sku,
           name: product.name,
@@ -535,7 +539,10 @@ router.get("/ordersList/:id", async (req, res) => {
           paid: item.paid,
           paymentStatus: item.paymentStatus,
           fulfillmentStatus: item.fulfillmentStatus,
+          store: item.store,
+          paymentMode: item.paymentMode
         };
+        console.log(dataObj);
         makeList.push(dataObj);
       }
     });
@@ -546,5 +553,7 @@ router.get("/ordersList/:id", async (req, res) => {
   // console.log(totalOrders);
   //   res.status(200).json(totalOrders)
 });
+
+
 
 module.exports = router;

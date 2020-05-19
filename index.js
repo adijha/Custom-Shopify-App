@@ -16,7 +16,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
   "read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders";
-const forwardingAddress = "https://demo-mojito.herokuapp.com";
+const forwardingAddress = "https://499297f8.ngrok.io";
 let hmacc, tokenn;
 let shop;
 let topic = "orders/create";
@@ -55,6 +55,7 @@ app.use("/api", authRoute);
 app.get("/shopify", (req, res) => {
   console.log("inside /shopify");
   shop = req.query.shop;
+  console.log("shop is ", shop);
   if (shop) {
     const state = nonce();
     const redirectUri = forwardingAddress + "/shopify/callback";
@@ -135,7 +136,7 @@ app.get("/shopify/callback", (req, res) => {
           "X-Shopify-Access-Token": tokenn,
         };
         request
-          .get("https://demo-mojito.herokuapp.com/webhook")
+          .get("https://499297f8.ngrok.io/webhook")
           .then((shopResponse) => {
             res.send(shopResponse);
           })
@@ -291,6 +292,7 @@ app.get("/orders/:VendorString", (req, res) => {
 //fulfill single orders
 app.post("/orders/:VendorString/:id", (req, res) => {
   console.log(req.params.id);
+  console.log(req.body);
   const shopRequestUrl =
     "https://" +
     req.params.VendorString +
@@ -315,6 +317,40 @@ app.post("/orders/:VendorString/:id", (req, res) => {
       console.log("ordre fulfil order is", error);
     });
 });
+
+
+//supplier orders fulfill and add tracking no.
+app.post('/suppOrderFulfill/:store/:id', (req, res)=>{
+  console.log("supplier order fulfill", req.params.id);
+  const jsonData = req.body
+  console.log(jsonData);
+
+request.post("https://499297f8.ngrok.io/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
+.then(data=>{
+  Orders.findOneAndUpdate(
+    {
+      order_name: req.params.id,
+    },
+    {
+      tracking_number: req.body.tracking_number
+    },
+    {
+      new: true,
+      useFindAndModify: false,
+    },
+    (err, result) => {
+      if (!err) {
+        res.send("success");
+      } else {
+        console.log("error ", err);
+      }
+    }
+  );})
+.catch(error=>{
+  console.log(error.message);
+})
+})
+
 
 //get fulfilled Orders
 app.get("/fulfilledOrders/:VendorString", (req, res) => {
@@ -349,7 +385,7 @@ app.get("/webhook", (req, res) => {
   const webhookPayload = {
     webhook: {
       topic: "orders/create",
-      address: `https://demo-mojito.herokuapp.com/store/${shop}/orders/create`,
+      address: `https://499297f8.ngrok.io/store/${shop}/orders/create`,
       format: "json",
     },
   };
@@ -1006,7 +1042,7 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
       quantity: item.quantity,
       price: item.price,
       sku: item.sku,
-      store: item.vendor,
+      store: item.vendor
     });
   });
 
@@ -1015,6 +1051,7 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
     currency: request.body.currency,
     price: request.body.total_price,
     created_on: request.body.created_at,
+    paymentMode: request.body.gateway,
     products: productDetails,
     customer: {
       name: request.body.customer.first_name + request.body.customer.last_name,
@@ -1081,6 +1118,8 @@ app.post("/settingsUpdate", (req, res) => {
     }
   );
 });
+
+
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

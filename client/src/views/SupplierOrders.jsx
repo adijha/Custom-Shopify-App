@@ -6,6 +6,8 @@ import { NotificationManager } from 'react-notifications';
 import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
+
+
 const SupplierOrders = () => {
   const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
@@ -23,9 +25,28 @@ const SupplierOrders = () => {
     });
   };
 
-  const updateFulfillment = async () => {
+  const updateFulfillment = async (data) => {
+    console.log("order id is in supplier", data)
+    console.log(data.store);
+    let productIdArray=[];
+    orderList.forEach((item, i) => {
+      if (item.id == data.id) {
+        productIdArray.push({
+          id:item.productId
+        })
+      }
+    });
+
+
+    const fulfilObject = await {
+      fulfillment: {
+        location_id: 35210428495,
+        tracking_number: fulfill,
+        notify_customer: true
+      }
+    };
     try {
-      let res = await axios.post('/fulfillOrder', { trackingId: fulfill });
+      let res = await axios.post('/suppOrderFulfill/' + data.store + "/" + data.id, fulfilObject);
       if (res.data.includes('success')) {
         NotificationManager.success('Fulfilled Successfully');
       }
@@ -74,7 +95,7 @@ const SupplierOrders = () => {
                             <td>{item.id || 'none'}</td>
                             <td>{item.sku || 'none'}</td>
                             <td>{item.customer.name || 'none'}</td>
-                            <td>{item.paymentStatus || 'none'}</td>
+                            <td>{item.paymentMode || 'none'}</td>
                             <td>{item.fullfillmentStaus || 'none'}</td>
                             <td>{item.price || 'none'}</td>
                             <td>{item.invoice || 'none'}</td>
@@ -129,7 +150,7 @@ const SupplierOrders = () => {
 
                                   <div
                                     className='orderButton'
-                                    onClick={updateFulfillment}
+                                    onClick={()=>updateFulfillment(item)}
                                   >
                                     Fulfill
                                   </div>
