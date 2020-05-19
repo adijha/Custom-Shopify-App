@@ -22,7 +22,7 @@ const OrderSchema = mongoose.Schema({
   paymentStatus: { type: Boolean },
   paymentMode: {type:String},
   fulfillmentStatus: { type: Boolean },
-  tracking_number:{type:String}
+  tracking_number:{type:String, default:null}
 });
 
 module.exports = mongoose.model("Orders", OrderSchema);
