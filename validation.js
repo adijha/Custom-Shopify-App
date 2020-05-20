@@ -7,7 +7,10 @@ const userValidation = (data) =>{
 		supplier_id: Joi.string(),
 		email: Joi.string().min(6).required().email(),
 		password: Joi.string().required(),
-		category: Joi.string()
+		category: Joi.string(),
+		firstName: Joi.string(),
+		lastName: Joi.string(),
+		phoneNo: Joi.number(),
 	});
 
 	return schema.validate(data);

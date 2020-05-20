@@ -2,14 +2,21 @@ const mongoose = require('mongoose');
 
 const merchantUserScheme = new mongoose.Schema({
 	merchant_id:{
-		type:String,
-		require:true
+		type:String
+	},
+	firstName:{
+		type:String
+	},
+	lastName:{
+		type:String
+	},
+	phoneNo:{
+		type: Number
 	},
 	email:{
 		type: String,
 		require: true
 	},
-
 	password:{
 		type: String,
 		require: true

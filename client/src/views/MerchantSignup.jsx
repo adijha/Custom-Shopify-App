@@ -1,74 +1,81 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import '../assets/css/supplier.css'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
+import '../assets/css/merchantSignup.css'
+import { NotificationManager } from 'react-notifications';
 
 function MerchantSignup(){
+const [firstName, setFirstName]= useState("");
+const [lastName, setLastName] = useState("");
+const [phoneNo, setPhoneNo] = useState("")
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [status, setStatus] = useState("");
+  const [value, setValue] = useState()
 
 
-
-const updateEmail = e =>{
-  setEmail(e.target.value)
-}
-
-const updatePwd = e=>{
-  setPassword(e.target.value)
-}
-
-const addMerchant = e =>{
+const addMerchant = async e =>{
   e.preventDefault();
   const obj = {
-
+    firstName: firstName,
+    lastName: lastName,
+    phoneNo: value,
     email: email,
     password: password
   }
-  axios
-  .post('/api/merchant', obj)
-  .then((data)=>{
-    if (data) {
-      setStatus("New Supplier Created Successfully")
-      setEmail("")
+  console.log("signup details", obj);
+  try {
+    let res = await  axios.post('/api/merchant', obj)
+    if (res.data.includes('success')) {
+      NotificationManager.success('Registered Successfully');
+      setEmail("");
+      setFirstName("");
+      setLastName("");
+      setValue();
       setPassword("")
     }
-
-  })
-  .catch(err=>{
-    setStatus("Id not Created"+ err.message)
-  })
+  } catch (error) {
+    NotificationManager.error('Something unusual happened');
+  }
+  // .then((data)=>{
+  //   if (data) {
+  //     setStatus("New Supplier Created Successfully")
+  //     setEmail("")
+  //     setPassword("")
+  //   }
+  //
+  // })
+  // .catch(err=>{
+  //   setStatus("Id not Created"+ err.message)
+  // })
 }
 
   return(
-    <div className='wrapper' id="wrapper">
+      <div className="signup-form" style={{ position:"relative", display:"flex"}}>
 
-       <div className='form-wrapper' id="form-wrapper">
-       <h2>Merchant Sign Up</h2>
+        <div className="sign-up-form">
+          <h1>Sign up Now</h1>
+          <form onSubmit={addMerchant}>
+            <input type="firstName" className="input-box" placeholder="Enter First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} required/>
+            <input type="lastName" className="input-box" placeholder="Enter Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)} required/>
+            <input  type="email" className="input-box" placeholder="Enter Email Address" value={email} onChange={(e)=>setEmail(e.target.value) } required/>
+            <PhoneInput
+      placeholder="Enter phone number"
+className="input-box"
+      value={value}
+      onChange={setValue} required/>
+      <input type="password" className="input-box" placeholder="Enter Password" value={password} onChange={(e)=>setPassword(e.target.value)} required/>
+      <p className="text-center"><span className="check"><input type="checkbox" required/></span>I agree to the terms & conditions</p>
+      <button type="submit" className="signup-btn">Sign Up</button>
+      <hr/>
+      <p className="text-center">Do you have an account ? <a href="#">Sign In</a></p>
+          </form>
 
-         <form  onSubmit={addMerchant} >
 
-           <div className='email'>
-             <label htmlFor="email">Email</label>
-             <input type='email' name='email'  value={email} onChange={updateEmail} />
-           </div>
-           <div className='password'>
-             <label htmlFor="password">Password</label>
-             <input type='password' name='password'  value={password} onChange={updatePwd} />
-           </div>
-           <div className='info'>
-             <small>Password must be eight characters in length.</small>
-           </div>
-           <div className='submit'>
-             <button className="btn btn-primary">Create Account</button>
-           </div>
+        </div>
 
-           <div style={{marginTop: "10px", width: "100%", display: "flex", flexWrap: "wrap"}}>
-             <button className="btn btn-info"><a href="/login-merchant">Login</a></button>
-           </div>
-           <div className="info">{status}</div>
 
-         </form>
-       </div>
      </div>
   )
 }

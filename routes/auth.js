@@ -81,6 +81,7 @@ router.post("/adminLogin", async (req, res) => {
 //merchant sign up
 router.post("/merchant", async (req, res) => {
   //let validate the data
+  console.log(req.body);
   const { error } = userValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -92,14 +93,18 @@ router.post("/merchant", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  const merchantUser = new MerchantUser({
+  const merchantUser = await new MerchantUser({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phoneNo: req.body.phoneNo,
     email: req.body.email,
-    password: hashPassword,
+    password: hashPassword
   });
-
+console.log(merchantUser);
   try {
     const savedUser = await merchantUser.save();
-    res.send(savedUser);
+    console.log("saveduser", savedUser);
+    res.send("success");
   } catch (err) {
     res.status(400).send(err);
   }
