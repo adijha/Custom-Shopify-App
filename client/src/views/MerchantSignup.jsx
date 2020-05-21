@@ -4,6 +4,8 @@ import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import '../assets/css/merchantSignup.css'
 import { NotificationManager } from 'react-notifications';
+import {Redirect} from 'react-router-dom';
+
 
 function MerchantSignup(){
 const [firstName, setFirstName]= useState("");
@@ -12,7 +14,8 @@ const [phoneNo, setPhoneNo] = useState("")
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
 const [status, setStatus] = useState("");
-  const [value, setValue] = useState()
+  const [value, setValue] = useState();
+  const [btnCheck, setBtnCheck] = useState(false)
 
 
 const addMerchant = async e =>{
@@ -34,26 +37,17 @@ const addMerchant = async e =>{
       setLastName("");
       setValue();
       setPassword("")
+      setBtnCheck(true)
     }
   } catch (error) {
     NotificationManager.error('Something unusual happened');
   }
-  // .then((data)=>{
-  //   if (data) {
-  //     setStatus("New Supplier Created Successfully")
-  //     setEmail("")
-  //     setPassword("")
-  //   }
-  //
-  // })
-  // .catch(err=>{
-  //   setStatus("Id not Created"+ err.message)
-  // })
+
 }
 
   return(
       <div className="signup-form" style={{ position:"relative", display:"flex"}}>
-
+      {(btnCheck==true)?(<Redirect to="/connect-store"/>):null}
         <div className="sign-up-form">
           <h1>Sign up Now</h1>
           <form onSubmit={addMerchant}>
@@ -70,7 +64,8 @@ className="input-box"
       <button type="submit" className="signup-btn">Sign Up</button>
       <hr/>
       <p className="text-center">Do you have an account ? <a href="#">Sign In</a></p>
-          </form>
+
+      </form>
 
 
         </div>
