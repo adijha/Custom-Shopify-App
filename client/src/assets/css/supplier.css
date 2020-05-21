@@ -119,3 +119,8 @@ button:hover {
   display: flex;
   flex-wrap: wrap;
 }
+.password__show{
+  align-items: right;
+  position: relative;
+  bottom: 30px
+}
