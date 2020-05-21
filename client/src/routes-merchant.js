@@ -23,6 +23,7 @@ import ShopifyProduct from "./views/ShopifyProduct.jsx"
 import ProductLayout from "./layouts/Products.jsx";
 import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
+import MerchantProfileSetting from "./views/MerchantProfileSetting.jsx"
 
 
 
@@ -59,6 +60,13 @@ const dashboardRoutes = [
     name: "Fulfilled Orders",
     icon: "pe-7s-bell",
     component: FulfilledOrders,
+    layout: "/merchant"
+  },
+  {
+    path: "/profile-setting",
+    name: "Account Details",
+    icon: "pe-7s-bell",
+    component: MerchantProfileSetting,
     layout: "/merchant"
   }
 

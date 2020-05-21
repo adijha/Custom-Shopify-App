@@ -24,6 +24,8 @@ const Orders = require("./model/Orders");
 const Products = require("./model/Products");
 const ProductCopy = require("./model/ProductCopy");
 const User = require("./model/User");
+const MerchantUser = require("./model/MerchantUser");
+
 
 //Import Route
 const authRoute = require("./routes/auth");
@@ -1086,6 +1088,49 @@ app.post("/settingsUpdate", (req, res) => {
     }
   );
 });
+
+
+// Merchant settings get
+app.get("/merchantProfile:id", async (req, res) => {
+  try {
+    let mer = await MerchantUser.findOne({ _id: req.params.id });
+    res.send(mer);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+// Merchant update settings
+app.post("/settingsUpdateMerchant", (req, res) => {
+  console.log(req.body);
+
+  MerchantUser.findOneAndUpdate(
+    {
+      supplier_id: req.body.id,
+    },
+    {
+      email: req.body.email,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      phoneNo: req.body.phoneNo,
+    },
+    {
+      new: true,
+      useFindAndModify: false,
+    },
+    (err, result) => {
+      if (!err) {
+        res.sendStatus(200);
+      } else {
+        console.log("error ", err);
+      }
+    }
+  );
+});
+
+
+
+
 
 //supplier orders fulfill and add tracking no.
 app.post('/suppOrderFulfill/:store/:id', (req, res)=>{

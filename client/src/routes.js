@@ -64,13 +64,6 @@ const dashboardRoutes = [
     layout: "/admin"
   },
 
-  {
-    path: "/AddMargin",
-    name: "Product Margins",
-    icon: "pe-7s-bell",
-    component: Margin,
-    layout: "/admin"
-  },
 
   {
     path: "/AutoMargin",
