@@ -166,6 +166,88 @@ router.get("/merchant", async (req, res) => {
   }
 });
 
+//Custom Details merchant list
+
+router.get('/customMerchantDetail',async (req, res)=>{
+  let detail=[]
+
+  try {
+    const data =  await MerchantUser.find();
+    data.forEach((item, i) => {
+     const obj = {
+       id: item._id,
+       email: item.email,
+       first: item.firstName,
+       lastName: item.lastName,
+       phone: item.phoneNo,
+       store: item.store,
+       joiningDate: item.joiningDate
+     }
+     detail.push(obj)
+
+   });
+
+   const orderData = await Orders.find();
+
+     let orderArr =[]
+
+    orderData.forEach((ord, i) => {
+     ord.products.forEach((product, i) => {
+         const productObj = {
+           store: product.store,
+           price: parseInt(product.price),
+           count:1
+         };
+         orderArr.push(productObj)
+
+     });
+ });
+
+ let finalArr = []
+
+     orderArr.forEach((pro, j) => {
+         if (!this[pro.store] && this[pro.store]!='undefined') {
+           this[pro.store] = {store: pro.store, count: 0, price:0}
+           finalArr.push(this[pro.store]);
+         }
+         this[pro.store].price += pro.price
+         this[pro.store].count += pro.count
+
+     });
+     let merchantArr = []
+
+      finalArr.forEach((final, i) => {
+       detail.forEach((d, j) => {
+         if (d.store===final.store) {
+           const newObject = {
+             id: d.id,
+             email: d.email,
+             firstName: d.first,
+             lastName: d.lastName,
+             phone: d.phone,
+             store: d.store,
+             joiningDate: d.joiningDate,
+             price: final.price,
+             count:final.count
+           }
+           merchantArr.push(newObject)
+         }
+       });
+
+     });
+ console.log(merchantArr)
+ res.send(merchantArr)
+
+
+  } catch (e) {
+    console.log(e)
+  }
+
+
+
+})
+
+
 //sepecific merchant with id
 router.get("/merchant/:id", async (req, res) => {
   const detail = []
@@ -191,77 +273,6 @@ router.get("/merchant/:id", async (req, res) => {
   }
 });
 
-//Custom Details merchant list
-
-router.get('/customMerchantDetail',async (req, res)=>{
-  let detail=[]
-  let orderArr =[]
-  let finalArr = []
-  let merchantArr = []
-
-  const data = await MerchantUser.find();
-
-  await data.forEach((item, i) => {
-    const obj = {
-      id: item._id,
-      email: item.email,
-      first: item.firstName,
-      lastName: item.lastName,
-      phone: item.phoneNo,
-      store: item.store,
-      joiningDate: item.joiningDate
-    }
-    detail.push(obj)
-
-  });
-
-  const orderData = await Orders.find();
-
-await   orderData.forEach((ord, i) => {
-    ord.products.forEach((product, i) => {
-        const productObj = {
-          store: product.store,
-          price: parseInt(product.price),
-          count:1
-        };
-        orderArr.push(productObj)
-
-    });
-});
-
-
-  await  orderArr.forEach((pro, j) => {
-        if (!this[pro.store] && this[pro.store]!='undefined') {
-          this[pro.store] = {store: pro.store, count: 0, price:0}
-          finalArr.push(this[pro.store]);
-        }
-        this[pro.store].price += pro.price
-        this[pro.store].count += pro.count
-
-    },{});
-
-  await   finalArr.forEach((final, i) => {
-      detail.forEach((d, j) => {
-        if (d.store===final.store) {
-          const newObject = {
-            id: d.id,
-            email: d.email,
-            firstName: d.first,
-            lastName: d.lastName,
-            phone: d.phone,
-            store: d.store,
-            joiningDate: d.joiningDate,
-            price: final.price,
-            count:final.count
-          }
-          merchantArr.push(newObject)
-        }
-      });
-
-    });
-console.log(merchantArr)
-res.send(merchantArr)
-})
 
 
 //Merchant Orders
