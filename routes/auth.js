@@ -169,79 +169,172 @@ router.get("/merchant", async (req, res) => {
 //Custom Details merchant list
 
 router.get('/customMerchantDetail',async (req, res)=>{
-  let detail=[]
 
-  try {
+    let detail=[]
+    let mDetail = []
+    let sName = []
+    let countItem = 0;
+    let countPrice = 0;
+    let finalArrU = []
+
+    let resArray = []
+
     const data =  await MerchantUser.find();
+    const orderData = await Orders.find();
+
     data.forEach((item, i) => {
-     const obj = {
-       id: item._id,
-       email: item.email,
-       first: item.firstName,
-       lastName: item.lastName,
-       phone: item.phoneNo,
-       store: item.store,
-       joiningDate: item.joiningDate
-     }
-     detail.push(obj)
+      orderData.forEach((od, j)=>{
+        od.products.forEach((pro, k) => {
+          if (item.store===pro.store) {
+            const obj = {
+                     id: item._id,
+                     email: item.email,
+                     firstName: item.firstName,
+                     lastName: item.lastName,
+                     phone: item.phoneNo,
+                     joiningDate: item.joiningDate,
+                     store: pro.store,
+                    price: parseInt(pro.price),
+                    count:1
+            }
 
-   });
+            detail.push(obj)
+            sName.push(item.store)
+          }
+        });
+      })
+    })
+    sName = [...new Set(sName)];
 
-   const orderData = await Orders.find();
+  sName.forEach((sn, m) => {
+    detail.forEach((det, n) => {
+      if (sn === det.store) {
+        countItem += det.count
+        countPrice += det.price
 
-     let orderArr =[]
+      }
 
-    orderData.forEach((ord, i) => {
-     ord.products.forEach((product, i) => {
-         const productObj = {
-           store: product.store,
-           price: parseInt(product.price),
-           count:1
-         };
-         orderArr.push(productObj)
-
-     });
- });
-
- let finalArr = []
-
-     orderArr.forEach((pro, j) => {
-         if (!this[pro.store] && this[pro.store]!='undefined') {
-           this[pro.store] = {store: pro.store, count: 0, price:0}
-           finalArr.push(this[pro.store]);
-         }
-         this[pro.store].price += pro.price
-         this[pro.store].count += pro.count
-
-     });
-     let merchantArr = []
-
-      finalArr.forEach((final, i) => {
-       detail.forEach((d, j) => {
-         if (d.store===final.store) {
-           const newObject = {
-             id: d.id,
-             email: d.email,
-             firstName: d.first,
-             lastName: d.lastName,
-             phone: d.phone,
-             store: d.store,
-             joiningDate: d.joiningDate,
-             price: final.price,
-             count:final.count
-           }
-           merchantArr.push(newObject)
-         }
-       });
-
-     });
- console.log(merchantArr)
- res.send(merchantArr)
+    });
+    const finalObj = {
+             store: sn,
+            price: countPrice,
+            count:countItem
+    }
 
 
-  } catch (e) {
-    console.log(e)
-  }
+    finalArrU.push(finalObj)
+  });
+
+  data.forEach((delta, x) => {
+    finalArrU.forEach((final, Y) => {
+      if (delta.store === final.store) {
+        const newObject = {
+          id: delta._id,
+          email: delta.email,
+          firstName: delta.firstName,
+          lastName: delta.lastName,
+          phone: delta.phoneNo,
+          joiningDate: delta.joiningDate,
+          store: final.store,
+         price: final.price,
+         count:final.count
+        }
+        mDetail.push(newObject)
+      }
+
+    });
+
+  });
+
+
+console.log("final object is", mDetail);
+
+res.send(mDetail)
+
+
+//     data.forEach((item, i) => {
+//      const obj = {
+
+//      }
+//      detail.push(obj)
+//
+//    });
+//
+//
+//      let orderArr =[]
+//      let expandArr = []
+//
+//     orderData.forEach((ord, i) => {
+//      ord.products.forEach((product, i) => {
+//          const productObj = {
+//            store: product.store,
+//            price: parseInt(product.price),
+//            count:1
+//          };
+//          const expandObj = {
+//            name: product.name,
+//            sku: product.sku,
+//            price: parseInt(product.price),
+//            count:1
+//          }
+//          orderArr.push(productObj)
+//          expandArr.push(expandObj)
+//
+//
+//      });
+//  });
+//
+//  let finalArr = []
+//  let finalExpandArr=[]
+//
+//      orderArr.forEach((pro, j) => {
+//          if (!this[pro.store]) {
+//            this[pro.store] = {store: pro.store, count: 0, price:0}
+//            finalArr.push(this[pro.store]);
+//          }
+//          this[pro.store].price += pro.price
+//          this[pro.store].count += pro.count
+//
+//      });
+//
+//      expandArr.forEach((pro, k) => {
+//          if (!this[pro.sku]) {
+//            this[pro.sku] = {name: pro.name, sku:pro.sku, count: 0, price:0}
+//            finalExpandArr.push(this[pro.sku]);
+//          }
+//          this[pro.sku].price += pro.price
+//          this[pro.sku].count += pro.count
+//
+//      },{});
+//      let merchantArr = []
+//
+//       finalArr.forEach((final, i) => {
+//        detail.forEach((d, j) => {
+//          if (d.store===final.store) {
+//            const newObject = {
+//              id: d.id,
+//              email: d.email,
+//              firstName: d.first,
+//              lastName: d.lastName,
+//              phone: d.phone,
+//              store: d.store,
+//              joiningDate: d.joiningDate,
+//              price: final.price,
+//              count:final.count,
+//              product:finalExpandArr
+//            }
+//            merchantArr.push(newObject)
+//          }
+//        });
+//
+//      });
+//  console.log(merchantArr)
+//  res.send(merchantArr)
+//
+//
+// } catch (error) {
+//     console.log(error)
+//   }
 
 
 
@@ -279,16 +372,17 @@ router.get("/merchant/:id", async (req, res) => {
 router.get("/merchantOrderDetail/:store", async (req, res)=>{
   let productArr = []
   let productNameArr = []
+  let calItem = 0;
+  let calPrice = 0;
+
   const data = await Orders.find()
 
   data.forEach((item, i) => {
     item.products.forEach((product, i) => {
       if (product.store==req.params.store) {
         const productObj = {
-          id: product.id,
           name: product.name,
           sku: product.sku,
-          quantity: product.quantity,
           price: parseInt(product.price),
           store: product.store,
           count:1
@@ -301,28 +395,85 @@ router.get("/merchantOrderDetail/:store", async (req, res)=>{
   });
   var finalArr = [];
 
+  var holder = {};
 
+  productArr.forEach(function (d) {
+    if (holder.hasOwnProperty(d.sku)) {
+      holder[d.sku] = holder[d.sku] + d.price;
+    } else {
+      holder[d.sku] = d.price;
+    }
+  });
 
-productNameArr = [...new Set(productNameArr)];
+  var obj = [];
 
+  for (var prop in holder) {
+    obj.push({ sku: prop, price: holder[prop]});
+  }
 
+  var holder1 = {};
 
-  productArr.forEach((pro, j) => {
-      if (!this[pro.sku]) {
-        this[pro.sku] = {name: pro.name, sku:pro.sku, count: 0, price:0}
-        finalArr.push(this[pro.sku]);
+  productArr.forEach(function (d) {
+    if (holder1.hasOwnProperty(d.sku)) {
+      holder1[d.sku] = holder1[d.sku] + d.count;
+    } else {
+      holder1[d.sku] = d.count;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder1) {
+    obj2.push({ sku: prop, count: holder1[prop] });
+  }
+
+  // productArr.forEach((pro, j) => {
+  //     if (!this[pro.sku]) {
+  //       this[pro.sku] = {name: pro.name, sku:pro.sku, count: 0, price:0}
+  //       finalArr.push(this[pro.sku]);
+  //     }
+  //     this[pro.sku].price += pro.price
+  //     this[pro.sku].count += pro.count
+  //
+  // },{});
+  let newArray = []
+  obj.forEach((item, i) => {
+    obj2.forEach((test, i) => {
+      if (item.sku === test.sku) {
+        const newObject = {
+          sku: test.sku,
+          count: test.count,
+          price: item.price
+        }
+        newArray.push(newObject)
       }
-      this[pro.sku].price += pro.price
-      this[pro.sku].count += pro.count
-
-  },{});
 
 
+    });
 
-console.log(finalArr, "finalArr");
+  });
+//   let finalObj = [];
+//
+// productArr.forEach((item, i) => {
+//     newArray.forEach((arr, i) => {
+//       if (arr.sku===item.sku) {
+//         const finalObject = {
+//           name: item.name,
+//           sku: arr.sku,
+//           price: arr.price,
+//           count: arr.count
+//         }
+//         finalObj.push(finalObject)
+//       }
+//     });
+//
+// });
 
 
-  res.send(finalArr)
+// console.log(finalObj, "final");
+
+
+  res.send(newArray)
 
 })
 
