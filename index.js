@@ -1012,7 +1012,7 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
       quantity: item.quantity,
       price: item.price,
       sku: item.sku,
-      store: item.vendor
+      store: item.vendor.toLowerCase()
     });
   });
 

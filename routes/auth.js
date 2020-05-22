@@ -96,7 +96,7 @@ router.post("/merchant", async (req, res) => {
   const currDate = (sep)=>{
     let d = new Date();
     let DD = d.getDate();
-    let MM = d.getMonth();
+    let MM = d.getMonth()+1;
     let YY = d.getFullYear();
     return(DD+sep+MM+sep+YY)
   }
@@ -113,7 +113,6 @@ router.post("/merchant", async (req, res) => {
 console.log(merchantUser);
   try {
     const savedUser = await merchantUser.save();
-    console.log("saveduser", savedUser);
     res.send("success");
   } catch (err) {
     res.status(400).send(err);
@@ -146,9 +145,22 @@ router.post("/merchantLogin", async (req, res) => {
 });
 
 router.get("/merchant", async (req, res) => {
+  let detail = [];
   try {
     const data = await MerchantUser.find();
-    res.json(data);
+    data.forEach((item, i) => {
+      const obj = {
+        id: item._id,
+        email: item.email,
+        first: item.firstName,
+        lastName: item.lastName,
+        phone: item.phoneNo,
+        store: item.store,
+        joiningDate: item.joiningDate
+      }
+      detail.push(obj)
+    });
+    res.json(detail);
   } catch (error) {
     res.json({ message: error });
   }
@@ -165,7 +177,8 @@ router.get("/merchant/:id", async (req, res) => {
         email: item.email,
         first: item.firstName,
         lastName: item.lastName,
-        phone: item.phoneNo
+        phone: item.phoneNo,
+        store: item.store
       }
       detail.push(obj)
     });
@@ -177,6 +190,131 @@ router.get("/merchant/:id", async (req, res) => {
     res.json({ message: error });
   }
 });
+
+//Custom Details merchant list
+
+router.get('/customMerchantDetail',async (req, res)=>{
+  let detail=[]
+  let orderArr =[]
+  let finalArr = []
+  let merchantArr = []
+
+  const data = await MerchantUser.find();
+
+  await data.forEach((item, i) => {
+    const obj = {
+      id: item._id,
+      email: item.email,
+      first: item.firstName,
+      lastName: item.lastName,
+      phone: item.phoneNo,
+      store: item.store,
+      joiningDate: item.joiningDate
+    }
+    detail.push(obj)
+
+  });
+
+  const orderData = await Orders.find();
+
+await   orderData.forEach((ord, i) => {
+    ord.products.forEach((product, i) => {
+        const productObj = {
+          store: product.store,
+          price: parseInt(product.price),
+          count:1
+        };
+        orderArr.push(productObj)
+
+    });
+});
+
+
+  await  orderArr.forEach((pro, j) => {
+        if (!this[pro.store] && this[pro.store]!='undefined') {
+          this[pro.store] = {store: pro.store, count: 0, price:0}
+          finalArr.push(this[pro.store]);
+        }
+        this[pro.store].price += pro.price
+        this[pro.store].count += pro.count
+
+    },{});
+
+  await   finalArr.forEach((final, i) => {
+      detail.forEach((d, j) => {
+        if (d.store===final.store) {
+          const newObject = {
+            id: d.id,
+            email: d.email,
+            firstName: d.first,
+            lastName: d.lastName,
+            phone: d.phone,
+            store: d.store,
+            joiningDate: d.joiningDate,
+            price: final.price,
+            count:final.count
+          }
+          merchantArr.push(newObject)
+        }
+      });
+
+    });
+console.log(merchantArr)
+res.send(merchantArr)
+})
+
+
+//Merchant Orders
+router.get("/merchantOrderDetail/:store", async (req, res)=>{
+  let productArr = []
+  let productNameArr = []
+  const data = await Orders.find()
+
+  data.forEach((item, i) => {
+    item.products.forEach((product, i) => {
+      if (product.store==req.params.store) {
+        const productObj = {
+          id: product.id,
+          name: product.name,
+          sku: product.sku,
+          quantity: product.quantity,
+          price: parseInt(product.price),
+          store: product.store,
+          count:1
+        };
+        productArr.push(productObj)
+        productNameArr.push(product.sku)
+      }
+    });
+
+  });
+  var finalArr = [];
+
+
+
+productNameArr = [...new Set(productNameArr)];
+
+
+
+  productArr.forEach((pro, j) => {
+      if (!this[pro.sku]) {
+        this[pro.sku] = {name: pro.name, sku:pro.sku, count: 0, price:0}
+        finalArr.push(this[pro.sku]);
+      }
+      this[pro.sku].price += pro.price
+      this[pro.sku].count += pro.count
+
+  },{});
+
+
+
+console.log(finalArr, "finalArr");
+
+
+  res.send(finalArr)
+
+})
+
 /*Supplier Part*/
 
 //Register Account

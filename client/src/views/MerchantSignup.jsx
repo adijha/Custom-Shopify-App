@@ -53,10 +53,10 @@ const addMerchant = async e =>{
         <div className="sign-up-form">
           <h1>Sign up Now</h1>
           <form onSubmit={addMerchant}>
-            <input type="text" className="input-box" placeholder="Enter First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} required/>
-            <input type="text" className="input-box" placeholder="Enter Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)} required/>
+            <input type="firstName" className="input-box" placeholder="Enter First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} required/>
+            <input type="lastName" className="input-box" placeholder="Enter Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)} required/>
             <input  type="email" className="input-box" placeholder="Enter Email Address" value={email} onChange={(e)=>setEmail(e.target.value) } required/>
-            <input  type="text" className="input-box" placeholder="Enter Shopify Store Name" value={store} onChange={(e)=>setStore(e.target.value) } required/>
+            <input  type="store" className="input-box" placeholder="Enter Shopify Store Name" value={store} onChange={(e)=>setStore(e.target.value) } required/>
 
             <PhoneInput
       placeholder="Enter phone number"
