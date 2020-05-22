@@ -93,12 +93,22 @@ router.post("/merchant", async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
+  const currDate = (sep)=>{
+    let d = new Date();
+    let DD = d.getDate();
+    let MM = d.getMonth();
+    let YY = d.getFullYear();
+    return(DD+sep+MM+sep+YY)
+  }
+
   const merchantUser = await new MerchantUser({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     phoneNo: req.body.phoneNo,
     email: req.body.email,
-    password: hashPassword
+    password: hashPassword,
+    joiningDate: currDate('-'),
+    store: req.body.store
   });
 console.log(merchantUser);
   try {
@@ -144,6 +154,29 @@ router.get("/merchant", async (req, res) => {
   }
 });
 
+//sepecific merchant with id
+router.get("/merchant/:id", async (req, res) => {
+  const detail = []
+  try {
+    const data = await MerchantUser.find({_id: req.params.id});
+
+    data.forEach((item, i) => {
+      const obj = {
+        email: item.email,
+        first: item.firstName,
+        lastName: item.lastName,
+        phone: item.phoneNo
+      }
+      detail.push(obj)
+    });
+
+
+    console.log(detail)
+    res.json(detail);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
 /*Supplier Part*/
 
 //Register Account

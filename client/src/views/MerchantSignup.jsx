@@ -12,6 +12,7 @@ const [firstName, setFirstName]= useState("");
 const [lastName, setLastName] = useState("");
 const [phoneNo, setPhoneNo] = useState("")
 const [email, setEmail] = useState("");
+const [store, setStore] =useState("")
 const [password, setPassword] = useState("");
 const [status, setStatus] = useState("");
   const [value, setValue] = useState();
@@ -25,7 +26,8 @@ const addMerchant = async e =>{
     lastName: lastName,
     phoneNo: value,
     email: email,
-    password: password
+    password: password,
+    store:store
   }
   console.log("signup details", obj);
   try {
@@ -51,9 +53,11 @@ const addMerchant = async e =>{
         <div className="sign-up-form">
           <h1>Sign up Now</h1>
           <form onSubmit={addMerchant}>
-            <input type="firstName" className="input-box" placeholder="Enter First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} required/>
-            <input type="lastName" className="input-box" placeholder="Enter Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)} required/>
+            <input type="text" className="input-box" placeholder="Enter First Name" value={firstName} onChange={(e)=>setFirstName(e.target.value)} required/>
+            <input type="text" className="input-box" placeholder="Enter Last Name" value={lastName} onChange={(e)=>setLastName(e.target.value)} required/>
             <input  type="email" className="input-box" placeholder="Enter Email Address" value={email} onChange={(e)=>setEmail(e.target.value) } required/>
+            <input  type="text" className="input-box" placeholder="Enter Shopify Store Name" value={store} onChange={(e)=>setStore(e.target.value) } required/>
+
             <PhoneInput
       placeholder="Enter phone number"
 className="input-box"

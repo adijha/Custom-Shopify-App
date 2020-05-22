@@ -25,6 +25,12 @@ const merchantUserScheme = new mongoose.Schema({
 		type: String,
 		require: true,
 		default: "merchant"
+	},
+	joiningDate:{
+		type: Date
+	},
+	store:{
+		type:String
 	}
 });
 

@@ -11,6 +11,7 @@ const userValidation = (data) =>{
 		firstName: Joi.string(),
 		lastName: Joi.string(),
 		phoneNo: Joi.number(),
+		store:Joi.string()
 	});
 
 	return schema.validate(data);
