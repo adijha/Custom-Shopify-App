@@ -399,7 +399,7 @@ position: "relative"}}/></Navbar.Brand>
        <div className="container">
         <div className="row">
           <div className="col-md-4">
-          <p>Copyright © 2020 MelisXpress.com</p>
+          <p style={{float:"left"}}>Copyright © 2020 MelisXpress.com</p>
           </div>
           <div className="col-md-8 footer-company">
 
