@@ -361,11 +361,7 @@ input:checked + .slider:before {
 .footer-top-layout [class*="col-sm-"]:first-child {
  padding: 0;
 }
-.footer-top-layout [class*="col-sm-"] {
- border-right: 2px solid #333333;
- padding: 0 0 0 28px;
 
-}
 .footer-top-layout {
  color: #ffffff;
 }
@@ -378,9 +374,7 @@ address {
 }
 
 
-.footer-top-layout [class*="col-sm-"]:last-child {
- border-right: medium none;
-}
+
 .footer-top-layout {
  color: #ffffff;
 }
@@ -422,9 +416,7 @@ address {
  font-size: 18px;
  margin-bottom: 21px;
 }
-.signUpNewsletter {
- position: relative;
-}
+
 .signUpNewsletter .gt-email {
  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
  border: 1px solid #666666;
@@ -450,6 +442,7 @@ address {
  background: #222222 none repeat scroll 0 0;
  padding: 20px 0;
  text-align: center;
+ color:white;
 }
 
 .socialMedia-footer {
@@ -461,4 +454,23 @@ address {
 }
 .footer-bottom-layout {
  text-align: center;
+}
+
+.footer-social a{
+  float: right;
+  font-size: 20px;
+  margin-right: 20px;
+  color: white;
+}
+.footer-img{
+  width: 200px;
+position: relative;
+bottom: 70px;
+
+}
+.footer-company a{
+  float: right;
+  margin-right: 20px;
+  color: white;
+
 }
