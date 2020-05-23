@@ -79,7 +79,7 @@ position: "relative"}}/></Navbar.Brand>
             <p>(Start your 7 days trial. 100% Secure)</p>
           </div>
           <div className="col-sm-6 text-center">
-            <img className="banner-img" src="http://themebubble.com/demo/marketingpro/wp-content/uploads/2016/10/seo-slide.png " alt="" />
+            <img className="banner-img" src={require('../assets/img/banner.png')} alt="" />
           </div>
         </div>
       </div>
@@ -375,13 +375,10 @@ position: "relative"}}/></Navbar.Brand>
          <div className="container">
            <div className="row">
              <div className=" col-lg-8 col-lg-offset-2">
-               <div className="col-sm-4">
-                 <div className="footer-col-item">
-                   <h4>Go Travel Cloud</h4>
-                   <address>
-                     501,507 your company address<br />
-                     400015 Maharashtra, UK
-                   </address>
+               <div className="col-sm-4" style={{float:"left"}}>
+                 <div className="footer-col-item" style={{float:"left"}}>
+                 <img className="d-inline-block align-left"
+              src={require('../assets/img/latestLogo.png')}/>
                  </div>
                </div>
                <div className="col-sm-4">
