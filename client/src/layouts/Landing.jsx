@@ -17,6 +17,7 @@ const Landing=()=> {
 const [basic, setBasic] = useState("19.99 / month");
 const [pro, setPro] = useState("69.99 / month");
 const [plus, setPlus] = useState("199.99 / month");
+const [plan, setPlan] = useState("Monthly")
 const [checkBox, setCheckBox] = useState(true)
 
 
@@ -38,11 +39,13 @@ const handleClick = () =>{
     setBasic("179.99 / year")
     setPro("588.99 / year")
     setPlus("1559.99 / year")
+    setPlan("Yearly")
   }
   else {
     setBasic("19.99 / month")
     setPro("69.99 / month")
     setPlus("199.99 / month")
+    setPlan("Monthly")
   }
 }
 
@@ -89,16 +92,37 @@ position: "relative"}}/></Navbar.Brand>
      <section id="banner">
       <div className="container">
         <div className="row" style={{float:"left", marginTop:"-20rem"}}>
-          <div className="col-sm-6">
+          <div className="col-sm-5">
             <p className="promo-title">Welcome to Melisxpress</p>
             <p>Discover large variety of viral products for your store in seconds</p>
-
+            <br/>
             <button type="button" className="btn btn-primary text-center" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
             <br/>
             <p><i>(Start your 7 days trial. 100% Secure)</i></p>
           </div>
-          <div className="col-sm-6 text-center">
-            <img className="banner-img" src={require('../assets/img/banner.png')} alt="" />
+          <div className="col-sm-5 text-center">
+            {/*<img className="banner-img" src={require('../assets/img/banner.png')} alt="" />*/}
+            <div className="container">
+        <div id="myCarousel" className="carousel slide" data-ride="carousel">
+          {/* Indicators */}
+          {/* Wrapper for slides */}
+          <div className="carousel-inner">
+            <div className="item active">
+              <img className="banner-img"  src={require('../assets/img/banner.png')} alt=""  />
+
+            </div>
+            <div className="item">
+              <img className="banner-img" src={require('../assets/img/banner.png')} alt=""  />
+
+            </div>
+            <div className="item">
+              <img className="banner-img" src={require('../assets/img/banner.png')} alt=""  />
+
+            </div>
+          </div>
+          {/* Left and right controls */}
+        </div>
+      </div>
           </div>
         </div>
       </div>
@@ -177,7 +201,7 @@ position: "relative"}}/></Navbar.Brand>
               <path d="M6.586 4.672A3 3 0 007.414 9.5l.775-.776a2 2 0 01-.896-3.346L9.12 3.55a2 2 0 012.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 00-4.243-4.243L6.586 4.672z"/>
               <path d="M10 9.5a2.99 2.99 0 00.288-1.46l-.167.167a1.99 1.99 0 01-.896.518 1.99 1.99 0 01-.518.896l-.167.167A3.004 3.004 0 0010 9.501z"/>
             </svg>
-            <p className="text-center" style={{fontSize:"20px", marginTop:"20px"}}>2.Connect to Shopify</p>
+            <p className="text-center" style={{fontSize:"20px", marginTop:"20px"}}>2.Connect to shopify</p>
           </div>
 
           <div className="direction"></div>
@@ -207,7 +231,7 @@ position: "relative"}}/></Navbar.Brand>
           <svg style={{width:"100%", height:"70px"}} className="bi bi-cursor" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" d="M14.082 2.182a.5.5 0 01.103.557L8.528 15.467a.5.5 0 01-.917-.007L5.57 10.694.803 8.652a.5.5 0 01-.006-.916l12.728-5.657a.5.5 0 01.556.103zM2.25 8.184l3.897 1.67a.5.5 0 01.262.263l1.67 3.897L12.743 3.52 2.25 8.184z" clip-rule="evenodd"/>
           </svg>
-            <p className="text-center" style={{fontSize:"20px", marginTop:"20px"}}>5.Drive Traffic</p>
+            <p className="text-center" style={{fontSize:"20px", marginTop:"20px"}}>5.Drive traffic</p>
           </div>
 
         </div> {/*Row end*/}
@@ -219,7 +243,7 @@ position: "relative"}}/></Navbar.Brand>
       <div className="container">
         <div className="row">
           <div className="col-md-5">
-            <img src="https://landkit.goodthemes.co/assets/img/photos/photo-2.jpg" style={{borderRadius:"5px"}}/>
+            <img src={require('../assets/img/2.jpg')} style={{borderRadius:"5px"}}/>
             <br/>
             <form style={{marginTop:"20px"}}>
             <div className="form-group" style={{width:"100%"}}>
@@ -244,10 +268,10 @@ position: "relative"}}/></Navbar.Brand>
               without any trouble.
           </p>
           <ul>
-            <li className="check">100% Best Quality Guaranteed</li>
-            <li className="check">100% Reliable Suppliers</li>
-            <li className="check">Gives You Priority </li>
-            <li className="check">Highly Experienced</li>
+            <li className="check">100% Best quality guaranteed</li>
+            <li className="check">100% reliable suppliers</li>
+            <li className="check">Gives you priority </li>
+            <li className="check">Highly experienced</li>
           </ul>
           </div>
 
@@ -261,7 +285,7 @@ position: "relative"}}/></Navbar.Brand>
         <div className="row">
 
           <div className="col-md-6">
-          <p className="service-title">Easy To Scale</p>
+          <p className="service-title">Easy to scale</p>
           <p style={{fontWeight:"lighter" , fontSize:"20px"}}>MelisXpress is not only fulfill orders but
             provides you winning products everyday
             which saves your time & makes it easy
@@ -283,14 +307,14 @@ position: "relative"}}/></Navbar.Brand>
           </div>
 
           <div className="col-md-6">
-            <img src="https://landkit.goodthemes.co/assets/img/screenshots/desktop/dashkit.jpg" className="img-fluid"/>
+            <img src={require('../assets/img/1.jpg')} className="img-fluid"/>
           </div>
 
         </div>
       </div>
      </section>
 
-     <section id="feedback">
+{/*     <section id="feedback">
       <h1 className="text-center">Our customers are our biggest fans.</h1>
       <div className="container feedPara-div" >
       <p className="feedback-para text-center">We always ensure that our clients are satisfied in everything, we take the
@@ -299,8 +323,8 @@ position: "relative"}}/></Navbar.Brand>
       <br/>
 
      </section >
-
-     <section id="pricing" style={{padding:"60px 0"}}>
+*/}
+     <section id="pricing">
      <h1 className="text-center">Pricing Plans</h1>
 
      <div className="container text-center">
@@ -312,7 +336,7 @@ position: "relative"}}/></Navbar.Brand>
           </label>
           </div>
           <div className="col-md-6" >
-          <p  className="switch-para" style={{float:"left"}}>Yearly</p>
+          <p  className="switch-para" style={{float:"left"}}>{plan}</p>
           </div>
           </div>
       </div>
@@ -457,8 +481,8 @@ position: "relative"}}/></Navbar.Brand>
           <div className="col-md-6 footer-company">
 
             <a href="#">Terms & Conditions</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Become a Supplier</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Become a supplier</a>
 
 
           </div>
