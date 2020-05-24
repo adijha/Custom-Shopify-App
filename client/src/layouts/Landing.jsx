@@ -343,7 +343,7 @@ position: "relative"}}/></Navbar.Brand>
               <li className="list-group-item"><i className="icon-ok text-danger" /><b>Paid </b>weekly audit & call</li>
             </ul>
             <div className="panel-footer">
-              <a className="btn btn-lg btn-block btn-success" href="http://www.jquery2dotnet.com">Select
+              <a className="btn btn-lg btn-block btn-success" href="/merchantSignup">Select
                 </a>
             </div>
           </div>
@@ -378,7 +378,7 @@ position: "relative"}}/></Navbar.Brand>
 
               </ul>
               <div className="panel-footer">
-                <a className="btn btn-lg btn-block btn-info" href="http://www.jquery2dotnet.com">Select</a>
+                <a className="btn btn-lg btn-block btn-info" href="/merchantSignup">Select</a>
               </div>
             </div>
           </div>
@@ -414,7 +414,7 @@ position: "relative"}}/></Navbar.Brand>
 
               </ul>
               <div className="panel-footer">
-                <a className="btn btn-lg btn-block btn-warning" href="http://www.jquery2dotnet.com">Select</a>
+                <a className="btn btn-lg btn-block btn-warning" href="/merchantSignup">Select</a>
               </div>
             </div>
           </div>
