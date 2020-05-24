@@ -154,7 +154,7 @@ position: "relative"}}/></Navbar.Brand>
      {/*How Does Work*/}
      <section id="work">
       <div className="container-fluid">
-      <h1 className="section-title text-center">How Does It Works</h1>
+      <h1 className="section-title text-center" style={{color:"#000080"}}>How does it works</h1>
 
         <div className="row work-flow">
           <div className="col-sm-2 working">
