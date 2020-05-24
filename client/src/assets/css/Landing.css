@@ -217,11 +217,21 @@ width: 100%;
 .promo-title{
   margin-top:10px;
   font-size: 40px;
-  font-weight: 600;
 }
+.signup-banner{
+  background-color: #1fa8cf; /* Green */
+border: none;
+color: white;
+padding: 15px 32px;
+text-align: center;
+text-decoration: none;
+display: inline-block;
+font-size: 16px;
+}
+.signup-banner:hover{
+  background-color: #1fa8cf; /* Green */
 
-
-
+}
 /**********************
 /***** Services *******
 /*********************/

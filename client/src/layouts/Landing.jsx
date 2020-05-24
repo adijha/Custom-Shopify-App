@@ -36,9 +36,9 @@ const handleClick = () =>{
   setCheckBox(!checkBox)
   console.log(checkBox)
   if (checkBox===true) {
-    setBasic("179.99 / year")
-    setPro("588.99 / year")
-    setPlus("1559.99 / year")
+    setBasic("14.99 / month")
+    setPro("49.99 / month")
+    setPlus("129.99 / month")
     setPlan("Yearly")
   }
   else {
@@ -93,10 +93,13 @@ position: "relative"}}/></Navbar.Brand>
       <div className="container">
         <div className="row" style={{float:"left", marginTop:"-20rem"}}>
           <div className="col-sm-5">
-            <p className="promo-title">Welcome to Melisxpress</p>
-            <p>Discover large variety of viral products for your store in seconds</p>
+            <p className="promo-title"><b>Welcome to Melis</b>xpress</p>
+            <p style={{textAlign:"justify"}}>Discover large variety of viral products
+for your store in seconds, add them to your store and we will ship them directly to your customers. <b>No inventory, no risk. </b>
+ Let's get started!
+</p>
             <br/>
-            <button type="button" className="btn btn-primary text-center" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
+            <button type="button" className=" text-center signup-banner" style={{minWidth:"20%"}}><a href="/merchantSignup" style={{textDecoration: "none", color:"white"}}>Sign Up</a></button>
             <br/>
             <p><i>(Start your 7 days trial. 100% Secure)</i></p>
           </div>
@@ -136,7 +139,7 @@ position: "relative"}}/></Navbar.Brand>
         <div className="col-md-4 features">
           <svg className="feature-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"></path><path d="M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA"></path><path d="M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA" opacity=".3"></path></g></svg>
           <h4 className="text-center">Faster Shipping</h4>
-          <p className="text-center">MelisXpress ships your products at highest priority</p>
+          <p className="text-center">Melisxpress ships your products at highest priority</p>
       </div>
 
       <div className="col-md-4 features">
@@ -155,19 +158,19 @@ position: "relative"}}/></Navbar.Brand>
         <div className="col-md-4 features">
           <svg className="feature-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"></path><path d="M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z" fill="#335EEA"></path><path d="M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z" fill="#335EEA" opacity=".3"></path></g></svg>
           <h4 className="text-center">Branded Invoice</h4>
-          <p className="text-center">MelisXpress provides branded Invoice for customer’s trust</p>
+          <p className="text-center">Melisxpress provides branded Invoice for customer’s trust</p>
       </div>
 
       <div className="col-md-4 features">
         <svg className="feature-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"></path><path d="M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA"></path><path d="M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA" opacity=".3"></path></g></svg>
         <h4 className="text-center">Private Label</h4>
-        <p className="text-center">MelisXpress gives option for high volume stores</p>
+        <p className="text-center">Melisxpress gives option for high volume stores</p>
       </div>
 
       <div className="col-md-4 features">
         <svg className="feature-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"></path><path d="M5.5 4h4A1.5 1.5 0 0111 5.5v1A1.5 1.5 0 019.5 8h-4A1.5 1.5 0 014 6.5v-1A1.5 1.5 0 015.5 4zm9 12h4a1.5 1.5 0 011.5 1.5v1a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-1a1.5 1.5 0 011.5-1.5z" fill="#335EEA"></path><path d="M5.5 10h4a1.5 1.5 0 011.5 1.5v7A1.5 1.5 0 019.5 20h-4A1.5 1.5 0 014 18.5v-7A1.5 1.5 0 015.5 10zm9-6h4A1.5 1.5 0 0120 5.5v7a1.5 1.5 0 01-1.5 1.5h-4a1.5 1.5 0 01-1.5-1.5v-7A1.5 1.5 0 0114.5 4z" fill="#335EEA" opacity=".3"></path></g></svg>
       <h4 className="text-center">Thank You Letter</h4>
-      <p className="text-center">MelisXpress allows branded thank you letters for your store</p>
+      <p className="text-center">Melisxpress allows branded thank you letters for your store</p>
       </div>
       </div>
 
@@ -262,7 +265,7 @@ position: "relative"}}/></Navbar.Brand>
 
           <div className="col-md-6 about-us">
           <p className="about-title">Work with top level suppliers</p>
-          <p style={{fontWeight:"lighter", fontSize:"20px"}}>MelisXpress has found the top level suppliers in the
+          <p style={{fontWeight:"lighter", fontSize:"20px"}}>Melisxpress has found the top level suppliers in the
               Industry for you to have the best quality of products
               for your customer satisfaction & scale your brand
               without any trouble.
@@ -286,7 +289,7 @@ position: "relative"}}/></Navbar.Brand>
 
           <div className="col-md-6">
           <p className="service-title">Easy to scale</p>
-          <p style={{fontWeight:"lighter" , fontSize:"20px"}}>MelisXpress is not only fulfill orders but
+          <p style={{fontWeight:"lighter" , fontSize:"20px"}}>Melisxpress is not only fulfill orders but
             provides you winning products everyday
             which saves your time & makes it easy
             to scale
@@ -314,7 +317,8 @@ position: "relative"}}/></Navbar.Brand>
       </div>
      </section>
 
-{/*     <section id="feedback">
+     <section id="feedback">
+     {/*
       <h1 className="text-center">Our customers are our biggest fans.</h1>
       <div className="container feedPara-div" >
       <p className="feedback-para text-center">We always ensure that our clients are satisfied in everything, we take the
@@ -322,9 +326,23 @@ position: "relative"}}/></Navbar.Brand>
            </div>
       <br/>
 
-     </section >
 */}
-     <section id="pricing">
+
+<div className="container">
+<div className="row">
+<div className="col-md-4">
+</div>
+<div className="col-md-4">
+<button type="button" className=" text-center signup-banner" style={{}}><a href="/merchantSignup" style={{textDecoration: "none", color:"white"}}>Sign Up Now</a></button>
+
+</div>
+<div className="col-md-4">
+</div>
+</div>
+</div>
+     </section >
+
+     <section id="pricing" style={{padding:"60px 0"}}>
      <h1 className="text-center">Pricing Plans</h1>
 
      <div className="container text-center">
@@ -476,7 +494,7 @@ position: "relative"}}/></Navbar.Brand>
        <div className="container">
         <div className="row">
           <div className="col-md-4">
-          <p className="text-center copyright" style={{float:"left"}}>Copyright © 2020 MelisXpress.com</p>
+          <p className="text-center copyright" style={{float:"left"}}>Copyright © 2020 Melisxpress.com</p>
           </div>
           <div className="col-md-6 footer-company">
 
