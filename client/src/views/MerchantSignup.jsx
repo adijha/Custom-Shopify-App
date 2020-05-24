@@ -67,7 +67,7 @@ className="input-box"
       <p className="text-center"><span className="check"><input type="checkbox" required/></span>I agree to the terms & conditions</p>
       <button type="submit" className="signup-btn">Sign Up</button>
       <hr/>
-      <p className="text-center">Do you have an account ? <a href="#">Sign In</a></p>
+      <p className="text-center">Do you have an account ? <a href="login-merchant">Sign In</a></p>
 
       </form>
 

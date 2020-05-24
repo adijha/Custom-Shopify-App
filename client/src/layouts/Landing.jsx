@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import axios from 'axios'
 import {Redirect, Link, BrowserRouter as Router,
 
@@ -14,6 +14,12 @@ import { Navbar, Nav, NavDropdown, Form,  FormControl, Button, Table} from 'reac
 
 const Landing=()=> {
 
+const [basic, setBasic] = useState("19.99 / month");
+const [pro, setPro] = useState("69.99 / month");
+const [plus, setPlus] = useState("199.99 / month");
+const [checkBox, setCheckBox] = useState(true)
+
+
 useEffect(()=>{
   getchPage()
 },[])
@@ -23,6 +29,21 @@ const getchPage = ()=>{
   .then(data=>{
     console.log(data, "product response");
   })
+}
+
+const handleClick = () =>{
+  setCheckBox(!checkBox)
+  console.log(checkBox)
+  if (checkBox===true) {
+    setBasic("179.99 / year")
+    setPro("588.99 / year")
+    setPlus("1559.99 / year")
+  }
+  else {
+    setBasic("19.99 / month")
+    setPro("69.99 / month")
+    setPlus("199.99 / month")
+  }
 }
 
 
@@ -70,7 +91,7 @@ position: "relative"}}/></Navbar.Brand>
         <div className="row" style={{float:"left", marginTop:"-20rem"}}>
           <div className="col-sm-6">
             <p className="promo-title">Welcome to Melisxpress</p>
-            <p>Discover large variety of viral products for your store in seconds</p>
+            <p><i>Discover large variety of viral products for your store in seconds</i></p>
 
             <button type="button" className="btn btn-primary text-center" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
             <br/>
@@ -286,12 +307,12 @@ position: "relative"}}/></Navbar.Brand>
      <div className="row text-center">
      <div className="col-md-6">
          <label className="switch text-center" style={{float:"right"}}>
-          <input type="checkbox"/>
+          <input type="checkbox" value={checkBox} onChange={handleClick}/>
           <span className="slider round"></span>
           </label>
           </div>
           <div className="col-md-6" >
-          <p  className="switch-para" style={{float:"left"}}>Annuly</p>
+          <p  className="switch-para" style={{float:"left"}}>Yearly</p>
           </div>
           </div>
       </div>
@@ -307,16 +328,23 @@ position: "relative"}}/></Navbar.Brand>
             </div>
             <div className="panel-body text-center">
               <p className="lead">
-                <strong>$19.99 / month</strong></p>
+                <strong>${basic}</strong></p>
             </div>
-            <ul className="list-group list-group-flush text-center">
-              <li className="list-group-item"><i className="icon-ok text-danger" />Personal use</li>
-              <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited projects</li>
-              <li className="list-group-item"><i className="icon-ok text-danger" />27/7 support</li>
+            <ul className="list-group list-group-flush text-center tickMark">
+              <li className="list-group-item"><i className=""></i><b>200</b> Orders per month</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Real time analytics</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited imports</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Track shipment</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Bulk ordering</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />24/7 Email support</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Product sourcing</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Customized logo invoice</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" /><b>50 cents/order </b>Branded thank you letter</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" /><b>Paid </b>weekly audit & call</li>
             </ul>
             <div className="panel-footer">
-              <a className="btn btn-lg btn-block btn-success" href="http://www.jquery2dotnet.com">BUY
-                NOW!</a>
+              <a className="btn btn-lg btn-block btn-success" href="http://www.jquery2dotnet.com">Select
+                </a>
             </div>
           </div>
         </div>
@@ -329,15 +357,28 @@ position: "relative"}}/></Navbar.Brand>
               </div>
               <div className="panel-body text-center">
                 <p className="lead">
-                  <strong>$69.99 / month</strong></p>
+                  <strong>${pro}</strong></p>
               </div>
-              <ul className="list-group list-group-flush text-center">
-                <li className="list-group-item"><i className="icon-ok text-danger" />Personal use</li>
-                <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited projects</li>
-                <li className="list-group-item"><i className="icon-ok text-danger" />27/7 support</li>
+              <ul className="list-group list-group-flush text-center tickMark">
+              <li className="list-group-item"><i className=""></i><b>Unlimited</b> Orders per month</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Real time analytics</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited imports</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Track shipment</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Bulk ordering</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />24/7 Email support</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Product sourcing</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Customized logo invoice</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Branded thank you letter</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" /><b>Paid </b>weekly audit & call</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Sample ordering</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Custom packaging</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Priority shipping</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Wining products</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />One click fulfillment</li>
+
               </ul>
               <div className="panel-footer">
-                <a className="btn btn-lg btn-block btn-info" href="http://www.jquery2dotnet.com">BUY NOW!</a>
+                <a className="btn btn-lg btn-block btn-info" href="http://www.jquery2dotnet.com">Select</a>
               </div>
             </div>
           </div>
@@ -350,16 +391,30 @@ position: "relative"}}/></Navbar.Brand>
               </div>
               <div className="panel-body text-center">
                 <p className="lead">
-                  <strong>$199.99 / month</strong></p>
+                  <strong>${plus}</strong></p>
               </div>
-              <ul className="list-group list-group-flush text-center">
-                <li className="list-group-item"><i className="icon-ok text-danger" />Personal use</li>
-                <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited projects</li>
-                <li className="list-group-item"><i className="icon-ok text-danger" />27/7 support</li>
+              <ul className="list-group list-group-flush text-center tickMark">
+              <li className="list-group-item"><i className=""></i><b>Unlimited</b> Orders per month</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Real time analytics</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Unlimited imports</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Track shipment</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Bulk ordering</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />24/7 Email support</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Product sourcing</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Customized logo invoice</li>
+              <li className="list-group-item"><i className="icon-ok text-danger" />Branded thank you letter</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" /><b>Free</b> Weekly audit & call</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Sample ordering</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Custom packaging</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Priority shipping</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Wining products</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />One click fulfillment</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Private labeling (Bulk Order)</li>
+              <li className="list-group-item"><i className="icon-ok text-danger extra" />Dedicated support</li>
+
               </ul>
               <div className="panel-footer">
-                <a className="btn btn-lg btn-block btn-warning" href="http://www.jquery2dotnet.com">BUY
-                  NOW!</a>
+                <a className="btn btn-lg btn-block btn-warning" href="http://www.jquery2dotnet.com">Select</a>
               </div>
             </div>
           </div>

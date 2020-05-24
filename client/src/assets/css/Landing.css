@@ -478,6 +478,15 @@ input:checked + .slider:before {
   font-size: 20px;
 }
 
+.tickMark .extra:before{
+  color: yellowgreen;
+  content: "\f00c"; /* FontAwesome Unicode */
+font-family: FontAwesome;
+display: inline-block;
+margin-left: -2.3em; /* same as padding-left set on li */
+width: 1.3em; /* same as padding-left set on li */
+}
+
 /*footer section*/
 
 
