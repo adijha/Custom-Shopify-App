@@ -43,7 +43,6 @@ position: "relative"}}/></Navbar.Brand>
 <div className="col-md-6" style={{}}>
 
 <div className="collapse navbar-collapse" id="navbarSupportedContent" style={{color:"blue"}}>
-       <ul className="navbar-nav mr-auto" style={{position:"relative", display:"inline-block", float:"right", color:"blue"}}>
 
          <Nav className="mr-auto login" style={{ color:"blue", float:"right"}}>
 
@@ -53,7 +52,6 @@ position: "relative"}}/></Navbar.Brand>
                <li><a href="/login-merchant" style={{float:"left", color:"black"}}>Merchant <span className="glyphicon glyphicon-stats pull-left" /></a></li>
            </NavDropdown>
          </Nav>
-       </ul>
 
      </div>
 
@@ -218,17 +216,17 @@ position: "relative"}}/></Navbar.Brand>
           </div>
 
           <div className="col-md-6 about-us">
-          <p className="about-title">Work with Top Level Suppliers</p>
-          <p style={{fontWeight:"lighter"}}>MelisXpress has found the top level suppliers in the
+          <p className="about-title">Work with top level suppliers</p>
+          <p style={{fontWeight:"lighter", fontSize:"20px"}}>MelisXpress has found the top level suppliers in the
               Industry for you to have the best quality of products
               for your customer satisfaction & scale your brand
               without any trouble.
           </p>
           <ul>
             <li className="check">100% Best Quality Guaranteed</li>
-            <li>100% Reliable Suppliers</li>
-            <li>Gives You Priority </li>
-            <li>Highly Experienced</li>
+            <li className="check">100% Reliable Suppliers</li>
+            <li className="check">Gives You Priority </li>
+            <li className="check">Highly Experienced</li>
           </ul>
           </div>
 
@@ -243,7 +241,7 @@ position: "relative"}}/></Navbar.Brand>
 
           <div className="col-md-6">
           <p className="service-title">Easy To Scale</p>
-          <p style={{fontWeight:"lighter"}}>MelisXpress is not only fulfill orders but
+          <p style={{fontWeight:"lighter" , fontSize:"20px"}}>MelisXpress is not only fulfill orders but
             provides you winning products everyday
             which saves your time & makes it easy
             to scale
@@ -273,7 +271,7 @@ position: "relative"}}/></Navbar.Brand>
 
      <section id="feedback">
       <h1 className="text-center">Our customers are our biggest fans.</h1>
-      <div className="container" style={{width:"50%"}}>
+      <div className="container feedPara-div" >
       <p className="feedback-para text-center">We always ensure that our clients are satisfied in everything, we take the
            responsibility for the best quality of products & services.</p>
            </div>
@@ -293,7 +291,7 @@ position: "relative"}}/></Navbar.Brand>
           </label>
           </div>
           <div className="col-md-6" >
-          <p style={{float:"left"}}>Annuly</p>
+          <p  className="switch-para" style={{float:"left"}}>Annuly</p>
           </div>
           </div>
       </div>
@@ -375,12 +373,12 @@ position: "relative"}}/></Navbar.Brand>
          <div className="container">
            <div className="row">
              <div className="col-md-12" style={{height:"100px"}}>
-               <div className="col-sm-3">
+               <div className="col-sm-3 footer-logo" >
                  <img className="footer-img"
               src={require('../assets/img/latestLogo.png')}/>
                </div>
                <div className="col-sm-3">
-                    <a className="btn btn-primary" style={{backgroundColor:"white", float:"right"}} href="#">Become An Affiliate</a>
+                    <a className="btn btn-primary text-center affliliateBtn" style={{backgroundColor:"white", float:"right"}} href="#">Become An Affiliate</a>
                </div>
                <div className="col-sm-6">
                <div className="text-center footer-social">
@@ -399,16 +397,18 @@ position: "relative"}}/></Navbar.Brand>
        <div className="container">
         <div className="row">
           <div className="col-md-4">
-          <p style={{float:"left"}}>Copyright © 2020 MelisXpress.com</p>
+          <p className="text-center copyright" style={{float:"left"}}>Copyright © 2020 MelisXpress.com</p>
           </div>
-          <div className="col-md-8 footer-company">
+          <div className="col-md-6 footer-company">
 
-            <a className="btn btn-info" href="#">Support</a>
             <a href="#">Terms & Conditions</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Become a Supplier</a>
 
 
+          </div>
+          <div className="col-md-2">
+          <a className="btn btn-info" href="#">Support</a>
           </div>
         </div>
        </div>
