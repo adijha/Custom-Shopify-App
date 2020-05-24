@@ -91,11 +91,11 @@ position: "relative"}}/></Navbar.Brand>
         <div className="row" style={{float:"left", marginTop:"-20rem"}}>
           <div className="col-sm-6">
             <p className="promo-title">Welcome to Melisxpress</p>
-            <p><i>Discover large variety of viral products for your store in seconds</i></p>
+            <p>Discover large variety of viral products for your store in seconds</p>
 
             <button type="button" className="btn btn-primary text-center" style={{minWidth:"20%"}}><a href="/merchantSignup">Sign Up</a></button>
             <br/>
-            <p>(Start your 7 days trial. 100% Secure)</p>
+            <p><i>(Start your 7 days trial. 100% Secure)</i></p>
           </div>
           <div className="col-sm-6 text-center">
             <img className="banner-img" src={require('../assets/img/banner.png')} alt="" />
