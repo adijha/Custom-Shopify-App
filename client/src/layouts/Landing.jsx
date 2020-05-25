@@ -101,7 +101,7 @@ for your store in seconds, add them to your store and we will ship them directly
             <br/>
             <button type="button" className=" text-center signup-banner" style={{minWidth:"20%"}}><a href="/merchantSignup" style={{textDecoration: "none", color:"white"}}>Sign Up</a></button>
             <br/>
-            <p><i>(Start your 7 days trial. 100% Secure)</i></p>
+            <p style={{marginTop:"10px"}}><i>Start your 7 days trial. 100% Secure</i></p>
           </div>
           <div className="col-sm-5 text-center">
             {/*<img className="banner-img" src={require('../assets/img/banner.png')} alt="" />*/}
@@ -136,6 +136,9 @@ for your store in seconds, add them to your store and we will ship them directly
     <section id="Features">
     <div className="container ">
       <div className="row text-center">
+
+      <h1 className="section-title text-center" style={{color:"#000080"}}>Features</h1>
+
         <div className="col-md-4 features">
           <svg className="feature-icon" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M0 0h24v24H0z"></path><path d="M7 3h10a4 4 0 110 8H7a4 4 0 110-8zm0 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA"></path><path d="M7 13h10a4 4 0 110 8H7a4 4 0 110-8zm10 6a2 2 0 100-4 2 2 0 000 4z" fill="#335EEA" opacity=".3"></path></g></svg>
           <h4 className="text-center">Faster Shipping</h4>
@@ -181,7 +184,7 @@ for your store in seconds, add them to your store and we will ship them directly
      {/*How Does Work*/}
      <section id="work">
       <div className="container-fluid">
-      <h1 className="section-title text-center" style={{color:"#000080"}}>How does it works</h1>
+      <h1 className="section-title text-center" style={{color:"#000080"}}>How does it work</h1>
 
         <div className="row work-flow">
           <div className="col-sm-2 working">
