@@ -573,11 +573,11 @@ router.get("/supplier", async (req, res) => {
 //       const productLength
 //     });
 
-
-  } catch (e) {
-
-  }
-})
+// 
+//   } catch (e) {
+//
+//   }
+// })
 
 
 
