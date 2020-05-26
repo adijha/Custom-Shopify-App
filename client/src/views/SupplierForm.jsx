@@ -3,7 +3,7 @@ import '../assets/css/SupplierForm.css';
 import PhoneInput from 'react-phone-number-input';
 
 const SupplierForm = () => {
-  const [tab, setTab] = useState(3);
+  const [tab, setTab] = useState(1);
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [email, setEmail] = useState('');
@@ -39,22 +39,37 @@ const SupplierForm = () => {
             style={{ cursor: 'pointer' }}
             onClick={() => setTab(1)}
           >
-            <h5
-              className='sup-form-tab-inner'
-            >
-              Personal Details
-            </h5>
+            <h5 className='sup-form-tab-inner'>Personal Details</h5>
             {tab === 1 ? <hr className='tab-hr' /> : null}
           </div>
-          <div onClick={() => setTab(2)} style={{ cursor: 'pointer' }}>
+          <div
+            onClick={() => {
+              name && email && phoneNo ? setTab(2) : console.log('do nothing');
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <h5>Company Details</h5>
             {tab === 2 ? <hr className='tab-hr' /> : null}
           </div>
-          <div onClick={() => setTab(3)} style={{ cursor: 'pointer' }}>
+          <div
+            onClick={() => {
+              website && businessName && warehouse && categories && VAT
+                ? setTab(3)
+                : console.log('do nothing');
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <h5>Shipping Details</h5>
             {tab === 3 ? <hr className='tab-hr' /> : null}
           </div>
-          <div onClick={() => setTab(4)} style={{ cursor: 'pointer' }}>
+          <div
+            onClick={() => {
+              epacket && processing && nonEpacket && fastUS
+                ? setTab(4)
+                : console.log('do nothing');
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <h5>Branding and Return Management</h5>
             {tab === 4 ? <hr className='tab-hr' /> : null}
           </div>
@@ -208,7 +223,6 @@ const SupplierForm = () => {
                     placeholder='Enter shipping method'
                     value={epacketShipping}
                     onChange={(e) => setEpacketShipping(e.target.value)}
-                 
                   />
                   <h5 style={{ marginBottom: -7, marginTop: 15, fontSize: 15 }}>
                     Please tell us the approximate processing time of the order.
@@ -250,10 +264,7 @@ const SupplierForm = () => {
                   />
                   <button
                     disabled={
-                      epacket &&
-                      processing &&
-                      nonEpacket &&
-                      fastUS
+                      epacket && processing && nonEpacket && fastUS
                         ? false
                         : true
                     }
