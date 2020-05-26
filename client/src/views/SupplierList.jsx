@@ -40,7 +40,7 @@ useEffect(()=>{
 
 const getSupplierData = () =>{
   axios.
-  get('/api/')
+  get('/api/supplier')
   .then(list=>{
     console.log("api data", list)
     setSuppliers(list.data)

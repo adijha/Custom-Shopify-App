@@ -54,6 +54,43 @@ router.post("/admin", async (req, res) => {
   }
 });
 
+//get Admin by Id
+router.get('/adminUser/:id', async (req, res) =>{
+  try {
+    const data = await AdminUser.findOne({_id:req.params.id});
+    console.log(data)
+    res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
+})
+
+//update Admin credentenials
+router.patch('/adminAccount', async (req, res)=>{
+  // const salt = await bcrypt.genSalt(10);
+  // const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+  const updateUser = {
+    name: req.body.name,
+    email: req.body.email,
+    phoneNo: req.body.phone,
+    username: req.body.name
+  };
+  console.log(updateUser);
+  try {
+    const data = await AdminUser.findOneAndUpdate(
+      { _id: req.body.id },
+      { $set: updateUser }
+    );
+    res.send('success');
+  } catch (error) {
+    console.log({ message: error.message });
+  }
+
+
+})
+
+
 //Admin Generate Token for login
 router.post("/adminLogin", async (req, res) => {
   //let validate the data
@@ -214,6 +251,10 @@ router.get('/customMerchantDetail',async (req, res)=>{
         countItem += det.count
         countPrice += det.price
 
+      }
+      else{
+        countItem = 0;
+        countPrice = 0;
       }
 
     });
@@ -511,10 +552,26 @@ router.post("/signUp", async (req, res) => {
 });
 
 //get all supplier created
-router.get("/", async (req, res) => {
+router.get("/supplier", async (req, res) => {
   try {
-    const data = await User.find({ category: "supplier" });
+    const data = await User.find();
+
     res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
+
+router.get("/supplier/:id", async (req, res) => {
+  console.log("id is", req.params.id)
+  try {
+    const data = await User.findOne({_id: req.params.id});
+    const obj = {
+      supplier_id: data.supplier_id,
+      email: data.email,
+      name: data.name
+    }
+    res.json(obj);
   } catch (error) {
     res.json({ message: error });
   }
@@ -568,6 +625,15 @@ router.post("/login", async (req, res) => {
 });
 
 /*Product Part*/
+// product list
+router.get("/product", async (req, res) => {
+  try {
+    const item = await Products.find();
+    res.json(item);
+  } catch (error) {
+    res.json({ message: error });
+  }
+});
 
 //add margin
 router.post("/addMargin", async (req, res) => {
@@ -620,6 +686,7 @@ router.post("/addCategory", async (req, res) => {
 router.get("/totalCategory", async (req, res) => {
   try {
     const categories = await Category.find({});
+    console.log(categories);
     res.json(categories);
   } catch (error) {
     console.log("error in get category", error);
@@ -683,15 +750,7 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
   }
 });
 
-// product list
-router.get("/product", async (req, res) => {
-  try {
-    const item = await Products.find();
-    res.json(item);
-  } catch (error) {
-    res.json({ message: error });
-  }
-});
+
 
 // product list by Specific Supplier
 router.get("/supplier/product/:id", async (req, res) => {
