@@ -1,4 +1,3 @@
-
 .sup-input-box {
   border-radius: 20px;
   margin: 10px 0;
@@ -7,14 +6,18 @@
   /* outline: none; */
   width: 100%;
 }
-.sup-input-box:focus{
+.sup-input-box:focus {
   border: 1px solid #256797 !important;
 }
 
 .check {
   padding: 10px;
 }
-
+.tab-hr {
+  border: 2px solid green;
+  border-radius: 2px;
+  margin-top: -5px;
+}
 .sup-btn {
   color: #fff;
   width: 100%;
