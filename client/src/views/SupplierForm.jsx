@@ -3,10 +3,15 @@ import '../assets/css/SupplierForm.css';
 import PhoneInput from 'react-phone-number-input';
 
 const SupplierForm = () => {
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(2);
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [email, setEmail] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [website, setWebsite] = useState('');
+  const [VAT, setVAT] = useState('');
+  const [categories, setCategories] = useState('');
+  const [warehouse, setWarehouse] = useState('');
   return (
     <div>
       <div style={{ height: '100px' }}></div>
@@ -83,20 +88,76 @@ const SupplierForm = () => {
             </div>
           ) : tab === 2 ? (
             <div>
-              Company Details
               <div className='card card-input'>
                 <div className='form-group'>
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
-                    Email Address
+                    Business Name
                   </h5>
                   <input
-                    type='email'
+                    type='name'
                     className='sup-input-box'
-                    placeholder='Enter Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder='Enter Business Name'
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
                     required
                   />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Business Website
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter Website'
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    VAT or Tax ID
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter VAT or Tax ID'
+                    value={VAT}
+                    onChange={(e) => setVAT(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    What and all categories of product you are dealing with?
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter Categories'
+                    value={categories}
+                    onChange={(e) => setCategories(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Please tell us your different warehouse locations around the
+                    world
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter Warehouse Locations'
+                    value={warehouse}
+                    onChange={(e) => setWarehouse(e.target.value)}
+                    required
+                  />
+                  <button
+                    disabled={
+                      website && businessName && warehouse && categories && VAT
+                        ? false
+                        : true
+                    }
+                    type='submit'
+                    className='signup-btn'
+                    onClick={() => setTab(2)}
+                  >
+                    Done
+                  </button>
                 </div>
               </div>
             </div>
