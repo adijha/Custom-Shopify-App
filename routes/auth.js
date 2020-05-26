@@ -54,6 +54,43 @@ router.post("/admin", async (req, res) => {
   }
 });
 
+//get Admin by Id
+router.get('/adminUser/:id', async (req, res) =>{
+  try {
+    const data = await AdminUser.findOne({_id:req.params.id});
+    console.log(data)
+    res.json(data);
+  } catch (error) {
+    res.json({ message: error });
+  }
+})
+
+//update Admin credentenials
+router.patch('/adminAccount', async (req, res)=>{
+  // const salt = await bcrypt.genSalt(10);
+  // const hashPassword = await bcrypt.hash(req.body.password, salt);
+
+  const updateUser = {
+    name: req.body.name,
+    email: req.body.email,
+    phoneNo: req.body.phone,
+    username: req.body.name
+  };
+  console.log(updateUser);
+  try {
+    const data = await AdminUser.findOneAndUpdate(
+      { _id: req.body.id },
+      { $set: updateUser }
+    );
+    res.send('success');
+  } catch (error) {
+    console.log({ message: error.message });
+  }
+
+
+})
+
+
 //Admin Generate Token for login
 router.post("/adminLogin", async (req, res) => {
   //let validate the data

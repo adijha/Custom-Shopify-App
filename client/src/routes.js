@@ -25,6 +25,7 @@ import AutoMargin from "./views/AutoMargin.jsx"
 import MerchantDetail from "./views/MerchantDetail.jsx"
 import MerchantAccountDetail from "./views/MerchantAccountDetail.jsx"
 import SingleProductDetail from "./views/SingleProductDetail.jsx"
+import AdminProfile from "./views/AdminProfile.jsx"
 
 
 const dashboardRoutes = [
@@ -84,7 +85,13 @@ const dashboardRoutes = [
     component: MerchantDetail,
     layout: "/admin"
   },
-
+  {
+    path: "/profile",
+    name: "Profile Setting",
+    icon: "pe-7s-user",
+    component: AdminProfile,
+    layout: "/admin"
+  },
     {
       path: "/merchant/:id",
       component: MerchantAccountDetail,
@@ -95,6 +102,8 @@ const dashboardRoutes = [
       component: SingleProductDetail,
       layout: "/admin"
     },
+
+
 ];
 
 export default dashboardRoutes;

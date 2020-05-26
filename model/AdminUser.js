@@ -9,6 +9,15 @@ const adminUserScheme = new mongoose.Schema({
 	password:{
 		type: String,
 		require: true
+	},
+	name:{
+		type: String
+	},
+	username:{
+		type: String
+	},
+	phoneNo:{
+		type: Number
 	}
 });
 

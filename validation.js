@@ -12,7 +12,9 @@ const userValidation = (data) =>{
 		lastName: Joi.string(),
 		phoneNo: Joi.number(),
 		store:Joi.string(),
-		joiningDate:Joi.string()
+		joiningDate:Joi.string(),
+		name:Joi.string(),
+		username: Joi.string()
 	});
 
 	return schema.validate(data);
