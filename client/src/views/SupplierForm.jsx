@@ -3,7 +3,7 @@ import '../assets/css/SupplierForm.css';
 import PhoneInput from 'react-phone-number-input';
 
 const SupplierForm = () => {
-  const [tab, setTab] = useState(2);
+  const [tab, setTab] = useState(3);
   const [name, setName] = useState('');
   const [phoneNo, setPhoneNo] = useState('');
   const [email, setEmail] = useState('');
@@ -12,6 +12,16 @@ const SupplierForm = () => {
   const [VAT, setVAT] = useState('');
   const [categories, setCategories] = useState('');
   const [warehouse, setWarehouse] = useState('');
+  const [epacket, setEpacket] = useState('');
+  const [epacketShipping, setEpacketShipping] = useState('');
+  const [processing, setProcessing] = useState('');
+  const [nonEpacket, setNonEpacket] = useState('');
+  const [fastUS, setFastUS] = useState('');
+  const [brandedInvoice, setBrandedInvoice] = useState('');
+  const [brandedPackaging, setBrandedPackaging] = useState('');
+  const [minimumOrder, setMinimumOrder] = useState('');
+  const [returnManagement, setReturnManagement] = useState('');
+  const [terms, setTerms] = useState(false);
   return (
     <div>
       <div style={{ height: '100px' }}></div>
@@ -163,39 +173,147 @@ const SupplierForm = () => {
             </div>
           ) : tab === 3 ? (
             <div>
-              Shipping Details
               <div className='card card-input'>
                 <div className='form-group'>
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
-                    Email Address
+                    Do you use e-packet shipping? (Yes/No)
                   </h5>
                   <input
-                    type='email'
+                    type='name'
                     className='sup-input-box'
-                    placeholder='Enter Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder='Yes or No'
+                    value={epacket}
+                    onChange={(e) => setEpacket(e.target.value)}
                     required
                   />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    If No, then What shipping method you use for e-packet
+                    countries?
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter shipping method'
+                    value={epacketShipping}
+                    onChange={(e) => setEpacketShipping(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Please tell us the approximate processing time of the order.
+                    (We are only looking for suppliers who can agree to process
+                    the order in 1-3 days)
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter Processing time'
+                    value={processing}
+                    onChange={(e) => setProcessing(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Approximate number of days for delivery to e-packet
+                    countries- Non e-packet countries-
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter delivery time'
+                    value={nonEpacket}
+                    onChange={(e) => setNonEpacket(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Do you provide fastest shipping or express shipping to US?
+                    Please tell us the shipping courier name, shipping charges
+                    and approximate days of delivery.
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter details about expressing shipping'
+                    value={fastUS}
+                    onChange={(e) => setFastUS(e.target.value)}
+                    required
+                  />
+                  <button
+                    disabled={
+                      epacket && processing && epacketShipping && nonEpacket && fastUS
+                        ? false
+                        : true
+                    }
+                    type='submit'
+                    className='signup-btn'
+                    onClick={() => setTab(2)}
+                  >
+                    Done
+                  </button>
                 </div>
               </div>
             </div>
           ) : tab === 4 ? (
             <div>
-              Branding and Return Management
               <div className='card card-input'>
                 <div className='form-group'>
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
-                    Email Address
+                    Will you be able to provide branded invoicing? (Yes/No)
                   </h5>
                   <input
-                    type='email'
+                    type='name'
                     className='sup-input-box'
-                    placeholder='Enter Email'
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder='Yes or No'
+                    value={epacket}
+                    onChange={(e) => setEpacket(e.target.value)}
                     required
                   />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    Will you be able to branded packaging? (Yes/No)
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter shipping method'
+                    value={epacketShipping}
+                    onChange={(e) => setEpacketShipping(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    What is the minimum number of orders you require for branded
+                    packaging?
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter Processing time'
+                    value={processing}
+                    onChange={(e) => setProcessing(e.target.value)}
+                    required
+                  />
+                  <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
+                    If we have any return in case of damage or any other reason.
+                    Will you buy back or replace it and let us know your return
+                    management.
+                  </h5>
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter delivery time'
+                    value={nonEpacket}
+                    onChange={(e) => setNonEpacket(e.target.value)}
+                    required
+                  />
+                  <button
+                    disabled={
+                      website && businessName && warehouse && categories && VAT
+                        ? false
+                        : true
+                    }
+                    type='submit'
+                    className='signup-btn'
+                    onClick={() => setTab(2)}
+                  >
+                    Done
+                  </button>
                 </div>
               </div>
             </div>
