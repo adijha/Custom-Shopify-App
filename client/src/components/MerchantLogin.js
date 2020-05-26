@@ -27,7 +27,6 @@ const MerchantLogin = () => {
       email: email,
       password: password
     }
-    console.log(obj)
     axios
     .post('/api/merchantLogin', obj)
     .then(data=>{

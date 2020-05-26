@@ -180,6 +180,7 @@ router.get('/customMerchantDetail',async (req, res)=>{
     let resArray = []
 
     const data =  await MerchantUser.find();
+    console.log(data)
     const orderData = await Orders.find();
 
     data.forEach((item, i) => {
@@ -205,6 +206,7 @@ router.get('/customMerchantDetail',async (req, res)=>{
       })
     })
     sName = [...new Set(sName)];
+    console.log({sName})
 
   sName.forEach((sn, m) => {
     detail.forEach((det, n) => {
@@ -594,8 +596,16 @@ router.get("/margin", async (req, res) => {
 
 //category add
 router.post("/addCategory", async (req, res) => {
+  const currDate = (sep)=>{
+    let d = new Date();
+    let DD = d.getDate();
+    let MM = d.getMonth()+1;
+    let YY = d.getFullYear();
+    return(DD+sep+MM+sep+YY)
+  }
   const add = new Category({
     category: req.body.category,
+    created_on: currDate('-')
   });
   try {
     const newCategory = await add.save();

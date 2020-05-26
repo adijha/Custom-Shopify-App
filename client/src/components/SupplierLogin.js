@@ -25,7 +25,6 @@ const SupplierLogin = () => {
       email: email,
       password: password
     }
-    console.log(obj)
     axios
     .post('/api/login', obj)
     .then(data=>{

@@ -42,6 +42,8 @@ const [code, setCode] = useState("");
 const [status, setStatus] = useState("")
 const [itemId, setItemId] = useState("")
 const [open, setOpen] = useState(false)
+const [search, setSearch] = useState('');
+const [categoryList, setCategoryList] = useState([])
 
 const modalStyle = {
                     margin:"auto",
@@ -51,6 +53,7 @@ const modalStyle = {
 
 useEffect(()=>{
   getProductData();
+  getCategoryList();
 },[])
 
 const getProductData = () =>{
@@ -60,6 +63,63 @@ const getProductData = () =>{
     setProductItems(products.data)
   })
 }
+
+
+//filterItems
+
+
+const filterItems = (productItems.filter(plist=>{
+  return plist.name.toLowerCase().includes(search.toLowerCase());
+}))
+
+
+
+const handlClick = (e)=>{
+  e.preventDefault();
+  let unsorted = filterItems;
+  console.log("unsorted", unsorted)
+if (e.target.value==="asce") {
+   setProductItems(filterItems.sort((a,b)=>parseFloat(a.price)-parseFloat(b.price)))
+}
+else if (e.target.value=="desc") {
+  setProductItems(filterItems.sort((a,b)=>parseFloat(b.price)-parseFloat(a.price)))
+}
+
+}
+
+const getCategoryList = () =>{
+  axios
+  .get('/api/totalCategory/')
+  .then(response=>{
+    setCategoryList(response.data)
+    console.log(response.data, "category")
+  })
+}
+
+const handleCategory = (e)=>{
+  e.preventDefault();
+  const selectedCategory = e.target.value
+  console.log("selectedCategory", selectedCategory)
+
+  if (selectedCategory==="Select Category") {
+    getProductData()
+    setStatus('')
+  }
+  else{
+    axios.get('/api/product/filter/'+selectedCategory)
+    .then(response=>{
+      if (response.data.length) {
+        setProductItems(response.data)
+        setStatus('')
+      }
+      else{
+        setStatus("No Product of This Category : "+ selectedCategory)
+      }
+    })
+  }
+
+}
+
 
 const updateProduct = item =>{
   console.log("updateProduct", item._id)
@@ -130,6 +190,57 @@ const updateProductItem = e =>{
       <div>
       <br/>
       <div id="hideStatus" className="status text-center">{status}</div>
+      <br/>
+      <div >
+
+        <div className="text-right container arrow" style={{width:"80%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
+        <ul className="category text-center" style={{listStyle: "none", padding:"1em", position:"relative", display:"flex"}}>
+          <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product" style={{width:"400px"}}/></li>
+          <li>
+          <select onChange={(e)=>handlClick(e)}>
+            <option value="all">Sort: Price</option>
+            <option value="asce">Sort: Low to High</option>
+            <option value="desc">Sort: High to Low</option>
+          </select>
+          </li>
+          <li>
+          <select
+
+            value={category}
+            onChange={(e) => {
+              handleCategory(e)
+            }}
+            placeholder='Enter category'
+          >
+          <option value="select category">Select Category</option>
+            {categoryList.map((item, i) => {
+              return (
+                <option key={i} value={item.category}>
+                  {item.category}
+                </option>
+              );
+            })}
+          </select>
+          </li>
+
+
+        </ul>
+
+        </div>
+
+      </div>
+      <div class="container">
+	<div class="row">
+		<div className="col-xs-offset 1 col-xs-11 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
+			<div className="btn-toolbar" role="toolbar">
+			  <div className="btn-group btn-group-justified" role="group" style={{}}>
+
+
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
 
       <div className="content">
         <Grid fluid>
@@ -154,16 +265,17 @@ const updateProductItem = e =>{
                       </tr>
                     </thead>
                     <tbody>
-                      {productItems.map((item, key) => {
+                      {filterItems.map((item, key) => {
                         return (
                           <tr key={key}>
-                          <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>
+                        {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
+                          <td></td>
                           <td>{item.supplier_id}</td>
-                            <td>{item.name}</td>
+                            <td><a href={'/admin/single-product/'+item._id}>{item.name}</a></td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td >{item.description}</td>
+                            <td style={{width:"30%"}}>{item.description}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>

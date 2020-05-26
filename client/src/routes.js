@@ -24,6 +24,7 @@ import Margin from "./views/Margin.jsx"
 import AutoMargin from "./views/AutoMargin.jsx"
 import MerchantDetail from "./views/MerchantDetail.jsx"
 import MerchantAccountDetail from "./views/MerchantAccountDetail.jsx"
+import SingleProductDetail from "./views/SingleProductDetail.jsx"
 
 
 const dashboardRoutes = [
@@ -87,6 +88,11 @@ const dashboardRoutes = [
     {
       path: "/merchant/:id",
       component: MerchantAccountDetail,
+      layout: "/admin"
+    },
+    {
+      path: "/single-product/:id",
+      component: SingleProductDetail,
       layout: "/admin"
     },
 ];

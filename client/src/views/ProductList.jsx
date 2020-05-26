@@ -157,7 +157,7 @@ const ProductList = () => {
                   <Table striped hover>
                     <thead>
                       <tr>
-                        <th>f</th>
+                        <th></th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>

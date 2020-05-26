@@ -26,7 +26,6 @@ const AdminLogin = () => {
       email: email,
       password: password
     }
-    console.log(obj)
     axios
     .post('/api/adminLogin', obj)
     .then(data=>{
