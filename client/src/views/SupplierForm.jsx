@@ -238,7 +238,11 @@ const SupplierForm = () => {
                   />
                   <button
                     disabled={
-                      epacket && processing && epacketShipping && nonEpacket && fastUS
+                      epacket &&
+                      processing &&
+                      epacketShipping &&
+                      nonEpacket &&
+                      fastUS
                         ? false
                         : true
                     }
@@ -262,8 +266,8 @@ const SupplierForm = () => {
                     type='name'
                     className='sup-input-box'
                     placeholder='Yes or No'
-                    value={epacket}
-                    onChange={(e) => setEpacket(e.target.value)}
+                    value={brandedInvoice}
+                    onChange={(e) => setBrandedInvoice(e.target.value)}
                     required
                   />
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
@@ -272,9 +276,9 @@ const SupplierForm = () => {
                   <input
                     type='text'
                     className='sup-input-box'
-                    placeholder='Enter shipping method'
-                    value={epacketShipping}
-                    onChange={(e) => setEpacketShipping(e.target.value)}
+                    placeholder='Yes or No'
+                    value={brandedPackaging}
+                    onChange={(e) => setBrandedPackaging(e.target.value)}
                     required
                   />
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
@@ -284,9 +288,9 @@ const SupplierForm = () => {
                   <input
                     type='text'
                     className='sup-input-box'
-                    placeholder='Enter Processing time'
-                    value={processing}
-                    onChange={(e) => setProcessing(e.target.value)}
+                    placeholder='Enter minimum order'
+                    value={minimumOrder}
+                    onChange={(e) => setMinimumOrder(e.target.value)}
                     required
                   />
                   <h5 style={{ marginBottom: -7, marginTop: 13, fontSize: 15 }}>
@@ -297,14 +301,17 @@ const SupplierForm = () => {
                   <input
                     type='text'
                     className='sup-input-box'
-                    placeholder='Enter delivery time'
-                    value={nonEpacket}
-                    onChange={(e) => setNonEpacket(e.target.value)}
+                    placeholder='Enter return management details'
+                    value={returnManagement}
+                    onChange={(e) => setReturnManagement(e.target.value)}
                     required
                   />
                   <button
                     disabled={
-                      website && businessName && warehouse && categories && VAT
+                      returnManagement &&
+                      minimumOrder &&
+                      brandedPackaging &&
+                      brandedInvoice
                         ? false
                         : true
                     }
