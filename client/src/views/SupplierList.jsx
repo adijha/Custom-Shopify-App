@@ -34,17 +34,53 @@ const [status, setStatus] = useState("");
 const [tempSupplier,setTempSupplier]=useState("")
 const [open, setOpen] = useState(false)
 
+const [sRevenue, setSRevenue] = useState();
+const [sOrder, setSOrder] = useState()
+const [productCount, setProductCount] = useState()
+
 useEffect(()=>{
   getSupplierData();
 },[])
 
-const getSupplierData = () =>{
-  axios.
-  get('/api/supplier')
-  .then(list=>{
-    console.log("api data", list)
-    setSuppliers(list.data)
-  })
+const getSupplierData =  async () =>{
+    let supplierArr = [];
+    let finalArr = []
+  const supplierData = await axios.get('/api/supplier')
+
+    supplierData.data.map(async (item, i) => {
+      const productLength = await axios.get('/api/supplier/product/' + item._id)
+
+      const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
+
+      const supplierOrder = await axios.get('/supplierOrders/'+item._id)
+
+      const supplierObj = await {
+        id:item._id,
+        supplier_id: item.supplier_id,
+        order: supplierOrder.data,
+        product: productLength.data.length,
+        revenue: supplierRevenue.data
+      }
+      supplierArr.push(supplierObj)
+    });
+    supplierArr.forEach((arr, i) => {
+      supplierData.data.forEach((data, i) => {
+        if (arr.id === data._id) {
+          const obj = {
+            supplier_id: data.supplier_id,
+            email: data.email,
+            order: arr.order,
+            product: arr.product,
+            revenue: arr.revenue
+          }
+          finalArr.push(obj)
+        }
+      });
+
+    });
+    setSuppliers(finalArr)
+    console.log(finalArr)
+
 }
 
 const updateSupplier = item =>{
@@ -73,6 +109,12 @@ const submitUpdateSuplier = (e)=>{
     }
   })
 }
+
+
+
+
+
+
 const updatebtn= {
   width: "50%"
 }
@@ -92,16 +134,24 @@ const updatebtn= {
                   <Table striped hover size="sm">
                     <thead >
                       <tr>
-                        <th>Id</th>
+                      <th>S.No.</th>
+                        <th>username</th>
                         <th>Email</th>
+                        <th>Total no. of Products</th>
+                        <th>Total no. of Orders</th>
+                        <th>total Revenue</th>
                       </tr>
                     </thead>
                     <tbody>
                       {suppliers.map((item, key) => {
                         return (
                           <tr key={key}>
+                            <td>{key+1}</td>
                             <td>{item.supplier_id}</td>
                             <td>{item.email}</td>
+                            <td>{item.product}</td>
+                            <td>{item.order}</td>
+                            <td>{item.revenue}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateSupplier(item)}>Edit</button></td>
                           </tr>
                         );

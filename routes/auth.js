@@ -562,6 +562,25 @@ router.get("/supplier", async (req, res) => {
   }
 });
 
+//get supplier with revenue
+// router.get('/supllierFullDetails', async (req, res)=>{
+//   try {
+//     const supplierData = await User.find();
+//
+//     supplierData.forEach((data, i) => {
+//       const revenueData = await
+//       const orderData
+//       const productLength
+//     });
+
+
+  } catch (e) {
+
+  }
+})
+
+
+
 router.get("/supplier/:id", async (req, res) => {
   console.log("id is", req.params.id)
   try {
