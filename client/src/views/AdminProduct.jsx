@@ -44,7 +44,11 @@ const [itemId, setItemId] = useState("")
 const [open, setOpen] = useState(false)
 const [search, setSearch] = useState('');
 const [categoryList, setCategoryList] = useState([])
-
+const [expand, setExpand] = useState('')
+const [sDetail, setSDetail] = useState({})
+const [sRevenue, setSRevenue] = useState();
+const [sOrder, setSOrder] = useState()
+const [productCount, setProductCount] = useState()
 const modalStyle = {
                     margin:"auto",
                     position: "relative",
@@ -57,12 +61,18 @@ useEffect(()=>{
 },[])
 
 const getProductData = () =>{
-  axios.
-  get('/api/product')
-  .then(products=>{
-    setProductItems(products.data)
-  })
+    axios
+    .get('/api/product')
+    .then(data=>{
+      console.log("get api of product list", data);
+      setProductItems(data.data);
+    })
+
 }
+
+
+
+
 
 
 //filterItems
@@ -87,13 +97,9 @@ else if (e.target.value=="desc") {
 
 }
 
-const getCategoryList = () =>{
-  axios
-  .get('/api/totalCategory/')
-  .then(response=>{
-    setCategoryList(response.data)
-    console.log(response.data, "category")
-  })
+const getCategoryList = async () =>{
+const cData = await axios.get('/api/totalCategory');
+    setCategoryList(cData.data)
 }
 
 const handleCategory = (e)=>{
@@ -186,6 +192,19 @@ const updateProductItem = e =>{
   })
 }
 
+
+const getSupplierDetail = async (id) =>{
+  console.log("id is", id)
+  const productLength = await axios.get('/api/supplier/product/' + id)
+    setProductCount(productLength.data.length);
+  const supplierDetail = await axios.get('/api/supplier/'+id);
+    setSDetail(supplierDetail.data)
+  const supplierRevenue = await axios.get('/supplierRevenue/'+id);
+    setSRevenue(supplierRevenue.data);
+  const supplierOrder = await axios.get('/supplierOrders/'+id)
+    setSOrder(supplierOrder.data);
+}
+
     return (
       <div>
       <br/>
@@ -206,13 +225,12 @@ const updateProductItem = e =>{
           <li>
           <select
 
-            value={category}
             onChange={(e) => {
               handleCategory(e)
             }}
             placeholder='Enter category'
           >
-          <option value="select category">Select Category</option>
+          <option value="Select Category">Select Category</option>
             {categoryList.map((item, i) => {
               return (
                 <option key={i} value={item.category}>
@@ -267,7 +285,16 @@ const updateProductItem = e =>{
                     <tbody>
                       {filterItems.map((item, key) => {
                         return (
-                          <tr key={key}>
+                          <>
+                          <tr key={key}   onClick={() => {
+                              if (expand === item._id) {
+
+                                setExpand(null);
+                              } else {
+                                setExpand(item._id);
+                                getSupplierDetail(item.supplier_id)
+                              }
+                            }}>
                         {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
                           <td></td>
                           <td>{item.supplier_id}</td>
@@ -279,6 +306,30 @@ const updateProductItem = e =>{
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>
+
+
+                          {expand === item._id ? (
+                            <tr key={9898989}>
+                              <td colSpan='3'>
+                                <th>Customer Details</th>
+                                <tr>Id :- {sDetail.supplier_id  || 'Fetching.....'}</tr>
+
+                                <tr>Name :- {sDetail.name || 'Fetching.....'}</tr>
+                                <tr>Email :-{sDetail.email || 'Fetching.....'} </tr>
+
+
+                              </td>
+
+                              <td colSpan='4'>
+                              <tr>Total no. of products :- {productCount || 'Fetching.....'}</tr>
+                                <tr>Total no. of orders :- {sOrder || 'Fetching.....'}</tr>
+                                <tr>Total Revenue :- {sRevenue || 'Fetching.....'}</tr>
+
+                              </td>
+                            </tr>
+                          ) : null}
+                          </>
+
                         );
                       })}
                     </tbody>
