@@ -569,48 +569,49 @@ router.get("/supplier", async (req, res) => {
   }
 });
 
+
+var bar = new Promise(async (resolve, reject)=>{
+  let supplierArr = []
+  const supplierData =  await User.find();
+
+   supplierData.forEach( async (data, i) => {
+
+      let revenue =  await revenueSupplier(data._id);
+      let order =  await orderSupplier(data._id)
+      let product =  await productLength(data._id)
+
+
+
+        //const supplierObj =
+
+       supplierArr.push({
+        id:data._id,
+        supplier_id: data.supplier_id,
+        email: data.email,
+        order: order,
+        product: product,
+        revenue: revenue
+
+      })
+
+
+    });
+    console.log(supplierArr)
+
+    return resolve(supplierArr)
+});
+
+
 //get supplier with revenue
 router.get('/supplierFullDetails', async (req, res)=>{
 
 
-const x = function(callback){
-  console.log("data is coming")
-  callback()
-}
+const supplierData =  await User.find();
 
+bar.then(data=>{
+  res.send(data)
+})
 
-
-  const getData = async ()=>{
-    const supplierData =  await User.find();
-
-    supplierData.forEach( async (data, i) => {
-
-        let revenue =  await revenueSupplier(data._id);
-        let order =  await orderSupplier(data._id)
-        let product =  await productLength(data._id)
-
-
-
-          const supplierObj ={
-           id:data._id,
-           supplier_id: data.supplier_id,
-           email: data.email,
-           order: order,
-           product: product,
-           revenue: revenue
-
-         }
-
-
-         return supplierObj
-
-
-      });
-
-  }
-
-    console.log(x(getData));
-  //res.send(supplierArr)
 
 })
 

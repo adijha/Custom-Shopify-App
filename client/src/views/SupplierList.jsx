@@ -27,7 +27,6 @@ import Card from "../components/Card/Card.jsx";
 const SupplierList = () => {
 
 const [suppliers, setSuppliers] = useState([])
-const [tempData, setTempData] = useState([])
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
@@ -47,7 +46,7 @@ const getSupplierData =  async () =>{
 
   axios.get('/api/supplierFullDetails')
   .then(res=>{
-    console.log(res.data)
+    setSuppliers(res.data)
   })
    //  let supplierArr = [];
    //  let finalArr = []
@@ -114,7 +113,6 @@ const updatebtn= {
 }
     return (
       <div className="content">
-      <button className="btn btn-primary" onClick={()=>setTempData(suppliers)}> Click me</button>
 
       <div className="info text-center" style={{color:"red"}}>{status}</div>
 
@@ -139,7 +137,7 @@ const updatebtn= {
                       </tr>
                     </thead>
                     <tbody>
-                      {tempData.map((item, key) => {
+                      {suppliers.map((item, key) => {
                         return (
                           <tr key={key}>
                             <td>{key+1}</td>
