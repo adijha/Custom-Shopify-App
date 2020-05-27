@@ -27,6 +27,7 @@ import Card from "../components/Card/Card.jsx";
 const SupplierList = () => {
 
 const [suppliers, setSuppliers] = useState([])
+const [tempData, setTempData] = useState([])
 const [name, setName] = useState("");
 const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
@@ -39,23 +40,25 @@ const [sOrder, setSOrder] = useState()
 const [productCount, setProductCount] = useState()
 
 useEffect(()=>{
-  getSupplierData();
+getSupplierData()
 },[])
 
 const getSupplierData =  async () =>{
     let supplierArr = [];
     let finalArr = []
-  const supplierData = await axios.get('/api/supplier')
 
-    supplierData.data.map(async (item, i) => {
+   const supplierData = await axios.get('/api/supplier')
+
+    supplierData.data.forEach(async (item, i) => {
       const productLength = await axios.get('/api/supplier/product/' + item._id)
 
       const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
 
       const supplierOrder = await axios.get('/supplierOrders/'+item._id)
 
-      const supplierObj = await {
+      const supplierObj =  {
         id:item._id,
+        email:item.email,
         supplier_id: item.supplier_id,
         order: supplierOrder.data,
         product: productLength.data.length,
@@ -63,23 +66,8 @@ const getSupplierData =  async () =>{
       }
       supplierArr.push(supplierObj)
     });
-    supplierArr.forEach((arr, i) => {
-      supplierData.data.forEach((data, i) => {
-        if (arr.id === data._id) {
-          const obj = {
-            supplier_id: data.supplier_id,
-            email: data.email,
-            order: arr.order,
-            product: arr.product,
-            revenue: arr.revenue
-          }
-          finalArr.push(obj)
-        }
-      });
 
-    });
-    setSuppliers(finalArr)
-    console.log(finalArr)
+    return supplierArr;
 
 }
 
@@ -112,7 +100,8 @@ const submitUpdateSuplier = (e)=>{
 
 
 
-
+const handleClickMe = ()=>{
+}
 
 
 const updatebtn= {
@@ -120,6 +109,8 @@ const updatebtn= {
 }
     return (
       <div className="content">
+      <button className="btn btn-primary" onClick={()=>setTempData(suppliers)}> Click me</button>
+
       <div className="info text-center" style={{color:"red"}}>{status}</div>
 
         <Grid fluid>
@@ -143,7 +134,7 @@ const updatebtn= {
                       </tr>
                     </thead>
                     <tbody>
-                      {suppliers.map((item, key) => {
+                      {tempData.map((item, key) => {
                         return (
                           <tr key={key}>
                             <td>{key+1}</td>
@@ -185,6 +176,9 @@ const updatebtn= {
 
         </form>
         </Modal>
+
+
+
       </div>
     );
 

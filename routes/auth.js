@@ -14,7 +14,8 @@ const fileUpload = require("express-fileupload");
 const csv = require("csvtojson");
 const request = require("request-promise");
 const Orders = require("../model/Orders");
-
+const axios  = require ('axios');
+ var nodemailer = require('nodemailer');
 // const storage = multer.diskStorage({
 //   destination: "./files",
 //   filename(req, file, cb) {
@@ -563,21 +564,39 @@ router.get("/supplier", async (req, res) => {
 });
 
 //get supplier with revenue
-// router.get('/supllierFullDetails', async (req, res)=>{
-//   try {
-//     const supplierData = await User.find();
-//
-//     supplierData.forEach((data, i) => {
-//       const revenueData = await
-//       const orderData
-//       const productLength
-//     });
+router.get('/supllierFullDetails', async (req, res)=>{
 
-// 
-//   } catch (e) {
-//
-//   }
-// })
+    const supplierArr =[]
+
+    const supplierData = await User.find();
+
+    supplierData.forEach(async (data, i) => {
+      var newarr = []
+      const revenueData = await axios.get('http://localhost:5000/api/supplier/product/' + data._id)
+        console.log(revenueData.data)
+      const orderData = await axios.get('http://localhost:5000/supplierRevenue/'+ data._id)
+
+
+      const productLength = await axios.get('http://localhost:5000/supplierOrders/'+ data._id)
+
+      const supplierObj = await {
+        id:data._id,
+        supplier_id: data.supplier_id,
+        email: data.email,
+        order: orderData.data,
+        product: productLength.data.length,
+        revenue: revenueData.data
+      }
+      console.log({supplierObj})
+
+      supplierArr.push(supplierObj)
+    });
+
+    console.log(supplierData.length);
+  console.log({supplierArr});
+  res.send(supplierArr)
+
+})
 
 
 
@@ -642,6 +661,36 @@ router.post("/login", async (req, res) => {
   const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
   res.send(token);
 });
+
+
+//supplier form data sent to Email
+router.post('/SupplierForm', (req, res)=>{
+  console.log(req.body)
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'goyal.ashish062@gmail.com',
+    pass: 'ASHISH718'
+  }
+});
+
+var mailOptions = {
+  from: 'goyal.ashish062@gmail.com',
+  to: 'goyal.ashish062@gmail.com',
+  subject: 'Sending Email using Node.js',
+  text: req.body
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+});
+
+})
 
 /*Product Part*/
 // product list

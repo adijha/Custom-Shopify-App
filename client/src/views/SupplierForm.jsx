@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../assets/css/SupplierForm.css';
 import PhoneInput from 'react-phone-number-input';
-
+import axios from 'axios'
 const SupplierForm = () => {
   const [tab, setTab] = useState(1);
   const [name, setName] = useState('');
@@ -22,6 +22,15 @@ const SupplierForm = () => {
   const [minimumOrder, setMinimumOrder] = useState('');
   const [returnManagement, setReturnManagement] = useState('');
   const [terms, setTerms] = useState(false);
+
+const getFormData =async (e) =>{
+const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+  console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+}
+
+
+
+
   return (
     <div>
       <div style={{ height: '100px' }}></div>
@@ -191,7 +200,7 @@ const SupplierForm = () => {
                     }
                     type='submit'
                     className='signup-btn'
-                    onClick={() => setTab(2)}
+                    onClick={() => setTab(3)}
                   >
                     Done
                   </button>
@@ -213,17 +222,22 @@ const SupplierForm = () => {
                     onChange={(e) => setEpacket(e.target.value)}
                     required
                   />
-                  <h5 style={{ marginBottom: -7, marginTop: 15, fontSize: 15 }}>
-                    If No, then What shipping method you use for e-packet
-                    countries?
-                  </h5>
-                  <input
-                    type='text'
-                    className='sup-input-box'
-                    placeholder='Enter shipping method'
-                    value={epacketShipping}
-                    onChange={(e) => setEpacketShipping(e.target.value)}
-                  />
+                  {(epacket.toLowerCase() === "no")?(
+                    <>
+                    <h5 style={{ marginBottom: -7, marginTop: 15, fontSize: 15 }}>
+                      If No, then What shipping method you use for e-packet
+                      countries?
+                    </h5>
+                    <input
+                      type='text'
+                      className='sup-input-box'
+                      placeholder='Enter shipping method'
+                      value={epacketShipping}
+                      onChange={(e) => setEpacketShipping(e.target.value)}
+
+                    /></>):(<div></div>)}
+
+
                   <h5 style={{ marginBottom: -7, marginTop: 15, fontSize: 15 }}>
                     Please tell us the approximate processing time of the order.
                     (We are only looking for suppliers who can agree to process
@@ -270,7 +284,7 @@ const SupplierForm = () => {
                     }
                     type='submit'
                     className='signup-btn'
-                    onClick={() => setTab(2)}
+                    onClick={() => setTab(4)}
                   >
                     Done
                   </button>
@@ -350,7 +364,7 @@ const SupplierForm = () => {
                     }
                     type='submit'
                     className='signup-btn'
-                    onClick={() => setTab(2)}
+                    onClick={(e) => getFormData()}
                   >
                     Submit
                   </button>
