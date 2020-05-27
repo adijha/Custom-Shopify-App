@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../assets/css/SupplierForm.css';
 import PhoneInput from 'react-phone-number-input';
 import axios from 'axios'
+import { NotificationManager } from 'react-notifications';
+
 const SupplierForm = () => {
   const [tab, setTab] = useState(1);
   const [name, setName] = useState('');
@@ -24,7 +26,15 @@ const SupplierForm = () => {
   const [terms, setTerms] = useState(false);
 
 const getFormData =async (e) =>{
+  try{
 const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+
+if (submitData.data.includes('success')) {
+  NotificationManager.success('submitted Successfully');
+}
+} catch (error) {
+NotificationManager.error('Something wrong');
+}
   console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
 }
 

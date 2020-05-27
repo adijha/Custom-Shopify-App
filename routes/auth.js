@@ -16,6 +16,8 @@ const request = require("request-promise");
 const Orders = require("../model/Orders");
 const axios  = require ('axios');
  var nodemailer = require('nodemailer');
+ const { google } = require("googleapis");
+const OAuth2 = google.auth.OAuth2;
 // const storage = multer.diskStorage({
 //   destination: "./files",
 //   filename(req, file, cb) {
@@ -670,23 +672,23 @@ router.post('/SupplierForm', (req, res)=>{
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'goyal.ashish062@gmail.com',
-    pass: 'ASHISH718'
+    user: 'ashish.goyal7118@gmail.com',
+    pass: 'ashish@718'
   }
 });
 
 var mailOptions = {
-  from: 'goyal.ashish062@gmail.com',
+  from: 'ashish.goyal7118@gmail.com',
   to: 'goyal.ashish062@gmail.com',
-  subject: 'Sending Email using Node.js',
-  text: req.body
+  subject: 'supplier form response details',
+  text: JSON.stringify(req.body)
 };
 
 transporter.sendMail(mailOptions, function(error, info){
   if (error) {
-    console.log(error);
+    res.send(error);
   } else {
-    console.log('Email sent: ' + info.response);
+    res.send("success")
   }
 });
 
