@@ -18,6 +18,10 @@ const axios  = require ('axios');
  var nodemailer = require('nodemailer');
  const { google } = require("googleapis");
 const OAuth2 = google.auth.OAuth2;
+
+const {revenueSupplier, orderSupplier, productLength} = require('../utils/resuableFunction')
+
+
 // const storage = multer.diskStorage({
 //   destination: "./files",
 //   filename(req, file, cb) {
@@ -566,37 +570,47 @@ router.get("/supplier", async (req, res) => {
 });
 
 //get supplier with revenue
-router.get('/supllierFullDetails', async (req, res)=>{
-
-    const supplierArr =[]
-
-    const supplierData = await User.find();
-
-    supplierData.forEach(async (data, i) => {
-      var newarr = []
-      const revenueData = await axios.get('http://localhost:5000/api/supplier/product/' + data._id)
-        console.log(revenueData.data)
-      const orderData = await axios.get('http://localhost:5000/supplierRevenue/'+ data._id)
+router.get('/supplierFullDetails', async (req, res)=>{
 
 
-      const productLength = await axios.get('http://localhost:5000/supplierOrders/'+ data._id)
+const x = function(callback){
+  console.log("data is coming")
+  callback()
+}
 
-      const supplierObj = await {
-        id:data._id,
-        supplier_id: data.supplier_id,
-        email: data.email,
-        order: orderData.data,
-        product: productLength.data.length,
-        revenue: revenueData.data
-      }
-      console.log({supplierObj})
 
-      supplierArr.push(supplierObj)
-    });
 
-    console.log(supplierData.length);
-  console.log({supplierArr});
-  res.send(supplierArr)
+  const getData = async ()=>{
+    const supplierData =  await User.find();
+
+    supplierData.forEach( async (data, i) => {
+
+        let revenue =  await revenueSupplier(data._id);
+        let order =  await orderSupplier(data._id)
+        let product =  await productLength(data._id)
+
+
+
+          const supplierObj ={
+           id:data._id,
+           supplier_id: data.supplier_id,
+           email: data.email,
+           order: order,
+           product: product,
+           revenue: revenue
+
+         }
+
+
+         return supplierObj
+
+
+      });
+
+  }
+
+    console.log(x(getData));
+  //res.send(supplierArr)
 
 })
 
