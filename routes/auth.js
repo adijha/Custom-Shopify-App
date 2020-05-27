@@ -681,7 +681,55 @@ var mailOptions = {
   from: 'ashish.goyal7118@gmail.com',
   to: 'goyal.ashish062@gmail.com',
   subject: 'supplier form response details',
-  text: JSON.stringify(req.body)
+  html: `
+  <b>Personal Details</b>
+  <br>
+  1. name: ${req.body.name}<br>
+  2. email: ${req.body.email}<br>
+  3. phone no: ${req.body.phoneNo}<br>
+  <br>
+  <br>
+  <b>Company Details</b>
+  1. Name of Business: ${req.body.businessName}
+  <br>
+  2. Website Link: ${req.body.website}
+  <br>
+  3. VAT or Tax ID: ${req.body.VAT}
+  <br>
+  4. What and all categories of product  you are dealing with? : ${req.body.categories}
+  <br>
+  5. Please tell us your different warehouse locations around the world  : ${req.body.warehouse}
+  <br>
+  <br>
+  <br>
+  <b>Shipping Details</b>
+  <br>
+  1. Do you use e-packet shipping? (Yes/No) : ${req.body.epacket}
+  <br>
+  2. If No, then What shipping method you use for e-packet countries? : ${req.body.epacketShipping}
+  <br>
+  3. Please tell us the approximate processing time of the order. (We are only looking for suppliers who can agree to process the order in 1-3 days) : ${req.body.processing}
+  <br>
+  4. Approximate number of days for delivery to
+      <ul>
+      <li> e-packet countries : ${req.body.epacketCountry} </li>
+      <li>Non e-packet countries: ${req.body.nonEpacketCountry}</li>
+      </ul>
+      <br>
+  5. Do you provide fastest shipping or express shipping to US? Please tell us the shipping courier name, shipping charges and approximate days of delivery. : ${req.body.fastUS}
+  <br>
+  <br>
+  <b>Branding and Return Management</b>
+  <br>
+  1. Will you be able to provide branded invoicing? (Yes/No) : ${req.body.brandedInvoice}
+  <br>
+  2. Will you be able to branded packaging? (Yes/No) : ${req.body.brandedPackaging}
+  <br>
+  3. What is the minimum number of orders you require for branded packaging? : ${req.body.minimumOrder}
+  <br>
+  4. If we have any return in case of damage or any other reason. Will you buy back or replace it and let us know your return management. : ${req.body.returnManagement}
+  <br>
+  `
 };
 
 transporter.sendMail(mailOptions, function(error, info){

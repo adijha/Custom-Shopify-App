@@ -18,17 +18,18 @@ const SupplierForm = () => {
   const [epacket, setEpacket] = useState('');
   const [epacketShipping, setEpacketShipping] = useState('');
   const [processing, setProcessing] = useState('');
-  const [nonEpacket, setNonEpacket] = useState('');
+  const [nonEpacketCountry, setNonEpacketCountry] = useState('');
   const [fastUS, setFastUS] = useState('');
   const [brandedInvoice, setBrandedInvoice] = useState('');
   const [brandedPackaging, setBrandedPackaging] = useState('');
   const [minimumOrder, setMinimumOrder] = useState('');
   const [returnManagement, setReturnManagement] = useState('');
   const [terms, setTerms] = useState(false);
+  const [epacketCountry, setEpacketCountry] = useState("")
 
 const getFormData =async (e) =>{
   try{
-const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, epacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
 
 if (submitData.data.includes('success')) {
   NotificationManager.success('submitted Successfully');
@@ -36,7 +37,7 @@ if (submitData.data.includes('success')) {
 } catch (error) {
 NotificationManager.error('Something wrong');
 }
-  console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacket, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+  console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
 }
 
 
@@ -122,7 +123,7 @@ position: "relative"}}/></Navbar.Brand>
           </div>
           <div
             onClick={() => {
-              epacket && processing && nonEpacket && fastUS
+              epacket && processing && nonEpacketCountry && fastUS
                 ? setTab(4)
                 : console.log('do nothing');
             }}
@@ -307,9 +308,17 @@ position: "relative"}}/></Navbar.Brand>
                   <input
                     type='text'
                     className='sup-input-box'
-                    placeholder='Enter delivery time'
-                    value={nonEpacket}
-                    onChange={(e) => setNonEpacket(e.target.value)}
+                    placeholder='Enter delivery time for e-packet countries'
+                    value={epacketCountry}
+                    onChange={(e) => setEpacketCountry(e.target.value)}
+                    required
+                  />
+                  <input
+                    type='text'
+                    className='sup-input-box'
+                    placeholder='Enter delivery time for non-epacket countries'
+                    value={nonEpacketCountry}
+                    onChange={(e) => setNonEpacketCountry(e.target.value)}
                     required
                   />
                   <h5 style={{ marginBottom: -7, marginTop: 15, fontSize: 15 }}>
@@ -327,7 +336,7 @@ position: "relative"}}/></Navbar.Brand>
                   />
                   <button
                     disabled={
-                      epacket && processing && nonEpacket && fastUS
+                      epacket && processing && nonEpacketCountry && fastUS
                         ? false
                         : true
                     }
