@@ -1,3 +1,10 @@
+#banner{
+  padding-top: 0;
+  margin-bottom: 100px;
+}
+.head-img{
+  height:100px;
+}
 .sup-input-box {
   border-radius: 20px;
   margin: 10px 0;
