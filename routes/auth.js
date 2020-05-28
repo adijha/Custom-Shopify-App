@@ -569,6 +569,7 @@ router.get("/supplier", async (req, res) => {
   }
 });
 
+//promise return all supplier array of total product count, order, revenue
 
 var bar = new Promise(async (resolve, reject)=>{
   let supplierArr = []
@@ -580,13 +581,10 @@ var bar = new Promise(async (resolve, reject)=>{
       let order =  await orderSupplier(data._id)
       let product =  await productLength(data._id)
 
-
-
-        //const supplierObj =
-
        supplierArr.push({
         id:data._id,
         supplier_id: data.supplier_id,
+        name:data.name,
         email: data.email,
         order: order,
         product: product,
@@ -615,7 +613,35 @@ bar.then(data=>{
 
 })
 
+//sepcific supplier data total order, product, revenue
 
+router.get('/supplierDetails/:id', async (req, res)=>{
+  console.log(req.params.id)
+
+  bar.then( data=>{
+    let obj = {}
+
+     data.forEach((item, i) => {
+      if (item.id==req.params.id) {
+
+          obj = {
+            id:item.id,
+            supplier_id: item.supplier_id,
+            name:item.name,
+            email: item.email,
+            order: item.order,
+            product: item.product,
+            revenue: item.revenue
+          }
+      }
+
+    });
+    console.log({obj});
+    res.send(obj);
+
+  })
+
+})
 
 router.get("/supplier/:id", async (req, res) => {
   console.log("id is", req.params.id)
@@ -932,29 +958,25 @@ router.delete("/product/:id", async (req, res) => {
   }
 });
 
+
+
 //update all products with some margin by Admin
 
-router.patch("/productPrice/:id", async (req, res) => {
-  let id = req.params.id;
-  let price = req.body.price;
-  console.log("sellling Price is", price);
-  console.log("product id", id);
-
-  // const data = await Products.find({})
-  // //console.log(data, "from update Margin")
-  //
-  // data.forEach((item, i) => {
-  // 	console.log(item.price)
-  // 	const updateData =  Products.updateOne({_id: item._id}, {$set: {price: item.price+item.price*margin/100}})
-  // 	console.log(updateData, "update Price")
-  // });
+router.patch("/autoMargin", async (req, res) => {
 
   try {
-    const updatePrice = await Products.updateOne(
-      { _id: id },
-      { $set: { price: price } }
-    );
-    res.json("saved updated price is");
+    const data = await Products.find({ category: req.body.category });
+
+    data.forEach(async (item, i) => {
+      let calPrice = item.price+item.price*req.body.margin/100
+      let price = calPrice.toFixed(2);
+      const updatePrice = await Products.updateOne(
+        { _id: item._id },
+        { $set: { selliingPrice: price } }
+      )
+      console.log({updatePrice});
+    });
+    res.json('success');
   } catch (error) {
     console.log("update price error is:", error);
   }

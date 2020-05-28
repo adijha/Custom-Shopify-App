@@ -61,6 +61,9 @@ const ProductSchema = mongoose.Schema({
   options: {
     type: Array,
   },
+  selliingPrice:{
+    type: Number
+  }
 });
 
 module.exports = mongoose.model("Products", ProductSchema);

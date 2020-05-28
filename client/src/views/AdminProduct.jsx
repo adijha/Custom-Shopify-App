@@ -46,9 +46,7 @@ const [search, setSearch] = useState('');
 const [categoryList, setCategoryList] = useState([])
 const [expand, setExpand] = useState('')
 const [sDetail, setSDetail] = useState({})
-const [sRevenue, setSRevenue] = useState();
-const [sOrder, setSOrder] = useState()
-const [productCount, setProductCount] = useState()
+
 const modalStyle = {
                     margin:"auto",
                     position: "relative",
@@ -195,24 +193,20 @@ const updateProductItem = e =>{
 
 const getSupplierDetail = async (id) =>{
   console.log("id is", id)
-  const productLength = await axios.get('/api/supplier/product/' + id)
-    setProductCount(productLength.data.length);
-  const supplierDetail = await axios.get('/api/supplier/'+id);
+
+  const supplierDetail = await axios.get('/api/supplierDetails/'+id);
     setSDetail(supplierDetail.data)
-  const supplierRevenue = await axios.get('/supplierRevenue/'+id);
-    setSRevenue(supplierRevenue.data);
-  const supplierOrder = await axios.get('/supplierOrders/'+id)
-    setSOrder(supplierOrder.data);
+
 }
 
     return (
-      <div>
+      <div style={{overflowX:"hidden"}}>
       <br/>
       <div id="hideStatus" className="status text-center">{status}</div>
       <br/>
       <div >
 
-        <div className="text-right container arrow" style={{width:"80%", backgroundColor:"antiquewhite", marginLeft:"1rem"}}>
+        <div className="text-right  arrow" >
         <ul className="category text-center" style={{listStyle: "none", padding:"1em", position:"relative", display:"flex"}}>
           <li><input  type="search" onChange={(e)=>setSearch(e.target.value)} className="primary" placeholder="search product" style={{width:"400px"}}/></li>
           <li>
@@ -279,7 +273,7 @@ const getSupplierDetail = async (id) =>{
                         <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Description</th>
+                        <th>Selling Price</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -302,7 +296,7 @@ const getSupplierDetail = async (id) =>{
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td style={{width:"30%"}}>{item.description}</td>
+                            <td>{item.selliingPrice || 'NA'}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>
@@ -310,20 +304,20 @@ const getSupplierDetail = async (id) =>{
 
                           {expand === item._id ? (
                             <tr key={9898989}>
-                              <td colSpan='3'>
+                              <td colSpan='4'>
                                 <th>Customer Details</th>
-                                <tr>Id :- {sDetail.supplier_id  || 'Fetching.....'}</tr>
+                                <tr>Id :- {sDetail.supplier_id}</tr>
 
-                                <tr>Name :- {sDetail.name || 'Fetching.....'}</tr>
-                                <tr>Email :-{sDetail.email || 'Fetching.....'} </tr>
+                                <tr>Name :- {sDetail.name || 'NA'}</tr>
+                                <tr>Email :-{sDetail.email} </tr>
 
 
                               </td>
 
                               <td colSpan='4'>
-                              <tr>Total no. of products :- {productCount || 'Fetching.....'}</tr>
-                                <tr>Total no. of orders :- {sOrder || 'Fetching.....'}</tr>
-                                <tr>Total Revenue :- {sRevenue || 'Fetching.....'}</tr>
+                              <tr>Total no. of products :- {sDetail.product || 0}</tr>
+                                <tr>Total no. of orders :- {sDetail.order || 0}</tr>
+                                <tr>Total Revenue :- {sDetail.revenue || 0}</tr>
 
                               </td>
                             </tr>
