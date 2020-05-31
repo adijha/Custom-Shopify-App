@@ -12,8 +12,12 @@ const SupplierOrders = () => {
   const [location, setLocation] = useState("");
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
+  const [businessName, setBusinessName] = useState('')
+  const [phoneNo, setPhoneNo] = useState()
+  const [password, setPassword] = useState('')
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
+
   useEffect(() => {
     getSupplierProfile();
     setId(decode.id);
@@ -25,17 +29,26 @@ const SupplierOrders = () => {
       setId(res.data.supplier_id);
       setName(res.data.name);
       setLocation(res.data.location);
+      setBusinessName(res.data.businessName)
+      setPhoneNo(res.data.phoneNo)
     });
   };
 
   const updateSettings = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post("/settingsUpdate", { location, name, id });
-      NotificationManager.success("Settings Updated Successfully");
-    } catch (error) {
-      NotificationManager.error("something unusual happened");
-    }
+      if (password==='') {
+        NotificationManager.error("something unusual happened");
+      }
+      else {
+        let res = await axios.post("/settingsUpdate", { location, name, id, businessName, phoneNo, password });
+        NotificationManager.success("Settings Updated Successfully");
+      }
+      }
+      catch (error) {
+        NotificationManager.error("something unusual happened");
+      }
+
   };
 
   return (
@@ -50,6 +63,63 @@ const SupplierOrders = () => {
               content={
                 <form onSubmit={updateSettings}>
                   <div className="card card-input" style={{ marginTop: 30 }}>
+
+                  <div className="form-group">
+                    <label for="product_quantity">Supplier ID</label>
+                    <input
+                      type="text"
+                      value={id}
+                      onChange={(e) => setId(e.target.value)}
+                      min="0"
+                      className="form-control"
+                      id="product_id"
+                      placeholder="@id"
+                      disabled="disabled"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label for="product_name">Full Name</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      min="0"
+                      className="form-control"
+                      id="product_name"
+                      placeholder="Your Name"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label for="product_name">Business Name</label>
+                    <input
+                      type="text"
+                      value={businessName}
+                      onChange={(e) => setBusinessName(e.target.value)}
+                      min="0"
+                      className="form-control"
+                      id="product_name"
+                      placeholder="Your Business Name"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label for="product_name">Phone No.</label>
+                    <input
+                      type="number"
+                      value={phoneNo}
+                      onChange={(e) => setPhoneNo(e.target.value)}
+                      min="0"
+                      className="form-control"
+                      id="product_name"
+                      placeholder="Enter your mobile no."
+                      required
+                    />
+                  </div>
+
                     <div className="form-group">
                       <label for="product_email">Email</label>
                       <input
@@ -62,32 +132,8 @@ const SupplierOrders = () => {
                         disabled="disabled"
                       />
                     </div>
-                    <div className="form-group">
-                      <label for="product_quantity">Supplier ID</label>
-                      <input
-                        type="text"
-                        value={id}
-                        onChange={(e) => setId(e.target.value)}
-                        min="0"
-                        className="form-control"
-                        id="product_id"
-                        placeholder="@id"
-                        disabled="disabled"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label for="product_name">Full Name</label>
-                      <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        min="0"
-                        className="form-control"
-                        id="product_name"
-                        placeholder="Your Name"
-                        required
-                      />
-                    </div>
+
+
                     <div className="form-group">
                       <label for="product_location">Location</label>
 
@@ -101,6 +147,21 @@ const SupplierOrders = () => {
                         placeholder="Short Address"
                       />
                     </div>
+
+                    <div className="form-group">
+                      <label for="product_quantity">Password</label>
+                      <input
+                        type="text"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_id"
+                        placeholder="Enter New Password"
+                        required
+                      />
+                    </div>
+
                     <CustomButton round fill type="submit" name="button">
                       Update Profile
                     </CustomButton>

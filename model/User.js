@@ -23,6 +23,12 @@ const userScheme = new mongoose.Schema({
 	},
 	location: {
 		type: String
+	},
+	businessName:{
+		type: String
+	},
+	phoneNo:{
+		type: Number
 	}
 });
 

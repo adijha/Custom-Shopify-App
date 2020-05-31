@@ -20,7 +20,7 @@ import { NavLink } from "react-router-dom";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
-import logo from "../../assets/img/reactlogo.png";
+import logo from "../../assets/img/latestLogo.png";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -50,11 +50,11 @@ class Sidebar extends Component {
         data-color={this.props.color}
         data-image={this.props.image}
       >
-          {this.props.hasImage ? (
+        {/*  {this.props.hasImage ? (
             <div className="sidebar-background" style={sidebarBackground} />
           ) : (
             null
-          )}
+          )} */}
         <div className="logo">
           <a
             href=""
@@ -64,12 +64,12 @@ class Sidebar extends Component {
               <img src={logo} alt="logo_image" />
             </div>
           </a>
-          <a
+        {  <a
             href=""
             className="simple-text logo-normal"
           >
-            Shopify Dev
-          </a>
+            Melisxpress
+          </a>}
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">

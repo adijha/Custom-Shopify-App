@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const dotenv = require("dotenv").config();
 const cookie = require("cookie");
+const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const nonce = require("nonce")();
 const querystring = require("querystring");
@@ -1064,8 +1065,11 @@ app.get("/supplierProfile:id", async (req, res) => {
 });
 
 //update settings
-app.post("/settingsUpdate", (req, res) => {
+app.post("/settingsUpdate", async (req, res) => {
   console.log(req.body);
+  //hash the password
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(req.body.password, salt);
 
   User.findOneAndUpdate(
     {
@@ -1074,6 +1078,9 @@ app.post("/settingsUpdate", (req, res) => {
     {
       name: req.body.name,
       location: req.body.location,
+      phoneNo: req.body.phoneNo,
+      businessName: req.body.businessName,
+      password: hashPassword
     },
     {
       new: true,

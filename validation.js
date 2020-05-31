@@ -14,7 +14,14 @@ const userValidation = (data) =>{
 		store:Joi.string(),
 		joiningDate:Joi.string(),
 		name:Joi.string(),
-		username: Joi.string()
+		username: Joi.string(),
+		businessName: Joi.string(),
+		accountno: Joi.number(),
+		pmethod: Joi.string(),
+		address:Joi.string(),
+		westernId:Joi.string(),
+		sortCode:Joi.string(),
+		profileId:Joi.string()
 	});
 
 	return schema.validate(data);

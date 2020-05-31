@@ -14,6 +14,7 @@ const fileUpload = require("express-fileupload");
 const csv = require("csvtojson");
 const request = require("request-promise");
 const Orders = require("../model/Orders");
+const PaymentMode = require("../model/PaymentMode");
 const axios  = require ('axios');
  var nodemailer = require('nodemailer');
  const { google } = require("googleapis");
@@ -782,6 +783,33 @@ transporter.sendMail(mailOptions, function(error, info){
 });
 
 })
+
+//save supplier payment details
+router.post('/paymentDetails', async (req, res)=>{
+  const paymentMode = new PaymentMode({
+    supplier_id:req.body.supplier_id,
+    info:req.body
+  });
+  try {
+    const data =  await paymentMode.save()
+    console.log("data is",data);
+    res.send('Success')
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+//get supplier received payment details
+router.get('/paymentDetails/:id', async (req, res)=>{
+  console.log(req.params.id);
+  try {
+    const data = await PaymentMode.find({supplier_id:req.params.id})
+res.send(data)    
+  } catch (error) {
+    res.send(error)
+  }
+})
+
 
 /*Product Part*/
 // product list

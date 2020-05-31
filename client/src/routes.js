@@ -28,6 +28,7 @@ import SingleProductDetail from "./views/SingleProductDetail.jsx"
 import AdminProfile from "./views/AdminProfile.jsx"
 
 
+
 const dashboardRoutes = [
 
   {

@@ -25,6 +25,7 @@ import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
 import SupplierOrders from "./views/SupplierOrders.jsx"
 import Settings from "./views/Settings.jsx"
+import SupplierPaymentDetails from "./views/SupplierPaymentDetails.jsx"
 
 
 
@@ -69,6 +70,13 @@ const dashboardRoutes = [
     name: "Settings",
     icon: "pe-7s-config",
     component: Settings,
+    layout: "/supplier"
+  },
+  {
+    path: "/PaymentSettings",
+    name: "Payment Settings",
+    icon: "pe-7s-config",
+    component: SupplierPaymentDetails,
     layout: "/supplier"
   }
 
