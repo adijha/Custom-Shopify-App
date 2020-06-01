@@ -804,7 +804,7 @@ router.get('/paymentDetails/:id', async (req, res)=>{
   console.log(req.params.id);
   try {
     const data = await PaymentMode.find({supplier_id:req.params.id})
-res.send(data)    
+res.send(data)
   } catch (error) {
     res.send(error)
   }
@@ -909,6 +909,17 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
       imgBufferData: file.buffer.toString("base64"),
     });
   });
+
+  let shippingObj = {
+    method: req.body.method,
+    usa:req.body.usa,
+    canada:req.body.canada,
+    unitedKingdom: req.body.uk,
+    australia: req.body.australia,
+    international: req.body.international
+  }
+
+
   const product = await new Products({
     supplier_id: req.body.supplier_id,
     name: req.body.name,
@@ -924,10 +935,11 @@ router.post("/addProduct", upload.array("productImage"), async (req, res) => {
     size: req.body.size,
     options: JSON.parse(req.body.options),
     varients: JSON.parse(req.body.varients),
+    shippingCharge: shippingObj
     //  color: req.body.color,
     //  tag:req.body.tag
   });
-
+  // console.log(product, "backend is");
   try {
     const newProduct = await product.save();
     res.status(200).send("Success");

@@ -31,7 +31,6 @@ const ProductSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    required: true,
   },
   code: {
     type: String,
@@ -63,6 +62,9 @@ const ProductSchema = mongoose.Schema({
   },
   selliingPrice:{
     type: Number
+  },
+  shippingCharge:{
+    type:Object
   }
 });
 

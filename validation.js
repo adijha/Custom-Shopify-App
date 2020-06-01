@@ -21,7 +21,8 @@ const userValidation = (data) =>{
 		address:Joi.string(),
 		westernId:Joi.string(),
 		sortCode:Joi.string(),
-		profileId:Joi.string()
+		profileId:Joi.string(),
+		
 	});
 
 	return schema.validate(data);
