@@ -48,7 +48,7 @@ const Category = () => {
   const editProduct = (item) => {
     console.log(item);
     axios
-      .delete('/api/editCategory/' + itemId, {
+      .post('/api/category/' + itemId, {
         newName: newCat,
       })
       .then((response) => {
@@ -104,7 +104,7 @@ const Category = () => {
                 <input
                   type='text'
                   value={newCat}
-                  onChange={(value) => setNewCat(value)}
+                  onChange={(e) => setNewCat(e.target.value)}
                 />
                 <div
                   className='btn btn-primary'
@@ -172,7 +172,10 @@ const Category = () => {
                             <td style={{ width: '20%' }}>
                               <button
                                 className='btn btn-primary btn-sm'
-                                onClick={() => setEditModal(true)}
+                                onClick={() => {
+                                  setEditModal(true);
+                                  setItemId(item._id);
+                                }}
                               >
                                 Edit
                               </button>

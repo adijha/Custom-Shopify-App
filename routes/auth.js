@@ -849,6 +849,31 @@ router.delete('/category/:id', async (req, res) => {
     res.json({ message: error.message });
   }
 });
+
+router.post('/category/:id', async (req, res) => {
+  console.log(req.body.newName);
+  try {
+    const data = await Category.findOneAndUpdate(
+      {
+        id: req.params.id,
+      },
+      {
+        category: req.body.newName,
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    console.log({ data });
+    res.json({ message: 'Category Updated Successfully' });
+    console.log(req.params.id);
+  } catch (e) {
+    console.log(e);
+    res.json({ message: error.message });
+  }
+});
+
 //Add Product
 router.post('/addProduct', upload.array('productImage'), async (req, res) => {
   const files = await req.files;
