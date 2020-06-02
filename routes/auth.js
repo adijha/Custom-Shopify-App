@@ -858,6 +858,7 @@ router.post('/category/:id', async (req, res) => {
       },
       {
         category: req.body.newName,
+        created_on: new Date(),
       },
       {
         new: true,
