@@ -865,7 +865,6 @@ router.post('/category/:id', async (req, res) => {
         useFindAndModify: false,
       }
     );
-    console.log({ data });
     res.json({ message: 'Category Updated Successfully' });
     console.log(req.params.id);
   } catch (e) {
