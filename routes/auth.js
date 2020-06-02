@@ -72,7 +72,6 @@ router.get('/adminUser/:id', async (req, res) => {
 router.patch('/adminAccount', async (req, res) => {
   // const salt = await bcrypt.genSalt(10);
   // const hashPassword = await bcrypt.hash(req.body.password, salt);
-
   const updateUser = {
     name: req.body.name,
     email: req.body.email,
@@ -147,7 +146,6 @@ router.post('/merchant', async (req, res) => {
     joiningDate: currDate('-'),
     store: req.body.store,
   });
-  // console.log(merchantUser);
   try {
     const savedUser = await merchantUser.save();
     res.send('success');
