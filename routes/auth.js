@@ -851,7 +851,6 @@ router.delete('/category/:id', async (req, res) => {
 });
 
 router.post('/category/:id', async (req, res) => {
-  console.log(req.body.newName);
   try {
     const data = await Category.findOneAndUpdate(
       {
