@@ -114,6 +114,115 @@ router.post('/adminLogin', async (req, res) => {
   res.send(token);
 });
 
+
+//order Details section in admin
+
+router.get('/customOrderDetails', async (req, res)=>{
+
+  const orderData = await Orders.find();
+
+
+  let firstArr = []
+  let secondArr = []
+  let thirdArr = []
+  let doneArr = []
+
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+
+      if (product.sku !== undefined) {
+        firstArr.push({
+          orderId: item.product_name,
+          sku: product.sku,
+          total_price: item.price,
+          quantity: product.quantity,
+          store: product.store,
+          customer_name: item.customer.name,
+          order_date: item.created_on
+        })
+      }
+
+    });
+  });
+
+  const productsData = await Products.find()
+
+  productsData.forEach((data, k) => {
+    firstArr.forEach((arr, l) => {
+      if (data.code===arr.sku) {
+        secondArr.push({
+          orderId: arr.orderId,
+          sku: arr.sku,
+          total_price: arr.total_price,
+          quantity: arr.quantity,
+          store: arr.store,
+          customer_name: arr.customer_name,
+          order_date: arr.order_date,
+
+          shipping: data.shippingCharge,
+          product_price: data.price,
+          supplier_id: data.supplier_id
+        })
+      }
+    });
+  });
+
+  const supplierUser = await User.find()
+
+  secondArr.forEach((sArr, m) => {
+    supplierUser.forEach((user, n) => {
+      if (sArr.supplier_id==user._id) {
+        thirdArr.push({
+          orderId: sArr.orderId,
+          sku: sArr.sku,
+          total_price: sArr.total_price,
+          quantity: sArr.quantity,
+          store: sArr.store,
+          customer_name: sArr.customer_name,
+          order_date: sArr.order_date,
+          shipping: sArr.shipping,
+          product_price: sArr.product_price,
+          supplier_id: sArr.supplier_id,
+          supplierName: user.supplier_id
+        })
+      }
+    });
+  });
+
+
+const mUser = await MerchantUser.find()
+
+thirdArr.forEach((tArr, o) => {
+  mUser.forEach((muser, p) => {
+    if (tArr.store===muser.store) {
+      doneArr.push({
+        orderId: tArr.orderId,
+        sku: tArr.sku,
+        total_price: tArr.total_price,
+        quantity: tArr.quantity,
+        store: tArr.store,
+        customer_name: tArr.customer_name,
+        order_date: tArr.order_date,
+        shipping: tArr.shipping,
+        product_price: tArr.product_price,
+        supplier_id: tArr.supplier_id,
+        supplierName: tArr.supplierName,
+        merchantName: muser.firstName
+      })
+    }
+  });
+
+});
+
+
+res.send(doneArr)
+
+})
+
+
+
+
+
 //merchant sign up
 router.post('/merchant', async (req, res) => {
   //let validate the data
