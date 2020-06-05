@@ -8,16 +8,6 @@ import CsvDownloader from 'react-csv-downloader';
 
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [status, setStatus] = useState('');
-  const [tempSupplier, setTempSupplier] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const [sRevenue, setSRevenue] = useState();
-  const [sOrder, setSOrder] = useState();
-  const [productCount, setProductCount] = useState();
 
   useEffect(() => {
     getSupplierData();
@@ -29,42 +19,10 @@ const SupplierList = () => {
       console.log(res.data);
     });
   };
-
-  const updateSupplier = (item) => {
-    console.log(item._id);
-    setOpen(true);
-    setEmail(item.email);
-    setName(item.supplier_id);
-    setTempSupplier(item._id);
-  };
-
-  const submitUpdateSuplier = (e) => {
-    e.preventDefault();
-    const obj = {
-      _id: tempSupplier,
-      supplier_id: name,
-      email: email,
-      password: password,
-    };
-    console.log(obj);
-    axios.patch('/api/update', obj).then((data) => {
-      if (data) {
-        setStatus('Supplier Updated Successfully');
-        setOpen(false);
-      }
-    });
-  };
-
-  const handleClickMe = () => {};
-
-  const updatebtn = {
-    width: '50%',
-  };
   return (
     <div className='content'>
       <div
         style={{
-          // backgroundColor: 'green',
           textAlign: 'right',
           alignSelf: 'right',
           display: 'flex',
@@ -95,10 +53,6 @@ const SupplierList = () => {
           </CsvDownloader>
         </div>
       </div>
-      <div className='info text-center' style={{ color: 'red' }}>
-        {status}
-      </div>
-
       <Grid fluid>
         <Row>
           <Col md={12}>
@@ -109,6 +63,7 @@ const SupplierList = () => {
                 <Table striped hover size='sm'>
                   <thead>
                     <tr>
+                      <th>No.</th>
                       <th>Product Image</th>
                       <th>Order Id</th>
                       <th>Merchant Id</th>
@@ -123,6 +78,16 @@ const SupplierList = () => {
                       return (
                         <tr key={key}>
                           <td>{key + 1}</td>
+                          <td style={{ width: '15%' }}>
+                            {item.productImage ? (
+                              <img
+                                className='product-logo'
+                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                              />
+                            ) : (
+                              'No Image Available'
+                            )}
+                          </td>
                           <td>{item.orderId}</td>
                           <td>{item.merchantName}</td>
                           <td>{item.supplier_id}</td>
@@ -139,48 +104,6 @@ const SupplierList = () => {
           </Col>
         </Row>
       </Grid>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <br />
-        <h3 style={{ color: 'blue' }} className='text-center'>
-          Edit Supplier Details:
-        </h3>
-        <form onSubmit={submitUpdateSuplier}>
-          <div className='fullName'>
-            <label htmlFor='fullName'>Supplier Id</label>
-            <input
-              type='text'
-              name='fullName'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className='email'>
-            <label htmlFor='email'>Email</label>
-            <input
-              type='email'
-              name='email'
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </div>
-          <div className='password'>
-            <label htmlFor='password'>New Password</label>
-            <input
-              type='password'
-              name='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div style={{ margin: 'auto' }}>
-            <button type='submit' className='btn btn-primary' style={updatebtn}>
-              Update
-            </button>
-          </div>
-        </form>
-      </Modal>
     </div>
   );
 };
