@@ -16,7 +16,7 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
       setSuppliers(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     });
   };
   return (
