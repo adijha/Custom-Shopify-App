@@ -1,28 +1,11 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, {useState,useEffect} from "react";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Modal from "react-responsive-modal";
-
-
 import Card from "../components/Card/Card.jsx";
+import CsvDownloader from 'react-csv-downloader';
+
 
 const SupplierList = () => {
 
@@ -48,31 +31,6 @@ const getSupplierData =  async () =>{
   .then(res=>{
     setSuppliers(res.data)
   })
-   //  let supplierArr = [];
-   //  let finalArr = []
-   //
-   // const supplierData = await axios.get('/api/supplier')
-   //
-   //  supplierData.data.forEach(async (item, i) => {
-   //    const productLength = await axios.get('/api/supplier/product/' + item._id)
-   //
-   //    const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
-   //
-   //    const supplierOrder = await axios.get('/supplierOrders/'+item._id)
-   //
-   //    const supplierObj =  {
-   //      id:item._id,
-   //      email:item.email,
-   //      supplier_id: item.supplier_id,
-   //      order: supplierOrder.data,
-   //      product: productLength.data.length,
-   //      revenue: supplierRevenue.data
-   //    }
-   //    supplierArr.push(supplierObj)
-   //  });
-   //
-   //  return supplierArr;
-
 }
 
 const updateSupplier = item =>{
@@ -112,23 +70,57 @@ const updatebtn= {
   width: "50%"
 }
     return (
-      <div className="content">
-
-      <div className="info text-center" style={{color:"red"}}>{status}</div>
+      <div className='content'>
+        <div
+          style={{
+            // backgroundColor: 'green',
+            textAlign: 'right',
+            alignSelf: 'right',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginTop: '-20px',
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'grey',
+              width: '120px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 10,
+              marginRight: '18px',
+              marginBottom: '10px',
+            }}
+          >
+            <CsvDownloader
+              filename='suppliers'
+              separator=','
+              wrapColumnChar="'"
+              datas={suppliers}
+            >
+              <h5 style={{ marginTop: 15 }}>Download</h5>
+            </CsvDownloader>
+          </div>
+        </div>
+        <div className='info text-center' style={{ color: 'red' }}>
+          {status}
+        </div>
 
         <Grid fluid>
           <Row>
             <Col md={12}>
               <Card
-                title="Supplier List"
-                category={"Total Suppliers :"+ suppliers.length}
+                title='Supplier List'
+                category={'Total Suppliers :' + suppliers.length}
                 ctTableFullWidth
                 ctTableResponsive
                 content={
-                  <Table striped hover size="sm">
-                    <thead >
+                  <Table striped hover size='sm'>
+                    <thead>
                       <tr>
-                      <th>S.No.</th>
+                        <th>S.No.</th>
                         <th>username</th>
                         <th>Email</th>
                         <th>Total no. of Products</th>
@@ -140,13 +132,20 @@ const updatebtn= {
                       {suppliers.map((item, key) => {
                         return (
                           <tr key={key}>
-                            <td>{key+1}</td>
+                            <td>{key + 1}</td>
                             <td>{item.supplier_id}</td>
                             <td>{item.email}</td>
                             <td>{item.product}</td>
                             <td>{item.order}</td>
                             <td>{item.revenue}</td>
-                            <td><button className="btn btn-primary btn-sm" onClick={()=>updateSupplier(item)}>Edit</button></td>
+                            <td>
+                              <button
+                                className='btn btn-primary btn-sm'
+                                onClick={() => updateSupplier(item)}
+                              >
+                                Edit
+                              </button>
+                            </td>
                           </tr>
                         );
                       })}
@@ -157,31 +156,52 @@ const updatebtn= {
             </Col>
           </Row>
         </Grid>
-        <Modal open={open} onClose={()=>setOpen(false)}>
-        <br/>
-        <h3 style={{color:"blue"}}className="text-center">Edit Supplier Details:</h3>
-        <form  onSubmit={submitUpdateSuplier} >
-          <div className='fullName'>
-            <label htmlFor="fullName">Supplier Id</label>
-            <input type='text' name='fullName' value={name} onChange={(e)=>setName(e.target.value)}/>
-          </div>
-          <div className='email'>
-            <label htmlFor="email">Email</label>
-            <input type='email' name='email'  value={email} onChange={(e)=>{setEmail(e.target.value)}} />
-          </div>
-          <div className='password'>
-            <label htmlFor="password">New Password</label>
-            <input type='password' name='password'  value={password} onChange={(e)=>setPassword(e.target.value)} />
-          </div>
-          <div style={{margin:"auto"}}>
-            <button type="submit" className="btn btn-primary" style={updatebtn}>Update</button>
-          </div>
-
-        </form>
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <br />
+          <h3 style={{ color: 'blue' }} className='text-center'>
+            Edit Supplier Details:
+          </h3>
+          <form onSubmit={submitUpdateSuplier}>
+            <div className='fullName'>
+              <label htmlFor='fullName'>Supplier Id</label>
+              <input
+                type='text'
+                name='fullName'
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className='email'>
+              <label htmlFor='email'>Email</label>
+              <input
+                type='email'
+                name='email'
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+              />
+            </div>
+            <div className='password'>
+              <label htmlFor='password'>New Password</label>
+              <input
+                type='password'
+                name='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div style={{ margin: 'auto' }}>
+              <button
+                type='submit'
+                className='btn btn-primary'
+                style={updatebtn}
+              >
+                Update
+              </button>
+            </div>
+          </form>
         </Modal>
-
-
-
       </div>
     );
 
