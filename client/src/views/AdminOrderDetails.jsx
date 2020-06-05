@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-import Modal from 'react-responsive-modal';
 import Card from '../components/Card/Card.jsx';
 import CsvDownloader from 'react-csv-downloader';
 
@@ -16,7 +14,6 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
       setSuppliers(res.data);
-      console.log(res.data);
     });
   };
   return (
@@ -33,7 +30,7 @@ const SupplierList = () => {
         <div
           style={{
             backgroundColor: 'grey',
-            width: '120px',
+            width: '140px',
             height: '40px',
             display: 'flex',
             alignItems: 'center',
@@ -49,7 +46,7 @@ const SupplierList = () => {
             wrapColumnChar="'"
             datas={suppliers}
           >
-            <h5 style={{ marginTop: 15 }}>Download</h5>
+            <h5 style={{ marginTop: 15 }}>Download CSV</h5>
           </CsvDownloader>
         </div>
       </div>
