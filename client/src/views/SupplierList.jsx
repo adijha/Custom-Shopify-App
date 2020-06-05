@@ -31,31 +31,6 @@ const getSupplierData =  async () =>{
   .then(res=>{
     setSuppliers(res.data)
   })
-   //  let supplierArr = [];
-   //  let finalArr = []
-   //
-   // const supplierData = await axios.get('/api/supplier')
-   //
-   //  supplierData.data.forEach(async (item, i) => {
-   //    const productLength = await axios.get('/api/supplier/product/' + item._id)
-   //
-   //    const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
-   //
-   //    const supplierOrder = await axios.get('/supplierOrders/'+item._id)
-   //
-   //    const supplierObj =  {
-   //      id:item._id,
-   //      email:item.email,
-   //      supplier_id: item.supplier_id,
-   //      order: supplierOrder.data,
-   //      product: productLength.data.length,
-   //      revenue: supplierRevenue.data
-   //    }
-   //    supplierArr.push(supplierObj)
-   //  });
-   //
-   //  return supplierArr;
-
 }
 
 const updateSupplier = item =>{
