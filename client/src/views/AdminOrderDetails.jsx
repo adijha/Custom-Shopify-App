@@ -6,6 +6,7 @@ import CsvDownloader from 'react-csv-downloader';
 
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
+  const [expand, setExpand] = useState('');
 
   useEffect(() => {
     getSupplierData();
@@ -14,6 +15,7 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
       setSuppliers(res.data);
+      console.log(res.data);
     });
   };
   return (
@@ -73,25 +75,44 @@ const SupplierList = () => {
                   <tbody>
                     {suppliers.map((item, key) => {
                       return (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td style={{ width: '15%' }}>
-                            {item.productImage ? (
-                              <img
-                                className='product-logo'
-                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
-                              />
-                            ) : (
-                              'No Image Available'
-                            )}
-                          </td>
-                          <td>{item.orderId}</td>
-                          <td>{item.merchantName}</td>
-                          <td>{item.supplier_id}</td>
-                          <td>{item.customer_name}</td>
-                          <td>{item.sku}</td>
-                          <td>{item.total_price}</td>
-                        </tr>
+                        <>
+                          <tr key={key}>
+                            <td>{key + 1}</td>
+                            <td style={{ width: '15%' }}>
+                              {item.productImage ? (
+                                <img
+                                  className='product-logo'
+                                  src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                                />
+                              ) : (
+                                'No Image Available'
+                              )}
+                            </td>
+                            <td
+                              onClick={() => setExpand(item.orderId)}
+                              style={{ color: '#5B8DF7', cursor: 'pointer' }}
+                            >
+                              {item.orderId}
+                            </td>
+                            <td>{item.merchantName}</td>
+                            <td>{item.supplier_id}</td>
+                            <td>{item.customer_name}</td>
+                            <td>{item.sku}</td>
+                            <td>{item.total_price}</td>
+                          </tr>
+
+                          {expand === item.orderId ? (
+                            <tr key={9898989}>
+                              <td></td>
+                              <td colSpan='3'>
+                                <td>Product Price :{item.product_price}</td>
+                              </td>
+                              <td colSpan='3'>
+                                <td>Shipping Price: {item.shipping_price}</td>
+                              </td>
+                            </tr>
+                          ) : null}
+                        </>
                       );
                     })}
                   </tbody>
