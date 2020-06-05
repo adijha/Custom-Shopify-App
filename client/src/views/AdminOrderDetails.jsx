@@ -20,18 +20,16 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
       setOrders(res.data);
-      console.log(res.data);
+      // console.log(res.data);
     });
   };
   const sortByDate = () => {
     let newOrders = [];
-    console.log(startDate, endDate);
     orders.forEach((order) => {
       if (
         moment(order.order_date).format('Y-MM-DD') >= startDate &&
         moment(order.order_date).format('Y-MM-DD') <= endDate
       ) {
-        console.log('sdfgwefgerfgerfg');
         newOrders.push(order);
       }
     });
