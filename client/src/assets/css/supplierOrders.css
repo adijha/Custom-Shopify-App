@@ -1,0 +1,12 @@
+.orderButton {
+  height: 33px !important;
+  width: 90px !important;
+  background-color: #3e3e3e;
+  border-radius: 5px !important;
+  color: white;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}

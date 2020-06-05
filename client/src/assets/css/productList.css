@@ -1,0 +1,22 @@
+.product-logo{
+  width:40%;
+  heigth:20%;
+}
+
+.styles_closeButton__20ID4{
+  right:0;
+}
+ button:hover{
+  background-color: white;
+}
+
+.card-update{
+  position: relative;
+  width: 70%;
+  margin: auto;
+  padding: 1em;
+
+}
+.card-btn-update{
+  margin-left: auto;
+}

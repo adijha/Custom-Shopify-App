@@ -1,0 +1,5 @@
+node_modules/
+.env
+desktop.ini
+cvtest.js
+yarn.lock

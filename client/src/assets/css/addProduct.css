@@ -1,0 +1,186 @@
+.shippingInput{
+  margin-right: 10px;
+}
+.shippinglabel{
+  margin-right: 20px;
+}
+.card-input {
+  position: relative;
+  width: 70%;
+  margin: auto;
+  padding: 1em;
+}
+.card-button {
+  width: 31%;
+  margin: auto;
+}
+.card .form-group label {
+  color: #2f4f4f;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+.save_product {
+  width: 20%;
+}
+.status {
+  color: Green;
+  font-size: medium;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+.ql-editor {
+  min-height: 15em;
+}
+
+.icon-wrapp {
+  border-right: #2f4f4f 1px solid;
+  padding-right: 10px;
+}
+
+.containerr {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px !important;
+  color: #888888 !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.containerr input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmarkk {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.containerr:hover input ~ .checkmarkk {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerr input:checked ~ .checkmarkk {
+  background-color: #2196f3;
+}
+
+/* Create the checkmarkk/indicator (hidden when not checked) */
+.checkmarkk:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmarkk when checked */
+.containerr input:checked ~ .checkmarkk:after {
+  display: block;
+}
+
+/* Style the checkmarkk/indicator */
+.containerr .checkmarkk:after {
+  left: 10px;
+  top: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* tags */
+
+.tags-input {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  min-height: 100px;
+  width: 480px;
+  padding: 0 8px;
+  border: 1px solid #d6d8da;
+  border-radius: 6px;
+}
+.tags-input:focus-within {
+  border: 1px solid #0052cc;
+}
+.tags-input input {
+  flex: 1;
+  border: none;
+  height: 46px;
+  font-size: 14px;
+  padding: 4px 0 0 0;
+}
+.tags-input input:focus {
+  outline: transparent;
+}
+#tags {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 8px 0 0 0;
+}
+.tag {
+  width: auto;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 0 8px;
+  font-size: 14px;
+  list-style: none;
+  border-radius: 6px;
+  margin: 0 8px 8px 0;
+  background: #0052cc;
+}
+.tag .tag-title {
+  margin-top: 3px;
+}
+.tag .tag-close-icon {
+  display: block;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #0052cc;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+@media screen and (max-width: 767px) {
+  .tags-input {
+    /* width: calc(100vw - 19rem); */
+    width: 58vw;
+  }
+}
+.meraButton {
+  height: 30px !important;
+  width: 140px !important;
+  background-color: #3e3e3e;
+  border-radius: 5px !important;
+  color: white;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 12px;
+}
