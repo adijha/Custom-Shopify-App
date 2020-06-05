@@ -7,6 +7,7 @@ import CsvDownloader from 'react-csv-downloader';
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [expand, setExpand] = useState('');
+  const [expand2, setExpand2] = useState('');
 
   useEffect(() => {
     getSupplierData();
@@ -89,14 +90,25 @@ const SupplierList = () => {
                               )}
                             </td>
                             <td
-                              onClick={() => setExpand(item.orderId)}
+                              onClick={() => {
+                                setExpand(item.orderId);
+                                setExpand2('');
+                              }}
                               style={{ color: '#5B8DF7', cursor: 'pointer' }}
                             >
                               {item.orderId}
                             </td>
                             <td>{item.merchantName}</td>
                             <td>{item.supplier_id}</td>
-                            <td>{item.customer_name}</td>
+                            <td
+                              onClick={() => {
+                                setExpand2(item.orderId);
+                                setExpand('');
+                              }}
+                              style={{ color: '#5B8DF7', cursor: 'pointer' }}
+                            >
+                              {item.customer_name}
+                            </td>
                             <td>{item.sku}</td>
                             <td>{item.total_price}</td>
                           </tr>
@@ -105,10 +117,18 @@ const SupplierList = () => {
                             <tr key={9898989}>
                               <td></td>
                               <td colSpan='3'>
-                                <td>Product Price :{item.product_price}</td>
+                                <td>Product Price : {item.product_price}</td>
                               </td>
                               <td colSpan='3'>
                                 <td>Shipping Price: {item.shipping_price}</td>
+                              </td>
+                            </tr>
+                          ) : null}
+                          {expand2 === item.orderId ? (
+                            <tr key={9898989}>
+                              <td></td>
+                              <td colSpan='7'>
+                                <td>Customer Name : {item.customer_name}</td>
                               </td>
                             </tr>
                           ) : null}
