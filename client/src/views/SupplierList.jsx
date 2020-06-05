@@ -1,25 +1,10 @@
-/*!
+import React, { useState, useEffect } from 'react';
 
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-import React, {useState,useEffect} from "react";
-import { Grid, Row, Col, Table } from "react-bootstrap";
+import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Modal from "react-responsive-modal";
+import { NotificationManager } from 'react-notifications';
 
 
 import Card from "../components/Card/Card.jsx";
@@ -48,6 +33,9 @@ const getSupplierData =  async () =>{
   .then(res=>{
     setSuppliers(res.data)
   })
+
+
+
    //  let supplierArr = [];
    //  let finalArr = []
    //
@@ -102,7 +90,22 @@ const submitUpdateSuplier = (e)=>{
   })
 }
 
+const deleteSupplier = (item)=>{
+  let id = item.id;
+  console.log("id is delete", id);
+  axios.delete('/api/supplierDel/'+id)
+  .then(res=>{
+    try{
+    if (res.data.includes('success')) {
+      NotificationManager.success('Supplier deleted successfully');
+      getSupplierData()
 
+    }
+  } catch (error) {
+    NotificationManager.error('Something unusual happened');
+  }
+  })
+}
 
 const handleClickMe = ()=>{
 }
@@ -147,6 +150,8 @@ const updatebtn= {
                             <td>{item.order}</td>
                             <td>{item.revenue}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateSupplier(item)}>Edit</button></td>
+                            <td><button className="btn btn-danger btn-sm" onClick={()=>deleteSupplier(item)}>Delete</button></td>
+
                           </tr>
                         );
                       })}
@@ -162,29 +167,43 @@ const updatebtn= {
         <h3 style={{color:"blue"}}className="text-center">Edit Supplier Details:</h3>
         <form  onSubmit={submitUpdateSuplier} >
           <div className='fullName'>
-            <label htmlFor="fullName">Supplier Id</label>
-            <input type='text' name='fullName' value={name} onChange={(e)=>setName(e.target.value)}/>
+            <label htmlFor='fullName'>Supplier Id</label>
+            <input
+              type='text'
+              name='fullName'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
           </div>
           <div className='email'>
-            <label htmlFor="email">Email</label>
-            <input type='email' name='email'  value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+            <label htmlFor='email'>Email</label>
+            <input
+              type='email'
+              name='email'
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
           </div>
           <div className='password'>
-            <label htmlFor="password">New Password</label>
-            <input type='password' name='password'  value={password} onChange={(e)=>setPassword(e.target.value)} />
+            <label htmlFor='password'>New Password</label>
+            <input
+              type='password'
+              name='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
-          <div style={{margin:"auto"}}>
-            <button type="submit" className="btn btn-primary" style={updatebtn}>Update</button>
+          <div style={{ margin: 'auto' }}>
+            <button type='submit' className='btn btn-primary' style={updatebtn}>
+              Update
+            </button>
           </div>
-
         </form>
-        </Modal>
-
-
-
-      </div>
-    );
-
-}
+      </Modal>
+    </div>
+  );
+};
 
 export default SupplierList;
