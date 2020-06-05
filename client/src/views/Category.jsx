@@ -1,32 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD
 import { Grid, Row, Col, Table, Modal as Mod, Button } from 'react-bootstrap';
 import Card from '../components/Card/Card.jsx';
 import Modal from 'react-responsive-modal';
+=======
+import { Grid, Row, Col, Table } from "react-bootstrap";
+import Card from "../components/Card/Card.jsx";
+import Modal from "react-responsive-modal";
+import { NotificationManager } from 'react-notifications';
+
+
+const Category = ()=>{
+>>>>>>> 9440fafe7348d0af9a3426c0b416018f06e67e03
 
 const Category = () => {
   const [category, setCategory] = useState('');
   const [msg, setMsg] = useState('');
-  const [categoryList, setCategoryList] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [itemId, setItemId] = useState('');
-  const [editModal, setEditModal] = useState(false);
-  const [newCat, setNewCat] = useState('');
+  const [categoryList, setCategoryList] = useState([])
+  const [open, setOpen] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
+  const [itemId, setItemId] = useState("")
+  const [catName, setCatName] = useState("")
 
-  useEffect(() => {
-    getCategory();
-  }, []);
 
-  //get Category
-  const getCategory = () => {
-    axios.get('/api/totalCategory').then((data) => {
-      console.log('category list is', data.data);
-      setCategoryList(data.data);
-    });
-  };
+  useEffect(()=>{
+    getCategory()
+  }, [])
 
-  //add category
-  const addCategory = (e) => {
+//get Category
+const getCategory = ()=>{
+  axios
+  .get('/api/totalCategory')
+  .then(data=>{
+    console.log("category list is", data.data)
+    setCategoryList(data.data)
+  })
+}
+
+
+//add category
+  const addCategory = (e)=>{
     e.preventDefault();
     const obj = {
       category: category,
@@ -66,7 +80,32 @@ const Category = () => {
     });
   };
 
+<<<<<<< HEAD
   return (
+=======
+  const editCategory = (item) =>{
+    setOpenEdit(true)
+    setCatName(item.category)
+    setItemId(item._id)
+  }
+
+  const changeCatName = () =>{
+    axios.patch('/api/categoryPatch/'+itemId, {catName})
+    .then(res=>{
+      try{
+        if (res.data.includes('success')) {
+          NotificationManager.success('updated Successfully');
+          setOpenEdit(false)
+          getCategory()
+        }
+      } catch (error) {
+        NotificationManager.error('Something unusual happened');
+      }
+    })
+  }
+
+  return(
+>>>>>>> 9440fafe7348d0af9a3426c0b416018f06e67e03
     <div>
       <div className='container-fluid'>
         <br />
@@ -144,6 +183,7 @@ const Category = () => {
             </div>
           </div>
         </form>
+<<<<<<< HEAD
       </div>
 
       <div className='content'>
@@ -219,4 +259,67 @@ const Category = () => {
     </div>
   );
 };
+=======
+        </div>
+
+<div className="content">
+  <Grid fluid>
+    <Row>
+      <Col md={12}>
+        <Card
+          title="Category List"
+          category={"Total Categories :"+ categoryList.length}
+          ctTableFullWidth
+          ctTableResponsive
+          content={
+            <Table striped hover >
+              <thead >
+                <tr>
+                  <th>Name</th>
+                  <th>Date Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categoryList.map((item, key) => {
+                  return (
+                    <tr key={key}>
+                      <td>{item.category}</td>
+                      <td>{item.created_on || 'NA'}</td>
+                      <td style={{width:"20%"}}><button className="btn btn-primary btn-sm"  onClick={()=>editCategory(item)} >Edit</button></td>
+                      <td style={{width:"20%"}}><button className="btn btn-danger btn-sm"  onClick={()=>updateProduct(item)} >Delete</button></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          }
+        />
+      </Col>
+    </Row>
+  </Grid>
+
+</div>
+<Modal open={open} onClose={()=>setOpen(false)}>
+<h4>Are you sure, you want to delete</h4>
+<a className="btn btn-danger" onClick={()=>deleteCategory()} style={{width:"50%"}}>Yes</a>
+<a className="btn btn-primary" onClick={()=>setOpen(false)} style={{width:"50%"}}>No</a>
+</Modal>
+
+<Modal open={openEdit} onClose={()=>setOpenEdit(false)} style={{width:"200px"}}>
+<br/>
+<h3 style={{color:"blue"}}className="text-center">Edit Category:</h3>
+  <div className='form-group'>
+    <label htmlFor="fullName">Category Name</label>
+    <input type='text' name='fullName' className="form-control" value={catName} onChange={(e)=>setCatName(e.target.value)}/>
+  </div>
+  <div>
+    <button className="btn btn-info" onClick={(e)=>changeCatName()}>Update</button>
+  </div>
+</Modal>
+
+        </div>
+
+  )
+}
+>>>>>>> 9440fafe7348d0af9a3426c0b416018f06e67e03
 export default Category;
