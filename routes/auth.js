@@ -1021,6 +1021,8 @@ router.delete("/category/:id", async (req, res) => {
 });
 
 
+
+
 //category edit
 router.patch("/categoryPatch/:id", async (req, res) => {
   try {
