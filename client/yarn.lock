@@ -3252,6 +3252,11 @@ cosmiconfig@^6.0.0:
     path-type "^4.0.0"
     yaml "^1.7.2"
 
+country-flag-icons@^1.0.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/country-flag-icons/-/country-flag-icons-1.2.1.tgz#166878b8734ada5c4c0a8ce9d9d05c9ddf272af5"
+  integrity sha512-iusfhFhJvYQzQjlVIJv4JoKKnGB+f4+vpi3zEU945ln/E+okPLzfz7jRBtInYIknOy2YTzcV2GAP45axi1R3/g==
+
 create-ecdh@^4.0.0:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.3.tgz#c9111b6f33045c4697f144787f9254cdc77c45ff"
@@ -4665,6 +4670,11 @@ file-loader@4.3.0:
     loader-utils "^1.2.3"
     schema-utils "^2.5.0"
 
+file-saver@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
+  integrity sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -5628,6 +5638,13 @@ ini@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+
+input-format@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/input-format/-/input-format-0.3.0.tgz#f662b1667b6d067769f44c717bcfcc92554bee75"
+  integrity sha512-7ipaXJ5Hnd2o62IxLRTCMcl7AOPzxU2PTfDunPDIaaAjq+Q8DcjI4/nmPo3fXJUvdTCX97BlW8d+7ArUhVTxAA==
+  dependencies:
+    prop-types "^15.7.2"
 
 inquirer@7.0.4:
   version "7.0.4"
@@ -6790,6 +6807,14 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+libphonenumber-js@^1.7.52:
+  version "1.7.52"
+  resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.7.52.tgz#a30dc8ec4dfa2ce651a6abf76c6b141b244b1aa3"
+  integrity sha512-NnJbWGRWIAQwz3UOXJoka92FJqmr/VvGIHienUMnBf7QNSCYF2WhvknEgpQIhL8VLZp/rJg3m3czOHRAmyYMLg==
+  dependencies:
+    minimist "^1.2.5"
+    xml2js "^0.4.17"
+
 lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
@@ -7302,6 +7327,11 @@ mixin-object@^2.0.1:
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
+
+moment@^2.26.0:
+  version "2.26.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.26.0.tgz#5e1f82c6bafca6e83e808b30c8705eed0dcbd39a"
+  integrity sha512-oIixUO+OamkUkwjhAVE18rAMfRJNsNe/Stid/gwHSOfHrOtw9EhAY2AHvdKZ/k/MggcYELFCJz/Sn2pL8b8JMw==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
@@ -9217,6 +9247,13 @@ react-chartist@0.13.3:
   dependencies:
     prop-types "^15.5.8"
 
+react-csv-downloader@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-csv-downloader/-/react-csv-downloader-1.8.0.tgz#a6aedcb6c6c58cefdc8341ab0b51a9a5e9ab0ffc"
+  integrity sha512-YNN8pyKOqBMZL4XV+mdIYAnbokmpLmMHFcWhgbLo8BjHN4Ar/K5buKBWKgOmSve9dGqdjyADYuZVOQyZ5A9+/Q==
+  dependencies:
+    file-saver "^2.0.2"
+
 react-dev-utils@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-10.2.1.tgz#f6de325ae25fa4d546d09df4bb1befdc6dd19c19"
@@ -9349,6 +9386,17 @@ react-papaparse@^3.1.2:
   integrity sha512-bMNkfNDBToyeBSV/J5WdCPL3MDDJecF2Wfls2MxRL+gMrsgCUmddzpd6Pz46MbTG5W/6EHq4w6zFDI6ORNPQkQ==
   dependencies:
     papaparse "^5.1.1"
+    prop-types "^15.7.2"
+
+react-phone-number-input@^3.0.22:
+  version "3.0.23"
+  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.0.23.tgz#3cf66e54a6bd414e24f42742936172f0d1daf3f6"
+  integrity sha512-dYHC8jwoCMKDhLPl30z7U3btqlef8stf20vu/5ognJ4gF1i8Uu2lJKAdjomvCWKTUT9ZsNvOz0+IP92k2LCONQ==
+  dependencies:
+    classnames "^2.2.5"
+    country-flag-icons "^1.0.2"
+    input-format "^0.3.0"
+    libphonenumber-js "^1.7.52"
     prop-types "^15.7.2"
 
 react-popper@^1.3.6:
@@ -10089,7 +10137,7 @@ sass-loader@8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
-sax@^1.2.4, sax@~1.2.4:
+sax@>=0.6.0, sax@^1.2.4, sax@~1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
@@ -11885,6 +11933,19 @@ xml-name-validator@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-3.0.0.tgz#6ae73e06de4d8c6e47f9fb181f78d648ad457c6a"
   integrity sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
+
+xml2js@^0.4.17:
+  version "0.4.23"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.23.tgz#a0c69516752421eb2ac758ee4d4ccf58843eac66"
+  integrity sha512-ySPiMjM0+pLDftHgXY4By0uswI3SPKLDw/i3UXbnO8M/p28zqexCUoPmQFrYD+/1BzhGJSs2i1ERWKJAtiLrug==
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~11.0.0"
+
+xmlbuilder@~11.0.0:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-11.0.1.tgz#be9bae1c8a046e76b31127726347d0ad7002beb3"
+  integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
 
 xmlchars@^2.1.1:
   version "2.2.0"

@@ -75,6 +75,13 @@ const dashboardRoutes = [
     layout: '/admin',
   },
   {
+    path: '/orders',
+    name: 'Order Details',
+    icon: 'pe-7s-user',
+    component: AdminOrderDetails,
+    layout: '/admin',
+  },
+  {
     path: '/merchant/:id',
     component: MerchantAccountDetail,
     layout: '/admin',
@@ -82,13 +89,6 @@ const dashboardRoutes = [
   {
     path: '/single-product/:id',
     component: SingleProductDetail,
-    layout: '/admin',
-  },
-  {
-    path: '/orders',
-    name: 'Order Details',
-    icon: 'pe-7s-user',
-    component: AdminOrderDetails,
     layout: '/admin',
   },
 ];

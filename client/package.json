@@ -13,10 +13,12 @@
     "eslint": "^6.8.0",
     "global": "^4.4.0",
     "jwt-decode": "^2.2.0",
+    "moment": "^2.26.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-bootstrap": "0.32.4",
     "react-chartist": "0.13.3",
+    "react-csv-downloader": "^1.8.0",
     "react-dom": "^16.12.0",
     "react-draft-wysiwyg": "^1.14.4",
     "react-google-maps": "9.4.5",
@@ -32,8 +34,7 @@
     "react-scripts": "^3.3.0",
     "react-toggle": "4.0.2",
     "reactjs-popup": "^1.5.0",
-    "reactstrap": "^8.4.1",
-    "react-csv-downloader": "^1.8.0"
+    "reactstrap": "^8.4.1"
   },
   "scripts": {
     "start": "sleep 2 && react-scripts start",
