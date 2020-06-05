@@ -603,7 +603,8 @@ router.get("/merchantOrderDetail/:store", async (req, res)=>{
         const newObject = {
           sku: test.sku,
           count: test.count,
-          price: item.price
+          price: item.price,
+          store: req.params.store
         }
         newArray.push(newObject)
       }
@@ -632,7 +633,7 @@ router.get("/merchantOrderDetail/:store", async (req, res)=>{
 
 // console.log(finalObj, "final");
 
-
+console.log("check data", newArray);
   res.send(newArray)
 
 })
@@ -676,6 +677,17 @@ router.get("/supplier", async (req, res) => {
     res.json(data);
   } catch (error) {
     res.json({ message: error });
+  }
+});
+
+//delete specific supplier
+router.delete("/supplierDel/:id", async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const data = await User.deleteOne({ _id: req.params.id });
+    res.json("success");
+  } catch (e) {
+    res.json({ message: error.message });
   }
 });
 
@@ -1007,6 +1019,29 @@ router.delete("/category/:id", async (req, res) => {
     res.json({ message: error.message });
   }
 });
+
+
+//category edit
+router.patch("/categoryPatch/:id", async (req, res) => {
+  try {
+    const data = await Category.findOneAndUpdate({ _id: req.params.id }, {category: req.body.catName},
+    {
+      new: true,
+      useFindAndModify: false,
+    },
+    (err, result) => {
+      if (!err) {
+        res.send("success");
+      } else {
+        console.log("error ", err);
+      }
+    });
+  } catch (e) {
+    res.json({ message: error.message });
+  }
+});
+
+
 //Add Product
 router.post("/addProduct", upload.array("productImage"), async (req, res) => {
   const files = await req.files;

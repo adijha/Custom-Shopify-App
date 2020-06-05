@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import Modal from "react-responsive-modal";
+import { NotificationManager } from 'react-notifications';
 
 
 const Category = ()=>{
@@ -11,7 +12,10 @@ const Category = ()=>{
   const [msg, setMsg] = useState('');
   const [categoryList, setCategoryList] = useState([])
   const [open, setOpen] = useState(false)
+  const [openEdit, setOpenEdit] = useState(false)
   const [itemId, setItemId] = useState("")
+  const [catName, setCatName] = useState("")
+
 
   useEffect(()=>{
     getCategory()
@@ -59,6 +63,27 @@ const getCategory = ()=>{
       setMsg("category deleted")
       setOpen(false)
       getCategory();
+    })
+  }
+
+  const editCategory = (item) =>{
+    setOpenEdit(true)
+    setCatName(item.category)
+    setItemId(item._id)
+  }
+
+  const changeCatName = () =>{
+    axios.patch('/api/categoryPatch/'+itemId, {catName})
+    .then(res=>{
+      try{
+        if (res.data.includes('success')) {
+          NotificationManager.success('updated Successfully');
+          setOpenEdit(false)
+          getCategory()
+        }
+      } catch (error) {
+        NotificationManager.error('Something unusual happened');
+      }
     })
   }
 
@@ -117,6 +142,7 @@ const getCategory = ()=>{
                     <tr key={key}>
                       <td>{item.category}</td>
                       <td>{item.created_on || 'NA'}</td>
+                      <td style={{width:"20%"}}><button className="btn btn-primary btn-sm"  onClick={()=>editCategory(item)} >Edit</button></td>
                       <td style={{width:"20%"}}><button className="btn btn-danger btn-sm"  onClick={()=>updateProduct(item)} >Delete</button></td>
                     </tr>
                   );
@@ -135,6 +161,19 @@ const getCategory = ()=>{
 <a className="btn btn-danger" onClick={()=>deleteCategory()} style={{width:"50%"}}>Yes</a>
 <a className="btn btn-primary" onClick={()=>setOpen(false)} style={{width:"50%"}}>No</a>
 </Modal>
+
+<Modal open={openEdit} onClose={()=>setOpenEdit(false)} style={{width:"200px"}}>
+<br/>
+<h3 style={{color:"blue"}}className="text-center">Edit Category:</h3>
+  <div className='form-group'>
+    <label htmlFor="fullName">Category Name</label>
+    <input type='text' name='fullName' className="form-control" value={catName} onChange={(e)=>setCatName(e.target.value)}/>
+  </div>
+  <div>
+    <button className="btn btn-info" onClick={(e)=>changeCatName()}>Update</button>
+  </div>
+</Modal>
+
         </div>
 
   )

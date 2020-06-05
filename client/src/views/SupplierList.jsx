@@ -20,6 +20,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Modal from "react-responsive-modal";
+import { NotificationManager } from 'react-notifications';
 
 
 import Card from "../components/Card/Card.jsx";
@@ -48,6 +49,9 @@ const getSupplierData =  async () =>{
   .then(res=>{
     setSuppliers(res.data)
   })
+
+
+
    //  let supplierArr = [];
    //  let finalArr = []
    //
@@ -102,7 +106,22 @@ const submitUpdateSuplier = (e)=>{
   })
 }
 
+const deleteSupplier = (item)=>{
+  let id = item.id;
+  console.log("id is delete", id);
+  axios.delete('/api/supplierDel/'+id)
+  .then(res=>{
+    try{
+    if (res.data.includes('success')) {
+      NotificationManager.success('Supplier deleted successfully');
+      getSupplierData()
 
+    }
+  } catch (error) {
+    NotificationManager.error('Something unusual happened');
+  }
+  })
+}
 
 const handleClickMe = ()=>{
 }
@@ -147,6 +166,8 @@ const updatebtn= {
                             <td>{item.order}</td>
                             <td>{item.revenue}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateSupplier(item)}>Edit</button></td>
+                            <td><button className="btn btn-danger btn-sm" onClick={()=>deleteSupplier(item)}>Delete</button></td>
+
                           </tr>
                         );
                       })}
