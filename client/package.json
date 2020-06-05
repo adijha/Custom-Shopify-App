@@ -32,7 +32,8 @@
     "react-scripts": "^3.3.0",
     "react-toggle": "4.0.2",
     "reactjs-popup": "^1.5.0",
-    "reactstrap": "^8.4.1"
+    "reactstrap": "^8.4.1",
+    "react-csv-downloader": "^1.8.0"
   },
   "scripts": {
     "start": "sleep 2 && react-scripts start",
