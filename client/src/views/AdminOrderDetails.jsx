@@ -88,7 +88,10 @@ const SupplierList = () => {
                                 'No Image Available'
                               )}
                             </td>
-                            <td onClick={() => setExpand(item.orderId)}>
+                            <td
+                              onClick={() => setExpand(item.orderId)}
+                              style={{ color: '#5B8DF7', cursor: 'pointer' }}
+                            >
                               {item.orderId}
                             </td>
                             <td>{item.merchantName}</td>
