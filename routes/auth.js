@@ -197,7 +197,7 @@ router.get('/customOrderDetails', async (req, res) => {
           total_price: tArr.total_price,
           quantity: tArr.quantity,
           store: tArr.store,
-          customer_name: tArr.customer_name,
+          customer: tArr.customer_name,
           order_date: tArr.order_date,
           shipping: tArr.shipping,
           product_price: tArr.product_price,

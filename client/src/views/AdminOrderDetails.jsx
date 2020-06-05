@@ -23,8 +23,6 @@ const SupplierList = () => {
       console.log(res.data);
     });
   };
-  const maxDate = moment().format('Y-MM-DD');
-  const minDate = moment().subtract(100, 'years').format('Y-MM-DD');
   const sortByDate = () => {
     let newOrders = [];
     console.log(startDate, endDate);
@@ -149,7 +147,7 @@ const SupplierList = () => {
                         <>
                           <tr key={key}>
                             <td>{key + 1}</td>
-                            <td style={{ width: '15%' }}>
+                            <td style={{ width: '20%' }}>
                               {item.productImage ? (
                                 <img
                                   className='product-logo'
@@ -177,7 +175,7 @@ const SupplierList = () => {
                               }}
                               style={{ color: '#5B8DF7', cursor: 'pointer' }}
                             >
-                              {item.customer_name}
+                              {item.customer.name}
                             </td>
                             <td>{item.sku}</td>
                             <td>{item.total_price}</td>
@@ -198,7 +196,15 @@ const SupplierList = () => {
                             <tr key={9898989}>
                               <td></td>
                               <td colSpan='7'>
-                                <td>Customer Name : {item.customer_name}</td>
+                                <th>Customer Details</th>
+                                <tr>Name : {item.customer.name}</tr>
+                                <tr>Email : {item.customer.email}</tr>
+                                <tr>Phone : {item.customer.phone}</tr>
+                                <tr>Address : {item.customer.address}</tr>
+                                <tr>
+                                  City : {item.customer.city}
+                                  {item.customer.zip}
+                                </tr>
                               </td>
                             </tr>
                           ) : null}
