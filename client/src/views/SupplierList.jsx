@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import CsvDownloader from 'react-csv-downloader';
 import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 import Modal from 'react-responsive-modal';
 import { NotificationManager } from 'react-notifications';
-
 import Card from '../components/Card/Card.jsx';
+import moment from 'moment';
 
 const SupplierList = () => {
   const [suppliers, setSuppliers] = useState([]);
@@ -16,7 +15,10 @@ const SupplierList = () => {
   const [status, setStatus] = useState('');
   const [tempSupplier, setTempSupplier] = useState('');
   const [open, setOpen] = useState(false);
-
+  const [startDate, setStartDate] = useState(
+    moment('01-01-2019').format('Y-MM-DD')
+  );
+  const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
   const [sRevenue, setSRevenue] = useState();
   const [sOrder, setSOrder] = useState();
   const [productCount, setProductCount] = useState();
@@ -28,32 +30,8 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/supplierFullDetails').then((res) => {
       setSuppliers(res.data);
+      console.log(res.data);
     });
-
-    //  let supplierArr = [];
-    //  let finalArr = []
-    //
-    // const supplierData = await axios.get('/api/supplier')
-    //
-    //  supplierData.data.forEach(async (item, i) => {
-    //    const productLength = await axios.get('/api/supplier/product/' + item._id)
-    //
-    //    const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
-    //
-    //    const supplierOrder = await axios.get('/supplierOrders/'+item._id)
-    //
-    //    const supplierObj =  {
-    //      id:item._id,
-    //      email:item.email,
-    //      supplier_id: item.supplier_id,
-    //      order: supplierOrder.data,
-    //      product: productLength.data.length,
-    //      revenue: supplierRevenue.data
-    //    }
-    //    supplierArr.push(supplierObj)
-    //  });
-    //
-    //  return supplierArr;
   };
 
   const updateSupplier = (item) => {
@@ -96,10 +74,23 @@ const SupplierList = () => {
     });
   };
 
-  const handleClickMe = () => {};
-
   const updatebtn = {
     width: '50%',
+  };
+  const sortByDate = () => {
+    let newOrders = [];
+    NotificationManager.error(
+      'Sorry no revenue data available, We are adding more data for this feature'
+    );
+    suppliers.forEach((supplier) => {
+      if (
+        moment(supplier.revenueDate).format('Y-MM-DD') >= startDate &&
+        moment(supplier.revenueDate).format('Y-MM-DD') <= endDate
+      ) {
+        newOrders.push(supplier);
+      }
+    });
+    setSuppliers(newOrders);
   };
   return (
     <div className='content'>
@@ -111,10 +102,60 @@ const SupplierList = () => {
           textAlign: 'right',
           alignSelf: 'right',
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           marginTop: '-20px',
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18 }}>
+          <input
+            required
+            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
+            id='date'
+            type='date'
+            required
+            placeholder='Start from'
+            autoComplete='bday-day'
+            max={new Date()}
+            min={new Date('20-02-2019')}
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            style={{ height: 45 }}
+          />
+
+          <input
+            required
+            placeholder='To date'
+            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
+            id='date'
+            type='date'
+            required
+            autoComplete='bday-day'
+            max={new Date()}
+            min={new Date('20-02-2019')}
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            style={{
+              height: 45,
+              marginLeft: '20px',
+            }}
+          />
+          <div
+            style={{
+              backgroundColor: 'grey',
+              width: '140px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 10,
+              marginLeft: '20px',
+              cursor: 'pointer',
+            }}
+            onClick={() => sortByDate()}
+          >
+            Supplier By Revenue
+          </div>
+        </div>
         <div
           style={{
             backgroundColor: 'grey',
@@ -128,7 +169,7 @@ const SupplierList = () => {
           }}
         >
           <CsvDownloader
-            filename='Supplier'
+            filename='AdminOrderDetails'
             separator=','
             wrapColumnChar="'"
             datas={suppliers}

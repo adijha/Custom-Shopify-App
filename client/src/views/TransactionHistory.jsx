@@ -11,6 +11,7 @@ const SupplierList = () => {
   const [startDate, setStartDate] = useState(
     moment('01-01-2019').format('Y-MM-DD')
   );
+  const [context, setContext] = useState('supplier');
   const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
   useEffect(() => {
     getSupplierData();
@@ -42,80 +43,62 @@ const SupplierList = () => {
           textAlign: 'right',
           alignSelf: 'right',
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           marginTop: '-20px',
+          padding: 10,
+          // backgroundColor: 'grey',
+          // maxWidth: 500,
+          // alignSelf: 'center',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18 }}>
-          <input
-            required
-            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
-            id='date'
-            type='date'
-            required
-            placeholder='Start from'
-            autoComplete='bday-day'
-            max={new Date()}
-            min={new Date('20-02-2019')}
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            style={{ height: 45 }}
-          />
-
-          <input
-            required
-            placeholder='To date'
-            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
-            id='date'
-            type='date'
-            required
-            autoComplete='bday-day'
-            max={new Date()}
-            min={new Date('20-02-2019')}
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            style={{
-              height: 45,
-              marginLeft: '20px',
-            }}
-          />
+        <div
+          style={{
+            display: 'flex',
+            alignSelf: 'center',
+            backgroundColor: 'grey',
+            // padding: 10,
+            // paddingLeft: 20,
+            // paddingRight: 20,
+            borderRadius: 20,
+            minHeight: 50,
+          }}
+        >
           <div
             style={{
-              backgroundColor: 'grey',
-              width: '140px',
-              height: '40px',
+              backgroundColor: context === 'supplier' ? 'blue' : 'grey',
+              color: context === 'supplier' ? 'white' : 'black',
+              padding: 10,
+              borderTopLeftRadius: 20,
+              borderBottomLeftRadius: 20,
+              paddingLeft: 20,
+              paddingRight: 20,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: 10,
-              marginLeft: '20px',
               cursor: 'pointer',
             }}
-            onClick={() => sortByDate()}
+            onClick={() => setContext('supplier')}
           >
-            Get Orders
+            Supplier Transaction History
           </div>
-        </div>
-        <div
-          style={{
-            backgroundColor: 'grey',
-            width: '140px',
-            height: '40px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 10,
-            marginRight: '18px',
-          }}
-        >
-          <CsvDownloader
-            filename='AdminOrderDetails'
-            separator=','
-            wrapColumnChar="'"
-            datas={orders}
+          <div
+            style={{
+              backgroundColor: context === 'merchant' ? 'blue' : 'grey',
+              color: context === 'merchant' ? 'white' : 'black',
+              padding: 10,
+              borderTopRightRadius: 20,
+              borderBottomRightRadius: 20,
+              paddingRight: 20,
+              paddingLeft: 20,
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer',
+              justifyContent: 'center',
+            }}
+            onClick={() => setContext('merchant')}
           >
-            <h5 style={{ marginTop: 15 }}>Download CSV</h5>
-          </CsvDownloader>
+            Merchant Transaction History
+          </div>
         </div>
       </div>
       <Grid fluid>

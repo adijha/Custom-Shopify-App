@@ -10,6 +10,8 @@ import MerchantAccountDetail from './views/MerchantAccountDetail.jsx';
 import SingleProductDetail from './views/SingleProductDetail.jsx';
 import AdminProfile from './views/AdminProfile.jsx';
 import AdminOrderDetails from './views/AdminOrderDetails';
+import AdminPayment from './views/AdminPayment';
+import TransactionHistory from './views/TransactionHistory';
 
 const dashboardRoutes = [
   {
@@ -21,23 +23,23 @@ const dashboardRoutes = [
   },
   {
     path: '/supplier',
-    name: 'Supplier Details',
-    icon: 'pe-7s-user',
+    name: 'Suppliers',
+    icon: 'pe-7s-users',
     component: SupplierList,
     layout: '/admin',
   },
   {
     path: '/addSupplier',
     name: 'Add Supplier',
-    icon: 'pe-7s-bell',
+    icon: 'pe-7s-add-user',
     component: Supplier,
     layout: '/admin',
   },
 
   {
     path: '/product',
-    name: 'Product List',
-    icon: 'pe-7s-bell',
+    name: 'Products',
+    icon: 'pe-7s-shopbag',
     component: AdminProduct,
     layout: '/admin',
   },
@@ -45,38 +47,52 @@ const dashboardRoutes = [
   {
     path: '/AddCategory',
     name: 'Product Category',
-    icon: 'pe-7s-bell',
+    icon: 'pe-7s-menu',
     component: Category,
     layout: '/admin',
   },
 
   {
     path: '/AutoMargin',
-    name: 'Product Auto Margins',
-    icon: 'pe-7s-bell',
+    name: 'Auto Margin',
+    icon: 'pe-7s-edit',
     component: AutoMargin,
     layout: '/admin',
   },
 
   {
     path: '/merchant-detail',
-    name: 'Merchant Accounts',
-    icon: 'pe-7s-user',
+    name: 'Merchants',
+    icon: 'pe-7s-cart',
     component: MerchantDetail,
     layout: '/admin',
   },
   {
     path: '/profile',
-    name: 'Profile Setting',
-    icon: 'pe-7s-user',
+    name: 'Setting',
+    icon: 'pe-7s-config',
     component: AdminProfile,
     layout: '/admin',
   },
   {
     path: '/orders',
-    name: 'Order Details',
-    icon: 'pe-7s-user',
+    name: 'Orders',
+    icon: 'pe-7s-display1',
     component: AdminOrderDetails,
+    layout: '/admin',
+  },
+  {
+    path: '/payments',
+    name: 'Payments',
+    icon: 'pe-7s-wallet',
+    component: AdminPayment,
+    layout: '/admin',
+  },
+  {
+    path: '/transaction',
+    name: 'Transaction History',
+    icon: 'pe-7s-cash',
+    component: TransactionHistory,
     layout: '/admin',
   },
   {
