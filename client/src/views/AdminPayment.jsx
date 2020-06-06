@@ -37,7 +37,7 @@ const SupplierList = () => {
       totalPayments: '5$',
     },
   ]);
-  const [expand, setExpand] = useState('mail@adijha.com');
+  const [expand, setExpand] = useState('');
   const [startDate, setStartDate] = useState(
     moment('01-01-2019').format('Y-MM-DD')
   );
