@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
 import Card from '../components/Card/Card.jsx';
-import CsvDownloader from 'react-csv-downloader';
 import moment from 'moment';
 const SupplierList = () => {
-  const [orders, setOrders] = useState([]);
+  const [history, setHistory] = useState([]);
   const [expand, setExpand] = useState('');
   const [expand2, setExpand2] = useState('');
   const [startDate, setStartDate] = useState(
@@ -18,22 +17,26 @@ const SupplierList = () => {
   }, []);
 
   const getSupplierData = async () => {
-    axios.get('/api/customOrderDetails').then((res) => {
-      setOrders(res.data);
-      // console.log(res.data);
+    axios.get('/api/getTransaction').then((res) => {
+      setHistory(res.data);
+      console.log(res.data);
     });
   };
-  const sortByDate = () => {
-    let newOrders = [];
-    orders.forEach((order) => {
-      if (
-        moment(order.order_date).format('Y-MM-DD') >= startDate &&
-        moment(order.order_date).format('Y-MM-DD') <= endDate
-      ) {
-        newOrders.push(order);
-      }
-    });
-    setOrders(newOrders);
+  const getMerchantData = async () => {
+    // axios.get('/api/getTransaction').then((res) => {
+    //   // setHistory(res.data);
+    //   console.log(res.data);
+    // });
+    setHistory([
+      {
+        amount_paid: 'no data',
+        date: 'no data',
+        transactionType: 'no data',
+        merchant_id: 'no data',
+        time: 'no data',
+        trans_id: 'no data',
+      },
+    ]);
   };
 
   return (
@@ -46,9 +49,6 @@ const SupplierList = () => {
           justifyContent: 'center',
           marginTop: '-20px',
           padding: 10,
-          // backgroundColor: 'grey',
-          // maxWidth: 500,
-          // alignSelf: 'center',
         }}
       >
         <div
@@ -56,9 +56,6 @@ const SupplierList = () => {
             display: 'flex',
             alignSelf: 'center',
             backgroundColor: 'grey',
-            // padding: 10,
-            // paddingLeft: 20,
-            // paddingRight: 20,
             borderRadius: 20,
             minHeight: 50,
           }}
@@ -77,7 +74,10 @@ const SupplierList = () => {
               justifyContent: 'center',
               cursor: 'pointer',
             }}
-            onClick={() => setContext('supplier')}
+            onClick={() => {
+              setContext('supplier');
+              getSupplierData();
+            }}
           >
             Supplier Transaction History
           </div>
@@ -95,7 +95,10 @@ const SupplierList = () => {
               cursor: 'pointer',
               justifyContent: 'center',
             }}
-            onClick={() => setContext('merchant')}
+            onClick={() => {
+              setContext('merchant');
+              getMerchantData();
+            }}
           >
             Merchant Transaction History
           </div>
@@ -112,85 +115,40 @@ const SupplierList = () => {
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Product Image</th>
-                      <th>Order Id</th>
-                      <th>Merchant Id</th>
-                      <th>Supplier Id</th>
-                      <th>Customer</th>
-                      <th>SKU</th>
-                      <th>Total</th>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>
+                        {context === 'supplier'
+                          ? 'Payment Method'
+                          : 'Transaction Type'}
+                      </th>
+                      <th>Amount</th>
+                      <th>Transaction Id</th>
+                      <th>
+                        {context === 'supplier' ? 'Supplier Id' : 'Merchant Id'}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((item, key) => {
+                    {history.map((item, key) => {
                       return (
-                        <>
-                          <tr key={key}>
-                            <td>{key + 1}</td>
-                            <td style={{ width: '20%' }}>
-                              {item.productImage ? (
-                                <img
-                                  className='product-logo'
-                                  src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
-                                />
-                              ) : (
-                                'No Image Available'
-                              )}
-                            </td>
-                            <td
-                              onClick={() => {
-                                setExpand(item.orderId);
-                                setExpand2('');
-                              }}
-                              style={{ color: '#5B8DF7', cursor: 'pointer' }}
-                            >
-                              {item.orderId}
-                            </td>
-                            <td>{item.merchantName}</td>
-                            <td>{item.supplier_id}</td>
-                            <td
-                              onClick={() => {
-                                setExpand2(item.orderId);
-                                setExpand('');
-                              }}
-                              style={{ color: '#5B8DF7', cursor: 'pointer' }}
-                            >
-                              {item.customer_name.name}
-                            </td>
-                            <td>{item.sku}</td>
-                            <td>${item.total_price}</td>
-                          </tr>
-
-                          {expand === item.orderId ? (
-                            <tr key={9898989}>
-                              <td></td>
-                              <td colSpan='3'>
-                                <td>Product Price : {item.product_price}</td>
-                              </td>
-                              <td colSpan='3'>
-                                <td>
-                                  Shipping Price: {item.shipping_price || 'NA'}
-                                </td>
-                              </td>
-                            </tr>
-                          ) : null}
-                          {expand2 === item.orderId ? (
-                            <tr key={9898989}>
-                              <td></td>
-                              <td colSpan='7'>
-                                <th>Customer Details</th>
-                                <tr>Name : {item.customer_name.name}</tr>
-                                <tr>Email : {item.customer_name.email}</tr>
-                                <tr>Phone : {item.customer_name.phone}</tr>
-                                <tr>Address : {item.customer_name.address}</tr>
-                                <tr>
-                                  City : {item.customer_name.city}
-                                  {item.customer_name.zip}
-                                </tr>
-                              </td>
-                            </tr>
-                          ) : null}
-                        </>
+                        <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td style={{ width: '20%' }}>{item.date}</td>
+                          <td>{item.time}</td>
+                          <td>
+                            {context === 'supplier'
+                              ? item.pmethod
+                              : item.transactionType}
+                          </td>
+                          <td>{item.amount_paid}</td>
+                          <td>{item.trans_id}</td>
+                          <td>
+                            {context === 'supplier'
+                              ? item.supplier_id
+                              : item.merchant_id}
+                          </td>
+                        </tr>
                       );
                     })}
                   </tbody>
