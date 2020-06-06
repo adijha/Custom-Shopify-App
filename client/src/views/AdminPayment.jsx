@@ -3,6 +3,8 @@ import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
 import Card from '../components/Card/Card.jsx';
 import CsvDownloader from 'react-csv-downloader';
+import { NotificationManager } from 'react-notifications';
+
 import moment from 'moment';
 const SupplierList = () => {
   const [payments, setPayments] = useState([]);
@@ -14,9 +16,12 @@ const SupplierList = () => {
   const [amount, setAmount] = useState('');
   const [method, setMethod] = useState('');
   const [id, setId] = useState('');
+  const [transData, setTransdata] = useState([])
+
 
   useEffect(() => {
      getPaymentsData();
+     getTransactionDetail()
   }, []);
 
   const getPaymentsData = async () => {
@@ -37,9 +42,35 @@ const SupplierList = () => {
     });
     setPayments(newOrders);
   };
-  const markAsPaid = async () => {
-    console.log(amount, id, method);
+
+
+  const markAsPaid = async (item) => {
+    let d = moment().format('DD-MM-YY')
+    let t = moment().format('h:mm:ss')
+    let obj={
+      supplier_id: item.id,
+      trans_id: id,
+      pmethod:method,
+      amount_paid:amount,
+      date:d,
+      time:t
+    }
+    axios.post('/api/transactionDetail', obj)
+    .then(res=>{
+      try{
+      if (res.data.includes('success')) {
+        NotificationManager.success('Transaction Updated Successfully');
+      }
+    } catch (error) {
+      NotificationManager.error('Something unusual happened');
+    }
+    })
   };
+
+
+  const getTransactionDetail =async ()=>{
+
+  }
 
   return (
     <div className='content'>
@@ -156,13 +187,13 @@ const SupplierList = () => {
                             }}
                           >
                             <td>{key + 1}</td>
-                            <td style={{ width: '20%' }}>{item.name}</td>
+                            <td style={{ width: '20%' }}>{item.name||'NA'}</td>
                             <td>{item.email}</td>
                             <td>{item.revenue}</td>
                             <td>{item.lastWeek||0}</td>
-                            <td>{item.totalAmountPaid || 0}</td>
-                            <td>{item.revenue-(item.totalAmountPaid||0)}</td>
-                            <td>${item.totalPayments || item.totalAmountPaid||0}</td>
+                            <td>{item.amount || 0}</td>
+                            <td>{item.revenue-item.amount}</td>
+                            <td>${item.amount}</td>
                           </tr>
 
                           {expand === item.email ? (
@@ -210,8 +241,8 @@ const SupplierList = () => {
                                         setMethod(e.target.value)
                                       }
                                     >
-                                      <option value='paypal'>Paypal</option>
-                                      <option value='transferwise'>
+                                      <option value='paypal' onChange={(e)=>setMethod(e.target.value)}>Paypal</option>
+                                      <option value='transferwise' onChange={(e)=>setMethod(e.target.value)}>
                                         Transferwise
                                       </option>
                                     </select>
@@ -254,7 +285,7 @@ const SupplierList = () => {
                                       marginLeft: '20px',
                                       cursor: 'pointer',
                                     }}
-                                    onClick={() => markAsPaid()}
+                                    onClick={() => markAsPaid(item)}
                                   >
                                     <h5
                                       style={{ marginTop: 15, color: 'white' }}

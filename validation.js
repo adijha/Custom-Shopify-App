@@ -22,6 +22,8 @@ const userValidation = (data) =>{
 		westernId:Joi.string(),
 		sortCode:Joi.string(),
 		profileId:Joi.string(),
+		trans_id:Joi.string(),
+		amount_paid:Joi.number(),
 		
 	});
 

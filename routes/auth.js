@@ -15,6 +15,7 @@ const csv = require('csvtojson');
 const request = require('request-promise');
 const Orders = require('../model/Orders');
 const PaymentMode = require('../model/PaymentMode');
+const Transaction = require('../model/Transaction');
 const axios = require('axios');
 var nodemailer = require('nodemailer');
 const { google } = require('googleapis');
@@ -113,6 +114,40 @@ router.post('/adminLogin', async (req, res) => {
   const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
   res.send(token);
 });
+
+//tranaction detail saved
+router.post('/transactionDetail',async (req, res)=>{
+
+  const tranaction = await new Transaction({
+    supplier_id: req.body.supplier_id,
+    trans_id: req.body.trans_id,
+    amount_paid: req.body.amount_paid,
+    pmethod: req.body.pmethod,
+    date: req.body.date,
+    time: req.body.time
+  });
+  try{
+    const saveTransaction = await tranaction.save();
+    console.log(saveTransaction);
+    res.send('success')
+  }
+  catch(error){
+    console.log("transaction", error);
+  }
+})
+
+
+//get Transaction Details
+
+router.get('/getTransaction', async (req, res)=>{
+  try {
+    let data = await Transaction.find()
+    res.send(data)
+  } catch (e) {
+      console.log("get tranaction", e);
+  }
+})
+
 
 
 //order Details section in admin
@@ -713,7 +748,9 @@ var bar = new Promise(async (resolve, reject) => {
 
   return resolve(supplierArr);
 });
-
+bar.then(data=>{
+  console.log("bar", data);
+});
 //get supplier with revenue
 router.get('/supplierFullDetails', async (req, res) => {
   const supplierData = await User.find();
@@ -767,11 +804,72 @@ router.get('/supplier/:id', async (req, res) => {
 //supplier payment via admin
 router.get('/adminPaymentSupplier', async (req, res)=>{
 
-
 let data = await bar
   let result = await data
-  console.log("result ", result);
-  res.send(result)
+  let transData = await Transaction.find()
+  let firstArr=[]
+  transData.forEach((item, i) => {
+    firstArr.push({
+      supplier_id: item.supplier_id,
+      amount: item.amount_paid
+    })
+  });
+
+  var holder = {};
+  firstArr.forEach(function (d) {
+    if (holder.hasOwnProperty(d.supplier_id)) {
+      holder[d.supplier_id] = holder[d.supplier_id] + d.amount;
+    } else {
+      holder[d.supplier_id] = d.amount;
+    }
+  });
+
+  var obj2 = [];
+  for (var prop in holder) {
+    obj2.push({ supplier_id: prop, amount: holder[prop] });
+  }
+
+let resultArray = await result
+
+let resArray = []
+obj2.forEach((trans, z) => {
+
+resultArray.forEach((res, y) => {
+    console.log("transData", trans);
+
+  let newobj = {}
+
+  if (trans.supplier_id===res.id.toString()) {
+     resArray.push({
+      id: trans.supplier_id,
+      name: res.name,
+      email: res.email,
+      revenue: res.revenue,
+      amount: trans.amount
+    })
+
+  }
+  else {
+        resArray.push({
+      id: res.id,
+      supplier_id: res.supplier_id,
+      name: res.name,
+      email: res.email,
+      revenue: res.revenue,
+      amount:0
+    })
+  }
+
+
+});
+
+});
+console.log("resArray ", resArray);
+
+
+
+
+  res.send(resArray)
 
 })
 
