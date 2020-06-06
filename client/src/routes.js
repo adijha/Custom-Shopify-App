@@ -21,7 +21,7 @@ const dashboardRoutes = [
   },
   {
     path: '/supplier',
-    name: 'Supplier Details',
+    name: 'Suppliers',
     icon: 'pe-7s-users',
     component: SupplierList,
     layout: '/admin',
@@ -36,7 +36,7 @@ const dashboardRoutes = [
 
   {
     path: '/product',
-    name: 'Product List',
+    name: 'Products',
     icon: 'pe-7s-shopbag',
     component: AdminProduct,
     layout: '/admin',
@@ -52,7 +52,7 @@ const dashboardRoutes = [
 
   {
     path: '/AutoMargin',
-    name: 'Auto Margins',
+    name: 'Auto Margin',
     icon: 'pe-7s-edit',
     component: AutoMargin,
     layout: '/admin',
@@ -60,21 +60,21 @@ const dashboardRoutes = [
 
   {
     path: '/merchant-detail',
-    name: 'Merchant Accounts',
+    name: 'Merchants',
     icon: 'pe-7s-cart',
     component: MerchantDetail,
     layout: '/admin',
   },
   {
     path: '/profile',
-    name: 'Profile Setting',
+    name: 'Setting',
     icon: 'pe-7s-config',
     component: AdminProfile,
     layout: '/admin',
   },
   {
     path: '/orders',
-    name: 'Order Details',
+    name: 'Orders',
     icon: 'pe-7s-display1',
     component: AdminOrderDetails,
     layout: '/admin',

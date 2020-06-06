@@ -5,7 +5,6 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import Modal from 'react-responsive-modal';
 import { NotificationManager } from 'react-notifications';
-
 import Card from '../components/Card/Card.jsx';
 
 const SupplierList = () => {
