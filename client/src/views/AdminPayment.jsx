@@ -37,11 +37,15 @@ const SupplierList = () => {
       totalPayments: '5$',
     },
   ]);
-  const [expand, setExpand] = useState('');
+  const [expand, setExpand] = useState('mail@adijha.com');
   const [startDate, setStartDate] = useState(
     moment('01-01-2019').format('Y-MM-DD')
   );
   const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
+  const [amount, setAmount] = useState('');
+  const [method, setMethod] = useState('');
+  const [id, setId] = useState('');
+
   useEffect(() => {
     // getPaymentsData();
   }, []);
@@ -63,6 +67,9 @@ const SupplierList = () => {
       }
     });
     setPayments(newOrders);
+  };
+  const markAsPaid = async () => {
+    console.log(amount, id, method);
   };
 
   return (
@@ -123,7 +130,7 @@ const SupplierList = () => {
             }}
             onClick={() => sortByDate()}
           >
-            Show Payments
+            <h5 style={{ marginTop: 15, color: 'white' }}>Show Payments</h5>
           </div>
         </div>
         <div
@@ -144,7 +151,7 @@ const SupplierList = () => {
             wrapColumnChar="'"
             datas={payments}
           >
-            <h5 style={{ marginTop: 15 }}>Download CSV</h5>
+            <h5 style={{ marginTop: 15, color: 'white' }}>Download CSV</h5>
           </CsvDownloader>
         </div>
       </div>
@@ -190,17 +197,106 @@ const SupplierList = () => {
                           </tr>
 
                           {expand === item.email ? (
-                            <tr key={9898989}>
-                              <td></td>
-                              <td colSpan='3'>
-                                <td>Product Price : {item.product_price}</td>
-                              </td>
-                              <td colSpan='3'>
-                                <td>
-                                  Shipping Price: {item.shipping_price || 'NA'}
+                            <>
+                              <tr key={9898989}>
+                                <td></td>
+                                <td colSpan='2' style={{ textAlign: 'left' }}>
+                                  <div>
+                                    Amount :
+                                    <input
+                                      required
+                                      placeholder='in dollar'
+                                      className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
+                                      type='text'
+                                      required
+                                      value={amount}
+                                      onChange={(e) =>
+                                        setAmount(e.target.value)
+                                      }
+                                      style={{
+                                        height: 45,
+                                        marginLeft: '20px',
+                                        width: 100,
+                                      }}
+                                    />
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      marginTop: 20,
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <p>Payments Method :</p>
+                                    <select
+                                      style={{
+                                        marginLeft: 13,
+                                        height: 45,
+                                        color: 'grey',
+                                        borderColor: '#999999',
+                                      }}
+                                      name='payments'
+                                      id='payments'
+                                      onChange={(e) =>
+                                        setMethod(e.target.value)
+                                      }
+                                    >
+                                      <option value='paypal'>Paypal</option>
+                                      <option value='transferwise'>
+                                        Transferwise
+                                      </option>
+                                    </select>
+                                  </div>
+                                  <div
+                                    style={{
+                                      display: 'flex',
+                                      marginTop: 20,
+                                      alignItems: 'center',
+                                    }}
+                                  >
+                                    <p>Transaction Id :</p>
+                                    <input
+                                      required
+                                      className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
+                                      id='date'
+                                      type='text'
+                                      required
+                                      value={id}
+                                      onChange={(e) => setId(e.target.value)}
+                                      style={{
+                                        height: 45,
+                                        marginLeft: '20px',
+                                        width: 100,
+                                      }}
+                                    />
+                                  </div>
                                 </td>
-                              </td>
-                            </tr>
+
+                                <td colSpan='2'>
+                                  <div
+                                    style={{
+                                      backgroundColor: 'grey',
+                                      width: '140px',
+                                      height: '40px',
+                                      display: 'flex',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      borderRadius: 10,
+                                      marginLeft: '20px',
+                                      cursor: 'pointer',
+                                    }}
+                                    onClick={() => markAsPaid()}
+                                  >
+                                    <h5
+                                      style={{ marginTop: 15, color: 'white' }}
+                                    >
+                                      Mark as Paid
+                                    </h5>
+                                  </div>
+                                </td>
+                                <td colSpan='3'></td>
+                              </tr>
+                            </>
                           ) : null}
                         </>
                       );
