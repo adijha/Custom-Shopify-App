@@ -16,10 +16,11 @@ const Category = () => {
   const [openEdit, setOpenEdit] = useState(false)
   const [itemId, setItemId] = useState("")
   const [catName, setCatName] = useState("")
-
+  const [analytiicPart, setAnalyticPart] = useState([])
 
   useEffect(()=>{
     getCategory()
+    getAnalytic()
   }, [])
 
 //get Category
@@ -32,6 +33,14 @@ const getCategory = ()=>{
   })
 }
 
+
+//get analytic category
+const getAnalytic = () =>{
+  axios.get('/api/categoryProductDetail')
+  .then (data=>{
+    setAnalyticPart(data.data)
+  })
+}
 
 //add category
   const addCategory = (e)=>{
@@ -188,6 +197,47 @@ const getCategory = ()=>{
           </Row>
         </Grid>
       </div>
+
+      {/*Analytic Part*/}
+      <div className='content'>
+        <Grid fluid>
+          <Row>
+            <Col md={12}>
+              <Card
+                title='Category Analytic'
+                ctTableFullWidth
+                ctTableResponsive
+                content={
+                  <Table striped hover>
+                    <thead>
+                      <tr>
+                        <th>Category</th>
+                        <th>Total No. of Products</th>
+                        <th>Total No. of Orders</th>
+                        <th>Total Revenue</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {analytiicPart.map((item, key) => {
+                        return (
+                          <tr key={key}>
+                            <td>{item.category}</td>
+                            <td>{item.count||'NA'}</td>
+                            <td>{item.order || 'NA'}</td>
+                            <td>{item.revenue || 'NA'}</td>
+
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                }
+              />
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+
       <Modal open={open} onClose={() => setOpen(false)}>
         <h4>Are you sure, you want to delete</h4>
         <a

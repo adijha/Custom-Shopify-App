@@ -1022,7 +1022,7 @@ router.get('/customProductDetail', async (req, res)=>{
       });
     });
 
-  
+
     res.send(finalArray)
 })
 
@@ -1133,6 +1133,162 @@ router.patch("/categoryPatch/:id", async (req, res) => {
     res.json({ message: error.message });
   }
 });
+
+//category analytic in section
+router.get('/categoryProductDetail', async (req, res)=>{
+
+  const orderData = await Orders.find({})
+
+  let priceArr = []
+  let quanArr = []
+  let secondArray = []
+  let thirdArray = []
+  let fourthArray = []
+
+  orderData.forEach((item, i) => {
+      item.products.forEach((data, j) => {
+        priceArr.push({
+          sku: data.sku,
+          price: parseInt(data.price)
+        })
+        quanArr.push({
+          sku: data.sku,
+          quantity: parseInt(data.quantity)
+        })
+      });
+  });
+
+  const productData = await Products.find()
+
+  const categoryData = await Category.find()
+
+
+  priceArr.forEach((pri, i) => {
+    productData.forEach((pro, i) => {
+      if (pri.sku===pro.code) {
+        secondArray.push({
+          category: pro.category,
+          price: pri.price
+        })
+
+      }
+    });
+
+  });
+
+  quanArr.forEach((quan, i) => {
+    productData.forEach((pro, i) => {
+      if (quan.sku===pro.code) {
+        thirdArray.push({
+          category: pro.category,
+          quantity: quan.quantity
+        })
+      }
+    });
+
+  });
+
+
+  var holder = {};
+
+  secondArray.forEach(function (d) {
+    if (holder.hasOwnProperty(d.category)) {
+      holder[d.category] = holder[d.category] + d.price;
+    } else {
+      holder[d.category] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ category: prop, price: holder[prop] });
+  }
+
+
+
+  var holder1 = {};
+
+  thirdArray.forEach(function (d) {
+    if (holder1.hasOwnProperty(d.category)) {
+      holder1[d.category] = holder1[d.category] + d.quantity;
+    } else {
+      holder1[d.category] = d.quantity;
+    }
+  });
+
+  var obj3 = [];
+
+  for (var prop in holder1) {
+    obj3.push({ category: prop, quantity: holder1[prop] });
+  }
+
+  let skuArr = []
+  obj2.forEach((priceObj, j) => {
+    obj3.forEach((quanObj, k) => {
+      if (priceObj.category===quanObj.category) {
+        skuArr.push({
+          category: priceObj.category,
+          revenue: priceObj.price,
+          order: quanObj.quantity
+        })
+      }
+    });
+  });
+
+
+  categoryData.forEach((cat, i) => {
+    productData.forEach((pro, i) => {
+      if (cat.category===pro.category) {
+        fourthArray.push({
+          category: cat.category,
+          count:1
+        })
+      }
+    });
+
+  });
+
+  var holder2 = {};
+
+  fourthArray.forEach(function (d) {
+    if (holder2.hasOwnProperty(d.category)) {
+      holder2[d.category] = holder2[d.category] + d.count;
+    } else {
+      holder2[d.category] = d.count;
+    }
+  });
+
+  var obj4 = [];
+
+  for (var prop in holder2) {
+    obj4.push({ category: prop, count: holder2[prop] });
+  }
+
+console.log("fourthArray", fourthArray);
+
+let doneArray = []
+
+skuArr.forEach((sArr, i) => {
+  obj4.forEach((obj, i) => {
+    if (sArr.category===obj.category) {
+      doneArray.push({
+        category: sArr.category,
+        revenue: sArr.revenue,
+        order: sArr.order,
+        count: obj.count
+      })
+    }
+  });
+
+});
+
+console.log("doneArray", doneArray);
+res.send(doneArray)
+
+
+})
+
 
 
 //Add Product
