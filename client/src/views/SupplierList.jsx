@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import CsvDownloader from 'react-csv-downloader';
 import { Grid, Row, Col, Table } from 'react-bootstrap';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 import Modal from 'react-responsive-modal';
 import { NotificationManager } from 'react-notifications';
 import Card from '../components/Card/Card.jsx';
@@ -28,31 +27,6 @@ const SupplierList = () => {
     axios.get('/api/supplierFullDetails').then((res) => {
       setSuppliers(res.data);
     });
-
-    //  let supplierArr = [];
-    //  let finalArr = []
-    //
-    // const supplierData = await axios.get('/api/supplier')
-    //
-    //  supplierData.data.forEach(async (item, i) => {
-    //    const productLength = await axios.get('/api/supplier/product/' + item._id)
-    //
-    //    const supplierRevenue = await axios.get('/supplierRevenue/'+item._id);
-    //
-    //    const supplierOrder = await axios.get('/supplierOrders/'+item._id)
-    //
-    //    const supplierObj =  {
-    //      id:item._id,
-    //      email:item.email,
-    //      supplier_id: item.supplier_id,
-    //      order: supplierOrder.data,
-    //      product: productLength.data.length,
-    //      revenue: supplierRevenue.data
-    //    }
-    //    supplierArr.push(supplierObj)
-    //  });
-    //
-    //  return supplierArr;
   };
 
   const updateSupplier = (item) => {
