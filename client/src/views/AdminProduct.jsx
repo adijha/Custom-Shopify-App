@@ -60,7 +60,7 @@ useEffect(()=>{
 
 const getProductData = () =>{
     axios
-    .get('/api/product')
+    .get('/api/customProductDetail')
     .then(data=>{
       console.log("get api of product list", data);
       setProductItems(data.data);
@@ -267,13 +267,14 @@ const getSupplierDetail = async (id) =>{
                   <Table striped hover >
                     <thead >
                       <tr>
-                        <th>#</th>
+                        <th>image</th>
                         <th>Supplier Id</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Selling Price</th>
+                        <th>Total No. Of Orders</th>
+                        <th>Total Revenue</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -290,13 +291,21 @@ const getSupplierDetail = async (id) =>{
                               }
                             }}>
                         {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
-                          <td></td>
+                          <td>{item.productImage ? (
+                            <img
+                              className='product-logo'
+                              src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                            />
+                          ) : (
+                            'No Image Available'
+                          )}</td>
                           <td>{item.supplier_id}</td>
                             <td><a href={'/admin/single-product/'+item._id}>{item.name}</a></td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td>{item.selliingPrice || 'NA'}</td>
+                            <td>{item.order}</td>
+                            <td>{item.revenue}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>

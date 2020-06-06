@@ -924,6 +924,108 @@ router.get('/product', async (req, res) => {
   }
 });
 
+router.get('/customProductDetail', async (req, res)=>{
+
+
+  const productData = await Products.find()
+  const orderData = await Orders.find()
+
+  let priceArr = []
+  let quanArr = []
+
+  orderData.forEach((item, i) => {
+      item.products.forEach((data, j) => {
+        priceArr.push({
+          sku: data.sku,
+          price: parseInt(data.price)
+        })
+        quanArr.push({
+          sku: data.sku,
+          quantity: parseInt(data.quantity)
+        })
+      });
+  });
+
+
+
+  var holder = {};
+
+  priceArr.forEach(function (d) {
+    if (holder.hasOwnProperty(d.sku)) {
+      holder[d.sku] = holder[d.sku] + d.price;
+    } else {
+      holder[d.sku] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ sku: prop, price: holder[prop] });
+  }
+
+
+  var holder1 = {};
+
+  quanArr.forEach(function (d) {
+    if (holder1.hasOwnProperty(d.sku)) {
+      holder1[d.sku] = holder1[d.sku] + d.quantity;
+    } else {
+      holder1[d.sku] = d.quantity;
+    }
+  });
+
+  var obj3 = [];
+
+  for (var prop in holder1) {
+    obj3.push({ sku: prop, quantity: holder1[prop] });
+  }
+
+  let skuArr = []
+  obj2.forEach((priceObj, j) => {
+    obj3.forEach((quanObj, k) => {
+      if (priceObj.sku===quanObj.sku) {
+        skuArr.push({
+          sku: priceObj.sku,
+          revenue: priceObj.price,
+          order: quanObj.quantity
+        })
+      }
+    });
+  });
+
+  let finalArray = []
+  let dupArray = []
+    productData.forEach((product, x) => {
+      skuArr.forEach((final, y) => {
+
+        let addObj = {
+          _id: product._id,
+          supplier_id: product.supplier_id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          warranty: product.warranty,
+          description:product.description,
+          weight:product.weight,
+          productImage:product.productImage,
+          code: product.code, //sku as code
+          revenue: final.revenue,
+          order: final.order
+        }
+
+        if (product.code === final.sku) {
+          finalArray.push(addObj)
+        }
+
+
+      });
+    });
+
+  
+    res.send(finalArray)
+})
+
 //add margin
 router.post('/addMargin', async (req, res) => {
   const margin = new Margin({
