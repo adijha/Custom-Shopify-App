@@ -4,7 +4,6 @@ import axios from 'axios';
 import Card from '../components/Card/Card.jsx';
 import CsvDownloader from 'react-csv-downloader';
 import moment from 'moment';
-
 const SupplierList = () => {
   const [orders, setOrders] = useState([]);
   const [expand, setExpand] = useState('');
@@ -184,12 +183,11 @@ const SupplierList = () => {
                               <td></td>
                               <td colSpan='3'>
                                 <td>Product Price : {item.product_price}</td>
-
                               </td>
                               <td colSpan='3'>
-
-                                <td>Shipping Price: {item.shipping_price || 'NA'}</td>
-
+                                <td>
+                                  Shipping Price: {item.shipping_price || 'NA'}
+                                </td>
                               </td>
                             </tr>
                           ) : null}
