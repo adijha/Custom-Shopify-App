@@ -82,12 +82,12 @@ const SupplierList = () => {
     NotificationManager.error(
       'Sorry no revenue data available, We are adding more data for this feature'
     );
-    suppliers.forEach((order) => {
+    suppliers.forEach((supplier) => {
       if (
-        moment(order.order_date).format('Y-MM-DD') >= startDate &&
-        moment(order.order_date).format('Y-MM-DD') <= endDate
+        moment(supplier.revenueDate).format('Y-MM-DD') >= startDate &&
+        moment(supplier.revenueDate).format('Y-MM-DD') <= endDate
       ) {
-        newOrders.push(order);
+        newOrders.push(supplier);
       }
     });
     setSuppliers(newOrders);
