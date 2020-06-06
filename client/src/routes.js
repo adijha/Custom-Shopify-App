@@ -10,6 +10,7 @@ import MerchantAccountDetail from './views/MerchantAccountDetail.jsx';
 import SingleProductDetail from './views/SingleProductDetail.jsx';
 import AdminProfile from './views/AdminProfile.jsx';
 import AdminOrderDetails from './views/AdminOrderDetails';
+import AdminPayment from './views/AdminPayment';
 
 const dashboardRoutes = [
   {
@@ -77,6 +78,13 @@ const dashboardRoutes = [
     name: 'Orders',
     icon: 'pe-7s-display1',
     component: AdminOrderDetails,
+    layout: '/admin',
+  },
+  {
+    path: '/payments',
+    name: 'Payments',
+    icon: 'pe-7s-wallet',
+    component: AdminPayment,
     layout: '/admin',
   },
   {
