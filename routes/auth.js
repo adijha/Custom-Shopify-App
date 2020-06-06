@@ -764,6 +764,17 @@ router.get('/supplier/:id', async (req, res) => {
   }
 });
 
+//supplier payment via admin
+router.get('/adminPaymentSupplier', async (req, res)=>{
+
+
+let data = await bar
+  let result = await data
+  console.log("result ", result);
+  res.send(result)
+
+})
+
 //update Supplier
 router.patch('/update', async (req, res) => {
   //hash the password

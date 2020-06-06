@@ -5,38 +5,7 @@ import Card from '../components/Card/Card.jsx';
 import CsvDownloader from 'react-csv-downloader';
 import moment from 'moment';
 const SupplierList = () => {
-  const [payments, setPayments] = useState([
-    {
-      id: 1,
-      name: 'Aditya Jha',
-      email: 'mail@adijha.com',
-      revenue: '160$',
-      lastWeek: '130$',
-      totalAmountPaid: '10$',
-      totalDue: '20$',
-      totalPayments: '50$',
-    },
-    {
-      id: 2,
-      name: 'Adi Jha',
-      email: 'mal@adijha.com',
-      revenue: '60$',
-      lastWeek: '10$',
-      totalAmountPaid: '9$',
-      totalDue: '12$',
-      totalPayments: '15$',
-    },
-    {
-      id: 1,
-      name: 'Atya Jha',
-      email: 'mail@adia.com',
-      revenue: '10$',
-      lastWeek: '30$',
-      totalAmountPaid: '0$',
-      totalDue: '2$',
-      totalPayments: '5$',
-    },
-  ]);
+  const [payments, setPayments] = useState([]);
   const [expand, setExpand] = useState('');
   const [startDate, setStartDate] = useState(
     moment('01-01-2019').format('Y-MM-DD')
@@ -47,11 +16,11 @@ const SupplierList = () => {
   const [id, setId] = useState('');
 
   useEffect(() => {
-    // getPaymentsData();
+     getPaymentsData();
   }, []);
 
   const getPaymentsData = async () => {
-    axios.get('/api/customOrderDetails').then((res) => {
+    axios.get('/api/adminPaymentSupplier').then((res) => {
       setPayments(res.data);
       // console.log(res.data);
     });
@@ -190,10 +159,10 @@ const SupplierList = () => {
                             <td style={{ width: '20%' }}>{item.name}</td>
                             <td>{item.email}</td>
                             <td>{item.revenue}</td>
-                            <td>{item.lastWeek}</td>
-                            <td>{item.totalAmountPaid}</td>
-                            <td>{item.totalDue}</td>
-                            <td>${item.totalPayments}</td>
+                            <td>{item.lastWeek||0}</td>
+                            <td>{item.totalAmountPaid || 0}</td>
+                            <td>{item.revenue-(item.totalAmountPaid||0)}</td>
+                            <td>${item.totalPayments || item.totalAmountPaid||0}</td>
                           </tr>
 
                           {expand === item.email ? (
