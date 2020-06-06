@@ -11,6 +11,7 @@ import SingleProductDetail from './views/SingleProductDetail.jsx';
 import AdminProfile from './views/AdminProfile.jsx';
 import AdminOrderDetails from './views/AdminOrderDetails';
 import AdminPayment from './views/AdminPayment';
+import TransactionHistory from './views/TransactionHistory';
 
 const dashboardRoutes = [
   {
@@ -85,6 +86,13 @@ const dashboardRoutes = [
     name: 'Payments',
     icon: 'pe-7s-wallet',
     component: AdminPayment,
+    layout: '/admin',
+  },
+  {
+    path: '/transaction',
+    name: 'Transaction History',
+    icon: 'pe-7s-cash',
+    component: TransactionHistory,
     layout: '/admin',
   },
   {
