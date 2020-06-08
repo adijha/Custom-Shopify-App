@@ -5,13 +5,7 @@ import Card from '../components/Card/Card.jsx';
 import moment from 'moment';
 const SupplierList = () => {
   const [history, setHistory] = useState([]);
-  const [expand, setExpand] = useState('');
-  const [expand2, setExpand2] = useState('');
-  const [startDate, setStartDate] = useState(
-    moment('01-01-2019').format('Y-MM-DD')
-  );
   const [context, setContext] = useState('supplier');
-  const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
   useEffect(() => {
     getSupplierData();
   }, []);
