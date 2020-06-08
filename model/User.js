@@ -15,7 +15,6 @@ const userScheme = new mongoose.Schema({
 	},
 	category: {
 		type: String,
-		require: true,
 		default: "supplier"
 	},
 	name: {
@@ -29,6 +28,9 @@ const userScheme = new mongoose.Schema({
 	},
 	phoneNo:{
 		type: Number
+	},
+	pInfo:{
+		type:Array
 	}
 });
 

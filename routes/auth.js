@@ -225,6 +225,7 @@ router.get('/customOrderDetails', async (req, res)=>{
 
         })
       }
+
     });
   });
 
@@ -383,33 +384,110 @@ router.get('/customMerchantDetail', async (req, res) => {
           };
 
           detail.push(obj);
-          sName.push(item.store);
         }
+        sName.push(item.store);
+
       });
     });
   });
   sName = [...new Set(sName)];
   console.log({ sName });
+  //
+  // sName.forEach((sn, m) => {
+  //   detail.forEach((det, n) => {
+  //     if (sn === det.store) {
+  //       countItem += det.count;
+  //       countPrice += det.price;
+  //     } else {
+  //       countItem = 0;
+  //       countPrice = 0;
+  //     }
+  //     const finalObj = {
+  //       store: sn,
+  //       price: countPrice,
+  //       count: countItem,
+  //     };
+  //
+  //     finalArrU.push(finalObj);
+  //   });
+  //
+  // });
 
-  sName.forEach((sn, m) => {
-    detail.forEach((det, n) => {
-      if (sn === det.store) {
-        countItem += det.count;
-        countPrice += det.price;
-      } else {
-        countItem = 0;
-        countPrice = 0;
-      }
-    });
-    const finalObj = {
-      store: sn,
-      price: countPrice,
-      count: countItem,
-    };
 
-    finalArrU.push(finalObj);
+  var holder = {};
+
+  detail.forEach(function (d) {
+    if (holder.hasOwnProperty(d.store)) {
+      holder[d.store] = holder[d.store] + d.price;
+    } else {
+      holder[d.store] = d.price;
+    }
   });
 
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ store: prop, price: holder[prop] });
+  }
+
+  var holder1 = {};
+
+  detail.forEach(function (d) {
+    if (holder1.hasOwnProperty(d.store)) {
+      holder1[d.store] = holder1[d.store] + d.count;
+    } else {
+      holder1[d.store] = d.count;
+    }
+  });
+
+  var obj3 = [];
+
+  for (var prop in holder1) {
+    obj3.push({ store: prop, count: holder1[prop] });
+  }
+  console.log({obj2});
+  console.log({obj3});
+
+let randomArray = []
+  obj2.forEach((priceObj, i) => {
+    obj3.forEach((countObj, j) => {
+      if (countObj.store=== priceObj.store) {
+        randomArray.push({
+          store: priceObj.store,
+          price: priceObj.price,
+          count: countObj.count,
+        })
+      }
+
+    });
+  });
+console.log("randomArray", randomArray);
+sName.forEach((name, i) => {
+  let obj={};
+  randomArray.forEach((item, i) => {
+
+    if (name === item.store) {
+      obj={
+        store: item.store,
+        price: item.price,
+        count: item.count
+      }
+    }
+    else{
+      obj={
+        store: name,
+        price:0,
+        count:0
+      }
+    }
+
+  });
+finalArrU.push(obj)
+
+});
+
+
+  console.log("finalArrU", finalArrU);
   data.forEach((delta, x) => {
     finalArrU.forEach((final, Y) => {
       if (delta.store === final.store) {
@@ -426,7 +504,24 @@ router.get('/customMerchantDetail', async (req, res) => {
         };
         mDetail.push(newObject);
       }
+
     });
+    // finalArrU.forEach((final, y)=>{
+    //   if (delta.store !== final.store) {
+    //     mDetail.push({
+    //       id: delta._id,
+    //       email: delta.email,
+    //       firstName: delta.firstName,
+    //       lastName: delta.lastName,
+    //       phone: delta.phoneNo,
+    //       joiningDate: delta.joiningDate,
+    //       store: delta.store,
+    //       price: 0,
+    //       count: 0,
+    //     })
+    //   }
+    // })
+
   });
 
   // console.log('final object is', mDetail);
@@ -622,7 +717,7 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
 
           store: req.params.store
         }
-        newArray.push(newObject)
+      //  newArray.push(newObject)
 
     });
   });
@@ -690,7 +785,6 @@ router.post('/signUp', async (req, res) => {
     supplier_id: req.body.supplier_id,
     email: req.body.email,
     password: hashPassword,
-    category: req.body.category,
   });
 
   try {
@@ -731,6 +825,7 @@ var bar = new Promise(async (resolve, reject) => {
 
   supplierData.forEach(async (data, i) => {
     let revenue = await revenueSupplier(data._id);
+
     let order = await orderSupplier(data._id);
     let product = await productLength(data._id);
 
@@ -748,13 +843,11 @@ var bar = new Promise(async (resolve, reject) => {
 
   return resolve(supplierArr);
 });
-bar.then(data=>{
-  console.log("bar", data);
-});
+
+
 //get supplier with revenue
 router.get('/supplierFullDetails', async (req, res) => {
-  const supplierData = await User.find();
-
+  console.log("supplier custom api");
   bar.then((data) => {
     res.send(data);
   });
@@ -879,18 +972,27 @@ router.patch('/update', async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(req.body.password, salt);
 
-  const updateUser = {
-    supplier_id: req.body.supplier_id,
-    email: req.body.email,
-    password: hashPassword,
-  };
   // console.log(updateUser);
   try {
-    const data = await User.updateOne(
+    const data = await User.findOneAndUpdate(
       { _id: req.body._id },
-      { $set: updateUser }
+      {
+        supplier_id: req.body.supplier_id,
+        email: req.body.email,
+        password: hashPassword,
+      },{
+        new: true,
+        useFindAndModify: false,
+      },
+      (err, result) => {
+        if (!err) {
+          console.log("update result", result);
+          res.send('success');
+        } else {
+          console.log("error ", err);
+        }
+      }
     );
-    res.json({ message: 'Product updated Successfilly' + data });
   } catch (error) {
     res.json({ message: error.message });
   }
@@ -1011,6 +1113,7 @@ router.post('/paymentDetails', async (req, res) => {
   }
 });
 
+
 //get supplier received payment details
 router.get('/paymentDetails/:id', async (req, res) => {
   console.log(req.params.id);
@@ -1044,14 +1147,20 @@ router.get('/customProductDetail', async (req, res)=>{
 
   orderData.forEach((item, i) => {
       item.products.forEach((data, j) => {
-        priceArr.push({
-          sku: data.sku,
-          price: parseInt(data.price)
-        })
-        quanArr.push({
-          sku: data.sku,
-          quantity: parseInt(data.quantity)
-        })
+        productData.forEach((pro, i) => {
+          if (pro.code === data.sku) {
+            priceArr.push({
+              sku: data.sku,
+              price: parseInt(data.price)
+            })
+            quanArr.push({
+              sku: data.sku,
+              quantity: parseInt(data.quantity)
+            })
+          }
+        });
+
+
       });
   });
 
@@ -1103,36 +1212,54 @@ router.get('/customProductDetail', async (req, res)=>{
     });
   });
 
+
+  console.log("skuArr", skuArr);
+
   let finalArray = []
   let dupArray = []
-    productData.forEach((product, x) => {
-      skuArr.forEach((final, y) => {
-
-        let addObj = {
-          _id: product._id,
-          supplier_id: product.supplier_id,
-          name: product.name,
-          category: product.category,
-          price: product.price,
-          warranty: product.warranty,
-          description:product.description,
-          weight:product.weight,
-          productImage:product.productImage,
-          code: product.code, //sku as code
-          revenue: final.revenue,
-          order: final.order
+  productData.forEach((product, x) => {
+    let proObj = {}
+  skuArr.forEach((final, y) => {
+        if (final.sku === product.code) {
+          proObj = {
+            _id: product._id,
+            supplier_id: product.supplier_id,
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            warranty: product.warranty,
+            description:product.description,
+            weight:product.weight,
+            productImage:product.productImage,
+            code: product.code, //sku as code
+            revenue: final.revenue,
+            order: final.order
+          }
         }
 
-        if (product.code === final.sku) {
-          finalArray.push(addObj)
+        else{
+          proObj = {
+            _id: product._id,
+            supplier_id: product.supplier_id,
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            warranty: product.warranty,
+            description:product.description,
+            weight:product.weight,
+            productImage:product.productImage,
+            code: product.code, //sku as code
+            revenue: 0,
+            order: 0
+          }
         }
-
 
       });
+      finalArray.push(proObj)
     });
 
-
-    res.send(finalArray)
+console.log("finalArr", finalArray.length);
+     res.send(finalArray)
 })
 
 //add margin

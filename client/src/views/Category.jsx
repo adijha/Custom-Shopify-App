@@ -224,7 +224,7 @@ const getAnalytic = () =>{
                             <td>{item.category}</td>
                             <td>{item.count||'NA'}</td>
                             <td>{item.order || 'NA'}</td>
-                            <td>{item.revenue || 'NA'}</td>
+                            <td>${item.revenue || 'NA'}</td>
 
                           </tr>
                         );

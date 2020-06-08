@@ -35,11 +35,11 @@ const SupplierList = () => {
   };
 
   const updateSupplier = (item) => {
-    console.log(item._id);
+    console.log(item.id);
     setOpen(true);
     setEmail(item.email);
     setName(item.supplier_id);
-    setTempSupplier(item._id);
+    setTempSupplier(item.id);
   };
 
   const submitUpdateSuplier = (e) => {
@@ -52,10 +52,16 @@ const SupplierList = () => {
     };
     console.log(obj);
     axios.patch('/api/update', obj).then((res) => {
-      if (res) {
-        setStatus('Supplier Updated Successfully');
-        setOpen(false);
+      try {
+        if (res.data.includes('success')) {
+          NotificationManager.success('Supplier updated successfully');
+          getSupplierData();
+          setOpen(false);
+        }
+      } catch (error) {
+        NotificationManager.error('Something unusual happened');
       }
+
     });
   };
 

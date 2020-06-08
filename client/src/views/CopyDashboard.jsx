@@ -94,7 +94,7 @@ const revenueData = ()=>{
   axios.get('/revenue')
   .then(da=>{
     console.log("revenue", da.data)
-    setRevenue(da.data)
+    setRevenue(da.data.toFixed(2))
   })
 }
 

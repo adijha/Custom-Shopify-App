@@ -291,7 +291,7 @@ const getSupplierDetail = async (id) =>{
                               }
                             }}>
                         {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
-                          <td>{item.productImage ? (
+                          <td>{item.productImage.length!=0 ? (
                             <img
                               className='product-logo'
                               src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
@@ -303,9 +303,9 @@ const getSupplierDetail = async (id) =>{
                             <td><a href={'/admin/single-product/'+item._id}>{item.name}</a></td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{item.price}</td>
+                            <td>${item.price.toFixed(2)}</td>
                             <td>{item.order}</td>
-                            <td>{item.revenue}</td>
+                            <td>${item.revenue}</td>
                             <td><button className="btn btn-primary btn-sm" onClick={()=>updateProduct(item)}>Edit</button></td>
                             <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
                           </tr>

@@ -36,8 +36,11 @@ const SupplierPaymentDetails = () => {
   const saveBankDetails = async () =>{
     console.log({name, accountno, pmethod, ifscCode});
     try {
-
-        let res = await axios.post("/api/paymentDetails", {name, accountno, pmethod, ifscCode, supplier_id});
+        let obj = {
+          name: name,
+          accountno: accountno
+        }
+        let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, pmethod, ifscCode, supplier_id});
         NotificationManager.success("Detail saved Successfully");
         getDetails();
       }
@@ -51,7 +54,7 @@ const SupplierPaymentDetails = () => {
     console.log({name, accountno, pmethod, sortCode});
     try {
 
-        let res = await axios.post("/api/paymentDetails", {name, accountno, pmethod, sortCode, supplier_id});
+        let res = await axios.post("/api/supplierPaymentUpdate", );
         NotificationManager.success("Detail saved Successfully");
         getDetails();
       }
@@ -65,7 +68,7 @@ const SupplierPaymentDetails = () => {
     console.log({name, profileId, pmethod});
     try {
 
-        let res = await axios.post("/api/paymentDetails", {name, profileId, pmethod, supplier_id});
+        let res = await axios.post("/api/supplierPaymentUpdate", {name, profileId, pmethod, supplier_id});
         NotificationManager.success("Detail saved Successfully");
         getDetails();
       }
@@ -79,7 +82,7 @@ const SupplierPaymentDetails = () => {
     console.log({firstName, lastName, westernId, address, pmethod, supplier_id});
     try {
 
-        let res = await axios.post("/api/paymentDetails", {firstName, lastName, westernId, address, pmethod, supplier_id});
+        let res = await axios.post("/api/supplierPaymentUpdate", {firstName, lastName, westernId, address, pmethod, supplier_id});
         NotificationManager.success("Detail saved Successfully");
         getDetails();
       }

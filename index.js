@@ -1096,6 +1096,33 @@ app.post("/settingsUpdate", async (req, res) => {
   );
 });
 
+app.post("/supplierPaymentUpdate", async (req, res) => {
+  console.log(req.body);
+  //hash the password
+
+
+  // User.findOneAndUpdate(
+  //   {
+  //     supplier_id: req.body.id,
+  //   },
+  //   {
+  //     pInfo:req.body.pInfo
+  //   },
+  //   {
+  //     new: true,
+  //     useFindAndModify: false,
+  //   },
+  //   (err, result) => {
+  //     if (!err) {
+  //       res.sendStatus(200);
+  //     } else {
+  //       console.log("error ", err);
+  //     }
+  //   }
+  // );
+});
+
+
 
 // Merchant settings get
 app.get("/merchantProfile:id", async (req, res) => {
