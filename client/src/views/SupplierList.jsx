@@ -22,13 +22,31 @@ const SupplierList = () => {
   const [sRevenue, setSRevenue] = useState();
   const [sOrder, setSOrder] = useState();
   const [productCount, setProductCount] = useState();
+  let checkArray = []
 
   useEffect(() => {
     getSupplierData();
+    specificData()
   }, []);
 
+  const specificData = async ()=>{
+    await axios.get('/api/supplier')
+    .then(supplier=>{
+      supplier.data.forEach(async (item, i) => {
+        let rev = await axios.get('/supplierRevenue/'+item._id)
+          checkArray.push({
+            id: item._id,
+            revenue: rev.data
+          })
+      });
+
+    })
+    console.log("supp rev data", checkArray.length);
+  }
+
   const getSupplierData = async () => {
-    axios.get('/api/supplierFullDetails').then((res) => {
+    // axios.get('/api/supplierFullDetails').then((res) => {
+    axios.get('/api/supplier/newData').then((res)=>{
       setSuppliers(res.data);
       console.log(res.data);
     });
@@ -54,8 +72,12 @@ const SupplierList = () => {
     axios.patch('/api/update', obj).then((res) => {
       try {
         if (res.data.includes('success')) {
-          NotificationManager.success('Supplier updated successfully');
-          getSupplierData();
+          axios.get('/api/supplier/newData').then((res)=>{
+            setSuppliers(res.data);
+            NotificationManager.success('Supplier updated successfully');
+
+            console.log("waited", res.data);
+          });
           setOpen(false);
         }
       } catch (error) {

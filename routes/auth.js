@@ -462,36 +462,61 @@ let randomArray = []
     });
   });
 console.log("randomArray", randomArray);
+
 sName.forEach((name, i) => {
   let obj={};
   randomArray.forEach((item, i) => {
 
     if (name === item.store) {
       obj={
-        store: item.store,
+        store: name,
         price: item.price,
         count: item.count
       }
     }
-    else{
-      obj={
-        store: name,
-        price:0,
-        count:0
-      }
-    }
+    // else if(name!= item.store){
+    //   obj={
+    //     store: name,
+    //     price:0,
+    //     count:0
+    //   }
+    // }
 
   });
+
 finalArrU.push(obj)
 
 });
+let matchArray =[]
+sName.forEach((name, i) => {
+  matchArray.push({
+    store:name,
+    price:0,
+    count:0
+  })
+});
+console.log("match Array", matchArray);
+let decideArray = []
+matchArray.forEach((match, i) => {
+  randomArray.forEach((random, index) => {
+    if (matchArray[i].store === randomArray[index].store)
+    { matchArray[i].price = randomArray[index].price;
+      matchArray[i].count = randomArray[index].count;
+    }
+
+  });
+
+});
+console.log("decideArray", matchArray);
 
 
-  console.log("finalArrU", finalArrU);
+  //console.log("finalArrU", finalArrU);
+let newObject = {}
   data.forEach((delta, x) => {
-    finalArrU.forEach((final, Y) => {
+    matchArray.forEach((final, Y) => {
+
       if (delta.store === final.store) {
-        const newObject = {
+         newObject = {
           id: delta._id,
           email: delta.email,
           firstName: delta.firstName,
@@ -501,9 +526,12 @@ finalArrU.push(obj)
           store: final.store,
           price: final.price,
           count: final.count,
-        };
+        }
         mDetail.push(newObject);
+
       }
+
+
 
     });
     // finalArrU.forEach((final, y)=>{
@@ -853,6 +881,41 @@ router.get('/supplierFullDetails', async (req, res) => {
   });
 });
 
+const newFunction =async ()=>{
+
+  const supplierData = await User.find()
+
+  let suppObj = {}
+
+   const result = await supplierData.map( async(data, i) => {
+     var supplierArr = []
+
+    let revenue =  await revenueSupplier(data._id);
+    let order =  await orderSupplier(data._id);
+    let product = await productLength(data._id)
+      return {
+          id: data._id,
+          supplier_id: data.supplier_id,
+          name: data.name,
+          email: data.email,
+          order: order,
+          revenue: revenue,
+          product: product
+        };
+
+  });
+
+  return await Promise.all(result)
+}
+
+
+
+//get Supplier Revenue and order
+router.get('/supplier/newData', async (req, res)=>{
+  const data = await newFunction()
+  res.send(data)
+})
+
 //sepcific supplier data total order, product, revenue
 
 router.get('/supplierDetails/:id', async (req, res) => {
@@ -897,7 +960,7 @@ router.get('/supplier/:id', async (req, res) => {
 //supplier payment via admin
 router.get('/adminPaymentSupplier', async (req, res)=>{
 
-let data = await bar
+const data = await newFunction()
   let result = await data
   let transData = await Transaction.find()
   let firstArr=[]
@@ -924,45 +987,21 @@ let data = await bar
 
 let resultArray = await result
 
-let resArray = []
+console.log("before resultArray", resultArray);
+
 obj2.forEach((trans, z) => {
-
 resultArray.forEach((res, y) => {
-    console.log("transData", trans);
-
-  let newobj = {}
-
-  if (trans.supplier_id===res.id.toString()) {
-     resArray.push({
-      id: trans.supplier_id,
-      name: res.name,
-      email: res.email,
-      revenue: res.revenue,
-      amount: trans.amount
-    })
-
-  }
-  else {
-        resArray.push({
-      id: res.id,
-      supplier_id: res.supplier_id,
-      name: res.name,
-      email: res.email,
-      revenue: res.revenue,
-      amount:0
-    })
-  }
-
-
+  if (obj2[z].supplier_id===resultArray[y].id.toString()) {
+      resultArray[y].amount = obj2[z].amount
+    }
+  });
 });
-
-});
-console.log("resArray ", resArray);
+console.log("resArray ", resultArray);
 
 
 
 
-  res.send(resArray)
+  res.send(resultArray)
 
 })
 

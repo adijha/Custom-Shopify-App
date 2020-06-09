@@ -55,11 +55,16 @@ const SupplierList = () => {
       date:d,
       time:t
     }
+    console.log({obj});
     axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
       if (res.data.includes('success')) {
-        NotificationManager.success('Transaction Updated Successfully');
+        axios.get('/api/adminPaymentSupplier').then((res) => {
+          setPayments(res.data);
+          NotificationManager.success('Transaction Updated Successfully');
+          // console.log(res.data);
+        });
       }
     } catch (error) {
       NotificationManager.error('Something unusual happened');
@@ -192,8 +197,8 @@ const SupplierList = () => {
                             <td>{item.revenue}</td>
                             <td>{item.lastWeek||0}</td>
                             <td>{item.amount || 0}</td>
-                            <td>{item.revenue-item.amount}</td>
-                            <td>${item.amount}</td>
+                            <td>{item.revenue-(item.amount||0)}</td>
+                            <td>${item.amount || 0}</td>
                           </tr>
 
                           {expand === item.email ? (
@@ -241,9 +246,12 @@ const SupplierList = () => {
                                         setMethod(e.target.value)
                                       }
                                     >
-                                      <option value='paypal' onChange={(e)=>setMethod(e.target.value)}>Paypal</option>
-                                      <option value='transferwise' onChange={(e)=>setMethod(e.target.value)}>
+                                      <option value=''>select mode</option>
+                                      <option value='transferwise'>
                                         Transferwise
+                                      </option>
+                                      <option value='paypal'>
+                                        Paypal
                                       </option>
                                     </select>
                                   </div>

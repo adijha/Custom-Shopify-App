@@ -1044,7 +1044,7 @@ const AddProduct = () => {
                             }}
                             onChange={(e) => {
                               let targets = item.split('/');
-                              let item = {};
+                            //  let item = {};
                               if (targets[0]) {
                                 item.option1 = targets[0];
                               }
@@ -1065,7 +1065,7 @@ const AddProduct = () => {
                           type='number'
                           onChange={(e) => {
                             let targets = item.split('/');
-                            let item = {};
+                            // let item = {};
                             if (targets[0]) {
                               item.option1 = targets[0];
                             }
