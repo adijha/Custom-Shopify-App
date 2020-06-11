@@ -8,6 +8,9 @@ import Card from '../components/Card/Card.jsx';
 import moment from 'moment';
 
 const SupplierList = () => {
+
+
+  
   const [suppliers, setSuppliers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
