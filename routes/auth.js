@@ -1451,160 +1451,322 @@ router.patch("/categoryPatch/:id", async (req, res) => {
   }
 });
 
-//category analytic in section
+
+//Category Analytic
+
 router.get('/categoryProductDetail', async (req, res)=>{
 
-  const orderData = await Orders.find({})
-
-  let priceArr = []
-  let quanArr = []
-  let secondArray = []
-  let thirdArray = []
-  let fourthArray = []
-
-  orderData.forEach((item, i) => {
-      item.products.forEach((data, j) => {
-        priceArr.push({
-          sku: data.sku,
-          price: parseInt(data.price)
-        })
-        quanArr.push({
-          sku: data.sku,
-          quantity: parseInt(data.quantity)
-        })
-      });
-  });
+  const orderData = await Orders.find()
 
   const productData = await Products.find()
 
-  const categoryData = await Category.find()
 
+  let orderArray = []
 
-  priceArr.forEach((pri, i) => {
-    productData.forEach((pro, i) => {
-      if (pri.sku===pro.code) {
-        secondArray.push({
-          category: pro.category,
-          price: pri.price
-        })
+    orderData.forEach((data, i) => {
+      data.products.forEach((ord, j) => {
+        if (ord.sku!=undefined) {
+          orderArray.push({
+            sku: ord.sku,
+            price: parseInt(ord.price),
+            quantity: ord.quantity
+          })
+        }
 
-      }
+      });
+
     });
 
-  });
 
-  quanArr.forEach((quan, i) => {
-    productData.forEach((pro, i) => {
-      if (quan.sku===pro.code) {
-        thirdArray.push({
-          category: pro.category,
-          quantity: quan.quantity
-        })
-      }
-    });
+checkProductOrderSku = []
 
-  });
-
-
-  var holder = {};
-
-  secondArray.forEach(function (d) {
-    if (holder.hasOwnProperty(d.category)) {
-      holder[d.category] = holder[d.category] + d.price;
-    } else {
-      holder[d.category] = d.price;
-    }
-  });
-
-  var obj2 = [];
-
-  for (var prop in holder) {
-    obj2.push({ category: prop, price: holder[prop] });
-  }
-
-
-
-  var holder1 = {};
-
-  thirdArray.forEach(function (d) {
-    if (holder1.hasOwnProperty(d.category)) {
-      holder1[d.category] = holder1[d.category] + d.quantity;
-    } else {
-      holder1[d.category] = d.quantity;
-    }
-  });
-
-  var obj3 = [];
-
-  for (var prop in holder1) {
-    obj3.push({ category: prop, quantity: holder1[prop] });
-  }
-
-  let skuArr = []
-  obj2.forEach((priceObj, j) => {
-    obj3.forEach((quanObj, k) => {
-      if (priceObj.category===quanObj.category) {
-        skuArr.push({
-          category: priceObj.category,
-          revenue: priceObj.price,
-          order: quanObj.quantity
-        })
-      }
-    });
-  });
-
-
-  categoryData.forEach((cat, i) => {
-    productData.forEach((pro, i) => {
-      if (cat.category===pro.category) {
-        fourthArray.push({
-          category: cat.category,
-          count:1
-        })
-      }
-    });
-
-  });
-
-  var holder2 = {};
-
-  fourthArray.forEach(function (d) {
-    if (holder2.hasOwnProperty(d.category)) {
-      holder2[d.category] = holder2[d.category] + d.count;
-    } else {
-      holder2[d.category] = d.count;
-    }
-  });
-
-  var obj4 = [];
-
-  for (var prop in holder2) {
-    obj4.push({ category: prop, count: holder2[prop] });
-  }
-
-console.log("fourthArray", fourthArray);
-
-let doneArray = []
-
-skuArr.forEach((sArr, i) => {
-  obj4.forEach((obj, i) => {
-    if (sArr.category===obj.category) {
-      doneArray.push({
-        category: sArr.category,
-        revenue: sArr.revenue,
-        order: sArr.order,
-        count: obj.count
+orderArray.forEach((order, i) => {
+  productData.forEach((product, i) => {
+    if (order.sku === product.code) {
+      checkProductOrderSku.push({
+        category: product.category,
+        price: order.price,
+        quantity: order.quantity
       })
     }
   });
 
 });
 
-console.log("doneArray", doneArray);
-res.send(doneArray)
 
+var holder = {};
+
+checkProductOrderSku.forEach(function (d) {
+  if (holder.hasOwnProperty(d.category)) {
+    holder[d.category] = holder[d.category] + d.price;
+  } else {
+    holder[d.category] = d.price;
+  }
+});
+
+var obj2 = [];
+
+for (var prop in holder) {
+  obj2.push({ category: prop, price: holder[prop] });
+}
+
+
+
+var holder1 = {};
+
+checkProductOrderSku.forEach(function (d) {
+  if (holder1.hasOwnProperty(d.category)) {
+    holder1[d.category] = holder1[d.category] + d.quantity;
+  } else {
+    holder1[d.category] = d.quantity;
+  }
+});
+
+var obj3 = [];
+
+for (var prop in holder1) {
+  obj3.push({ category: prop, quantity: holder1[prop] });
+}
+
+let revOrderArray = []
+obj2.forEach((priceObj, j) => {
+  obj3.forEach((quanObj, k) => {
+    if (priceObj.category===quanObj.category) {
+      revOrderArray.push({
+        category: priceObj.category,
+        revenue: priceObj.price,
+        order: quanObj.quantity
+      })
+    }
+  });
+});
+
+const categoryData = await Category.find()
+
+let countArray = []
+
+categoryData.forEach((cData, a) => {
+  productData.forEach((pro, i) => {
+    if (cData.category === pro.category) {
+      countArray.push({
+        category: cData.category,
+        count: 1
+      })
+    }
+
+  });
+
+});
+
+var holder2 = {};
+
+countArray.forEach(function (d) {
+  if (holder2.hasOwnProperty(d.category)) {
+    holder2[d.category] = holder2[d.category] + d.count;
+  } else {
+    holder2[d.category] = d.count;
+  }
+});
+
+var obj4 = [];
+
+for (var prop in holder2) {
+  obj4.push({ category: prop, count: holder2[prop] });
+}
+
+
+
+newCategoryArray = []
+categoryData.forEach((item, i) => {
+  newCategoryArray.push({
+    category: item.category,
+    created_on: item.created_on,
+    count: 0,
+    revenue: 0,
+    order: 0
+  })
+});
+
+newCategoryArray.forEach((cArr, l) => {
+  revOrderArray.forEach((revOrder, m) => {
+    if (newCategoryArray[l].category===revOrderArray[m].category) {
+      newCategoryArray[l].revenue = revOrderArray[m].revenue
+      newCategoryArray[l].order = revOrderArray[m].order
+    }
+  });
+
+});
+
+newCategoryArray.forEach((cArr, l) => {
+  obj4.forEach((revOrder, m) => {
+    if (newCategoryArray[l].category===obj4[m].category) {
+      newCategoryArray[l].count = obj4[m].count
+    }
+  });
+
+});
+
+res.send(newCategoryArray)
+console.log("newCategoryArray", newCategoryArray);
 
 })
+
+//category analytic in section
+// router.get('/categoryProductDetail', async (req, res)=>{
+//
+//   const orderData = await Orders.find({})
+//
+//   let priceArr = []
+//   let quanArr = []
+//   let secondArray = []
+//   let thirdArray = []
+//   let fourthArray = []
+//
+//   orderData.forEach((item, i) => {
+//       item.products.forEach((data, j) => {
+//         priceArr.push({
+//           sku: data.sku,
+//           price: parseInt(data.price)
+//         })
+//         quanArr.push({
+//           sku: data.sku,
+//           quantity: parseInt(data.quantity)
+//         })
+//       });
+//   });
+//
+//   const productData = await Products.find()
+//
+//   const categoryData = await Category.find()
+//
+//
+//   priceArr.forEach((pri, i) => {
+//     productData.forEach((pro, i) => {
+//       if (pri.sku===pro.code) {
+//         secondArray.push({
+//           category: pro.category,
+//           price: pri.price
+//         })
+//
+//       }
+//     });
+//
+//   });
+//
+//   quanArr.forEach((quan, i) => {
+//     productData.forEach((pro, i) => {
+//       if (quan.sku===pro.code) {
+//         thirdArray.push({
+//           category: pro.category,
+//           quantity: quan.quantity
+//         })
+//       }
+//     });
+//
+//   });
+//
+//
+//   var holder = {};
+//
+//   secondArray.forEach(function (d) {
+//     if (holder.hasOwnProperty(d.category)) {
+//       holder[d.category] = holder[d.category] + d.price;
+//     } else {
+//       holder[d.category] = d.price;
+//     }
+//   });
+//
+//   var obj2 = [];
+//
+//   for (var prop in holder) {
+//     obj2.push({ category: prop, price: holder[prop] });
+//   }
+//
+//
+//
+//   var holder1 = {};
+//
+//   thirdArray.forEach(function (d) {
+//     if (holder1.hasOwnProperty(d.category)) {
+//       holder1[d.category] = holder1[d.category] + d.quantity;
+//     } else {
+//       holder1[d.category] = d.quantity;
+//     }
+//   });
+//
+//   var obj3 = [];
+//
+//   for (var prop in holder1) {
+//     obj3.push({ category: prop, quantity: holder1[prop] });
+//   }
+//
+//   let skuArr = []
+//   obj2.forEach((priceObj, j) => {
+//     obj3.forEach((quanObj, k) => {
+//       if (priceObj.category===quanObj.category) {
+//         skuArr.push({
+//           category: priceObj.category,
+//           revenue: priceObj.price,
+//           order: quanObj.quantity
+//         })
+//       }
+//     });
+//   });
+//
+// console.log("obj2 & obj3", skuArr);
+//
+//
+//   categoryData.forEach((cat, i) => {
+//     productData.forEach((pro, i) => {
+//       if (cat.category===pro.category) {
+//         fourthArray.push({
+//           category: cat.category,
+//           count:1
+//         })
+//       }
+//     });
+//
+//   });
+//
+//   var holder2 = {};
+//
+//   fourthArray.forEach(function (d) {
+//     if (holder2.hasOwnProperty(d.category)) {
+//       holder2[d.category] = holder2[d.category] + d.count;
+//     } else {
+//       holder2[d.category] = d.count;
+//     }
+//   });
+//
+//   var obj4 = [];
+//
+//   for (var prop in holder2) {
+//     obj4.push({ category: prop, count: holder2[prop] });
+//   }
+//
+// console.log("fourthArray", fourthArray);
+//
+// let doneArray = []
+//
+// skuArr.forEach((sArr, i) => {
+//   obj4.forEach((obj, i) => {
+//     if (sArr.category===obj.category) {
+//       doneArray.push({
+//         category: sArr.category,
+//         revenue: sArr.revenue,
+//         order: sArr.order,
+//         count: obj.count
+//       })
+//     }
+//   });
+//
+// });
+//
+// console.log("doneArray", doneArray);
+// res.send(doneArray)
+//
+//
+// })
 
 
 

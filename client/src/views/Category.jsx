@@ -204,7 +204,7 @@ const getAnalytic = () =>{
           <Row>
             <Col md={12}>
               <Card
-                title='Category Analytic'
+                title='Category Analytics'
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -222,9 +222,9 @@ const getAnalytic = () =>{
                         return (
                           <tr key={key}>
                             <td>{item.category}</td>
-                            <td>{item.count||'NA'}</td>
-                            <td>{item.order || 'NA'}</td>
-                            <td>${item.revenue || 'NA'}</td>
+                            <td>{item.count|| 0}</td>
+                            <td>{item.order || 0}</td>
+                            <td>${item.revenue || 0}</td>
 
                           </tr>
                         );
