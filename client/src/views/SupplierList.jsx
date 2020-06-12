@@ -10,7 +10,7 @@ import moment from 'moment';
 const SupplierList = () => {
 
 
-  
+
   const [suppliers, setSuppliers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,6 +25,7 @@ const SupplierList = () => {
   const [sRevenue, setSRevenue] = useState();
   const [sOrder, setSOrder] = useState();
   const [productCount, setProductCount] = useState();
+  const [sort, setSort] = useState([])
   let checkArray = []
 
   useEffect(() => {
@@ -123,6 +124,34 @@ const SupplierList = () => {
     });
     setSuppliers(newOrders);
   };
+
+
+  const filterItems = (suppliers.filter(plist=>{
+    return plist.email.toLowerCase();
+  }))
+
+
+
+const handleSort = e =>{
+  e.preventDefault();
+  let unsorted = suppliers
+  console.log("unsorted", unsorted);
+  console.log("value", e.target.value);
+  if (e.target.value==="product") {
+    setSuppliers(filterItems.sort((a,b)=>parseFloat(b.product)-parseFloat(a.product)))
+  }
+  else if (e.target.value==="order") {
+    setSuppliers(filterItems.sort((a,b)=>parseFloat(b.order)-parseFloat(a.order)))
+  }
+  else if (e.target.value==="revenue")
+  {
+    setSuppliers(filterItems.sort((a,b)=>parseFloat(b.revenue)-parseFloat(a.revenue)))
+  }
+  else if (e.target.value==="nothing") {
+    getSupplierData()
+  }
+}
+
   return (
     <div className='content'>
       <div className='info text-center' style={{ color: 'red' }}>
@@ -138,54 +167,15 @@ const SupplierList = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18 }}>
-          <input
-            required
-            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
-            id='date'
-            type='date'
-            required
-            placeholder='Start from'
-            autoComplete='bday-day'
-            max={new Date()}
-            min={new Date('20-02-2019')}
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            style={{ height: 45 }}
-          />
 
-          <input
-            required
-            placeholder='To date'
-            className=' border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker'
-            id='date'
-            type='date'
-            required
-            autoComplete='bday-day'
-            max={new Date()}
-            min={new Date('20-02-2019')}
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            style={{
-              height: 45,
-              marginLeft: '20px',
-            }}
-          />
-          <div
-            style={{
-              backgroundColor: 'grey',
-              width: '140px',
-              height: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 10,
-              marginLeft: '20px',
-              cursor: 'pointer',
-            }}
-            onClick={() => sortByDate()}
-          >
-            Supplier By Revenue
-          </div>
+          <select onChange = {(e)=> handleSort(e)}>
+            <option value = "nothing">Sort By</option>
+            <option value="product"> Product</option>
+            <option value = "order">Order</option>
+            <option value = "revenue">Revenue</option>
+          </select>
+
+
         </div>
         <div
           style={{
@@ -231,7 +221,7 @@ const SupplierList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {suppliers.map((item, key) => {
+                    {filterItems.map((item, key) => {
                       return (
                         <tr key={key}>
                           <td>{key + 1}</td>
