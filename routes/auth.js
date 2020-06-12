@@ -1184,6 +1184,35 @@ router.get('/customProductDetail', async (req, res)=>{
 
   let priceArr = []
   let quanArr = []
+  let finalArray = []
+  let dupArray = []
+
+  productData.forEach((ddd, i) => {
+    dupArray.push({
+      varients: ddd.varients,
+      options: ddd.options,
+      _id: ddd._id,
+      supplier_id: ddd.supplier_id,
+      name: ddd.name,
+      price: ddd.price,
+      quantity: ddd.qauntity,
+      warranty: ddd.warranty,
+      description: ddd.description,
+      category: ddd.category,
+      code: ddd.code,
+      weight: ddd.weight,
+      productImage: ddd.productImage,
+      uploaded_on: ddd.uploaded_on,
+      size: ddd.size,
+      shippingCharge: ddd.shippingCharge,
+      selliingPrice: ddd.selliingPrice,
+      revenue: 0,
+      order:0
+
+    })
+  });
+
+console.log("new product Array achievement", dupArray);
 
   orderData.forEach((item, i) => {
       item.products.forEach((data, j) => {
@@ -1253,53 +1282,65 @@ router.get('/customProductDetail', async (req, res)=>{
   });
 
 
-  console.log("skuArr", skuArr);
+  // console.log("skuArr", skuArr);
+  // console.log("before pData", productData);
 
-  let finalArray = []
-  let dupArray = []
-  productData.forEach((product, x) => {
-    let proObj = {}
-  skuArr.forEach((final, y) => {
-        if (final.sku === product.code) {
-          proObj = {
-            _id: product._id,
-            supplier_id: product.supplier_id,
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            warranty: product.warranty,
-            description:product.description,
-            weight:product.weight,
-            productImage:product.productImage,
-            code: product.code, //sku as code
-            revenue: final.revenue,
-            order: final.order
-          }
-        }
 
-        else{
-          proObj = {
-            _id: product._id,
-            supplier_id: product.supplier_id,
-            name: product.name,
-            category: product.category,
-            price: product.price,
-            warranty: product.warranty,
-            description:product.description,
-            weight:product.weight,
-            productImage:product.productImage,
-            code: product.code, //sku as code
-            revenue: 0,
-            order: 0
-          }
-        }
-
-      });
-      finalArray.push(proObj)
+  dupArray.forEach((product, x) => {
+    skuArr.forEach((final, index) => {
+      if (dupArray[x].code === skuArr[index].sku) {
+        dupArray[x].revenue=skuArr[index].revenue
+        dupArray[x].order = skuArr[index].order
+      }
     });
 
-console.log("finalArr", finalArray.length);
-     res.send(finalArray)
+  });
+  res.send(dupArray)
+//console.log("new Product Data", productData);
+
+//   productData.forEach((product, x) => {
+//     let proObj = {}
+//   skuArr.forEach((final, y) => {
+//         if (final.sku === product.code) {
+//           proObj = {
+//             _id: product._id,
+//             supplier_id: product.supplier_id,
+//             name: product.name,
+//             category: product.category,
+//             price: product.price,
+//             warranty: product.warranty,
+//             description:product.description,
+//             weight:product.weight,
+//             productImage:product.productImage,
+//             code: product.code, //sku as code
+//             revenue: final.revenue,
+//             order: final.order
+//           }
+//         }
+//
+//         else{
+//           proObj = {
+//             _id: product._id,
+//             supplier_id: product.supplier_id,
+//             name: product.name,
+//             category: product.category,
+//             price: product.price,
+//             warranty: product.warranty,
+//             description:product.description,
+//             weight:product.weight,
+//             productImage:product.productImage,
+//             code: product.code, //sku as code
+//             revenue: 0,
+//             order: 0
+//           }
+//         }
+//
+//       });
+//       finalArray.push(proObj)
+//     });
+//
+// //console.log("finalArr", finalArray.length);
+//      res.send(finalArray)
 })
 
 //add margin
