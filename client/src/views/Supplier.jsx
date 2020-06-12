@@ -48,7 +48,7 @@ function Supplier() {
       .then((data) => {
         if (data) {
           NotificationManager.success(
-            'New Supplier Created Successfully: ' + data.config.data
+            'New Supplier Created Successfully'  
           );
           // setStatus("New Supplier Created Successfully: "+ data.config.data)
           setName('');
