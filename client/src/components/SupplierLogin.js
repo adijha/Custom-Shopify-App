@@ -14,6 +14,7 @@ const SupplierLogin = () => {
 
    useEffect(() => {
      const token = localStorage.getItem("token")
+
     if (token) {
     setisLoggedIn(true)
     }
@@ -37,9 +38,11 @@ const SupplierLogin = () => {
       setStatus("User Id Password Not Matched with Supplier Account")
     })
   }
+
+
   return(
     <div className="wrapper" id="wrapper-login" >
-    {isLoggedIn===true?(<Redirect to = "/supplier/dashboard"/>):(
+    {isLoggedIn===true?(<Redirect to = "/auth"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
     <h2>Supplier Login</h2>

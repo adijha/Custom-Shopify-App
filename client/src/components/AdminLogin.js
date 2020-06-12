@@ -39,7 +39,7 @@ const AdminLogin = () => {
   }
   return(
     <div className="wrapper" id="wrapper-login" >
-    {isLoggedIn===true?(<Redirect to = "/admin/dashboard"/>):(
+    {isLoggedIn===true?(<Redirect to = "/auth"/>):(
 
     <div className='form-wrapper-login' id="form-wrapper-login">
     <h2>Admin Login</h2>

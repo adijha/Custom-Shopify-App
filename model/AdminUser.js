@@ -18,6 +18,10 @@ const adminUserScheme = new mongoose.Schema({
 	},
 	phoneNo:{
 		type: Number
+	},
+	category:{
+		type: String,
+		default: "admin"
 	}
 });
 

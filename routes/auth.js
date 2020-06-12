@@ -109,7 +109,7 @@ router.post('/adminLogin', async (req, res) => {
   let userInfo = {
     id: user._id,
     email: user.email,
-    category: user.category,
+    category: user.category
   };
   const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
   res.send(token);
@@ -323,6 +323,7 @@ router.post('/merchantLogin', async (req, res) => {
   let userInfo = {
     id: user._id,
     email: user.email,
+    category: user.category
   };
 
   const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);
@@ -1037,7 +1038,7 @@ router.patch('/update', async (req, res) => {
   }
 });
 
-//Generate lofin token and pass to client
+//Generate login token and pass to supplier
 router.post('/login', async (req, res) => {
   //let validate the data
   const { error } = userValidation(req.body);
