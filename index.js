@@ -17,16 +17,41 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
   "read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders";
-const forwardingAddress = "https://499297f8.ngrok.io";
-let hmacc, tokenn;
-let shop;
+const forwardingAddress = "https://www.melisxpress.com";
+ let hmacc, tokenn;
+// let shop;
 let topic = "orders/create";
 const Orders = require("./model/Orders");
 const Products = require("./model/Products");
 const ProductCopy = require("./model/ProductCopy");
 const User = require("./model/User");
 const MerchantUser = require("./model/MerchantUser");
+const Store = require("./model/Store");
+const session = require('express-session');
+const mongoConnect = require('connect-mongo')(session);
 
+
+//connect Db
+mongoose.connect(
+  process.env.DB_CONNECT,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log("Db is connected")
+);
+
+app.use(
+	session({
+		secret: 'mylittleSecrets.',
+		resave: false,
+		saveUninitialized: false,
+		store: new mongoConnect({
+			mongooseConnection: mongoose.connection
+		})
+	})
+);
+app.use(function(req, res, next) {
+	res.locals.session = req.session;
+	next();
+});
 
 //Import Route
 const authRoute = require("./routes/auth");
@@ -35,12 +60,7 @@ const authRoute = require("./routes/auth");
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//connect Db
-mongoose.connect(
-  process.env.DB_CONNECT,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Db is connected")
-);
+
 
 // app.use(fileUpload({
 //   useTempFiles : true,
@@ -56,8 +76,11 @@ app.use("/api", authRoute);
 //Shopify install and token generate route
 
 app.get("/shopify", (req, res) => {
-  console.log("inside /shopify");
-  shop = req.query.shop;
+  // console.log("inside /shopify");
+  // shop = req.query.shop;
+	let shop = req.query.shop;
+  req.session.shop = req.query.shop;
+
   console.log("shop is ", shop);
   if (shop) {
     const state = nonce();
@@ -74,7 +97,8 @@ app.get("/shopify", (req, res) => {
       "&redirect_uri=" +
       redirectUri;
 
-    res.cookie("state", state);
+    //res.cookie("state", state);
+    		res.cookie(req.session.shop, state);
     res.redirect(installUrl);
   } else {
     return res
@@ -86,12 +110,15 @@ app.get("/shopify", (req, res) => {
 });
 
 app.get("/shopify/callback", (req, res) => {
-  const { shop, hmac, code, state } = req.query;
-  const stateCookie = cookie.parse(req.headers.cookie).state;
+  let { shop, hmac, code, state } = req.query;
+  //const stateCookie = cookie.parse(req.headers.cookie).state;
+	const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
 
   if (state !== stateCookie) {
     return res.status(403).send("Request origin cannot be verified");
   }
+
+  console.log("makeWebook in callback", {shop, code, hmac});
 
   if (shop && hmac && code) {
     // DONE: Validate request is from Shopify
@@ -128,24 +155,31 @@ app.get("/shopify/callback", (req, res) => {
     request
       .post(accessTokenRequestUrl, { json: accessTokenPayload })
       .then((accessTokenResponse) => {
-        tokenn = accessTokenResponse.access_token;
-        hmacc = hmac;
+        // tokenn = accessTokenResponse.access_token;
+        // hmacc = hmac;
+        let token = accessTokenResponse.access_token
+        makeWebook(token, shop, hmac, code)
+        Gtoken = accessTokenResponse.access_token;
+				req.session.hmac = hmac;
+				req.session.token = accessTokenResponse.access_token;
+        req.session.code = code
+        //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
         //return postRequest(tokenn, hmacc, shop)
-        const shopRequestUrl =
-          "https://" + shop + "/admin/api/2020-01/products.json";
-        const shopRequestHeaders = {
-          "X-Shopify-Access-Token": tokenn,
-        };
-        request
-          .get("https://499297f8.ngrok.io/webhook")
-          .then((shopResponse) => {
-            res.send(shopResponse);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        // const shopRequestUrl =
+        //   "https://" + shop + "/admin/api/2020-01/products.json";
+        // const shopRequestHeaders = {
+        //   "X-Shopify-Access-Token": tokenn,
+        // };
+        // request
+        //   .get("https://www.melisxpress.com/webhook")
+        //   .then((shopResponse) => {
+        //     res.send(shopResponse);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
         //return postRequest(tokenn, hmacc, shop)				//	return tokenn, hmac, shop;
         // DONE: Use access token to make API call to 'shop' endpoint
       })
@@ -156,6 +190,9 @@ app.get("/shopify/callback", (req, res) => {
     res.status(400).send("Required parameters missing");
   }
 });
+
+
+
 
 //Add product to shopify
 app.post("/addToShopify/:VendorString", (req, res) => {
@@ -188,17 +225,21 @@ app.post("/addToShopify/:VendorString", (req, res) => {
     });
 });
 
+
+
 //get product list from shopify
-app.get("/shopifyProduct/:VendorString", (req, res) => {
+app.get("/shopifyProduct/:storeName", async (req, res) => {
+  let storeData = await Store.find({name: req.params.storeName})
+if (storeData.length>0) {
   const shopRequestUrl =
     "https://" +
-    req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/products.json";
+    req.params.storeName +
+    "/admin/api/2020-01/products.json";
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
+    "X-Shopify-Access-Token": storeData[0].token,
     "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
+    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
+    "X-Shopify-Shop-Domain": req.params.storeName,
     "X-Shopify-API-Version": "2020-01",
   };
   request
@@ -210,7 +251,15 @@ app.get("/shopifyProduct/:VendorString", (req, res) => {
     .catch((error) => {
       console.log("shopify product error", error);
     });
+}
+else{
+  console.log("storeData not found");
+}
+
 });
+
+
+
 
 //update request shopify product
 app.put("/ShopifyProduct/:VendorString/:id", (req, res) => {
@@ -241,6 +290,9 @@ app.put("/ShopifyProduct/:VendorString/:id", (req, res) => {
     });
 });
 
+
+
+
 app.delete("/shopifyProduct/:VendorString/:id", (req, res) => {
   const shopRequestUrl =
     "https://" +
@@ -268,16 +320,19 @@ app.delete("/shopifyProduct/:VendorString/:id", (req, res) => {
 
 //get Orders list
 
-app.get("/orders/:VendorString", (req, res) => {
+app.get("/orders/:storeName", async (req, res) => {
+console.log("storeName", req.params.storeName);
+  let storeData = await Store.find({name: req.params.storeName})
+if (storeData.length>0) {
   const shopRequestUrl =
     "https://" +
-    req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/orders.json";
+    req.params.storeName +
+    "/admin/api/2020-01/orders.json";
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
+    "X-Shopify-Access-Token": storeData[0].token,
     "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
+    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
+    "X-Shopify-Shop-Domain": req.params.storeName,
     "X-Shopify-API-Version": "2020-01",
   };
 
@@ -290,6 +345,10 @@ app.get("/orders/:VendorString", (req, res) => {
     .catch((error) => {
       console.log("order details eroor is", error);
     });
+  }
+  else{
+    console.log("no data found");
+  }
 });
 
 //fulfill single orders
@@ -324,27 +383,150 @@ app.post("/orders/:VendorString/:id", (req, res) => {
 
 
 //get fulfilled Orders
-app.get("/fulfilledOrders/:VendorString", (req, res) => {
+app.get("/fulfilledOrders/:storeName", async (req, res) => {
+
+  let storeData = await Store.find({name: req.params.storeName})
+if (storeData.length>0) {
+
   const shopRequestUrl =
     "https://" +
-    req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/orders.json?status=closed";
+    req.params.storeName +
+    "/admin/api/2020-01/orders.json?status=closed";
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
+    "X-Shopify-Access-Token": storeData[0].token,
     "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
+    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
+    "X-Shopify-Shop-Domain": req.params.storeName,
     "X-Shopify-API-Version": "2020-01",
   };
   request.get(shopRequestUrl, { headers: shopRequestHeaders }).then((data) => {
     console.log(data);
     res.send(data);
   });
+}else {
+  console.log("no data found in fulfilled orders");
+}
 });
+
+
+//Make webhook create function
+const makeWebook = (token, shop, hmac, code) => {
+
+  // let shop = req.session.shop;
+	// let token = req.session.token;
+	// let hmac = req.session.hmac;
+  let webhookObj = {
+    token: token,
+    name: shop,
+    hmac: hmac,
+    code: code
+  }
+
+  console.log("makeWebook", {shop, code, hmac, token});
+
+  const webhookUrl = "https://" + shop + "/admin/api/2020-01/webhooks.json";
+
+  const webhookHeaders = {
+		'X-Shopify-Access-Token': token,
+    "X-Shopify-Topic": "orders/create",
+		'X-Shopify-Hmac-Sha256': hmac,
+		'X-Shopify-Shop-Domain': shop,
+    "X-Shopify-API-Version": "2020-01",
+    "Content-Type": "application/json"
+	};
+
+	const webhookPayload = {
+		webhook: {
+      topic: "orders/create",
+      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+			format: 'json'
+		}
+	};
+
+	request
+		.post(webhookUrl, {
+			headers: webhookHeaders,
+			json: webhookPayload
+		})
+
+		.then((shopResponse) => {
+			console.log('webhook topic :', topic);
+      console.log("fial response is", shopResponse);
+
+      Store.findOne(
+      			{
+      				name: shop
+      			},
+      			function(err, data) {
+      				if (data) {
+      					console.log('store found in DB');
+      					// res.sendStatus(200).redirect('back');
+      					res.sendStatus(200);
+      					// res.redirect("back");
+      					Store.findOneAndUpdate(
+      						{
+      							name: shop
+      						},
+      						{
+      							$set: {
+      								data: webhookObj,
+      								uninstalled: false
+      							}
+      						},
+      						{
+      							new: true,
+      							useFindAndModify: false
+      						},
+      						(err, data) => {
+      							if (!err) {
+      								//   console.log("datacount + 1");
+      							} else {
+      								console.log('238 err-->', err);
+      							}
+      						}
+      					);
+      				}
+              else {
+					console.log('store !found in DB');
+					const store = new Store({
+            token: token,
+            name: shop,
+            hmac: hmac,
+            code: code
+          })
+          store.save(function(err, data) {
+						if (!err) {
+							console.log(`${shop} data store to DB`, data);
+						} else {
+							console.log(err);
+						}
+					});
+}
+});
+
+		})
+		.catch((error) => {
+			console.log('309 error-->', error);
+		});
+};
+
+
 
 //create webhook
 app.get("/webhook", (req, res) => {
+
+console.log("inside webhook code");
+
+    let shop = req.session.shop;
+  	let token = req.session.token;
+  	let hmac = req.session.hmac;
+
+    console.log("makeWebook", {shop, token, hmac});
+
+    console.log("makeWebook object", (req.session.shop, req.session.token, req.session.hmac));
+
   const webhookUrl = "https://" + shop + "/admin/api/2020-01/webhooks.json";
+
   const webhookHeaders = {
     "X-Shopify-Access-Token": tokenn,
     "X-Shopify-Topic": "orders/create",
@@ -353,10 +535,11 @@ app.get("/webhook", (req, res) => {
     "X-Shopify-API-Version": "2020-01",
     "Content-Type": "application/json",
   };
+
   const webhookPayload = {
     webhook: {
       topic: "orders/create",
-      address: `https://499297f8.ngrok.io/store/${shop}/orders/create`,
+      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
       format: "json",
     },
   };
@@ -1173,7 +1356,7 @@ app.post('/suppOrderFulfill/:store/:id', (req, res)=>{
   const orderID = req.params.id;
   const trackno = req.body.fulfillment.tracking_number
 
-request.post("https://499297f8.ngrok.io/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
+request.post("https://www.melisxpress.com/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
 .then(data=>{
 
 Orders.findOneAndUpdate(

@@ -323,7 +323,8 @@ router.post('/merchantLogin', async (req, res) => {
   let userInfo = {
     id: user._id,
     email: user.email,
-    category: user.category
+    category: user.category,
+    store: user.store
   };
 
   const token = jwt.sign(userInfo, process.env.TOKEN_SECRET);

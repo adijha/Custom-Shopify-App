@@ -17,12 +17,13 @@ getOrderDetails();
 const token = localStorage.getItem("token")
 let decode = jwt_decode(token)
 let str = decode.email;
-  let VendorString = str.substring(0, str.lastIndexOf("@"));
-  console.log(VendorString);
+  // let VendorString = str.substring(0, str.lastIndexOf("@"));
+  // console.log(VendorString);
+  let storeName = `${decode.store}.myshopify.com`
 
 
 const getOrderDetails = ()=>{
-  axios.get('/fulfilledOrders/'+VendorString)
+  axios.get('/fulfilledOrders/'+storeName.toLowerCase())
   .then(data=>{
     console.log("data is fulfil orders", data.data.orders)
     setOrderDetails(data.data.orders)

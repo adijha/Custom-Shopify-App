@@ -15,11 +15,12 @@ const Orders = () => {
   const token = localStorage.getItem("token");
   let decode = jwt_decode(token);
   let str = decode.email;
-  let VendorString = str.substring(0, str.lastIndexOf("@"));
-  console.log(VendorString);
+  let storeName = `${decode.store}.myshopify.com`
+  //let VendorString = str.substring(0, str.lastIndexOf("@"));
+  //console.log(VendorString);
 
   const getOrderDetails = () => {
-    axios.get("/orders/" + VendorString).then((data) => {
+    axios.get("/orders/" + storeName.toLowerCase()).then((data) => {
       console.log("data is orders", data.data.orders);
       setOrderDetails(data.data.orders);
     });
@@ -45,7 +46,7 @@ const Orders = () => {
     };
 
     axios
-      .post("/orders/" + VendorString + "/" + data.id, fulfilObject)
+      .post("/orders/" + storeName + "/" + data.id, fulfilObject)
       .then((response) => {
         if (response.status === 200) {
           console.log("orders fulfiled", response);
