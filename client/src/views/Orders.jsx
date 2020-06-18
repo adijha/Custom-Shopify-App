@@ -3,10 +3,12 @@ import axios from "axios";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import jwt_decode from "jwt-decode";
+import { NotificationManager } from 'react-notifications';
 
 const Orders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [msg, setMsg] = useState("");
+  const [expand, setExpand] = useState('');
 
   useEffect(() => {
     getOrderDetails();
@@ -20,40 +22,45 @@ const Orders = () => {
   //console.log(VendorString);
 
   const getOrderDetails = () => {
-    axios.get("/orders/" + storeName.toLowerCase()).then((data) => {
-      console.log("data is orders", data.data.orders);
-      setOrderDetails(data.data.orders);
+    console.log(decode.store);
+    axios.get("/api/merchantShopifyOrders/" + decode.store.toLowerCase()).then((data) => {
+      console.log("data is orders", data.data);
+      setOrderDetails(data.data);
     });
   };
 
+  const filterItems = (orderDetails.filter(plist=>{
+    return plist.pStatus.toLowerCase().includes('unpaid');
+  }))
+
   const handleClick = (data) => {
     console.log("data is", data);
-    const line_items_Array = [];
-    data.line_items.forEach((item, i) => {
-      line_items_Array.push({
-        id: item.id,
-      });
-    });
-
-    console.log("line_items_Array is", line_items_Array);
-
-    const fulfilObject = {
-      fulfillment: {
-        location_id: 35210428495,
-        tracking_number: null,
-        line_items: line_items_Array,
-      },
-    };
-
-    axios
-      .post("/orders/" + storeName + "/" + data.id, fulfilObject)
-      .then((response) => {
-        if (response.status === 200) {
-          console.log("orders fulfiled", response);
-          setMsg("Order Fulfilled Successfully");
-          getOrderDetails();
-        }
-      });
+    // const line_items_Array = [];
+    // data.line_items.forEach((item, i) => {
+    //   line_items_Array.push({
+    //     id: item.id,
+    //   });
+    // });
+    //
+    // console.log("line_items_Array is", line_items_Array);
+    //
+    // const fulfilObject = {
+    //   fulfillment: {
+    //     location_id: 35210428495,
+    //     tracking_number: null,
+    //     line_items: line_items_Array,
+    //   },
+    // };
+    //
+    // axios
+    //   .post("/orders/" + storeName + "/" + data.id, fulfilObject)
+    //   .then((response) => {
+    //     if (response.status === 200) {
+    //       console.log("orders fulfiled", response);
+    //       setMsg("Order Fulfilled Successfully");
+    //       getOrderDetails();
+    //     }
+    //  });
     // const orderArray = [];
     //
     // orderDetails.forEach((item, i) => {
@@ -83,30 +90,34 @@ const Orders = () => {
                   <Table striped hover>
                     <thead>
                       <tr>
-                        <th>Id</th>
-                        <th>Name & Quantity</th>
-                        <th>Currency</th>
-                        <th>Total Amount</th>
-                        <th>Payment</th>
+                        <th>Order Id</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Customer Payment</th>
+                        <th>Melisxpress Payment</th>
+                        <th>Cost</th>
+                        <th>Shipping</th>
+                        <th>Order Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {orderDetails.map((item, key) => {
+                      {filterItems.map((item, key) => {
                         return (
-                          <tr key={key}>
-                            <td>{item.id}</td>
-                            <td>
-                              {item.line_items.map((data) => {
-                                return (
-                                  <li>
-                                    {data.name} - {data.quantity}Qty.
-                                  </li>
-                                );
-                              })}
-                            </td>
-                            <td>{item.currency}</td>
-                            <td>{item.total_price}</td>
-                            <td>{item.financial_status}</td>
+                          <>
+                          <tr key={key}   onClick={() => {
+                              if (expand === item.orderId) {
+                                setExpand(null);
+                              } else {
+                                setExpand(item.orderId);
+                              }
+                            }}>
+                            <td>{item.orderId}</td>
+                            <td>{item.date}</td>
+                            <td>{item.customer_detail.name}</td>
+                            <td>{item.paymentMode||'NA'}</td>
+                            <td>{item.pStatus}</td>
+                            <td>${item.total_amount}</td>
+                            <td>{item.shipping||'NA'}</td>
                             <td>
                               <button
                                 classsName="btn btn-primary"
@@ -121,6 +132,34 @@ const Orders = () => {
                               </button>
                             </td>
                           </tr>
+
+                            {expand === item.orderId ? (
+                              <tr key={9898989}>
+                              <td colSpan='1'>
+                              <th>Product Detail</th>
+                              <tr>
+                              {item.productImage.length>0?(<img
+                                className='product-logo'
+                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`
+                              }/>):("NA")}
+                              </tr>
+
+                              </td>
+
+                              <td colSpan='2'>
+                              <tr>{item.productName}</tr>
+                              </td>
+
+                              <td colSpan='2'>
+                              <tr>{item.sku}</tr>
+                              </td>
+
+                              <td colSpan='1'>
+                              <tr>${item.item_price}x{item.quantity}</tr>
+                              </td>
+                              </tr>
+                            ):(null)}
+                          </>
                         );
                       })}
                     </tbody>
