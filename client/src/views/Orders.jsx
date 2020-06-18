@@ -8,6 +8,7 @@ import { NotificationManager } from 'react-notifications';
 const Orders = () => {
   const [orderDetails, setOrderDetails] = useState([]);
   const [msg, setMsg] = useState("");
+  const [found, setFound] = useState("")
   const [expand, setExpand] = useState('');
 
   useEffect(() => {
@@ -25,7 +26,12 @@ const Orders = () => {
     console.log(decode.store);
     axios.get("/api/merchantShopifyOrders/" + decode.store.toLowerCase()).then((data) => {
       console.log("data is orders", data.data);
-      setOrderDetails(data.data);
+      if (data.data.length>0) {
+        setOrderDetails(data.data);
+      }
+      else{
+        setFound("No order found")
+      }
     });
   };
 
@@ -100,6 +106,7 @@ const Orders = () => {
                         <th>Order Status</th>
                       </tr>
                     </thead>
+                    <tbody>{found}</tbody>
                     <tbody>
                       {filterItems.map((item, key) => {
                         return (
