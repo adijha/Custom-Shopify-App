@@ -944,7 +944,16 @@ app.get("/supplierRevenue/:id", async (req, res) => {
 
   const data = await Orders.find({});
 
+  let dataTempArray = [];
+
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      dataTempArray.push(data[i])
+    }
+  });
+
+
+  dataTempArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
@@ -999,7 +1008,17 @@ app.get("/supplierOrders/:id", async (req, res) => {
 
   const data = await Orders.find({});
 
+  let checkOrderStatus = []
+
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      checkOrderStatus.push(data[i])
+    }
+  });
+
+
+
+  checkOrderStatus.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
@@ -1055,7 +1074,16 @@ app.get("/topProducts/:id", async (req, res) => {
 
   const data = await Orders.find({});
 
+  let tempTopArray = []
+
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      tempTopArray.push(data[i])
+    }
+  });
+
+
+  tempTopArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
@@ -1119,7 +1147,16 @@ app.get("/supplierGraphRevenue/:id", async (req, res) => {
 
   const data = await Orders.find({});
 
+  let tempGraphArray = []
+
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      tempGraphArray.push(data[i])
+    }
+  });
+
+
+  tempGraphArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
