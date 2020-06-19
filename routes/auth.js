@@ -2228,6 +2228,17 @@ router.post('/requestProduct', async (req, res)=>{
 router.get('/getRequestProduct', async (req, res)=>{
   try {
     let reqData = await RequestProduct.find();
+    let merchantData = await MerchantUser.find();
+    let newData = []
+    reqData.forEach((data, i) => {
+      merchantData.forEach((item, j) => {
+        if (reqData[i].merchantId === merchantData[j]._id.toString()) {
+          reqData[i].merchantId = merchantData[j].firstName+" " + merchantData[j].lastName
+        }
+      });
+
+    });
+    console.log("newData", reqData);
     res.send(reqData)
   } catch (error) {
     res.send(error)

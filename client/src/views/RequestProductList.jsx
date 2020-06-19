@@ -26,8 +26,8 @@ const RequestProductList = () => {
         <Row>
           <Col md={12}>
             <Card
-              title='Merchant List'
-              category={'Total Merchant :' + requestList.length}
+              title='Requested Product List'
+              category={'Total Requested Product :' + requestList.length}
               ctTableFullWidth
               ctTableResponsive
               content={
@@ -35,7 +35,7 @@ const RequestProductList = () => {
                   <thead>
                     <tr>
                       <th>S.No</th>
-                      <th>Merchant Id</th>
+                      <th>Merchant Name</th>
                       <th>Date</th>
                       <th>Name</th>
                       <th>Description</th>
