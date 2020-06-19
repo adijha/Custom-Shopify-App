@@ -12,6 +12,7 @@ import AdminProfile from './views/AdminProfile.jsx';
 import AdminOrderDetails from './views/AdminOrderDetails';
 import AdminPayment from './views/AdminPayment';
 import TransactionHistory from './views/TransactionHistory';
+import RequestProductList from './views/RequestProductList'
 
 const dashboardRoutes = [
   {
@@ -93,6 +94,14 @@ const dashboardRoutes = [
     name: 'Transaction History',
     icon: 'pe-7s-cash',
     component: TransactionHistory,
+    layout: '/admin',
+  },
+
+  {
+    path: '/requested-product',
+    name: 'Requested Product',
+    icon: 'pe-7s-cash',
+    component: RequestProductList,
     layout: '/admin',
   },
   {
