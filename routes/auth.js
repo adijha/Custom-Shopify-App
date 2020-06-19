@@ -20,6 +20,7 @@ const axios = require('axios');
 var nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
+const RequestProduct = require('../model/RequestProduct')
 
 const {
   revenueSupplier,
@@ -2202,5 +2203,35 @@ router.get('/ordersList/:id', async (req, res) => {
   // console.log(totalOrders);
   //   res.status(200).json(totalOrders)
 });
+
+//requet product from merchant
+router.post('/requestProduct', async (req, res)=>{
+
+  const requestProduct = await new RequestProduct({
+    merchantId:req.body.id,
+    date:req.body.d,
+    name:req.body.name,
+    description:req.body.description,
+    link:req.body.link
+  });
+
+  try {
+    const saveRequest = await requestProduct.save();
+    console.log(saveRequest, "request saved successfully");
+    res.send(saveRequest)
+  } catch (error) {
+    res.send(error)
+  }
+})
+
+//get Requested product list
+router.get('/getRequestProduct', async (req, res)=>{
+  try {
+    let reqData = await RequestProduct.find();
+    res.send(reqData)
+  } catch (error) {
+    res.send(error)
+  }
+})
 
 module.exports = router;

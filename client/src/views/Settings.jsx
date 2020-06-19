@@ -38,7 +38,7 @@ const SupplierOrders = () => {
     e.preventDefault();
     try {
       if (password==='') {
-        NotificationManager.error("something unusual happened");
+        NotificationManager.error("Please Enter Password");
       }
       else {
         let res = await axios.post("/settingsUpdate", { location, name, id, businessName, phoneNo, password });

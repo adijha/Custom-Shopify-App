@@ -6,6 +6,7 @@ import "../assets/css/settings.css";
 import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import CustomButton from "../components/CustomButton/CustomButton";
+import moment from 'moment';
 
 const RequestProduct = () => {
   const [name, setName] = useState("");
@@ -27,7 +28,23 @@ const RequestProduct = () => {
 
   const updateSettings = async (e) => {
     e.preventDefault()
-    console.log({name, link, description});
+    let d = moment().format('DD-MM-YY')
+
+    console.log({name, link, description, d, id});
+    axios.post('/api/requestProduct', {name, link, description, d, id})
+    .then(res=>{
+      if (res.data) {
+        NotificationManager.success(
+          'Request Product Submitted Successfully'
+        );
+        setName("")
+        setDescription("")
+        setLink("")
+      }
+      else{
+        NotificationManager.error("something unusual happened");
+      }
+    })
   };
 
   return (
