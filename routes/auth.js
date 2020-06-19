@@ -222,6 +222,82 @@ let finalData = []
   res.send(finalData)
 })
 
+
+//merchant order sent to supplier after payment
+router.get('/supplierOrderMerchant', async (req, res)=>{
+  console.log(req.params.store);
+    const orderData = await Orders.find();
+    let newOrderArray = []
+    orderData.forEach((item, i) => {
+      item.products.forEach((product, j) => {
+        if (product.sku !== undefined) {
+          newOrderArray.push({
+            orderId: item.product_name,
+            total_amount: item.price,
+            date: item.created_on,
+            paymentMode: item.paymentMode,
+            customer_name: item.customer,
+
+            sku: product.sku,
+            item_price: product.price,
+            quantity: product.quantity,
+            store: product.store,
+            pStatus: item.pStatus
+          })
+        }
+      });
+    });
+
+    checkStore = []
+
+    newOrderArray.forEach((item, i) => {
+      if (item.store.toLowerCase()===req.params.store) {
+        checkStore.push({
+          orderId: item.orderId,
+          total_amount: item.total_amount,
+          date: item.date,
+          paymentMode: item.paymentMode,
+          customer_detail: item.customer_name,
+          item_price: item.item_price,
+          sku: item.sku,
+          productImage:[],
+          quantity: item.quantity,
+          productName: '',
+          shippingCharge: {},
+          store: item.store,
+          pStatus: item.pStatus
+        })
+      }
+    });
+
+    let productData = await Products.find()
+
+    productData.forEach((product, i) => {
+      checkStore.forEach((check, index) => {
+        if (productData[i].code === checkStore[index].sku)
+        {
+          checkStore[index].productImage= productData[i].productImage;
+          checkStore[index].productName = productData[i].name
+          checkStore[index].shippingCharge = productData[i].shippingCharge
+        }
+      });
+    });
+  let finalData = []
+    checkStore.forEach((item, i) => {
+      if (checkStore[i].pStatus==='Paid') {
+          finalData.push(checkStore[i])
+      }
+    });
+    console.log("final data array", finalData);
+    // const filterItems = (checkStore.filter(plist=>{
+    //   return plist.pStatus ==='Paid';
+    // }))
+    // console.log("order Deetails length", checkStore.length);
+    // console.log("result is paid order merchant", filterItems.length);
+    res.send(finalData)
+})
+
+
 //update merchant order status and sent to supplier
 router.patch('/supplierOrderFromMerchant', async (req, res)=>{
 
@@ -2076,6 +2152,7 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: subItem.store,
           paymentMode: item.paymentMode,
+          pStatus: item.pStatus
         });
       }
     });
@@ -2089,7 +2166,7 @@ router.get('/ordersList/:id', async (req, res) => {
 
   itemArray.forEach((item, i) => {
     productData.forEach((product, j) => {
-      if (product.code == item.sku) {
+      if ((product.code == item.sku)) {
         let dataObj = {
           id: item.id,
           productId: item.productId,
@@ -2104,14 +2181,23 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: item.store,
           paymentMode: item.paymentMode,
+          pStatus: item.pStatus
         };
         // console.log(dataObj);
         makeList.push(dataObj);
       }
     });
   });
-  // console.log({ makeList });
-  res.status(200).json(makeList);
+
+  let finalData = []
+    makeList.forEach((item, i) => {
+      if (makeList[i].pStatus==='Paid') {
+          finalData.push(makeList[i])
+      }
+    });
+
+   console.log(finalData , "supplier order");
+  res.status(200).json(finalData);
   // let totalOrders =   calOrder.reduce((a,b)=>a+b, 0)
   // console.log(totalOrders);
   //   res.status(200).json(totalOrders)

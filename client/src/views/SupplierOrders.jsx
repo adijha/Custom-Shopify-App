@@ -95,7 +95,7 @@ const SupplierOrders = () => {
                             <td>{item.id || 'none'}</td>
                             <td>{item.sku || 'none'}</td>
                             <td>{item.customer.name || 'none'}</td>
-                            <td>{item.paymentMode || 'none'}</td>
+                            <td>{item.pStatus || 'none'}</td>
                             <td>{item.fullfillmentStaus || 'none'}</td>
                             <td>{item.price || 'none'}</td>
                             <td>{item.invoice || 'none'}</td>
