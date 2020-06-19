@@ -25,7 +25,7 @@ import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
 import MerchantProfileSetting from "./views/MerchantProfileSetting.jsx"
 import MerchantDashboard from "./views/MerchantDashboard.jsx"
-
+import RequestProduct from './views/RequestProduct.jsx'
 
 const dashboardRoutes = [
   {
@@ -56,10 +56,10 @@ const dashboardRoutes = [
     layout: "/merchant"
   },
   {
-    path: "/fullfilled",
-    name: "Fulfilled Orders",
+    path: "/request-product",
+    name: "Product Request Form",
     icon: "pe-7s-bell",
-    component: FulfilledOrders,
+    component: RequestProduct,
     layout: "/merchant"
   },
   {
