@@ -11,7 +11,7 @@ const Auth = () =>{
     <div>
     {decode.category==="admin"?(<Redirect to= "/admin/dashboard"/>):null}
     {decode.category==="supplier"?(<Redirect to= "/supplier/dashboard"/>):null}
-    {decode.category==="merchant"?(<Redirect to= "/merchant"/>):null}
+    {decode.category==="merchant"?(<Redirect to= "/merchant/dashboard"/>):null}
     </div>
   )
 

@@ -167,6 +167,7 @@ console.log(req.params.store);
           item_price: product.price,
           quantity: product.quantity,
           store: product.store,
+          pStatus: item.pStatus
         })
       }
     });
@@ -189,7 +190,7 @@ console.log(req.params.store);
         productName: '',
         shippingCharge: {},
         store: item.store,
-        pStatus: "unpaid"
+        pStatus: item.pStatus
       })
     }
   });
@@ -206,8 +207,50 @@ console.log(req.params.store);
       }
     });
   });
-  console.log("result is order merchant", checkStore);
-  res.send(checkStore)
+let finalData = []
+  checkStore.forEach((item, i) => {
+    if (checkStore[i].pStatus==='unpaid') {
+        finalData.push(checkStore[i])
+    }
+  });
+  console.log("final data array", finalData);
+  // const filterItems = (checkStore.filter(plist=>{
+  //   return plist.pStatus ==='Paid';
+  // }))
+  // console.log("order Deetails length", checkStore.length);
+  // console.log("result is paid order merchant", filterItems.length);
+  res.send(finalData)
+})
+
+//update merchant order status and sent to supplier
+router.patch('/supplierOrderFromMerchant', async (req, res)=>{
+
+
+    try {
+      const data = await Orders.findOneAndUpdate(
+        { product_name: req.body.orderId },
+        {
+          pStatus: "Paid",
+
+        },{
+          new: true,
+          useFindAndModify: false,
+        },
+        (err, result) => {
+          if (!err) {
+            console.log("update result", result);
+            res.send('success');
+          } else {
+            console.log("error ", err);
+          }
+        }
+      );
+    } catch (error) {
+      res.json({ message: error.message });
+    }
+
+
+  //console.log("data for save supplier order", req.body.name);
 })
 
 //order Details section in admin

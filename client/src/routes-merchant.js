@@ -24,17 +24,17 @@ import ProductLayout from "./layouts/Products.jsx";
 import Orders from "./views/Orders.jsx"
 import FulfilledOrders from "./views/FulfilledOrders.jsx"
 import MerchantProfileSetting from "./views/MerchantProfileSetting.jsx"
-
+import MerchantDashboard from "./views/MerchantDashboard.jsx"
 
 
 const dashboardRoutes = [
-{/*}  {
+  {
     path: "/dashboard",
     name: "Dashboard",
     icon: "pe-7s-graph",
-    component: Dashboard,
+    component: MerchantDashboard,
     layout: "/merchant"
-  },*/},
+  },
   {
     path: "/collection",
     name: "Products Colection",

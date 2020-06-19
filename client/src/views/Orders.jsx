@@ -35,12 +35,29 @@ const Orders = () => {
     });
   };
 
-  const filterItems = (orderDetails.filter(plist=>{
-    return plist.pStatus.toLowerCase().includes('unpaid');
-  }))
+  // const filterItems = (orderDetails.filter(plist=>{
+  //     return plist.pStatus ==='Paid';
+  //    }))
 
   const handleClick = (data) => {
-    console.log("data is", data);
+    let obj = {
+      orderId: data.orderId
+    }
+
+    console.log("obj is", obj);
+    axios.patch('/api/supplierOrderFromMerchant', obj)
+    .then (res=>{
+      if (res.data.includes('success')) {
+        NotificationManager.success('Fulfilled Successfully');
+        getOrderDetails()
+        //console.log(filterItems.length, "length of filterItems")
+      }
+     else {
+      NotificationManager.error('Something wrong');
+      }
+
+    })
+    //console.log("data is", data);
     // const line_items_Array = [];
     // data.line_items.forEach((item, i) => {
     //   line_items_Array.push({
@@ -108,7 +125,7 @@ const Orders = () => {
                     </thead>
                     <tbody>{found}</tbody>
                     <tbody>
-                      {filterItems.map((item, key) => {
+                      {orderDetails.map((item, key) => {
                         return (
                           <>
                           <tr key={key}   onClick={() => {
@@ -166,7 +183,9 @@ const Orders = () => {
                               </td>
                               </tr>
                             ):(null)}
+
                           </>
+
                         );
                       })}
                     </tbody>
