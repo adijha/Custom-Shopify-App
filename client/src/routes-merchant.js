@@ -26,6 +26,8 @@ import FulfilledOrders from "./views/FulfilledOrders.jsx"
 import MerchantProfileSetting from "./views/MerchantProfileSetting.jsx"
 import MerchantDashboard from "./views/MerchantDashboard.jsx"
 import RequestProduct from './views/RequestProduct.jsx'
+import MerchantSupport from './views/MerchantSupport.jsx'
+
 
 const dashboardRoutes = [
   {
@@ -68,7 +70,13 @@ const dashboardRoutes = [
     icon: "pe-7s-bell",
     component: MerchantProfileSetting,
     layout: "/merchant"
+  },
+  {
+    path: "/support",
+    name: "Support",
+    icon: "pe-7s-bell",
+    component: MerchantSupport,
+    layout: "/merchant"
   }
-
 ];
 export default dashboardRoutes;
