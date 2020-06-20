@@ -524,7 +524,7 @@ var dataSales = {
 };
 var optionsSales = {
   low: 0,
-  high: 5000,
+  high: 100000,
   showArea: false,
   height: "245px",
   axisX: {

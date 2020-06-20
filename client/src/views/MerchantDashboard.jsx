@@ -78,7 +78,7 @@ const MerchantDashboard = () => {
 	};
 
 	const graphData = () => {
-		axios.get('/supplierGraphRevenue/' + decode.id).then((response) => {
+		axios.get('/merchantDasboardGraph/' + decode.store).then((response) => {
 			let data = {
 				labels: response.data.date,
 				series: [ response.data.revenue ]
@@ -98,7 +98,34 @@ const MerchantDashboard = () => {
 		<h2 className="text-center">Welcome Back</h2>
 		<br/>
 		<p className="text-center">Lets see what happened while you are away.</p>
+		<br/>
+		<div className='content'>
+			<Grid fluid>
+				<Row>
+					<Col md={8}>
+						<Card
+							statsIcon='fa fa-history'
+							id='chartHours'
+							title='Revenue Chart'
+							stats='Updated 3 minutes ago'
+							content={
+								<div className='ct-chart'>
+									<ChartistGraph
+										data={graphPlot}
+										type='Bar'
+										options={optionsSales}
+										responsiveOptions={responsiveSales}
+									/>
+								</div>
+							}
+						/>
+					</Col>
 
+
+				</Row>
+
+			</Grid>
+		</div>
 		</div>
 	);
 };

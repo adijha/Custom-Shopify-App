@@ -29,7 +29,7 @@ const MerchantUser = require("./model/MerchantUser");
 const Store = require("./model/Store");
 const session = require('express-session');
 const mongoConnect = require('connect-mongo')(session);
-
+const moment = require('moment')
 
 //connect Db
 mongoose.connect(
@@ -1214,6 +1214,53 @@ app.get("/supplierGraphRevenue/:id", async (req, res) => {
   //console.log({finalGraphObj});
   res.status(200).json(finalGraphObj);
 });
+
+//merchant graphData
+app.get('/merchantDasboardGraph/:storeName', async (req, res)=>{
+console.log("storeName", req.params.storeName);
+  const orderData = await Orders.find()
+
+  let newOrderArray =[]
+
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+      if (product.store===req.params.storeName) {
+        newOrderArray.push(orderData[i])
+      }
+    });
+  });
+
+  var holder = {};
+
+  newOrderArray.forEach(function (d) {
+    if (holder.hasOwnProperty(moment(d.created_on).format("MMM Do YY"))) {
+      holder[moment(d.created_on).format("MMM Do YY")] = holder[moment(d.created_on).format("MMM Do YY")] + d.price;
+    } else {
+      holder[moment(d.created_on).format("MMM Do YY")] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ date: prop, price: holder[prop] });
+  }
+  console.log("obj2", obj2);
+let dateArray=[]
+let revenueArray = []
+
+obj2.forEach((item, i) => {
+  dateArray.push(obj2[i].date)
+  revenueArray.push(obj2[i].price)
+});
+
+let finalGraphObj = {
+  date: dateArray,
+  revenue: revenueArray,
+};
+console.log("finalGraphObj", finalGraphObj);
+res.send(finalGraphObj)
+})
 
 //order create callback api
 app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
