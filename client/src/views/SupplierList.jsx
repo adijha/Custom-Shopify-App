@@ -229,7 +229,7 @@ const handleSort = e =>{
                           <td>{item.email}</td>
                           <td>{item.product}</td>
                           <td>{item.order}</td>
-                          <td>{item.revenue}</td>
+                          <td>${item.revenue}</td>
                           <td>
                             <button
                               className='btn btn-primary btn-sm'

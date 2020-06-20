@@ -6,7 +6,16 @@ const revenueSupplier = async (id) =>{
   // console.log("id is in resuable", id);
   let itemArray = [];
   const data = await Orders.find({});
+
+  let orderdataArr = []
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      orderdataArr.push(data[i])
+    }
+  });
+
+
+  orderdataArr.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
@@ -54,8 +63,14 @@ const orderSupplier = async (id) =>{
   let itemArray = [];
 
   const data = await Orders.find({});
-
+  let orderdataArr = []
   data.forEach((item, i) => {
+    if (data[i].pStatus==="Paid") {
+      orderdataArr.push(data[i])
+    }
+  });
+
+  orderdataArr.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
         itemArray.push({
