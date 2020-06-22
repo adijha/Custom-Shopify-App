@@ -24,6 +24,7 @@ const Orders = () => {
 
   const getOrderDetails = () => {
     console.log(decode.store);
+    
     axios.get("/api/merchantShopifyOrders/" + decode.store.toLowerCase()).then((data) => {
       console.log("data is orders", data.data);
       if (data.data.length>0) {
@@ -47,7 +48,7 @@ const Orders = () => {
     console.log("obj is", obj);
     axios.patch('/api/supplierOrderFromMerchant', obj)
     .then (res=>{
-      if (res.data.includes('success')) {
+      if (res.data.length>0) {
         NotificationManager.success('Fulfilled Successfully');
         getOrderDetails()
         //console.log(filterItems.length, "length of filterItems")

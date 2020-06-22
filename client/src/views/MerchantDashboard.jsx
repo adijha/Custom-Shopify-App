@@ -40,49 +40,50 @@ import {
 import axios from 'axios';
 
 const MerchantDashboard = () => {
-	const [ productCount, setProductCount ] = useState('');
 	const [ revenue, setRevenue ] = useState('');
 	const [ order, setOrder ] = useState('');
 	const [ graphPlot, setGraphPlot ] = useState({});
 	const [ topProducts, setTopProducts ] = useState([]);
+	const [fulfilOrder, setFulfilOrder] = useState();
 
 	const token = localStorage.getItem('token');
 	const decode = jwt_decode(token);
 
 	useEffect(() => {
 		getProductData();
-		income();
 		totalOrders();
 		graphData();
 		top();
 	}, []);
 
 	const getProductData = () => {
-		axios.get('/api/supplier/product/' + decode.id).then((products) => {
-			console.log(products.data.length);
-			setProductCount(products.data.length);
+		let checkStore = decode.store.toLowerCase().toString();
+    console.log("new value of store", checkStore);
+		axios.get('/api/merchantShopifyOrders/' + checkStore).then((res) => {
+			setFulfilOrder(res.data.length);
 		});
 	};
 
-	const income = () => {
-		axios.get('/supplierRevenue/' + decode.id).then((rev) => {
-			setRevenue(rev.data);
-		});
-	};
 
 	const totalOrders = () => {
-		axios.get('/supplierOrders/' + decode.id).then((ord) => {
+		let checkStore = decode.store.toLowerCase().toString();
+    console.log("new value of store", checkStore);
+		axios.get('/MerchantDashboardOrder/' + checkStore).then((ord) => {
 			console.log('orders are', ord.data);
 			setOrder(ord.data);
 		});
 	};
 
 	const graphData = () => {
-		axios.get('/merchantDasboardGraph/' + decode.store).then((response) => {
+		let checkStore = decode.store.toLowerCase().toString();
+    console.log("new value of store", checkStore);
+		axios.get('/merchantDasboardGraph/' + checkStore).then((response) => {
 			let data = {
 				labels: response.data.date,
 				series: [ response.data.revenue ]
 			};
+			let income = response.data.revenue.reduce((a,b)=>a+b, 0)
+			setRevenue(income)
 			setGraphPlot(data);
 		});
 	};
@@ -107,7 +108,7 @@ const MerchantDashboard = () => {
 							statsIcon='fa fa-history'
 							id='chartHours'
 							title='Revenue Chart'
-							stats='Updated 3 minutes ago'
+							stats='Updated'
 							content={
 								<div className='ct-chart'>
 									<ChartistGraph
@@ -120,8 +121,33 @@ const MerchantDashboard = () => {
 							}
 						/>
 					</Col>
-
-
+					<Col lg={4} sm={6}>
+						<StatsCard
+							bigIcon={<i className='fa fa-user text-info' />}
+							statsText='Total Orders'
+							statsValue={order}
+							statsIcon={<i className='fa fa-refresh' />}
+							statsIconText='Updated'
+						/>
+					</Col>
+					<Col lg={4} sm={6}>
+						<StatsCard
+							bigIcon={<i className='fa fa-user text-info' />}
+							statsText='Total Revenue'
+							statsValue={revenue}
+							statsIcon={<i className='fa fa-refresh' />}
+							statsIconText='Updated'
+						/>
+					</Col>
+					<Col lg={4} sm={6}>
+						<StatsCard
+							bigIcon={<i className='fa fa-user text-info' />}
+							statsText='Orders Fulfill Left'
+							statsValue={fulfilOrder}
+							statsIcon={<i className='fa fa-refresh' />}
+							statsIconText='Updated'
+						/>
+					</Col>
 				</Row>
 
 			</Grid>

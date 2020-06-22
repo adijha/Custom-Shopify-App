@@ -1185,24 +1185,146 @@ app.get('/supplierGraphRevenue/:id', async (req, res) => {
   res.status(200).json(finalGraphObj);
 });
 
+
+//merchant Orders count in Analytics parts
+app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
+  console.log('storeName', req.params.storeName);
+    const orderData = await Orders.find();
+    let newOrderArray = []
+    orderData.forEach((item, i) => {
+      item.products.forEach((product, j) => {
+        if (product.sku !== undefined) {
+          newOrderArray.push({
+            orderId: item.product_name,
+            total_amount: item.price,
+            date: item.created_on,
+            paymentMode: item.paymentMode,
+            customer_name: item.customer,
+
+            sku: product.sku,
+            item_price: product.price,
+            quantity: product.quantity,
+            store: product.store,
+            pStatus: item.pStatus
+          })
+        }
+      });
+    });
+
+    let checkStore = []
+
+    newOrderArray.forEach((item, i) => {
+      if (item.store.toLowerCase()===req.params.storeName) {
+        checkStore.push({
+          orderId: item.orderId,
+          total_amount: item.total_amount,
+          date: item.date,
+          paymentMode: item.paymentMode,
+          customer_detail: item.customer_name,
+          item_price: item.item_price,
+          sku: item.sku,
+          productImage:[],
+          quantity: item.quantity,
+          productName: '',
+          shippingCharge: {},
+          store: item.store,
+          pStatus: item.pStatus
+        })
+      }
+    });
+
+    let productData = await Products.find()
+
+    productData.forEach((product, i) => {
+      checkStore.forEach((check, index) => {
+        if (productData[i].code === checkStore[index].sku)
+        {
+          checkStore[index].productName = productData[i].name
+        }
+      });
+    });
+  // let finalData = []
+  //   checkStore.forEach((item, i) => {
+  //     if (checkStore[i].pStatus==='unpaid') {
+  //         finalData.push(checkStore[i])
+  //     }
+  //   });
+    //console.log("final data array", checkStore.length);
+    res.status(200).json(checkStore.length)
+});
+
+
 //merchant graphData
 app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   console.log('storeName', req.params.storeName);
   const orderData = await Orders.find();
 
   let newOrderArray = [];
+  //
+  // orderData.forEach((item, i) => {
+  //   item.products.forEach((product, j) => {
+  //     if (product.store.toLowerCase() === req.params.storeName) {
+  //       newOrderArray.push(orderData[i]);
+  //     }
+  //   });
+  // });
+  //
+  //
+
 
   orderData.forEach((item, i) => {
     item.products.forEach((product, j) => {
-      if (product.store === req.params.storeName) {
-        newOrderArray.push(orderData[i]);
+      if (product.sku !== undefined) {
+        newOrderArray.push({
+          orderId: item.product_name,
+          price: item.price,
+          created_on: item.created_on,
+          store: product.store,
+          sku: product.sku,
+
+
+        })
       }
     });
   });
 
+
+  let checkStore = []
+
+  newOrderArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.storeName) {
+      checkStore.push({
+        orderId: item.orderId,
+        price: item.price,
+        created_on: item.created_on,
+        productName: '',
+        store: item.store,
+        sku: item.sku,
+
+      })
+    }
+  });
+
+
+
+  let productData = await Products.find()
+
+  productData.forEach((product, i) => {
+    checkStore.forEach((check, index) => {
+      if (productData[i].code === checkStore[index].sku)
+      {
+        checkStore[index].productName = productData[i].name
+      }
+    });
+  });
+
+
+
+
+
   var holder = {};
 
-  newOrderArray.forEach(function (d) {
+  checkStore.forEach(function (d) {
     if (holder.hasOwnProperty(moment(d.created_on).format('MMM Do YY'))) {
       holder[moment(d.created_on).format('MMM Do YY')] =
         holder[moment(d.created_on).format('MMM Do YY')] + d.price;
@@ -1229,9 +1351,12 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
     date: dateArray,
     revenue: revenueArray,
   };
-  console.log('finalGraphObj', finalGraphObj);
+  //console.log('finalGraphObj', finalGraphObj);
   res.send(finalGraphObj);
 });
+
+
+
 
 //order create callback api
 app.post('/store/:shop/:topic/:subtopic', async function (request, response) {

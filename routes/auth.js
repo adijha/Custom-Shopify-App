@@ -315,8 +315,7 @@ router.patch('/supplierOrderFromMerchant', async (req, res)=>{
         },
         (err, result) => {
           if (!err) {
-            console.log("update result", result);
-            res.send('success');
+            res.send(result);
           } else {
             console.log("error ", err);
           }
