@@ -1,66 +1,64 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const dotenv = require("dotenv").config();
-const cookie = require("cookie");
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
-const nonce = require("nonce")();
-const querystring = require("querystring");
-const request = require("request-promise");
-const path = require("path");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const fileUpload = require("express-fileupload");
-const csv = require("csvtojson");
+const dotenv = require('dotenv').config();
+const cookie = require('cookie');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const nonce = require('nonce')();
+const querystring = require('querystring');
+const request = require('request-promise');
+const path = require('path');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fileUpload = require('express-fileupload');
+const csv = require('csvtojson');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
-  "read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders";
-const forwardingAddress = "https://www.melisxpress.com";
- let hmacc, tokenn;
+  'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
+const forwardingAddress = 'https://www.melisxpress.com';
+let hmacc, tokenn;
 // let shop;
-let topic = "orders/create";
-const Orders = require("./model/Orders");
-const Products = require("./model/Products");
-const ProductCopy = require("./model/ProductCopy");
-const User = require("./model/User");
-const MerchantUser = require("./model/MerchantUser");
-const Store = require("./model/Store");
+let topic = 'orders/create';
+const Orders = require('./model/Orders');
+const Products = require('./model/Products');
+const ProductCopy = require('./model/ProductCopy');
+const User = require('./model/User');
+const MerchantUser = require('./model/MerchantUser');
+const Store = require('./model/Store');
 const session = require('express-session');
 const mongoConnect = require('connect-mongo')(session);
-const moment = require('moment')
+const moment = require('moment');
 
 //connect Db
 mongoose.connect(
   process.env.DB_CONNECT,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Db is connected")
+  () => console.log('Db is connected')
 );
 
 app.use(
-	session({
-		secret: 'mylittleSecrets.',
-		resave: false,
-		saveUninitialized: false,
-		store: new mongoConnect({
-			mongooseConnection: mongoose.connection
-		})
-	})
+  session({
+    secret: 'mylittleSecrets.',
+    resave: false,
+    saveUninitialized: false,
+    store: new mongoConnect({
+      mongooseConnection: mongoose.connection,
+    }),
+  })
 );
-app.use(function(req, res, next) {
-	res.locals.session = req.session;
-	next();
+app.use(function (req, res, next) {
+  res.locals.session = req.session;
+  next();
 });
 
 //Import Route
-const authRoute = require("./routes/auth");
+const authRoute = require('./routes/auth');
 // const postroute = require('./routes/posts');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 // app.use(fileUpload({
 //   useTempFiles : true,
@@ -70,66 +68,66 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 //Route Middleware
-app.use("/api", authRoute);
+app.use('/api', authRoute);
 //app.use('/shopify', postroute);
 
 //Shopify install and token generate route
 
-app.get("/shopify", (req, res) => {
+app.get('/shopify', (req, res) => {
   // console.log("inside /shopify");
   // shop = req.query.shop;
-	let shop = req.query.shop;
+  let shop = req.query.shop;
   req.session.shop = req.query.shop;
 
-  console.log("shop is ", shop);
+  console.log('shop is ', shop);
   if (shop) {
     const state = nonce();
-    const redirectUri = forwardingAddress + "/shopify/callback";
+    const redirectUri = forwardingAddress + '/shopify/callback';
     const installUrl =
-      "https://" +
+      'https://' +
       shop +
-      "/admin/oauth/authorize?client_id=" +
+      '/admin/oauth/authorize?client_id=' +
       apiKey +
-      "&scope=" +
+      '&scope=' +
       scopes +
-      "&state=" +
+      '&state=' +
       state +
-      "&redirect_uri=" +
+      '&redirect_uri=' +
       redirectUri;
 
     //res.cookie("state", state);
-    		res.cookie(req.session.shop, state);
+    res.cookie(req.session.shop, state);
     res.redirect(installUrl);
   } else {
     return res
       .status(400)
       .send(
-        "Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request"
+        'Missing shop parameter. Please add ?shop=your-development-shop.myshopify.com to your request'
       );
   }
 });
 
-app.get("/shopify/callback", (req, res) => {
+app.get('/shopify/callback', (req, res) => {
   let { shop, hmac, code, state } = req.query;
   //const stateCookie = cookie.parse(req.headers.cookie).state;
-	const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
+  const stateCookie = cookie.parse(req.headers.cookie)[`${shop}`];
 
   if (state !== stateCookie) {
-    return res.status(403).send("Request origin cannot be verified");
+    return res.status(403).send('Request origin cannot be verified');
   }
 
-  console.log("makeWebook in callback", {shop, code, hmac});
+  console.log('makeWebook in callback', { shop, code, hmac });
 
   if (shop && hmac && code) {
     // DONE: Validate request is from Shopify
     const map = Object.assign({}, req.query);
-    delete map["signature"];
-    delete map["hmac"];
+    delete map['signature'];
+    delete map['hmac'];
     const message = querystring.stringify(map);
-    const providedHmac = Buffer.from(hmac, "utf-8");
+    const providedHmac = Buffer.from(hmac, 'utf-8');
     const generatedHash = Buffer.from(
-      crypto.createHmac("sha256", apiSecret).update(message).digest("hex"),
-      "utf-8"
+      crypto.createHmac('sha256', apiSecret).update(message).digest('hex'),
+      'utf-8'
     );
     let hashEquals = false;
 
@@ -140,12 +138,12 @@ app.get("/shopify/callback", (req, res) => {
     }
 
     if (!hashEquals) {
-      return res.status(400).send("HMAC validation failed");
+      return res.status(400).send('HMAC validation failed');
     }
 
     // DONE: Exchange temporary code for a permanent access token
     const accessTokenRequestUrl =
-      "https://" + shop + "/admin/oauth/access_token";
+      'https://' + shop + '/admin/oauth/access_token';
     const accessTokenPayload = {
       client_id: apiKey,
       client_secret: apiSecret,
@@ -157,12 +155,12 @@ app.get("/shopify/callback", (req, res) => {
       .then((accessTokenResponse) => {
         // tokenn = accessTokenResponse.access_token;
         // hmacc = hmac;
-        let token = accessTokenResponse.access_token
-        makeWebook(token, shop, hmac, code)
+        let token = accessTokenResponse.access_token;
+        makeWebook(token, shop, hmac, code);
         Gtoken = accessTokenResponse.access_token;
-				req.session.hmac = hmac;
-				req.session.token = accessTokenResponse.access_token;
-        req.session.code = code
+        req.session.hmac = hmac;
+        req.session.token = accessTokenResponse.access_token;
+        req.session.code = code;
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
@@ -187,25 +185,22 @@ app.get("/shopify/callback", (req, res) => {
         res.send(error);
       });
   } else {
-    res.status(400).send("Required parameters missing");
+    res.status(400).send('Required parameters missing');
   }
 });
 
-
-
-
 //Add product to shopify
-app.post("/addToShopify/:VendorString", (req, res) => {
+app.post('/addToShopify/:VendorString', (req, res) => {
   const shopRequestUrl =
-    "https://" +
+    'https://' +
     req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/products.json";
+    '.myshopify.com/admin/api/2020-01/products.json';
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
-    "X-Shopify-API-Version": "2020-01",
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-API-Version': '2020-01',
   };
 
   console.log(req.body);
@@ -215,9 +210,9 @@ app.post("/addToShopify/:VendorString", (req, res) => {
       try {
         const makeCopy = new ProductCopy(shopResponse);
         const savedCopy = makeCopy.save();
-        console.log("saved Copy of Shopify product is", savedCopy);
+        console.log('saved Copy of Shopify product is', savedCopy);
       } catch (error) {
-        console.log("shopify saved product copy is", error);
+        console.log('shopify saved product copy is', error);
       }
     })
     .catch((error) => {
@@ -225,148 +220,133 @@ app.post("/addToShopify/:VendorString", (req, res) => {
     });
 });
 
-
-
 //get product list from shopify
-app.get("/shopifyProduct/:storeName", async (req, res) => {
-  let storeData = await Store.find({name: req.params.storeName})
-if (storeData.length>0) {
-  const shopRequestUrl =
-    "https://" +
-    req.params.storeName +
-    "/admin/api/2020-01/products.json";
-  const shopRequestHeaders = {
-    "X-Shopify-Access-Token": storeData[0].token,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
-    "X-Shopify-Shop-Domain": req.params.storeName,
-    "X-Shopify-API-Version": "2020-01",
-  };
-  request
-    .get(shopRequestUrl, { headers: shopRequestHeaders })
-    .then((data) => {
-      //console.log(data, "product is")
-      res.send(data);
-    })
-    .catch((error) => {
-      console.log("shopify product error", error);
-    });
-}
-else{
-  console.log("storeData not found");
-}
-
+app.get('/shopifyProduct/:storeName', async (req, res) => {
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
+    const shopRequestUrl =
+      'https://' + req.params.storeName + '/admin/api/2020-01/products.json';
+    const shopRequestHeaders = {
+      'X-Shopify-Access-Token': storeData[0].token,
+      'Content-Type': 'application/json',
+      'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+      'X-Shopify-Shop-Domain': req.params.storeName,
+      'X-Shopify-API-Version': '2020-01',
+    };
+    request
+      .get(shopRequestUrl, { headers: shopRequestHeaders })
+      .then((data) => {
+        //console.log(data, "product is")
+        res.send(data);
+      })
+      .catch((error) => {
+        console.log('shopify product error', error);
+      });
+  } else {
+    console.log('storeData not found');
+  }
 });
 
-
-
-
 //update request shopify product
-app.put("/ShopifyProduct/:VendorString/:id", (req, res) => {
-  console.log("token is", tokenn);
+app.put('/ShopifyProduct/:VendorString/:id', (req, res) => {
+  console.log('token is', tokenn);
   console.log(req.body);
   const shopRequestUrl =
-    "https://" +
+    'https://' +
     req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/products/" +
+    '.myshopify.com/admin/api/2020-01/products/' +
     req.params.id +
-    ".json";
-  console.log("url is", shopRequestUrl);
+    '.json';
+  console.log('url is', shopRequestUrl);
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
-    "X-Shopify-API-Version": "2020-01",
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-API-Version': '2020-01',
   };
   request
     .put(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
     .then((data) => {
-      console.log("update shopify product is ", data);
+      console.log('update shopify product is ', data);
       res.send(data);
     })
     .catch((error) => {
-      console.log("shopify error update is", error);
+      console.log('shopify error update is', error);
     });
 });
 
-
-
-
-app.delete("/shopifyProduct/:VendorString/:id", (req, res) => {
+app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
   const shopRequestUrl =
-    "https://" +
+    'https://' +
     req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/products/" +
+    '.myshopify.com/admin/api/2020-01/products/' +
     req.params.id +
-    ".json";
+    '.json';
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
-    "X-Shopify-API-Version": "2020-01",
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-API-Version': '2020-01',
   };
   request
     .delete(shopRequestUrl, { headers: shopRequestHeaders })
     .then((data) => {
-      console.log("delete shopify product is ", data);
+      console.log('delete shopify product is ', data);
       res.send(data);
     })
     .catch((error) => {
-      console.log("shopify error delete is", error);
+      console.log('shopify error delete is', error);
     });
 });
 
 //get Orders list
 
-app.get("/orders/:storeName", async (req, res) => {
-console.log("storeName", req.params.storeName);
-  let storeData = await Store.find({name: req.params.storeName})
-if (storeData.length>0) {
-  const shopRequestUrl =
-    "https://" +
-    req.params.storeName +
-    "/admin/api/2020-01/orders.json";
-  const shopRequestHeaders = {
-    "X-Shopify-Access-Token": storeData[0].token,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
-    "X-Shopify-Shop-Domain": req.params.storeName,
-    "X-Shopify-API-Version": "2020-01",
-  };
+app.get('/orders/:storeName', async (req, res) => {
+  console.log('storeName', req.params.storeName);
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
+    const shopRequestUrl =
+      'https://' + req.params.storeName + '/admin/api/2020-01/orders.json';
+    const shopRequestHeaders = {
+      'X-Shopify-Access-Token': storeData[0].token,
+      'Content-Type': 'application/json',
+      'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+      'X-Shopify-Shop-Domain': req.params.storeName,
+      'X-Shopify-API-Version': '2020-01',
+    };
 
-  request
-    .get(shopRequestUrl, { headers: shopRequestHeaders })
-    .then((data) => {
-      res.send(data);
-      console.log(data);
-    })
-    .catch((error) => {
-      console.log("order details eroor is", error);
-    });
-  }
-  else{
-    console.log("no data found");
+    request
+      .get(shopRequestUrl, { headers: shopRequestHeaders })
+      .then((data) => {
+        res.send(data);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log('order details eroor is', error);
+      });
+  } else {
+    console.log('no data found');
   }
 });
 
 //fulfill single orders
-app.post("/orders/:VendorString/:id", (req, res) => {
+app.post('/orders/:VendorString/:id', (req, res) => {
   console.log(req.params.id);
   console.log(req.body);
   const shopRequestUrl =
-    "https://" +
+    'https://' +
     req.params.VendorString +
-    ".myshopify.com/admin/api/2020-01/orders/" +
+    '.myshopify.com/admin/api/2020-01/orders/' +
     req.params.id +
-    "/fulfillments.json";
+    '/fulfillments.json';
   const shopRequestHeaders = {
-    "X-Shopify-Access-Token": tokenn,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": req.params.VendorString + ".myshopify.com",
-    "X-Shopify-API-Version": "2020-01",
+    'X-Shopify-Access-Token': tokenn,
+    'Content-Type': 'application/json',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-API-Version': '2020-01',
   };
 
   request
@@ -376,171 +356,166 @@ app.post("/orders/:VendorString/:id", (req, res) => {
       console.log(data);
     })
     .catch((error) => {
-      console.log("ordre fulfil order is", error);
+      console.log('ordre fulfil order is', error);
     });
 });
 
-
-
 //get fulfilled Orders
-app.get("/fulfilledOrders/:storeName", async (req, res) => {
-
-  let storeData = await Store.find({name: req.params.storeName})
-if (storeData.length>0) {
-
-  const shopRequestUrl =
-    "https://" +
-    req.params.storeName +
-    "/admin/api/2020-01/orders.json?status=closed";
-  const shopRequestHeaders = {
-    "X-Shopify-Access-Token": storeData[0].token,
-    "Content-Type": "application/json",
-    "X-Shopify-Hmac-Sha256": storeData[0].hmac,
-    "X-Shopify-Shop-Domain": req.params.storeName,
-    "X-Shopify-API-Version": "2020-01",
-  };
-  request.get(shopRequestUrl, { headers: shopRequestHeaders }).then((data) => {
-    console.log(data);
-    res.send(data);
-  });
-}else {
-  console.log("no data found in fulfilled orders");
-}
+app.get('/fulfilledOrders/:storeName', async (req, res) => {
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
+    const shopRequestUrl =
+      'https://' +
+      req.params.storeName +
+      '/admin/api/2020-01/orders.json?status=closed';
+    const shopRequestHeaders = {
+      'X-Shopify-Access-Token': storeData[0].token,
+      'Content-Type': 'application/json',
+      'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+      'X-Shopify-Shop-Domain': req.params.storeName,
+      'X-Shopify-API-Version': '2020-01',
+    };
+    request
+      .get(shopRequestUrl, { headers: shopRequestHeaders })
+      .then((data) => {
+        console.log(data);
+        res.send(data);
+      });
+  } else {
+    console.log('no data found in fulfilled orders');
+  }
 });
-
 
 //Make webhook create function
 const makeWebook = (token, shop, hmac, code) => {
-
   // let shop = req.session.shop;
-	// let token = req.session.token;
-	// let hmac = req.session.hmac;
+  // let token = req.session.token;
+  // let hmac = req.session.hmac;
   let webhookObj = {
     token: token,
     name: shop,
     hmac: hmac,
-    code: code
-  }
+    code: code,
+  };
 
-  console.log("makeWebook", {shop, code, hmac, token});
+  console.log('makeWebook', { shop, code, hmac, token });
 
-  const webhookUrl = "https://" + shop + "/admin/api/2020-01/webhooks.json";
-
-  const webhookHeaders = {
-		'X-Shopify-Access-Token': token,
-    "X-Shopify-Topic": "orders/create",
-		'X-Shopify-Hmac-Sha256': hmac,
-		'X-Shopify-Shop-Domain': shop,
-    "X-Shopify-API-Version": "2020-01",
-    "Content-Type": "application/json"
-	};
-
-	const webhookPayload = {
-		webhook: {
-      topic: "orders/create",
-      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
-			format: 'json'
-		}
-	};
-
-	request
-		.post(webhookUrl, {
-			headers: webhookHeaders,
-			json: webhookPayload
-		})
-
-		.then((shopResponse) => {
-			console.log('webhook topic :', topic);
-      console.log("fial response is", shopResponse);
-
-      Store.findOne(
-      			{
-      				name: shop
-      			},
-      			function(err, data) {
-      				if (data) {
-      					console.log('store found in DB');
-      					// res.sendStatus(200).redirect('back');
-      					res.sendStatus(200);
-      					// res.redirect("back");
-      					Store.findOneAndUpdate(
-      						{
-      							name: shop
-      						},
-      						{
-      							$set: {
-      								data: webhookObj,
-      								uninstalled: false
-      							}
-      						},
-      						{
-      							new: true,
-      							useFindAndModify: false
-      						},
-      						(err, data) => {
-      							if (!err) {
-      								//   console.log("datacount + 1");
-      							} else {
-      								console.log('238 err-->', err);
-      							}
-      						}
-      					);
-      				}
-              else {
-					console.log('store !found in DB');
-					const store = new Store({
-            token: token,
-            name: shop,
-            hmac: hmac,
-            code: code
-          })
-          store.save(function(err, data) {
-						if (!err) {
-							console.log(`${shop} data store to DB`, data);
-						} else {
-							console.log(err);
-						}
-					});
-}
-});
-
-		})
-		.catch((error) => {
-			console.log('309 error-->', error);
-		});
-};
-
-
-
-//create webhook
-app.get("/webhook", (req, res) => {
-
-console.log("inside webhook code");
-
-    let shop = req.session.shop;
-  	let token = req.session.token;
-  	let hmac = req.session.hmac;
-
-    console.log("makeWebook", {shop, token, hmac});
-
-    console.log("makeWebook object", (req.session.shop, req.session.token, req.session.hmac));
-
-  const webhookUrl = "https://" + shop + "/admin/api/2020-01/webhooks.json";
+  const webhookUrl = 'https://' + shop + '/admin/api/2020-01/webhooks.json';
 
   const webhookHeaders = {
-    "X-Shopify-Access-Token": tokenn,
-    "X-Shopify-Topic": "orders/create",
-    "X-Shopify-Hmac-Sha256": hmacc,
-    "X-Shopify-Shop-Domain": shop,
-    "X-Shopify-API-Version": "2020-01",
-    "Content-Type": "application/json",
+    'X-Shopify-Access-Token': token,
+    'X-Shopify-Topic': 'orders/create',
+    'X-Shopify-Hmac-Sha256': hmac,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01',
+    'Content-Type': 'application/json',
   };
 
   const webhookPayload = {
     webhook: {
-      topic: "orders/create",
+      topic: 'orders/create',
       address: `https://www.melisxpress.com/store/${shop}/orders/create`,
-      format: "json",
+      format: 'json',
+    },
+  };
+
+  request
+    .post(webhookUrl, {
+      headers: webhookHeaders,
+      json: webhookPayload,
+    })
+
+    .then((shopResponse) => {
+      console.log('webhook topic :', topic);
+      console.log('fial response is', shopResponse);
+
+      Store.findOne(
+        {
+          name: shop,
+        },
+        function (err, data) {
+          if (data) {
+            console.log('store found in DB');
+            // res.sendStatus(200).redirect('back');
+            res.sendStatus(200);
+            // res.redirect("back");
+            Store.findOneAndUpdate(
+              {
+                name: shop,
+              },
+              {
+                $set: {
+                  data: webhookObj,
+                  uninstalled: false,
+                },
+              },
+              {
+                new: true,
+                useFindAndModify: false,
+              },
+              (err, data) => {
+                if (!err) {
+                  //   console.log("datacount + 1");
+                } else {
+                  console.log('238 err-->', err);
+                }
+              }
+            );
+          } else {
+            console.log('store !found in DB');
+            const store = new Store({
+              token: token,
+              name: shop,
+              hmac: hmac,
+              code: code,
+            });
+            store.save(function (err, data) {
+              if (!err) {
+                console.log(`${shop} data store to DB`, data);
+              } else {
+                console.log(err);
+              }
+            });
+          }
+        }
+      );
+    })
+    .catch((error) => {
+      console.log('309 error-->', error);
+    });
+};
+
+//create webhook
+app.get('/webhook', (req, res) => {
+  console.log('inside webhook code');
+
+  let shop = req.session.shop;
+  let token = req.session.token;
+  let hmac = req.session.hmac;
+
+  console.log('makeWebook', { shop, token, hmac });
+
+  console.log(
+    'makeWebook object',
+    (req.session.shop, req.session.token, req.session.hmac)
+  );
+
+  const webhookUrl = 'https://' + shop + '/admin/api/2020-01/webhooks.json';
+
+  const webhookHeaders = {
+    'X-Shopify-Access-Token': tokenn,
+    'X-Shopify-Topic': 'orders/create',
+    'X-Shopify-Hmac-Sha256': hmacc,
+    'X-Shopify-Shop-Domain': shop,
+    'X-Shopify-API-Version': '2020-01',
+    'Content-Type': 'application/json',
+  };
+
+  const webhookPayload = {
+    webhook: {
+      topic: 'orders/create',
+      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+      format: 'json',
     },
   };
   request
@@ -549,17 +524,17 @@ console.log("inside webhook code");
       json: webhookPayload,
     })
     .then((shopResponse) => {
-      console.log("webhook topic :");
-      console.log("now save this");
-      console.log("fial response is", shopResponse);
+      console.log('webhook topic :');
+      console.log('now save this');
+      console.log('fial response is', shopResponse);
       res.send(shopResponse);
     })
     .catch((error) => {
-      console.log("309 error-->", error);
+      console.log('309 error-->', error);
     });
 });
 
-app.get("/ordersData", async (req, res) => {
+app.get('/ordersData', async (req, res) => {
   // const shopRequestUrl = `https://demo-mojito.myshopify.com/admin/api/2020-01/orders/count.json` ;
   // const shopRequestHeaders = {
   //   'X-Shopify-Access-Token': tokenn,
@@ -579,11 +554,11 @@ app.get("/ordersData", async (req, res) => {
     console.log(data.length);
     res.status(200).json(data.length);
   } catch (error) {
-    console.log(error, "orderData api");
+    console.log(error, 'orderData api');
   }
 });
 
-app.get("/revenue", async (req, res) => {
+app.get('/revenue', async (req, res) => {
   const priceCal = [];
   const data = await Orders.find({});
 
@@ -593,7 +568,7 @@ app.get("/revenue", async (req, res) => {
 
   const sumPrice = priceCal.reduce((a, b) => a + b, 0);
   res.status(200).json(sumPrice);
-  console.log("price cal array is", sumPrice);
+  console.log('price cal array is', sumPrice);
 });
 
 //
@@ -610,7 +585,7 @@ app.get("/revenue", async (req, res) => {
 // })
 
 //Revenue per day
-app.get("/newTimeGraph", async (req, res) => {
+app.get('/newTimeGraph', async (req, res) => {
   const timeData = []; //Date and price
   let newAray = [];
   const priceArray = [];
@@ -655,7 +630,7 @@ app.get("/newTimeGraph", async (req, res) => {
 
 //Revenue by State
 
-app.get("/statePie", async (req, res) => {
+app.get('/statePie', async (req, res) => {
   const stateData = []; //Date and price
   let stateArray = [];
   const priceArray = [];
@@ -700,7 +675,7 @@ app.get("/statePie", async (req, res) => {
   //console.log("Final Array is", pieData)
 });
 
-app.get("/categoryRevenue", async (req, res) => {
+app.get('/categoryRevenue', async (req, res) => {
   let obj = [];
   let categoryArray = [];
   let priceArray = [];
@@ -777,7 +752,7 @@ app.get("/categoryRevenue", async (req, res) => {
 
 //Admin Top 10 selling Product
 
-app.get("/topSelling", async (req, res) => {
+app.get('/topSelling', async (req, res) => {
   let itemArray = [];
 
   const data = await Orders.find({});
@@ -839,7 +814,7 @@ app.get("/topSelling", async (req, res) => {
 });
 
 //Admin Analytics 2
-app.get("/orderTime", async (req, res) => {
+app.get('/orderTime', async (req, res) => {
   let timeData = [];
 
   const data = await Orders.find({});
@@ -888,7 +863,7 @@ app.get("/orderTime", async (req, res) => {
 
 //State wise ordersData
 
-app.get("/stateOrderGraph", async (req, res) => {
+app.get('/stateOrderGraph', async (req, res) => {
   const stateData = []; //Date and price
   let stateArray = [];
   const countArray = [];
@@ -938,8 +913,8 @@ app.get("/stateOrderGraph", async (req, res) => {
 /*Supplier Analytics*/
 
 //supplier revenue
-app.get("/supplierRevenue/:id", async (req, res) => {
-  console.log("id is", req.params.id);
+app.get('/supplierRevenue/:id', async (req, res) => {
+  console.log('id is', req.params.id);
   let itemArray = [];
 
   const data = await Orders.find({});
@@ -947,11 +922,10 @@ app.get("/supplierRevenue/:id", async (req, res) => {
   let dataTempArray = [];
 
   data.forEach((item, i) => {
-    if (data[i].pStatus==="Paid") {
-      dataTempArray.push(data[i])
+    if (data[i].pStatus === 'Paid') {
+      dataTempArray.push(data[i]);
     }
   });
-
 
   dataTempArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
@@ -1002,21 +976,19 @@ app.get("/supplierRevenue/:id", async (req, res) => {
 
 //supplier orders
 
-app.get("/supplierOrders/:id", async (req, res) => {
-  console.log("id is", req.params.id);
+app.get('/supplierOrders/:id', async (req, res) => {
+  console.log('id is', req.params.id);
   let itemArray = [];
 
   const data = await Orders.find({});
 
-  let checkOrderStatus = []
+  let checkOrderStatus = [];
 
   data.forEach((item, i) => {
-    if (data[i].pStatus==="Paid") {
-      checkOrderStatus.push(data[i])
+    if (data[i].pStatus === 'Paid') {
+      checkOrderStatus.push(data[i]);
     }
   });
-
-
 
   checkOrderStatus.forEach((item, i) => {
     item.products.forEach((sss, i) => {
@@ -1069,19 +1041,18 @@ app.get("/supplierOrders/:id", async (req, res) => {
 
 //Top selling Products
 
-app.get("/topProducts/:id", async (req, res) => {
+app.get('/topProducts/:id', async (req, res) => {
   let itemArray = [];
 
   const data = await Orders.find({});
 
-  let tempTopArray = []
+  let tempTopArray = [];
 
   data.forEach((item, i) => {
-    if (data[i].pStatus==="Paid") {
-      tempTopArray.push(data[i])
+    if (data[i].pStatus === 'Paid') {
+      tempTopArray.push(data[i]);
     }
   });
-
 
   tempTopArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
@@ -1141,20 +1112,19 @@ app.get("/topProducts/:id", async (req, res) => {
 
 //Graph for supplier Revenue
 
-app.get("/supplierGraphRevenue/:id", async (req, res) => {
-  console.log("id is", req.params.id);
+app.get('/supplierGraphRevenue/:id', async (req, res) => {
+  console.log('id is', req.params.id);
   let itemArray = [];
 
   const data = await Orders.find({});
 
-  let tempGraphArray = []
+  let tempGraphArray = [];
 
   data.forEach((item, i) => {
-    if (data[i].pStatus==="Paid") {
-      tempGraphArray.push(data[i])
+    if (data[i].pStatus === 'Paid') {
+      tempGraphArray.push(data[i]);
     }
   });
-
 
   tempGraphArray.forEach((item, i) => {
     item.products.forEach((sss, i) => {
@@ -1216,16 +1186,16 @@ app.get("/supplierGraphRevenue/:id", async (req, res) => {
 });
 
 //merchant graphData
-app.get('/merchantDasboardGraph/:storeName', async (req, res)=>{
-console.log("storeName", req.params.storeName);
-  const orderData = await Orders.find()
+app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
+  console.log('storeName', req.params.storeName);
+  const orderData = await Orders.find();
 
-  let newOrderArray =[]
+  let newOrderArray = [];
 
   orderData.forEach((item, i) => {
     item.products.forEach((product, j) => {
-      if (product.store===req.params.storeName) {
-        newOrderArray.push(orderData[i])
+      if (product.store === req.params.storeName) {
+        newOrderArray.push(orderData[i]);
       }
     });
   });
@@ -1233,10 +1203,11 @@ console.log("storeName", req.params.storeName);
   var holder = {};
 
   newOrderArray.forEach(function (d) {
-    if (holder.hasOwnProperty(moment(d.created_on).format("MMM Do YY"))) {
-      holder[moment(d.created_on).format("MMM Do YY")] = holder[moment(d.created_on).format("MMM Do YY")] + d.price;
+    if (holder.hasOwnProperty(moment(d.created_on).format('MMM Do YY'))) {
+      holder[moment(d.created_on).format('MMM Do YY')] =
+        holder[moment(d.created_on).format('MMM Do YY')] + d.price;
     } else {
-      holder[moment(d.created_on).format("MMM Do YY")] = d.price;
+      holder[moment(d.created_on).format('MMM Do YY')] = d.price;
     }
   });
 
@@ -1245,31 +1216,31 @@ console.log("storeName", req.params.storeName);
   for (var prop in holder) {
     obj2.push({ date: prop, price: holder[prop] });
   }
-  console.log("obj2", obj2);
-let dateArray=[]
-let revenueArray = []
+  console.log('obj2', obj2);
+  let dateArray = [];
+  let revenueArray = [];
 
-obj2.forEach((item, i) => {
-  dateArray.push(obj2[i].date)
-  revenueArray.push(obj2[i].price)
+  obj2.forEach((item, i) => {
+    dateArray.push(obj2[i].date);
+    revenueArray.push(obj2[i].price);
+  });
+
+  let finalGraphObj = {
+    date: dateArray,
+    revenue: revenueArray,
+  };
+  console.log('finalGraphObj', finalGraphObj);
+  res.send(finalGraphObj);
 });
 
-let finalGraphObj = {
-  date: dateArray,
-  revenue: revenueArray,
-};
-console.log("finalGraphObj", finalGraphObj);
-res.send(finalGraphObj)
-})
-
 //order create callback api
-app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
+app.post('/store/:shop/:topic/:subtopic', async function (request, response) {
   const shop = request.params.shop;
   let topic = request.params.topic;
   const subtopic = request.params.subtopic;
-  topic = topic + "/" + subtopic;
-  console.log("topic -->", topic);
-  console.log("request.body of Orders", request.body);
+  topic = topic + '/' + subtopic;
+  console.log('topic -->', topic);
+  console.log('request.body of Orders', request.body);
   const productDetails = [];
   //console.log("order details", request.body);
 
@@ -1280,7 +1251,7 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
       quantity: item.quantity,
       price: item.price,
       sku: item.sku,
-      store: item.vendor.toLowerCase()
+      store: item.vendor.toLowerCase(),
     });
   });
 
@@ -1311,18 +1282,18 @@ app.post("/store/:shop/:topic/:subtopic", async function (request, response) {
 
   try {
     if (request.body) {
-      console.log("order details custom is:", orders);
+      console.log('order details custom is:', orders);
       const data = await orders.save();
-      console.log("Orders Saved Successfully");
+      console.log('Orders Saved Successfully');
       response.end();
     }
   } catch (error) {
-    console.log("orders saved error", error);
+    console.log('orders saved error', error);
   }
 });
 
 //settings get
-app.get("/supplierProfile:id", async (req, res) => {
+app.get('/supplierProfile:id', async (req, res) => {
   try {
     let supp = await User.findOne({ _id: req.params.id });
     res.send(supp);
@@ -1332,7 +1303,7 @@ app.get("/supplierProfile:id", async (req, res) => {
 });
 
 //update settings
-app.post("/settingsUpdate", async (req, res) => {
+app.post('/settingsUpdate', async (req, res) => {
   console.log(req.body);
   //hash the password
   const salt = await bcrypt.genSalt(10);
@@ -1347,7 +1318,7 @@ app.post("/settingsUpdate", async (req, res) => {
       location: req.body.location,
       phoneNo: req.body.phoneNo,
       businessName: req.body.businessName,
-      password: hashPassword
+      password: hashPassword,
     },
     {
       new: true,
@@ -1357,16 +1328,15 @@ app.post("/settingsUpdate", async (req, res) => {
       if (!err) {
         res.sendStatus(200);
       } else {
-        console.log("error ", err);
+        console.log('error ', err);
       }
     }
   );
 });
 
-app.post("/supplierPaymentUpdate", async (req, res) => {
+app.post('/supplierPaymentUpdate', async (req, res) => {
   console.log(req.body);
   //hash the password
-
 
   // User.findOneAndUpdate(
   //   {
@@ -1389,10 +1359,8 @@ app.post("/supplierPaymentUpdate", async (req, res) => {
   // );
 });
 
-
-
 // Merchant settings get
-app.get("/merchantProfile:id", async (req, res) => {
+app.get('/merchantProfile:id', async (req, res) => {
   try {
     let mer = await MerchantUser.findOne({ _id: req.params.id });
     res.send(mer);
@@ -1402,7 +1370,7 @@ app.get("/merchantProfile:id", async (req, res) => {
 });
 
 // Merchant update settings
-app.post("/settingsUpdateMerchant", (req, res) => {
+app.post('/settingsUpdateMerchant', (req, res) => {
   console.log(req.body);
 
   MerchantUser.findOneAndUpdate(
@@ -1423,61 +1391,60 @@ app.post("/settingsUpdateMerchant", (req, res) => {
       if (!err) {
         res.sendStatus(200);
       } else {
-        console.log("error ", err);
+        console.log('error ', err);
       }
     }
   );
 });
 
-
-
-
-
 //supplier orders fulfill and add tracking no.
-app.post('/suppOrderFulfill/:store/:id', (req, res)=>{
-  console.log("supplier order fulfill", req.params.id);
-  const jsonData = req.body
+app.post('/suppOrderFulfill/:store/:id', (req, res) => {
+  console.log('supplier order fulfill', req.params.id);
+  const jsonData = req.body;
   const orderID = req.params.id;
-  const trackno = req.body.fulfillment.tracking_number
+  const trackno = req.body.fulfillment.tracking_number;
 
-request.post("https://www.melisxpress.com/orders/"+req.params.store+"/"+req.params.id, {json:jsonData})
-.then(data=>{
+  request
+    .post(
+      'https://www.melisxpress.com/orders/' +
+        req.params.store +
+        '/' +
+        req.params.id,
+      { json: jsonData }
+    )
+    .then((data) => {
+      Orders.findOneAndUpdate(
+        {
+          product_name: orderID,
+        },
+        {
+          tracking_number: trackno,
+        },
+        {
+          new: true,
+          useFindAndModify: false,
+        },
+        (err, result) => {
+          if (!err) {
+            res.json('success');
+          } else {
+            console.log('error ', err);
+          }
+        }
+      );
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+});
 
-Orders.findOneAndUpdate(
-  {
-    product_name: orderID,
-  },
-  {
-    tracking_number: trackno
-  },
-  {
-    new: true,
-    useFindAndModify: false,
-  },
-  (err, result) => {
-    if (!err) {
-      res.json("success");
-    } else {
-      console.log("error ", err);
-    }
-  }
-);
-})
-.catch(error=>{
-  console.log(error.message);
-})
-})
-
-
-
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
 app.listen(process.env.PORT || 5000, () =>
-  console.log("server is listening on 5000...")
+  console.log('server is listening on 5000...')
 );
