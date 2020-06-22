@@ -89,8 +89,11 @@ const MerchantDashboard = () => {
 	};
 
 	const top = () => {
-		axios.get('/topProducts/' + decode.id).then((response) => {
-			setTopProducts(response.data);
+		let checkStore = decode.store.toLowerCase().toString();
+    console.log("new value of store", checkStore);
+		axios.get('/merchantTopProducts/' + checkStore).then((response) => {
+			 setTopProducts(response.data);
+			//console.log("top dashboard product", response.data);
 		});
 	};
 
@@ -150,6 +153,41 @@ const MerchantDashboard = () => {
 					</Col>
 				</Row>
 
+				<Row>
+				<Card
+					title='Top Selling Products'
+					ctTableFullWidth
+					ctTableResponsive
+					content={
+						<Table striped hover size='sm'>
+							<thead>
+
+							</thead>
+							<tbody>
+								{topProducts.map((item, key) => {
+									return (
+										<tr key={key}>
+										<td style={{width:"100px"}}>{item.productImage.length!=0 ? (
+											<img
+												className='product-logo'
+												src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+											/>
+										) : (
+											'No Image Available'
+										)}</td>
+											<td>{item.name}</td>
+											<td>{item.sku}</td>
+											<td>{item.count} Order</td>
+											<td>${item.price}</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</Table>
+					}
+				/>
+
+				</Row>
 			</Grid>
 		</div>
 		</div>

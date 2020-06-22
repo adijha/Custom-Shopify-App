@@ -1110,6 +1110,13 @@ app.get('/topProducts/:id', async (req, res) => {
   res.status(200).json(top5);
 });
 
+
+
+
+
+
+
+
 //Graph for supplier Revenue
 
 app.get('/supplierGraphRevenue/:id', async (req, res) => {
@@ -1355,7 +1362,85 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   res.send(finalGraphObj);
 });
 
+//Top selling Products Merchants
 
+app.get('/merchantTopProducts/:store', async (req, res) => {
+  let itemArray = [];
+
+  const data = await Orders.find({});
+
+  let tempTopArray = [];
+  //
+  // data.forEach((item, i) => {
+  //   if (data[i].pStatus === 'Paid') {
+  //     tempTopArray.push(data[i]);
+  //   }
+  // });
+
+  data.forEach((item, i) => {
+    item.products.forEach((sss, i) => {
+      if (sss.sku !== undefined) {
+        itemArray.push({
+          sku: sss.sku,
+          count: sss.quantity,
+          store: sss.store
+        });
+      }
+    });
+  });
+
+  itemArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.store) {
+      tempTopArray.push(itemArray[i])
+    }
+  });
+
+
+  var holder = {};
+
+  tempTopArray.forEach(function (d) {
+    if (holder.hasOwnProperty(d.sku)) {
+      holder[d.sku] = holder[d.sku] + d.count;
+    } else {
+      holder[d.sku] = d.count;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ sku: prop, count: holder[prop] });
+  }
+  //console.log({obj2});
+
+  let calOrder = [];
+
+  const productData = await Products.find();
+
+  //console.log(productData.length);
+
+  obj2.forEach((arr, i) => {
+    productData.forEach((product, j) => {
+      if (product.code === arr.sku) {
+        let countItem = product.price * arr.count;
+
+        calOrder.push({
+          name: product.name,
+          productImage: product.productImage,
+          sku: product.code,
+          count: arr.count,
+          price: product.price,
+          revenue: countItem,
+        });
+      }
+    });
+  });
+  //console.log({calOrder});
+  let totalOrders = calOrder.sort((a, b) => b - a);
+  let top5 = totalOrders.slice(0, 5);
+  //console.log({totalOrders});
+  res.status(200).json(top5);
+});
 
 
 //order create callback api
