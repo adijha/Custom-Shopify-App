@@ -1971,7 +1971,6 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     australia: req.body.australia,
     international: req.body.international,
   };
-
   const product = await new Products({
     supplier_id: req.body.supplier_id,
     name: req.body.name,

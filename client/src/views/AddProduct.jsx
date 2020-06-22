@@ -21,8 +21,6 @@ const AddProduct = () => {
   const [status, setStatus] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [size, setSize] = useState('');
-  // const [color, setColors] = useState('')
-  // const [tag, setTag] = useState('')
   const [tag0, setTag0] = useState([]);
   const [tag1, setTag1] = useState([]);
   const [tag2, setTag2] = useState([]);
