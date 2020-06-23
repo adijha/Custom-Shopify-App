@@ -140,7 +140,6 @@ const Products = () => {
         <h2 className="text-center">
           Product <span style={{ color: "#ff9f1a" }}>Collection</span>
         </h2>
-
         <hr
           style={{ width: "20%", color: "antiquewhite", border: "1px solid" }}
         />
@@ -149,7 +148,8 @@ const Products = () => {
           style={{
             width: "80%",
             backgroundColor: "antiquewhite",
-            marginLeft: "1rem",
+            marginLeft: "6rem",
+            marginBottom:'2rem'
           }}
         >
           <ul
@@ -182,26 +182,78 @@ const Products = () => {
       </div>
       <div class="container">
         <div class="row">
-          <div className="col-xs-offset 1 col-xs-11 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6">
-            <div className="btn-toolbar" role="toolbar">
+          <div className="">
+            <div role="toolbar">
               <div
-                className="btn-group btn-group-justified"
-                role="group"
-                style={{}}
+                style={{display:'flex',
+              flexWrap:'wrap',alignSelf:'center'}}
               >
-                {category.map((item) => {
+                {[
+                  {
+                    category: "Men's Clothing and Accessories",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Electronics",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Home and Kitchen",
+                    icon:'pe-7s-home'
+                  },
+                  {
+                    category: "Beauty",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Pets",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Gadgets",
+                    icon:'pe-7s-light'
+                  },
+                  {
+                    category: "Medicine ",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Sports ",
+                    icon:'pe-7s-bicycle'
+                  },
+                  {
+                    category: "Jwellery",
+                    icon:'pe-7s-bicycle'
+                  },
+                  ,
+                  {
+                    category: "More",
+                    icon:'pe-7s-more'
+                    
+                  },
+                ].map((item) => {
                   return (
-                    <div class="btn-group" role="group">
-                      <button
-                        value={item.category}
-                        onClick={(e) => handleCategory(e)}
-                        className="btn btn-primary"
+                    <>
+                   
+                    <div
+                      role="group"
+                      style={{
+                        display: "flex",
+                        width: 210,
+                        backgroundColor: "#fff",
+                        padding: 10,
+                        alignItems: "center",
+                      }}
                       >
+                      <i
+                        className={item.icon}
+                        style={{ fontSize: 40 }}
+                        />
+                      <p style={{ alignSelf: "center", marginTop: 8,marginLeft:20 }}>
                         {item.category}
-                      </button>
+                      </p>
                     </div>
-
-                    //<button style={{marginLeft:"10px"}}className="btn btn-primary" value={item.category} onClick={e=>console.log(e.target.value)}>{item.category}</button>
+              </>
                   );
                 })}
               </div>
