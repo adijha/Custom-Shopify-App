@@ -214,16 +214,19 @@ colorArray.forEach((single, j) => {
       <div className="text-center" style={{color:"red"}}>{status}</div>
     {filterItems.map(list=>{
       return(
-        <div className="col-sm-3">
+        <div className="col-sm-3" onClick={()=>getProductId(list)}>
                <article className="col-item item column-item">
                  <div className="photo">
                    <div className="options-cart-round">
                      <button className="btn btn-default" title="Add to cart">
-                       <span className="fa fa-eye" onClick={()=>getProductId(list)}/>
+                       <span className="fa fa-eye" />
                      </button>
                    </div>
-
-                   <a href="#"> <img src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`} className="img-responsive" alt="Product Image" /> </a>
+                   {list.productImage.length !=0 ? (
+                     <a href="#"> <img src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`} className="img-responsive" alt="Product Image" /> </a>
+                   ) : (
+                     'No Image Available'
+                   )}
 
                  </div>
                  <div className="info">
@@ -231,7 +234,7 @@ colorArray.forEach((single, j) => {
                      <div className="price-details col-md-6">
 
                        <h1><b>{list.name}</b></h1>
-                       <span className="price-new"><b>&#8377;</b>{list.price.toFixed(1)}</span>
+                       <span className="price-new"><b>$</b>{list.price.toFixed(1)}</span>
 
                      </div>
                    </div>
