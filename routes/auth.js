@@ -1350,6 +1350,7 @@ router.get('/paymentDetails/:id', async (req, res) => {
 router.get('/product', async (req, res) => {
   try {
     const item = await Products.find();
+    console.log("item", item);
     res.json(item);
   } catch (error) {
     res.json({ message: error });

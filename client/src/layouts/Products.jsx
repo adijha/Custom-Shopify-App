@@ -218,14 +218,14 @@ const Products = () => {
         </div>
         {filterItems.map((list) => {
           return (
-            <div className="col-sm-3">
+            <div className="col-sm-3" onClick={() => getProductId(list)}>
               <article className="col-item item column-item">
                 <div className="photo">
                   <div className="options-cart-round">
                     <button className="btn btn-default" title="Add to cart">
                       <span
                         className="fa fa-eye"
-                        onClick={() => getProductId(list)}
+
                       />
                     </button>
                   </div>
