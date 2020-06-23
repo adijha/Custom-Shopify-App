@@ -245,6 +245,12 @@ const Products = () => {
                         padding: 10,
                         alignItems: "center",
                         border:'2px solid #fafafa'
+                        ,
+                        cursor:'pointer'
+                      }}
+
+                      onClick={()=>{
+                        console.log(item.category)
                       }}
                       >
                       <i
