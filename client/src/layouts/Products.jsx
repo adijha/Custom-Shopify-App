@@ -144,12 +144,13 @@ const Products = () => {
           style={{ width: "20%", color: "antiquewhite", border: "1px solid" }}
         />
         <div
-          className="text-right container arrow"
+          className="text-center container arrow"
           style={{
-            width: "80%",
+            width: "77%",
             backgroundColor: "antiquewhite",
-            marginLeft: "6rem",
-            marginBottom:'2rem'
+            // marginLeft: "6rem",
+            marginBottom:'2rem',
+            alignSelf:'center'
           }}
         >
           <ul
@@ -218,7 +219,7 @@ const Products = () => {
                     icon:'pe-7s-bicycle'
                   },
                   {
-                    category: "Sports ",
+                    category: "Sports and Enternainment",
                     icon:'pe-7s-bicycle'
                   },
                   {
@@ -239,10 +240,11 @@ const Products = () => {
                       role="group"
                       style={{
                         display: "flex",
-                        width: 210,
+                        width: 220,
                         backgroundColor: "#fff",
                         padding: 10,
                         alignItems: "center",
+                        border:'2px solid #fafafa'
                       }}
                       >
                       <i
