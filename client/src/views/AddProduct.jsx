@@ -474,7 +474,7 @@ const AddProduct = () => {
           <div className='form-group'>
             <label for='product_warranty'>Weight</label>
             <input
-              type='number'
+              type='text'
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               className='form-control'
@@ -1026,7 +1026,7 @@ const AddProduct = () => {
                           />
                         </div>
                         <input
-                          type='number'
+                          type='text'
                           onChange={(e) => {
                             let itemm = {};
                             let targets = item.split('/');
