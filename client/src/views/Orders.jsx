@@ -24,16 +24,16 @@ const Orders = () => {
 
   const getOrderDetails = () => {
     console.log(decode.store);
-    
-    axios.get("/api/merchantShopifyOrders/" + decode.store.toLowerCase()).then((data) => {
-      console.log("data is orders", data.data);
-      if (data.data.length>0) {
-        setOrderDetails(data.data);
-      }
-      else{
-        setFound("No order found")
-      }
-    });
+      
+      axios.get("/api/merchantShopifyOrders/" + decode.store? decode.store.toLowerCase():decode.store).then((data) => {
+        console.log("data is orders", data.data);
+        if (data.data.length>0) {
+          setOrderDetails(data.data);
+        }
+        else{
+          setFound("No order found")
+        }
+      });
   };
 
   // const filterItems = (orderDetails.filter(plist=>{
