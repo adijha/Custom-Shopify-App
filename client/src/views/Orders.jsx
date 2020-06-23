@@ -24,8 +24,8 @@ const Orders = () => {
 
   const getOrderDetails = () => {
     console.log(decode.store);
-      
-      axios.get("/api/merchantShopifyOrders/" + decode.store? decode.store.toLowerCase():decode.store).then((data) => {
+    
+      axios.get("/api/merchantShopifyOrders/" + decode.store.toLowerCase().toString()).then((data) => {
         console.log("data is orders", data.data);
         if (data.data.length>0) {
           setOrderDetails(data.data);

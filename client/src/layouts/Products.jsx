@@ -230,12 +230,12 @@ const Products = () => {
                   {
                     category: "More",
                     icon:'pe-7s-more'
-                    
+
                   },
                 ].map((item) => {
                   return (
                     <>
-                   
+
                     <div
                       role="group"
                       style={{
