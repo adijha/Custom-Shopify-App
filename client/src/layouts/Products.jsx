@@ -249,7 +249,7 @@ const Products = () => {
                         <b>{list.name}</b>
                       </h1>
                       <span className="price-new">
-                        <b>&#8377;</b>
+                        <b>$</b>
                         {list.price.toFixed(1)}
                       </span>
                     </div>
@@ -333,7 +333,7 @@ const Products = () => {
                         HtmlConvert({product.description})
                       </p>
                       <h4 className="price">
-                        current price: <span>&#x20b9;{product.price}</span>
+                        current price: <span>${product.price}</span>
                       </h4>
                       <p className="vote">
                         <strong>91%</strong> of buyers enjoyed this product!
