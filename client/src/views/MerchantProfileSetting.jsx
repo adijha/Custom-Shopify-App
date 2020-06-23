@@ -29,7 +29,7 @@ const MerchantProfileSetting = () => {
       setEmail(res.data.email);
       setFirstName(res.data.firstName);
       setLastName(res.data.lastName);
-      setPhoneNo(res.data.phoneNo.toString())
+      setPhoneNo(res.data.phoneNo?res.data.phoneNo.toString():res.data.phoneNo)
     });
   };
 
@@ -55,7 +55,6 @@ const MerchantProfileSetting = () => {
               content={
                 <form onSubmit={updateSettings}>
                   <div className="card card-input" style={{ marginTop: 30 }}>
-
                     <div className="form-group">
                       <label for="product_quantity">First Name</label>
                       <input
