@@ -46,7 +46,7 @@ const Orders = () => {
     }
 
     console.log("obj is", obj);
-    axios.patch('/api/supplierOrderFromMerchant', obj)
+    axios.patch('/api/supplierOrderFromMerchant/'+ data.orderId.toString())
     .then (res=>{
       if (res) {
         NotificationManager.success('Fulfilled Successfully');

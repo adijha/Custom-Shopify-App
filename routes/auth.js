@@ -300,15 +300,15 @@ router.get('/supplierOrderMerchant', async (req, res)=>{
 
 
 //update merchant order status and sent to supplier
-router.patch('/supplierOrderFromMerchant', async (req, res)=>{
+router.patch('/supplierOrderFromMerchant/:orderId', async (req, res)=>{
 
 
     try {
       const data = await Orders.findOneAndUpdate(
-        { "product_name": req.body.orderId },
-        {
-          "pStatus": "Paid",
-
+        { "product_name": req.params.orderId },
+        { $set:{
+            "pStatus": "Paid",
+          }
         },{
           new: true,
           useFindAndModify: false,
@@ -1206,12 +1206,10 @@ router.patch('/update', async (req, res) => {
         useFindAndModify: false,
       },
       (err, result) => {
-        if (!err) {
-          console.log("update result", result);
-          res.send('success');
-        } else {
+        if (err) {
           console.log("error ", err);
         }
+        return res.send('success');
       }
     );
   } catch (error) {

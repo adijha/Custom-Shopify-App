@@ -227,7 +227,7 @@ const deleteProduct = (data)=>{
                 className="form-control"
                 id="product_tag"
                 placeholder="Enter Tags of Product seperated by Commas"
-                required
+                
         />
       </div>
 
