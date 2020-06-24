@@ -14,7 +14,6 @@ const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
   const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
-
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [quantity, setQuantity] = useState('');
@@ -97,7 +96,7 @@ const ProductList = () => {
     console.log('delete' + item._id);
     axios.delete('/api/product/' + item._id).then((data) => {
       if (data) {
-        setStatus('Product Deleted');
+        NotificationManager.success('Product Deleted');
         getProductData();
       }
     });
@@ -120,7 +119,7 @@ const ProductList = () => {
       .patch('/api/product/update', object)
       .then((data) => {
         if (data) {
-          setStatus('Product Updated Successfully');
+          NotificationManager.success('Product Updated Successfully');
           setName('');
           setPrice('');
           setQuantity('');
@@ -133,6 +132,7 @@ const ProductList = () => {
         }
       })
       .catch((err) => {
+        NotificationManager.error('Something unexpected happened');
         console.log('update product error is:', err.message);
       });
   };
@@ -182,11 +182,24 @@ const ProductList = () => {
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{'$ ' + item.price}</td>
-                            <td style={{ width: '20%' }}>
+                            <td>{'$ ' + Number(item.price).toFixed(2)}</td>
+                            <td >
+                              <div style={{ maxWidth: '100px' 
+                            
+                            ,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis'
+                            
+                            
+                            
+                            
+                            
+                            }}>
                               {item.description
                                 ? item.description.replace(/<[^>]*>/g, '')
                                 : null}
+                                </div>
                             </td>
                             <td>
                               <button
