@@ -153,14 +153,18 @@ const Products = () => {
   };
 
   return (
-    <div className="" style={{ overflowX: "hidden" }}>
+    <div className="" style={{ overflowX: "hidden" }} style={{ backgroundColor: "#fff"}}>
       <div>
-        <h2 className="text-center">
+        <div style={{ backgroundColor: "#F7F7F8"}}>
+
+        <h2 className="text-center" 
+            >
           Product <span style={{ color: "#ff9f1a" }}>Collection</span>
         </h2>
         <hr
-          style={{ width: "20%", color: "antiquewhite", border: "1px solid" }}
-        />
+          style={{ width: "20%", color: "antiquewhite", border: "1px solid"}}
+          />
+          </div>
         <div
           className="text-center container arrow"
           style={{
@@ -199,7 +203,7 @@ const Products = () => {
           </ul>
         </div>
       </div>
-      <div class="container">
+      <div class="container" style={{ backgroundColor: "#fff"}}>
         <div class="row">
           <div className="">
             <div role="toolbar">
@@ -291,7 +295,8 @@ const Products = () => {
         className="container-fluid"
         style={{ backgroundColor: "#fff", padding: "6px", paddingTop: "2em" }}
       >
-        <div className="text-center" style={{ color: "red" }}>
+        <div className="text-center" style={{ color: "red" }} 
+            style={{ backgroundColor: "#fff"}} >
           {status}
         </div>
         {filterItems.map((list) => {
@@ -300,7 +305,7 @@ const Products = () => {
             
             style={{ backgroundColor: "#fff"}}
             >
-              <article className="col-item item column-item">
+              <article className="col-item item column-item" style={{ backgroundColor: "#fff",padding:0}}>
                 <div className="photo" style={{width:250,height:300}}>
                   <div className="options-cart-round">
                     <button className="btn btn-default" title="Add to cart">
@@ -315,7 +320,7 @@ const Products = () => {
                         src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
                         className="img-responsive"
                         alt="Product Image"
-                        style={{marginLeft:'30%'}}
+                        style={{marginLeft:'20%'}}
                       />
                     ) : (
                       <h5>no image available</h5>
