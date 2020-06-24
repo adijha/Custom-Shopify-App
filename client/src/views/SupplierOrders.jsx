@@ -7,7 +7,6 @@ import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
 
-
 const SupplierOrders = () => {
   const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
@@ -36,7 +35,6 @@ const SupplierOrders = () => {
         })
       }
     });
-
 
     const fulfilObject = await {
       fulfillment: {
@@ -97,7 +95,7 @@ const SupplierOrders = () => {
                             <td>{item.customer.name || 'none'}</td>
                             <td>{item.pStatus || 'none'}</td>
                             <td>{item.fullfillmentStaus || 'none'}</td>
-                            <td>{item.price || 'none'}</td>
+                            <td>${item.price || 'none'}</td>
                             <td>{item.invoice || 'none'}</td>
                           </tr>
 
@@ -172,5 +170,4 @@ const SupplierOrders = () => {
     </div>
   );
 };
-
 export default SupplierOrders;
