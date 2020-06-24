@@ -298,22 +298,21 @@ const Products = () => {
           return (
             <div className="col-sm-3" onClick={() => getProductId(list)}>
               <article className="col-item item column-item">
-                <div className="photo">
+                <div className="photo" style={{width:250,height:300}}>
                   <div className="options-cart-round">
                     <button className="btn btn-default" title="Add to cart">
                       <span
                         className="fa fa-eye"
-
                       />
                     </button>
                   </div>
-
                   <a href="#">
                     {list.productImage[0] ? (
                       <img
                         src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
                         className="img-responsive"
                         alt="Product Image"
+                        style={{marginLeft:'20%'}}
                       />
                     ) : (
                       <h5>no image available</h5>
