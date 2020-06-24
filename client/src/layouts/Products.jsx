@@ -289,14 +289,17 @@ const Products = () => {
       </div>
       <div
         className="container-fluid"
-        style={{ backgroundColor: "", padding: "6px", paddingTop: "2em" }}
+        style={{ backgroundColor: "#fff", padding: "6px", paddingTop: "2em" }}
       >
         <div className="text-center" style={{ color: "red" }}>
           {status}
         </div>
         {filterItems.map((list) => {
           return (
-            <div className="col-sm-3" onClick={() => getProductId(list)}>
+            <div className="col-sm-3" onClick={() => getProductId(list)}
+            
+            style={{ backgroundColor: "#fff"}}
+            >
               <article className="col-item item column-item">
                 <div className="photo" style={{width:250,height:300}}>
                   <div className="options-cart-round">
@@ -312,7 +315,7 @@ const Products = () => {
                         src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
                         className="img-responsive"
                         alt="Product Image"
-                        style={{marginLeft:'20%'}}
+                        style={{marginLeft:'30%'}}
                       />
                     ) : (
                       <h5>no image available</h5>
