@@ -190,34 +190,53 @@ app.get('/shopify/callback', (req, res) => {
 });
 
 //Add product to shopify
-app.post('/addToShopify/:VendorString', (req, res) => {
-  const shopRequestUrl =
-    'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/products.json';
-  const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
-    'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
-    'X-Shopify-API-Version': '2020-01',
-  };
+app.post('/addToShopify/:storeName',async (req, res) => {
 
-  console.log(req.body);
-  request
-    .post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
-    .then((shopResponse) => {
-      try {
-        const makeCopy = new ProductCopy(shopResponse);
-        const savedCopy = makeCopy.save();
-        console.log('saved Copy of Shopify product is', savedCopy);
-      } catch (error) {
-        console.log('shopify saved product copy is', error);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  let storeData = await Store.find({ name: req.params.storeName });
+  // console.log(storeData, "found");
+  // console.log(req.body);
+  let obj = {
+    product:{
+      title: req.body.product.title,
+      body_html: req.body.product.body_html,
+      vendor: req.body.product.vendor,
+      images: req.body.product.images,
+      product_type: req.body.product.product_type
+    }
+
+  }
+  console.log(obj);
+  if (storeData.length>0) {
+    const shopRequestUrl =
+      'https://' +req.params.storeName +'/admin/api/2020-01/products.json';
+    const shopRequestHeaders = {
+      'X-Shopify-Access-Token': storeData[0].token,
+      'Content-Type': 'application/json',
+      'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+      'X-Shopify-Shop-Domain': req.params.storeName,
+      'X-Shopify-API-Version': '2020-01',
+    };
+
+    request
+      .post(shopRequestUrl, { headers: shopRequestHeaders, json: obj })
+      .then(async (shopResponse) => {
+        try {
+          const makeCopy = await new ProductCopy(shopResponse);
+          const savedCopy = makeCopy.save();
+          console.log('saved Copy of Shopify product is', savedCopy);
+          res.send("success")
+        } catch (error) {
+          console.log('shopify saved product copy is', error);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+    else {
+      console.log("shopify add product error");
+    }
+
 });
 
 //get product list from shopify
@@ -248,21 +267,23 @@ app.get('/shopifyProduct/:storeName', async (req, res) => {
 });
 
 //update request shopify product
-app.put('/ShopifyProduct/:VendorString/:id', (req, res) => {
-  console.log('token is', tokenn);
+app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
+
   console.log(req.body);
   const shopRequestUrl =
     'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/products/' +
+    req.params.storeName +
+    '/admin/api/2020-01/products/' +
     req.params.id +
     '.json';
   console.log('url is', shopRequestUrl);
   const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
+    'X-Shopify-Access-Token': storeData[0].token,
     'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+    'X-Shopify-Shop-Domain': req.params.storeName,
     'X-Shopify-API-Version': '2020-01',
   };
   request
@@ -274,6 +295,10 @@ app.put('/ShopifyProduct/:VendorString/:id', (req, res) => {
     .catch((error) => {
       console.log('shopify error update is', error);
     });
+  }
+  else {
+    console.log("shopify product update error");
+  }
 });
 
 app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
@@ -1435,6 +1460,8 @@ app.get('/merchantTopProducts/:store', async (req, res) => {
       }
     });
   });
+
+  console.log("verify product selling",calOrder);
   //console.log({calOrder});
   let totalOrders = calOrder.sort((a, b) => b - a);
   let top5 = totalOrders.slice(0, 5);

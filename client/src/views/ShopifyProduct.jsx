@@ -43,7 +43,16 @@ const ShopifyProduct = () => {
 
     axios.get('/ShopifyProduct/'+storeName.toLowerCase() )
     .then(data=>{
-      setProducts(data.data.products)
+      console.log("data daat products", data.data.products);
+      let checkStoreShopify = []
+      data.data.products.forEach((item, i) => {
+        if (data.data.products[i].vendor.toLowerCase()===decode.store.toLowerCase()) {
+          checkStoreShopify.push(data.data.products[i]);
+        }
+      });
+      console.log(checkStoreShopify, "after");
+
+      setProducts(checkStoreShopify)
     })
   }
 
@@ -64,18 +73,18 @@ const ShopifyProduct = () => {
 
 const UpdateProduct = async (e)=>{
   e.preventDefault();
-  let tagArray = tag.split(", ")
-
-  let newVariant = []
-
-  varian.forEach((single, j) => {
-
-    newVariant.push({
-      "option1" :single.title,
-      "price":selling,
-      "sku":single.code
-    })
-  });
+  // let tagArray = tag.split(", ")
+  //
+  // let newVariant = []
+  //
+  // varian.forEach((single, j) => {
+  //
+  //   newVariant.push({
+  //     "option1" :single.title,
+  //     "price":selling,
+  //     "sku":single.code
+  //   })
+  // });
 
 
     let product={
@@ -85,8 +94,8 @@ const UpdateProduct = async (e)=>{
           "body_html": description,
           "vendor": decode.store,
           "product_type": category,
-          "tags": tagArray,
-          "variants":newVariant
+          // "tags": tagArray,
+          // "variants":newVariant
 
         }
 
@@ -218,7 +227,7 @@ const deleteProduct = (data)=>{
                 className="form-control"
                 id="product_tag"
                 placeholder="Enter Tags of Product seperated by Commas"
-                required
+                
         />
       </div>
 
