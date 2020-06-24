@@ -305,22 +305,23 @@ router.patch('/supplierOrderFromMerchant', async (req, res)=>{
 
     try {
       const data = await Orders.findOneAndUpdate(
-        { product_name: req.body.orderId },
+        { "product_name": req.body.orderId },
         {
-          pStatus: "Paid",
+          "pStatus": "Paid",
 
         },{
           new: true,
           useFindAndModify: false,
-        },
-        (err, result) => {
+        },(err, result) => {
           if (!err) {
-            res.send(result);
+            console.log("update result", result);
+            res.send('success');
           } else {
             console.log("error ", err);
           }
         }
       );
+
     } catch (error) {
       res.json({ message: error.message });
     }

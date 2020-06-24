@@ -5,6 +5,7 @@ import Modal from "react-responsive-modal";
 import jwt_decode from "jwt-decode";
 import Card from "../components/Card/Card.jsx";
 import "../assets/css/productPage.css";
+import { NotificationManager } from 'react-notifications';
 
 const Products = () => {
   const [productList, setProductList] = useState([]);
@@ -25,6 +26,15 @@ const Products = () => {
   let str = decode.email;
   let VendorString = str.substring(0, str.lastIndexOf("@"));
   console.log(VendorString);
+
+
+
+
+  let storeName = `${decode.store}.myshopify.com`
+  console.log(storeName.toLowerCase(), "storeName final");
+
+
+
 
   const getProductList = () => {
     axios.get("/api/product").then((data) => {
@@ -93,44 +103,52 @@ const Products = () => {
   };
 
   const AddInShopify = (t) => {
-    let imageArray = [];
+    let images = [];
 
     t.productImage.forEach((item, i) => {
-      imageArray.push({
+      images.push({
         attachment: item.imgBufferData,
       });
     });
 
-    let tagArray = t.tag.split(", ");
-    let colorArray = t.color.split(", ");
-    let sizeArray = t.size.split(", ");
-    let colorVariant = [];
-    let str = decode.email;
-    let VendorString = str.substring(0, str.lastIndexOf("@"));
-
-    colorArray.forEach((single, j) => {
-      colorVariant.push({
-        option1: single,
-        price: t.price,
-        size: t.size,
-        inventory_quantity: t.quantity,
-        sku: t.code,
-      });
-    });
+    // let tagArray = t.tag.split(", ");
+    // let colorArray = t.color.split(", ");
+    // let sizeArray = t.size.split(", ");
+    // let colorVariant = [];
+    // let str = decode.email;
+    // let VendorString = str.substring(0, str.lastIndexOf("@"));
+    //
+    // colorArray.forEach((single, j) => {
+    //   colorVariant.push({
+    //     option1: single,
+    //     price: t.price,
+    //     size: t.size,
+    //     inventory_quantity: t.quantity,
+    //     sku: t.code,
+    //   });
+    // });
 
     let product = {
       product: {
         title: t.name,
         body_html: t.description,
-        vendor: VendorString,
+        vendor: decode.store,
         product_type: t.category,
-        tags: tagArray,
-        variants: colorVariant,
+        images: t.productImage[0].imgBufferData
+        // tags: tagArray,
+        //variants: colorVariant,
       },
     };
     console.log("product added for shopify is", product);
-    axios.post("/addToShopify/" + VendorString, product).then((data) => {
-      setMsg("Product Added in Shopify");
+    axios.post("/addToShopify/" + storeName.toLowerCase(), product).then((data) => {
+      if (data.data.includes('success')) {
+        NotificationManager.success('product Added to Shopify');
+
+        //console.log(filterItems.length, "length of filterItems")
+      }
+     else {
+      NotificationManager.error('Something wrong');
+      }
     });
   };
 
