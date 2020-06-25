@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import { NotificationManager } from 'react-notifications';
 
 const Orders = () => {
+  const [tab, setTab] = useState(1)
   const [orderDetails, setOrderDetails] = useState([]);
   const [msg, setMsg] = useState("");
   const [found, setFound] = useState("")
