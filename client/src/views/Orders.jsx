@@ -12,6 +12,8 @@ const Orders = () => {
   const [orderDetailsFu, setOrderDetailsFu] = useState([]);
   const [msg, setMsg] = useState("");
   const [found, setFound] = useState("")
+  const [foundUn, setFoundUn] = useState("")
+  const [foundFu, setFoundFu] = useState("")
   const [expand, setExpand] = useState('');
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const Orders = () => {
           setOrderDetailsUn(data.data);
         }
         else{
-          setFound("No order found")
+          setFoundUn("No order found")
         }
       });
   };
@@ -63,7 +65,7 @@ const Orders = () => {
           setOrderDetailsFu(data.data);
         }
         else{
-          setFound("No order found")
+          setFoundFu("No order found")
         }
       });
   };
@@ -255,7 +257,7 @@ const changeView = (e)=>{
 
                     {tab===2?
                     <tbody>
-                    <tr>{found}</tr>
+                    <tr>{foundUn}</tr>
                       {orderDetailsUn.map((item, key) => {
                         return (
                           <>
@@ -325,7 +327,7 @@ const changeView = (e)=>{
 
                     {tab===3?
                     <tbody>
-                    <tr>{found}</tr>
+                    <tr>{foundFu}</tr>
                       {orderDetailsFu.map((item, key) => {
                         return (
                           <>
