@@ -72,6 +72,7 @@ const ProductList = () => {
   const getProductData = () => {
     axios.get('/api/supplier/product/' + decode.id).then((products) => {
       setProductItems(products.data);
+      console.log(products.data)
     });
   };
 
@@ -276,7 +277,7 @@ const ProductList = () => {
           </div>
           <div className='card card-update'>
             <div className='form-group'>
-              <label for='product_price'>Price</label>
+              <label for='product_price'>Price in Dollars</label>
               <input
                 type='text'
                 min='0'
