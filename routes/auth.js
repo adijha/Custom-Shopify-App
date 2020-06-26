@@ -2333,21 +2333,45 @@ router.delete('/product/:id', async (req, res) => {
   }
 });
 
+
+
+
 //update all products with some margin by Admin
 
 router.patch('/autoMargin', async (req, res) => {
   try {
-    const data = await Products.find({ category: req.body.category });
 
+    const currDate = (sep) => {
+      let d = new Date();
+      let DD = d.getDate();
+      let MM = d.getMonth() + 1;
+      let YY = d.getFullYear();
+      return DD + sep + MM + sep + YY;
+    };
+
+    const data = await Products.find({ category: req.body.category });
     data.forEach(async (item, i) => {
       let calPrice = item.price + (item.price * req.body.margin) / 100;
       let price = calPrice.toFixed(2);
-      const updatePrice = await Products.updateOne(
+      let updatePrice = await Products.updateOne(
         { _id: item._id },
-        { $set: { selliingPrice: price } }
+        { $set: { selliingPrice: price } },
+        {
+          new: true,
+          useFindAndModify: false,
+        }
       );
-      // console.log({ updatePrice });
+      console.log({ updatePrice });
     });
+    let categoryData = await Category.findOneAndUpdate(
+      {category: req.body.category},
+      { $set: { margin:req.body.margin, margin_updated: currDate('-') } },
+      {
+        new: true,
+        useFindAndModify: false,
+      })
+    //console.log("category updated", categoryData);
+    //console.log("");
     res.json('success');
   } catch (error) {
     console.log('update price error is:', error);

@@ -7,6 +7,12 @@ const CategorySchema = mongoose.Schema({
   },
   created_on:{
     type:String
+  },
+  margin:{
+    type:Number
+  },
+  margin_updated:{
+    type:String
   }
 })
 
