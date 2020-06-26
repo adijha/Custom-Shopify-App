@@ -18,8 +18,8 @@ const Orders = () => {
 
   useEffect(() => {
     getOrderDetailsUnfulfilled();
-    getOrderDetailsFulfilled();
-    getOrderDetailsAll();
+    // getOrderDetailsFulfilled();
+    // getOrderDetailsAll();
   }, []);
 
   const token = localStorage.getItem("token");
@@ -29,46 +29,58 @@ const Orders = () => {
   //let VendorString = str.substring(0, str.lastIndexOf("@"));
   //console.log(VendorString);
 
-  const getOrderDetailsAll = () => {
+  // const getOrderDetailsAll = async () => {
+  //   console.log(decode.store);
+  //
+  //     await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
+  //       console.log("data is asll orders", data.data);
+  //       setOrderDetails(data.data);
+  //
+  //       // if (data.data.length>0) {
+  //       // }
+  //       // else{
+  //       //   setFound("No order found")
+  //       // }
+  //     });
+  // };
+
+  const getOrderDetailsUnfulfilled = async () => {
     console.log(decode.store);
 
-      axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
-        console.log("data is orders", data.data);
-        if (data.data.length>0) {
-          setOrderDetails(data.data);
-        }
-        else{
-          setFound("No order found")
-        }
+      await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
+        console.log("data is orders unfulfilled", data.data);
+        setOrderDetailsUn(data.data.unfulfilOrder);
+        setOrderDetails(data.data.allOrder);
+        setOrderDetailsFu(data.data.fulfilOrder);
+
+         if (data.data.unfulfilOrder.length==0) {
+           setFoundUn("No Order Found")
+         }
+         else if (data.data.fulfilOrder.length==0) {
+           setFoundFu("No Order Found")
+         }
+         else if (data.data.orderDetails.length==0) {
+           setFound("No Order Found")
+         }
+        // else{
+        //   setFoundUn("No order found")
+        // }
       });
   };
-
-  const getOrderDetailsUnfulfilled = () => {
-    console.log(decode.store);
-
-      axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
-        console.log("data is orders", data.data);
-        if (data.data.length>0) {
-          setOrderDetailsUn(data.data);
-        }
-        else{
-          setFoundUn("No order found")
-        }
-      });
-  };
-  const getOrderDetailsFulfilled = () => {
-    console.log(decode.store);
-
-      axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
-        console.log("data is orders", data.data);
-        if (data.data.length>0) {
-          setOrderDetailsFu(data.data);
-        }
-        else{
-          setFoundFu("No order found")
-        }
-      });
-  };
+  // const getOrderDetailsFulfilled = async () => {
+  //   console.log(decode.store);
+  //
+  //     await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
+  //       console.log("data is orders", data.data);
+  //       setOrderDetailsFu(data.data);
+  //       //
+  //       // if (data.data.length>0) {
+  //       // }
+  //       // else{
+  //       //   setFoundFu("No order found")
+  //       // }
+  //     });
+  // };
 
 const changeView = (e)=>{
   e.preventDefault()
@@ -198,7 +210,7 @@ const changeView = (e)=>{
                                 setExpand(item.orderId);
                               }
                             }}>
-                            <td>{key}</td>
+                            <td>{key+1}</td>
                             <td>{item.orderId}</td>
                             <td>{item.date}</td>
                             <td>{item.customer_detail.name}</td>
@@ -207,6 +219,7 @@ const changeView = (e)=>{
                             <td>${item.total_amount}</td>
                             <td>{item.shipping||'NA'}</td>
                             <td>
+                            {`${item.pStatus==="Paid"}`? "Fulfilled":
                               <button
                                 classsName="btn btn-primary"
                                 style={{
@@ -218,6 +231,7 @@ const changeView = (e)=>{
                               >
                                 Fulfill
                               </button>
+                            }
                             </td>
                           </tr>
 
@@ -268,7 +282,7 @@ const changeView = (e)=>{
                                 setExpand(item.orderId);
                               }
                             }}>
-                            <td>{key}</td>
+                            <td>{key+1}</td>
                             <td>{item.orderId}</td>
                             <td>{item.date}</td>
                             <td>{item.customer_detail.name}</td>
@@ -338,7 +352,7 @@ const changeView = (e)=>{
                                 setExpand(item.orderId);
                               }
                             }}>
-                            <td>{key}</td>
+                            <td>{key+1}</td>
                             <td>{item.orderId}</td>
                             <td>{item.date}</td>
                             <td>{item.customer_detail.name}</td>
@@ -347,17 +361,8 @@ const changeView = (e)=>{
                             <td>${item.total_amount}</td>
                             <td>{item.shipping||'NA'}</td>
                             <td>
-                              <button
-                                classsName="btn btn-primary"
-                                style={{
-                                  background: "White",
-                                  color: "black",
-                                  border: "1px solid lightblue",
-                                }}
-                                onClick={() => handleClick(item)}
-                              >
-                                Fulfill
-                              </button>
+
+                                Fulfilled
                             </td>
                           </tr>
 
