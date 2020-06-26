@@ -523,7 +523,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           sku: product.sku,
           total_price: item.price,
           quantity: product.quantity,
-          store: product.store,
+          store: product.store.toLowerCase(),
 
           customer_name: item.customer,
           order_date: item.created_on
@@ -585,7 +585,7 @@ const mUser = await MerchantUser.find()
 
 thirdArr.forEach((tArr, o) => {
   mUser.forEach((muser, p) => {
-    if (tArr.store===muser.store) {
+    if (tArr.store===muser.store.toLowerCase()) {
       doneArr.push({
         orderId: tArr.orderId,
         sku: tArr.sku,
@@ -605,7 +605,7 @@ thirdArr.forEach((tArr, o) => {
   });
 
 });
-console.log("customMerchantDetail", doneArr);
+console.log("custom ordedr D", doneArr);
 
 res.send(doneArr)
 
@@ -723,7 +723,7 @@ router.get('/customMerchantDetail', async (req, res) => {
   data.forEach((item, i) => {
     orderData.forEach((od, j) => {
       od.products.forEach((pro, k) => {
-        if (item.store === pro.store) {
+        if (item.store.toLowerCase() === pro.store) {
           const obj = {
             id: item._id,
             email: item.email,
@@ -731,14 +731,14 @@ router.get('/customMerchantDetail', async (req, res) => {
             lastName: item.lastName,
             phone: item.phoneNo,
             joiningDate: item.joiningDate,
-            store: pro.store,
+            store: pro.store.toLowerCase(),
             price: parseInt(pro.price),
             count: 1,
           };
 
           detail.push(obj);
         }
-        sName.push(item.store);
+        sName.push(item.store.toLowerCase());
 
       });
     });
@@ -868,7 +868,7 @@ let newObject = {}
   data.forEach((delta, x) => {
     matchArray.forEach((final, Y) => {
 
-      if (delta.store === final.store) {
+      if (delta.store.toLowerCase() === final.store) {
          newObject = {
           id: delta._id,
           email: delta.email,
