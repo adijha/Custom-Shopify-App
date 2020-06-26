@@ -161,6 +161,7 @@ app.get('/shopify/callback', (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
         req.session.code = code;
+        res.redirect('https://www.melisxpress.com/login-merchant')
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
