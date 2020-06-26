@@ -1228,16 +1228,8 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
         if (product.sku !== undefined) {
           newOrderArray.push({
             orderId: item.product_name,
-            total_amount: item.price,
-            date: item.created_on,
-            paymentMode: item.paymentMode,
-            customer_name: item.customer,
-
             sku: product.sku,
-            item_price: product.price,
-            quantity: product.quantity,
-            store: product.store,
-            pStatus: item.pStatus
+            store: product.store
           })
         }
       });
@@ -1245,21 +1237,12 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
 
     let tempArray = []
     newOrderArray.forEach((item, i) => {
-      if (item.store.toLowerCase()===req.params.store) {
+      if (item.store.toLowerCase()===req.params.storeName) {
         tempArray.push({
           orderId: item.orderId,
-          total_amount: item.total_amount,
-          date: item.date,
-          paymentMode: item.paymentMode,
-          customer_detail: item.customer_name,
-          item_price: item.item_price,
+
           sku: item.sku,
-          productImage:[],
-          quantity: item.quantity,
-          productName: '',
-          shippingCharge: {},
           store: item.store,
-          pStatus: item.pStatus
         })
       }
     });
@@ -1330,10 +1313,9 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
 
 
 
-  let checkStore = []
   let tempArray = []
   newOrderArray.forEach((item, i) => {
-    if (item.store.toLowerCase()===req.params.store) {
+    if (item.store.toLowerCase()===req.params.storeName) {
       tempArray.push({
         orderId: item.orderId,
         price: item.price,
@@ -1345,22 +1327,16 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   });
 
   let productData = await Products.find()
+  let checkStore = []
 
 tempArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (item.sku===product.code) {
-      checkStore.push({
-        orderId: item.orderId,
-        price: item.price,
-        created_on: item.created_on,
-        productName: '',
-        store: item.store,
-        sku: item.sku,
-      })
+    if (tempArray[i].sku===productData[j].code) {
+      checkStore.push(tempArray[i])
     }
   });
 });
-
+console.log("checkStore in m Graoh", checkStore);
 
   // productData.forEach((product, i) => {
   //   checkStore.forEach((check, index) => {
@@ -1391,7 +1367,7 @@ tempArray.forEach((item, i) => {
   for (var prop in holder) {
     obj2.push({ date: prop, price: holder[prop] });
   }
-  console.log('obj2', obj2);
+  console.log('obj2 in merchant graph', obj2);
   let dateArray = [];
   let revenueArray = [];
 
