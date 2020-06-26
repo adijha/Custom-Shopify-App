@@ -765,10 +765,41 @@ router.get('/customMerchantDetail', async (req, res) => {
   const data = await MerchantUser.find();
   // console.log(data);
   const orderData = await Orders.find();
+  const productData = await Products.find()
+
+let newOrderArray = []
+
+    orderData.forEach((item, i) => {
+      item.products.forEach((product, j) => {
+        if (product.sku !== undefined) {
+          newOrderArray.push({
+            orderId: item.product_name,
+            price: product.price,
+            created_on: item.created_on,
+            store: product.store,
+            sku: product.sku,
+
+
+          })
+        }
+      });
+    });
+
+let makeOrderArray = []
+
+newOrderArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (newOrderArray[i].sku===productData[j].code) {
+      makeOrderArray.push(newOrderArray[i])
+    }
+  });
+
+});
+
 
   data.forEach((item, i) => {
-    orderData.forEach((od, j) => {
-      od.products.forEach((pro, k) => {
+
+      makeOrderArray.forEach((pro, k) => {
         if (item.store.toLowerCase() === pro.store) {
           const obj = {
             id: item._id,
@@ -787,7 +818,7 @@ router.get('/customMerchantDetail', async (req, res) => {
         sName.push(item.store.toLowerCase());
 
       });
-    });
+
   });
   sName = [...new Set(sName)];
   console.log({ sName });
@@ -1072,9 +1103,25 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
   let calPrice = 0;
 
   const data = await Orders.find();
+  const productData = await Products.find()
 
+  let itemArray = []
   data.forEach((item, i) => {
-    item.products.forEach((product, i) => {
+    item.products.forEach((sss, i) => {
+      if (sss.sku !== undefined) {
+        itemArray.push({
+          name: sss.name,
+          sku: sss.sku,
+          price: sss.price,
+          store: sss.store.toLowerCase()
+        });
+      }
+    });
+  });
+
+  let makeTempArray = []
+
+    itemArray.forEach((product, i) => {
       if (product.store == req.params.store) {
         const productObj = {
           name: product.name,
@@ -1083,11 +1130,22 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
           store: product.store,
           count: 1,
         };
-        productArr.push(productObj);
+        makeTempArray.push(productObj);
         productNameArr.push(product.sku);
       }
-    });
+
   });
+
+  makeTempArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if (makeTempArray[i].sku === productData[j].code) {
+        productArr.push(makeTempArray[i])
+      }
+    });
+
+  });
+
+
   var finalArr = [];
 
   var holder = {};
@@ -1136,6 +1194,7 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
     obj2.forEach((test, i) => {
       if (item.sku === test.sku) {
         const newObject = {
+          name:'',
           sku: test.sku,
           count: test.count,
           price: item.price,
@@ -1186,10 +1245,20 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
 
 // console.log(finalObj, "final");
 
+newArray.forEach((Arr, i) => {
+  itemArray.forEach((item, index) => {
+    if (newArray[i].sku===itemArray[index].sku) {
+      newArray[i].name=itemArray[index].name
+    }
+  });
+
+});
+
+
 console.log("check data", newArray);
   res.send(newArray)
 
-  res.send(newArray);
+
 });
 
 /*Supplier Part*/
