@@ -576,8 +576,35 @@ app.get('/ordersData', async (req, res) => {
 
   try {
     const data = await Orders.find({});
-    console.log(data.length);
-    res.status(200).json(data.length);
+    const productData = await Products.find()
+    let itemArray = []
+
+    data.forEach((item, i) => {
+      item.products.forEach((sss, i) => {
+        if (sss.sku !== undefined) {
+          itemArray.push({
+            totalPrice: parseInt(item.price),
+            name: sss.name,
+            sku: sss.sku,
+            price: sss.price,
+            store: sss.store.toLowerCase()
+          });
+        }
+      });
+    });
+
+    let makeOrderArray = []
+    itemArray.forEach((item, i) => {
+      productData.forEach((product, j) => {
+        if (itemArray[i].sku===productData[j].code) {
+          makeOrderArray.push(itemArray[i])
+        }
+      });
+
+    });
+
+    console.log(makeOrderArray.length);
+    res.status(200).json(makeOrderArray.length);
   } catch (error) {
     console.log(error, 'orderData api');
   }
@@ -586,9 +613,34 @@ app.get('/ordersData', async (req, res) => {
 app.get('/revenue', async (req, res) => {
   const priceCal = [];
   const data = await Orders.find({});
+  const productData = await Products.find()
+  let itemArray = []
 
   data.forEach((item, i) => {
-    priceCal.push(item.price);
+    item.products.forEach((sss, i) => {
+      if (sss.sku !== undefined) {
+        itemArray.push({
+          totalPrice: parseInt(item.price),
+          name: sss.name,
+          sku: sss.sku,
+          price: sss.price,
+          store: sss.store.toLowerCase()
+        });
+      }
+    });
+  });
+let makeOrderArray = []
+itemArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (itemArray[i].sku===productData[j].code) {
+      makeOrderArray.push(itemArray[i])
+    }
+  });
+
+});
+console.log("makeOrderArray", makeOrderArray);
+  makeOrderArray.forEach((item, i) => {
+    priceCal.push(item.totalPrice);
   });
 
   const sumPrice = priceCal.reduce((a, b) => a + b, 0);
