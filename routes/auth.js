@@ -186,10 +186,10 @@ console.log(req.params.store);
         customer_detail: item.customer_name,
         item_price: item.item_price,
         sku: item.sku,
-
+        productImage:[],
         quantity: item.quantity,
-
-
+        productName: '',
+        shippingCharge: {},
         store: item.store,
         pStatus: item.pStatus
       })
@@ -200,36 +200,36 @@ console.log(req.params.store);
 
 tempArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (item.sku===product.code) {
+    if (tempArray[i].sku===productData[j].code) {
       checkStore.push({
         orderId: item.orderId,
-        total_amount: item.total_amount,
-        date: item.date,
-        paymentMode: item.paymentMode,
-        customer_detail: item.customer_detail,
-        item_price: item.item_price,
-        sku: item.sku,
-        productImage:[],
-        quantity: item.quantity,
-        productName: '',
-        shippingCharge: {},
-        store: item.store,
+        // total_amount: item.total_amount,
+        // date: item.date,
+        // paymentMode: item.paymentMode,
+        // customer_detail: item.customer_detail,
+        // item_price: item.item_price,
+        // sku: item.sku,
+        // productImage:product.productImage,
+        // quantity: item.quantity,
+        // productName: product.name,
+        // shippingCharge: product.shippingCharge,
+        // store: item.store,
         pStatus: item.pStatus
       })
     }
   });
 });
 
-  productData.forEach((product, i) => {
-    checkStore.forEach((check, index) => {
-      if (productData[i].code === checkStore[index].sku)
-      {
-        checkStore[index].productImage= productData[i].productImage;
-        checkStore[index].productName = productData[i].name
-        checkStore[index].shippingCharge = productData[i].shippingCharge
-      }
-    });
-  });
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productImage= productData[i].productImage;
+  //       checkStore[index].productName = productData[i].name
+  //       checkStore[index].shippingCharge = productData[i].shippingCharge
+  //     }
+  //   });
+  // });
 let finalData = []
   checkStore.forEach((item, i) => {
     if (checkStore[i].pStatus==='unpaid') {
@@ -242,6 +242,7 @@ let finalData = []
   // }))
   // console.log("order Deetails length", checkStore.length);
   // console.log("result is paid order merchant", filterItems.length);
+  console.log("leftOrdermerchantShopify", finalData.length);
   res.send(finalData)
 })
 //
@@ -384,10 +385,10 @@ tempArray.forEach((item, i) => {
         customer_detail: item.customer_detail,
         item_price: item.item_price,
         sku: item.sku,
-        productImage:[],
+        productImage:product.productImage,
         quantity: item.quantity,
-        productName: '',
-        shippingCharge: {},
+        productName: product.name,
+        shippingCharge: product.shippingCharge,
         store: item.store,
         pStatus: item.pStatus
       })
@@ -396,16 +397,16 @@ tempArray.forEach((item, i) => {
 });
 
 
-  productData.forEach((product, i) => {
-    checkStore.forEach((check, index) => {
-      if (productData[i].code === checkStore[index].sku)
-      {
-        checkStore[index].productImage= productData[i].productImage;
-        checkStore[index].productName = productData[i].name
-        checkStore[index].shippingCharge = productData[i].shippingCharge
-      }
-    });
-  });
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productImage= productData[i].productImage;
+  //       checkStore[index].productName = productData[i].name
+  //       checkStore[index].shippingCharge = productData[i].shippingCharge
+  //     }
+  //   });
+  // });
 let finalDataUnpiad = []
 let finalDataPaid = []
   checkStore.forEach((item, i) => {

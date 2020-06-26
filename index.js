@@ -1243,7 +1243,6 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
       });
     });
 
-    let checkStore = []
     let tempArray = []
     newOrderArray.forEach((item, i) => {
       if (item.store.toLowerCase()===req.params.store) {
@@ -1255,29 +1254,6 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
           customer_detail: item.customer_name,
           item_price: item.item_price,
           sku: item.sku,
-
-          quantity: item.quantity,
-
-
-          store: item.store,
-          pStatus: item.pStatus
-        })
-      }
-    });
-
-    let productData = await Products.find()
-
-  tempArray.forEach((item, i) => {
-    productData.forEach((product, j) => {
-      if (item.sku===product.code) {
-        checkStore.push({
-          orderId: item.orderId,
-          total_amount: item.total_amount,
-          date: item.date,
-          paymentMode: item.paymentMode,
-          customer_detail: item.customer_detail,
-          item_price: item.item_price,
-          sku: item.sku,
           productImage:[],
           quantity: item.quantity,
           productName: '',
@@ -1287,16 +1263,26 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
         })
       }
     });
+
+    let productData = await Products.find()
+    let checkStore = []
+
+  tempArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if (tempArray[i].sku===productData[j].code) {
+        checkStore.push(tempArray[i])
+      }
+    });
   });
 
-    productData.forEach((product, i) => {
-      checkStore.forEach((check, index) => {
-        if (productData[i].code === checkStore[index].sku)
-        {
-          checkStore[index].productName = productData[i].name
-        }
-      });
-    });
+    // productData.forEach((product, i) => {
+    //   checkStore.forEach((check, index) => {
+    //     if (productData[i].code === checkStore[index].sku)
+    //     {
+    //       checkStore[index].productName = productData[i].name
+    //     }
+    //   });
+    // });
   // let finalData = []
   //   checkStore.forEach((item, i) => {
   //     if (checkStore[i].pStatus==='unpaid') {
@@ -1376,14 +1362,14 @@ tempArray.forEach((item, i) => {
 });
 
 
-  productData.forEach((product, i) => {
-    checkStore.forEach((check, index) => {
-      if (productData[i].code === checkStore[index].sku)
-      {
-        checkStore[index].productName = productData[i].name
-      }
-    });
-  });
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productName = productData[i].name
+  //     }
+  //   });
+  // });
 
 
 
@@ -1418,7 +1404,7 @@ tempArray.forEach((item, i) => {
     date: dateArray,
     revenue: revenueArray,
   };
-  //console.log('finalGraphObj', finalGraphObj);
+  console.log('finalGraphObj', finalGraphObj);
   res.send(finalGraphObj);
 });
 
