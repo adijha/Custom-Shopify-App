@@ -572,7 +572,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           store: product.store.toLowerCase(),
 
           customer_name: item.customer,
-          order_date: item.created_on
+          order_date: item.created_on,
+          pStatus:item.pStatus
         })
       }
 
@@ -595,7 +596,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           productImage:data.productImage,
           shipping: data.shippingCharge,
           product_price: data.price,
-          supplier_id: data.supplier_id
+          supplier_id: data.supplier_id,
+          pStatus: arr.pStatus
         })
       }
     });
@@ -618,8 +620,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           product_price: sArr.product_price,
           supplier_id: sArr.supplier_id,
           supplierName: user.supplier_id,
-          productImage:sArr.productImage
-
+          productImage:sArr.productImage,
+          pStatus:sArr.pStatus
         })
       }
 
@@ -645,7 +647,8 @@ thirdArr.forEach((tArr, o) => {
         supplier_id: tArr.supplier_id,
         supplierName: tArr.supplierName,
         productImage:tArr.productImage,
-        merchantName: muser.firstName
+        merchantName: muser.firstName,
+        pStatus: tArr.pStatus
       })
     }
   });
@@ -1656,7 +1659,7 @@ router.get('/customProductDetail', async (req, res)=>{
 
   productData.forEach((ddd, i) => {
     dupArray.push({
-      
+
       _id: ddd._id,
       supplier_id: ddd.supplier_id,
       name: ddd.name,

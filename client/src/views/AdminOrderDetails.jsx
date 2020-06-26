@@ -111,7 +111,7 @@ const SupplierList = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="primary"
           placeholder="search order by Id, customer name"
-          
+
         />
         </div>
         <div
@@ -136,6 +136,7 @@ const SupplierList = () => {
           </CsvDownloader>
         </div>
       </div>
+      <br/>
       <Grid fluid>
         <Row>
           <Col md={12}>
@@ -154,6 +155,7 @@ const SupplierList = () => {
                       <th>Customer</th>
                       <th>SKU</th>
                       <th>Total</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -194,6 +196,7 @@ const SupplierList = () => {
                             </td>
                             <td>{item.sku}</td>
                             <td>${item.total_price}</td>
+                            <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
                           </tr>
 
                           {expand === item.orderId ? (
