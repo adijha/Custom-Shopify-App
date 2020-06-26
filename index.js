@@ -17,7 +17,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
   'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = 'https://866ab7bca4ce.ngrok.io';
+const forwardingAddress = 'https://www.melisxpress.com';
 let hmacc, tokenn;
 // let shop;
 let topic = 'orders/create';
@@ -161,7 +161,7 @@ app.get('/shopify/callback', (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
         req.session.code = code;
-        res.redirect('https://866ab7bca4ce.ngrok.io/login-merchant')
+        res.redirect('https://www.melisxpress.com/login-merchant')
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
@@ -172,7 +172,7 @@ app.get('/shopify/callback', (req, res) => {
         //   "X-Shopify-Access-Token": tokenn,
         // };
         // request
-        //   .get("https://866ab7bca4ce.ngrok.io/webhook")
+        //   .get("https://www.melisxpress.com/webhook")
         //   .then((shopResponse) => {
         //     res.send(shopResponse);
         //   })
@@ -269,7 +269,17 @@ app.get('/shopifyProduct/:storeName', async (req, res) => {
 
 //update request shopify product
 app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
+  console.log(req.params, "shopify update");
   let storeData = await Store.find({ name: req.params.storeName });
+  let obj = {
+    product:{
+      title: req.body.product.title,
+      body_html: req.body.product.body_html,
+      vendor: req.body.product.vendor,
+      product_type: req.body.product.product_type
+    }
+
+  }
   if (storeData.length > 0) {
 
   console.log(req.body);
@@ -288,10 +298,10 @@ app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
     'X-Shopify-API-Version': '2020-01',
   };
   request
-    .put(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+    .put(shopRequestUrl, { headers: shopRequestHeaders, json: obj })
     .then((data) => {
       console.log('update shopify product is ', data);
-      res.send(data);
+      res.send("success");
     })
     .catch((error) => {
       console.log('shopify error update is', error);
@@ -445,7 +455,7 @@ const makeWebook = (token, shop, hmac, code) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://866ab7bca4ce.ngrok.io/store/${shop}/orders/create`,
+      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -545,7 +555,7 @@ app.get('/webhook', (req, res) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://866ab7bca4ce.ngrok.io/store/${shop}/orders/create`,
+      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -1698,7 +1708,7 @@ app.post('/suppOrderFulfill/:store/:id', (req, res) => {
 
   request
     .post(
-      'https://866ab7bca4ce.ngrok.io/orders/' +
+      'https://www.melisxpress.com/orders/' +
         req.params.store +
         '/' +
         req.params.id,

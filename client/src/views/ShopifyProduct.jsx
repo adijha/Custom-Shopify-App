@@ -94,7 +94,7 @@ const UpdateProduct = async (e)=>{
           "title": name,
           "body_html": description,
           "vendor": decode.store,
-          "product_type": category,
+          "product_type": category
           // "tags": tagArray,
           // "variants":newVariant
 
@@ -105,13 +105,21 @@ const UpdateProduct = async (e)=>{
 
 
   console.log(product, "Update product is shopify")
-    await axios.put('/ShopifyProduct/'+storeName+'/'+code, product)
+    await axios.put('/ShopifyProduct/'+storeName.toLowerCase()+'/'+code, product)
     .then(data=>{
       console.log(data)
-      setStatus("Product Updated Successfully")
-      setOpen(false);
-      getShopifyProduct()
+      if (data) {
+        getShopifyProduct()
+        NotificationManager.success('Product Updated in Shopify Successfully');
 
+        setOpen(false);
+
+
+      }
+    else {
+      NotificationManager.error('Something wrong');
+
+    }
     })
 }
 
@@ -119,8 +127,9 @@ const deleteProduct = (data)=>{
   axios.delete('/ShopifyProduct/'+storeName.toLowerCase()+'/'+data.id)
   .then(data=>{
     if (data) {
-      NotificationManager.success('product Deleted  from Shopify Successfully');
       getShopifyProduct()
+      NotificationManager.success('product Deleted  from Shopify Successfully');
+
 
     }
   else {
