@@ -1635,7 +1635,7 @@ router.get('/paymentDetails/:id', async (req, res) => {
 router.get('/product', async (req, res) => {
 console.log("product api hit");
   try {
-    const item = await Products.find();
+    const item = await Products.find({});
     console.log("item", item);
     res.json(item);
   } catch (error) {

@@ -5,6 +5,7 @@ import Modal from "react-responsive-modal";
 import "../assets/css/shopifyProduct.css";
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
 
 
 
@@ -115,11 +116,17 @@ const UpdateProduct = async (e)=>{
 }
 
 const deleteProduct = (data)=>{
-  axios.delete('/ShopifyProduct/'+storeName+'/'+data.id)
+  axios.delete('/ShopifyProduct/'+storeName.toLowerCase()+'/'+data.id)
   .then(data=>{
-    console.log(data)
-    setStatus("product deleted Successfully")
-    getShopifyProduct()
+    if (data) {
+      NotificationManager.success('product Deleted  from Shopify Successfully');
+      getShopifyProduct()
+
+    }
+  else {
+    NotificationManager.error('Something wrong');
+
+  }
   })
   .catch(error=>{
     console.log("front product shopify error", error)
@@ -227,7 +234,7 @@ const deleteProduct = (data)=>{
                 className="form-control"
                 id="product_tag"
                 placeholder="Enter Tags of Product seperated by Commas"
-                
+
         />
       </div>
 

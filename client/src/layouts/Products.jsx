@@ -107,7 +107,7 @@ const Products = () => {
 
     t.productImage.forEach((item, i) => {
       images.push({
-        attachment: item.imgBufferData,
+        "attachment": item.imgBufferData,
       });
     });
 
@@ -157,7 +157,7 @@ const Products = () => {
       <div>
         <div style={{ backgroundColor: "#F7F7F8"}}>
 
-        <h2 className="text-center" 
+        <h2 className="text-center"
             >
           Product <span style={{ color: "#ff9f1a" }}>Collection</span>
         </h2>
@@ -295,14 +295,14 @@ const Products = () => {
         className="container-fluid"
         style={{ backgroundColor: "#fff", padding: "6px", paddingTop: "2em" }}
       >
-        <div className="text-center" style={{ color: "red" }} 
+        <div className="text-center" style={{ color: "red" }}
             style={{ backgroundColor: "#fff"}} >
           {status}
         </div>
         {filterItems.map((list) => {
           return (
             <div className="col-sm-3" onClick={() => getProductId(list)}
-            
+
             style={{ backgroundColor: "#fff"}}
             >
               <article className="col-item item column-item" style={{ backgroundColor: "#fff",padding:0}}>

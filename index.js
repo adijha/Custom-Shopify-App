@@ -17,7 +17,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
   'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = 'https://www.melisxpress.com';
+const forwardingAddress = 'https://866ab7bca4ce.ngrok.io';
 let hmacc, tokenn;
 // let shop;
 let topic = 'orders/create';
@@ -161,7 +161,7 @@ app.get('/shopify/callback', (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
         req.session.code = code;
-        res.redirect('https://www.melisxpress.com/login-merchant')
+        res.redirect('https://866ab7bca4ce.ngrok.io/login-merchant')
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
@@ -172,7 +172,7 @@ app.get('/shopify/callback', (req, res) => {
         //   "X-Shopify-Access-Token": tokenn,
         // };
         // request
-        //   .get("https://www.melisxpress.com/webhook")
+        //   .get("https://866ab7bca4ce.ngrok.io/webhook")
         //   .then((shopResponse) => {
         //     res.send(shopResponse);
         //   })
@@ -201,7 +201,7 @@ app.post('/addToShopify/:storeName',async (req, res) => {
       title: req.body.product.title,
       body_html: req.body.product.body_html,
       vendor: req.body.product.vendor,
-      images: req.body.product.images,
+      images:[ {"attachment":req.body.product.images}],
       product_type: req.body.product.product_type
     }
 
@@ -302,18 +302,20 @@ app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
   }
 });
 
-app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
+app.delete('/shopifyProduct/:storeName/:id', async (req, res) => {
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
   const shopRequestUrl =
     'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/products/' +
+    req.params.storeName +
+    '/admin/api/2020-01/products/' +
     req.params.id +
     '.json';
   const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
+    'X-Shopify-Access-Token': storeData[0].token,
     'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+    'X-Shopify-Shop-Domain': req.params.storeName,
     'X-Shopify-API-Version': '2020-01',
   };
   request
@@ -325,6 +327,9 @@ app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
     .catch((error) => {
       console.log('shopify error delete is', error);
     });
+  } else {
+    console.log('storeData not found');
+  }
 });
 
 //get Orders list
@@ -440,7 +445,7 @@ const makeWebook = (token, shop, hmac, code) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+      address: `https://866ab7bca4ce.ngrok.io/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -540,7 +545,7 @@ app.get('/webhook', (req, res) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+      address: `https://866ab7bca4ce.ngrok.io/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -1693,7 +1698,7 @@ app.post('/suppOrderFulfill/:store/:id', (req, res) => {
 
   request
     .post(
-      'https://www.melisxpress.com/orders/' +
+      'https://866ab7bca4ce.ngrok.io/orders/' +
         req.params.store +
         '/' +
         req.params.id,
