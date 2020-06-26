@@ -37,7 +37,7 @@ const MerchantLogin = () => {
   return (
     <div className='wrapper' id='wrapper-login'>
       {isLoggedIn === true ? (
-        <Redirect to='/merchant' />
+        <Redirect to='/merchant/dashboard' />
       ) : (
         <div className='form-wrapper-login' id='form-wrapper-login'>
           <h2>Merchant Login</h2>
