@@ -178,16 +178,18 @@ const handleSort = e =>{
             <option value = "order">Order</option>
             <option value = "revenue">Revenue</option>
           </select>
-          <br/>
-          <br/>
-          <input
-            type="search"
-            onChange={(e) => setSearch(e.target.value)}
-            className="primary"
-            placeholder="search product"
-            style={{ width: "400px" }}
-          />
 
+
+
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18, marginRight: "20px"}}>
+        <input
+          type="search"
+          onChange={(e) => setSearch(e.target.value)}
+          className="primary"
+          placeholder="search supplier by username"
+          style={{ width: "400px" }}
+        />
         </div>
         <div
           style={{
@@ -211,7 +213,7 @@ const handleSort = e =>{
           </CsvDownloader>
         </div>
       </div>
-
+<br/>
       <Grid fluid>
         <Row>
           <Col md={12}>
