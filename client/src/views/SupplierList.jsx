@@ -133,7 +133,7 @@ const SupplierList = () => {
   // }))
 
   const filterItems = suppliers.filter((plist) => {
-    return plist.name.toLowerCase().includes(search.toLowerCase());
+    return plist.supplier_id.toLowerCase().includes(search.toLowerCase());
   });
 
 const handleSort = e =>{
