@@ -174,16 +174,39 @@ console.log(req.params.store);
     });
   });
 
-  checkStore = []
-
+  let checkStore = []
+  let tempArray = []
   newOrderArray.forEach((item, i) => {
     if (item.store.toLowerCase()===req.params.store) {
-      checkStore.push({
+      tempArray.push({
         orderId: item.orderId,
         total_amount: item.total_amount,
         date: item.date,
         paymentMode: item.paymentMode,
         customer_detail: item.customer_name,
+        item_price: item.item_price,
+        sku: item.sku,
+
+        quantity: item.quantity,
+
+
+        store: item.store,
+        pStatus: item.pStatus
+      })
+    }
+  });
+
+  let productData = await Products.find()
+
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (item.sku===product.code) {
+      checkStore.push({
+        orderId: item.orderId,
+        total_amount: item.total_amount,
+        date: item.date,
+        paymentMode: item.paymentMode,
+        customer_detail: item.customer_detail,
         item_price: item.item_price,
         sku: item.sku,
         productImage:[],
@@ -195,8 +218,7 @@ console.log(req.params.store);
       })
     }
   });
-
-  let productData = await Products.find()
+});
 
   productData.forEach((product, i) => {
     checkStore.forEach((check, index) => {
