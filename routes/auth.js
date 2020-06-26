@@ -1656,8 +1656,7 @@ router.get('/customProductDetail', async (req, res)=>{
 
   productData.forEach((ddd, i) => {
     dupArray.push({
-      varients: ddd.varients,
-      options: ddd.options,
+      
       _id: ddd._id,
       supplier_id: ddd.supplier_id,
       name: ddd.name,

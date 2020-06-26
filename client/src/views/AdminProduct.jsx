@@ -244,7 +244,6 @@ const AdminProduct = () => {
                         <th>SKU</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Updated Price</th>
                         <th>Total No. Of Orders</th>
                         <th>Total Revenue</th>
                       </tr>
@@ -284,7 +283,6 @@ const AdminProduct = () => {
                               <td>{item.code}</td>
                               <td>{item.category}</td>
                               <td>${item.price.toFixed(2)}</td>
-                              <td>${item.sellingPrice.toFixed(2)}</td>
                               <td>{item.order}</td>
                               <td>${item.revenue}</td>
                               <td>

@@ -12,6 +12,9 @@ const SupplierList = () => {
     moment('01-01-2019').format('Y-MM-DD')
   );
   const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
+  const [search, setSearch] = useState("");
+
+
   useEffect(() => {
     getSupplierData();
   }, []);
@@ -34,6 +37,12 @@ const SupplierList = () => {
     });
     setOrders(newOrders);
   };
+
+  //filterItems
+  let filterItems = orders.filter((plist) => {
+    return (plist.customer_name.name.toLowerCase().includes(search.toLowerCase())|| plist.orderId.toLowerCase().includes(search.toLowerCase())  )
+
+  });
 
   return (
     <div className='content'>
@@ -96,6 +105,15 @@ const SupplierList = () => {
             Get Orders
           </div>
         </div>
+        <div>
+        <input
+          type="search"
+          onChange={(e) => setSearch(e.target.value)}
+          className="primary"
+          placeholder="search order by Id, customer name"
+          
+        />
+        </div>
         <div
           style={{
             backgroundColor: 'grey',
@@ -139,7 +157,7 @@ const SupplierList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((item, key) => {
+                    {filterItems.map((item, key) => {
                       return (
                         <>
                           <tr key={key}>
