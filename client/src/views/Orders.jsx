@@ -17,7 +17,7 @@ const Orders = () => {
   const [expand, setExpand] = useState('');
 
   useEffect(() => {
-    getOrderDetailsUnfulfilled();
+    getOrderDetails();
     // getOrderDetailsFulfilled();
     // getOrderDetailsAll();
   }, []);
@@ -44,7 +44,7 @@ const Orders = () => {
   //     });
   // };
 
-  const getOrderDetailsUnfulfilled = async () => {
+  const getOrderDetails = async () => {
     console.log(decode.store);
 
       await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
@@ -112,7 +112,7 @@ const changeView = (e)=>{
     .then (res=>{
       if (res) {
         NotificationManager.success('Fulfilled Successfully');
-        getOrderDetailsUnfulfilled()
+        getOrderDetails()
         //console.log(filterItems.length, "length of filterItems")
       }
      else {
