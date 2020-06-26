@@ -150,78 +150,78 @@ router.get('/getTransaction', async (req, res)=>{
 })
 
 //merchant order from shopify
-// router.get('/merchantShopifyOrdersAll/:store', async (req, res)=>{
-// console.log(req.params.store);
-//   const orderData = await Orders.find();
-//   let newOrderArray = []
-//   orderData.forEach((item, i) => {
-//     item.products.forEach((product, j) => {
-//       if (product.sku !== undefined) {
-//         newOrderArray.push({
-//           orderId: item.product_name,
-//           total_amount: item.price,
-//           date: item.created_on,
-//           paymentMode: item.paymentMode,
-//           customer_name: item.customer,
-//
-//           sku: product.sku,
-//           item_price: product.price,
-//           quantity: product.quantity,
-//           store: product.store,
-//           pStatus: item.pStatus
-//         })
-//       }
-//     });
-//   });
-//
-//   checkStore = []
-//
-//   newOrderArray.forEach((item, i) => {
-//     if (item.store.toLowerCase()===req.params.store) {
-//       checkStore.push({
-//         orderId: item.orderId,
-//         total_amount: item.total_amount,
-//         date: item.date,
-//         paymentMode: item.paymentMode,
-//         customer_detail: item.customer_name,
-//         item_price: item.item_price,
-//         sku: item.sku,
-//         productImage:[],
-//         quantity: item.quantity,
-//         productName: '',
-//         shippingCharge: {},
-//         store: item.store,
-//         pStatus: item.pStatus
-//       })
-//     }
-//   });
-//
-//   let productData = await Products.find()
-//
-//   productData.forEach((product, i) => {
-//     checkStore.forEach((check, index) => {
-//       if (productData[i].code === checkStore[index].sku)
-//       {
-//         checkStore[index].productImage= productData[i].productImage;
-//         checkStore[index].productName = productData[i].name
-//         checkStore[index].shippingCharge = productData[i].shippingCharge
-//       }
-//     });
-//   });
-// // let finalData = []
-// //   checkStore.forEach((item, i) => {
-// //     if (checkStore[i].pStatus==='unpaid') {
-// //         finalData.push(checkStore[i])
-// //     }
-// //   });
-// //   console.log("final data array", finalData);
-//   // const filterItems = (checkStore.filter(plist=>{
-//   //   return plist.pStatus ==='Paid';
-//   // }))
-//   // console.log("order Deetails length", checkStore.length);
-//   // console.log("result is paid order merchant", filterItems.length);
-//   console.log("All data", checkStore)
-// })
+router.get('/leftOrdermerchantShopify/:store', async (req, res)=>{
+console.log(req.params.store);
+  const orderData = await Orders.find();
+  let newOrderArray = []
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+      if (product.sku !== undefined) {
+        newOrderArray.push({
+          orderId: item.product_name,
+          total_amount: item.price,
+          date: item.created_on,
+          paymentMode: item.paymentMode,
+          customer_name: item.customer,
+
+          sku: product.sku,
+          item_price: product.price,
+          quantity: product.quantity,
+          store: product.store,
+          pStatus: item.pStatus
+        })
+      }
+    });
+  });
+
+  checkStore = []
+
+  newOrderArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.store) {
+      checkStore.push({
+        orderId: item.orderId,
+        total_amount: item.total_amount,
+        date: item.date,
+        paymentMode: item.paymentMode,
+        customer_detail: item.customer_name,
+        item_price: item.item_price,
+        sku: item.sku,
+        productImage:[],
+        quantity: item.quantity,
+        productName: '',
+        shippingCharge: {},
+        store: item.store,
+        pStatus: item.pStatus
+      })
+    }
+  });
+
+  let productData = await Products.find()
+
+  productData.forEach((product, i) => {
+    checkStore.forEach((check, index) => {
+      if (productData[i].code === checkStore[index].sku)
+      {
+        checkStore[index].productImage= productData[i].productImage;
+        checkStore[index].productName = productData[i].name
+        checkStore[index].shippingCharge = productData[i].shippingCharge
+      }
+    });
+  });
+let finalData = []
+  checkStore.forEach((item, i) => {
+    if (checkStore[i].pStatus==='unpaid') {
+        finalData.push(checkStore[i])
+    }
+  });
+//   console.log("final data array", finalData);
+  // const filterItems = (checkStore.filter(plist=>{
+  //   return plist.pStatus ==='Paid';
+  // }))
+  // console.log("order Deetails length", checkStore.length);
+  // console.log("result is paid order merchant", filterItems.length);
+  res.send(finalData)
+})
 //
 //
 //
