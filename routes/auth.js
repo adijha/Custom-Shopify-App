@@ -18,6 +18,8 @@ const PaymentMode = require('../model/PaymentMode');
 const Transaction = require('../model/Transaction');
 const axios = require('axios');
 var nodemailer = require('nodemailer');
+const stripe = require('stripe')('sk_test_6OA6yWmLoYcjfxPCzxGWbWtg')
+const { v4: uuidv4 } = require('uuid');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const RequestProduct = require('../model/RequestProduct')
@@ -2556,4 +2558,33 @@ router.get('/getRequestProduct', async (req, res)=>{
   }
 })
 
+
+//merchant payment from stripe
+router.post('/payment', async (req, res)=>{
+  let product = req.body.product;
+  let token = req.body.token
+  console.log("product", product);
+  console.log("price*100", product.price);
+  let idempontentKey = uuidv4();
+  console.log({idempontentKey});
+
+  return stripe.customers.create({
+    email: token.email,
+    source: token.id
+  }).then(customer=>{
+    console.log("customer", customer);
+    stripe.charges.create({
+      amount: product.price,
+      currency: 'usd',
+      customer: customer.id,
+      receipt_email:token.email,
+      description: "purchase product.name"
+    }, {idempontentKey})
+  }).then(result=>{
+    console.log("result", result);
+    res.status(200).json(result)
+  }).catch(err=>{
+    console.log("payment errr", err);
+  })
+})
 module.exports = router;

@@ -4,7 +4,8 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import jwt_decode from "jwt-decode";
 import { NotificationManager } from 'react-notifications';
-
+import Checkout from './Checkout.jsx'
+import StriprCheckout from 'react-stripe-checkout'
 const Orders = () => {
   const [tab, setTab] = useState(1)
   const [orderDetails, setOrderDetails] = useState([]);
@@ -15,6 +16,15 @@ const Orders = () => {
   const [foundUn, setFoundUn] = useState("")
   const [foundFu, setFoundFu] = useState("")
   const [expand, setExpand] = useState('');
+// var stripe = Stripe('pk_test_pmfKOqLm5AdRbXBfsqNrWew8');
+  const [product, setProduct] = useState({
+    name: "test product ashish",
+    price: 120
+  })
+  const [pPrice, setPPrice]=useState()
+  const [pName, setPName] = useState("");
+  const [orderId, setOrderId] = useState("")
+
 
   useEffect(() => {
     getOrderDetails();
@@ -22,8 +32,8 @@ const Orders = () => {
     // getOrderDetailsAll();
   }, []);
 
-  const token = localStorage.getItem("token");
-  let decode = jwt_decode(token);
+  const tokenData = localStorage.getItem("token");
+  let decode = jwt_decode(tokenData);
   let str = decode.email;
   let storeName = `${decode.store}.myshopify.com`
   //let VendorString = str.substring(0, str.lastIndexOf("@"));
@@ -49,9 +59,7 @@ const Orders = () => {
 
       await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
         console.log("data is orders unfulfilled", data.data);
-        setOrderDetailsUn(data.data.unfulfilOrder);
-        setOrderDetails(data.data.allOrder);
-        setOrderDetailsFu(data.data.fulfilOrder);
+
 
          if (data.data.unfulfilOrder.length==0) {
            setFoundUn("No Order Found")
@@ -59,9 +67,13 @@ const Orders = () => {
          else if (data.data.fulfilOrder.length==0) {
            setFoundFu("No Order Found")
          }
-         else if (data.data.orderDetails.length==0) {
+         else if (data.data.allOrder.length==0) {
            setFound("No Order Found")
          }
+
+         setOrderDetailsUn(data.data.unfulfilOrder);
+         setOrderDetails(data.data.allOrder);
+         setOrderDetailsFu(data.data.fulfilOrder);
         // else{
         //   setFoundUn("No order found")
         // }
@@ -120,6 +132,9 @@ const changeView = (e)=>{
       }
 
     })
+
+
+
     //console.log("data is", data);
     // const line_items_Array = [];
     // data.line_items.forEach((item, i) => {
@@ -157,6 +172,72 @@ const changeView = (e)=>{
 
     //console.log("order Array is ", orderArray);
   };
+
+
+      const handleClickTest = (data) => {
+        let obj = {
+          orderId: data.orderId.toString()
+        }
+        let newobj = {
+          name:data.productName,
+          price:parseInt(data.item_price)
+        }
+        setProduct(newobj)
+
+        console.log("obj is", newobj);
+        // axios.patch('/api/supplierOrderFromMerchant/'+ data.orderId.toString())
+        // .then (res=>{
+        //   if (res) {
+        //     NotificationManager.success('Fulfilled Successfully');
+        //     getOrderDetails()
+        //     //console.log(filterItems.length, "length of filterItems")
+        //   }
+        //  else {
+        //   NotificationManager.error('Something wrong');
+        //   }
+
+        //})
+  }
+
+  let handlePayment = async (token) =>{
+    const body = {
+      token,
+      product
+    }
+    console.log("body is", body);
+    console.log();
+    // return await axios.post('/api/payment', body)
+    // .then(response=>{
+    //   console.log("response is", response);
+    //
+    // })
+    // .catch(err=>{
+    //   console.log("err", err);
+    // })
+
+    const headers = {
+      "Content-Type": "application/json"
+    }
+    // return
+    // axios({
+    //         method: 'post',
+    //         url: '.api/payment',
+    //         data: body
+    //       })
+ return fetch('http://localhost:5000/api/payment', {
+      method:"POST",
+      headers,
+      body: JSON.stringify(body)
+    })
+    .then(response=>{
+      if (response.status===200) {
+        NotificationManager.success('Fulfilled Successfully');
+      }
+    }).catch(err=>{
+      console.log("last err", err);
+    })
+
+  }
 
   return (
     <div>
@@ -290,8 +371,11 @@ const changeView = (e)=>{
                             <td>{item.pStatus}</td>
                             <td>${item.total_amount}</td>
                             <td>{item.shipping||'NA'}</td>
-                            <td>
-                              <button
+                            <td onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}><StriprCheckout  stripeKey = "pk_test_pmfKOqLm5AdRbXBfsqNrWew8" token={handlePayment} name="Pay for Order"
+
+                            amount= {product.price*100} onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}>
+                            <button className="btn btn-primary" onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}>Pay</button></StriprCheckout>
+                              {/*<button
                                 classsName="btn btn-primary"
                                 style={{
                                   background: "White",
@@ -301,7 +385,8 @@ const changeView = (e)=>{
                                 onClick={() => handleClick(item)}
                               >
                                 Fulfill
-                              </button>
+                              </button>*/}
+
                             </td>
                           </tr>
 
