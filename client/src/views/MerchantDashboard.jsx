@@ -115,7 +115,7 @@ const MerchantDashboard = () => {
 		}
 		console.log({dates});
 		await axios.get('/merchantDasboardRevenueGraphByDates/' + checkStore+'/'+ startDate+'/'+endDate).then((response) => {
-			if (response.date.length!=0) {
+			if (response.data.date.length!=0) {
 				let data = {
 					labels: response.data.date,
 					series: [ response.data.revenue ]
