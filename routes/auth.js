@@ -1584,6 +1584,11 @@ router.post('/SupplierForm', (req, res) => {
       </ul>
       <br>
   5. Do you provide fastest shipping or express shipping to US? Please tell us the shipping courier name, shipping charges and approximate days of delivery. : ${req.body.fastUS}
+    <ul>
+    <li>Shipping Carrier Name : ${req.body.carrierName}</li>
+    <li>Shipping Charges : ${req.body.deliveryCharge}</li>
+    <li>Delivery Period (in days) : ${req.body.deliveryPeriod}</li>
+    </ul>
   <br>
   <br>
   <b>Branding and Return Management</b>
@@ -2580,7 +2585,7 @@ router.post('/payment', async (req, res)=>{
     state: product.details.state,
     country: product.details.country,
   },
-  
+
 
   })
   .then(customer=>{
