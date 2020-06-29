@@ -1351,17 +1351,6 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   const orderData = await Orders.find();
 
   let newOrderArray = [];
-  //
-  // orderData.forEach((item, i) => {
-  //   item.products.forEach((product, j) => {
-  //     if (product.store.toLowerCase() === req.params.storeName) {
-  //       newOrderArray.push(orderData[i]);
-  //     }
-  //   });
-  // });
-  //
-  //
-
 
   orderData.forEach((item, i) => {
     item.products.forEach((product, j) => {
@@ -1418,6 +1407,91 @@ console.log("checkStore in m Graoh", checkStore);
 
 
 
+
+  var holder = {};
+
+  checkStore.forEach(function (d) {
+    if (holder.hasOwnProperty(moment(d.created_on).format('MMM Do YY'))) {
+      holder[moment(d.created_on).format('MMM Do YY')] =
+        holder[moment(d.created_on).format('MMM Do YY')] + d.price;
+    } else {
+      holder[moment(d.created_on).format('MMM Do YY')] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ date: prop, price: holder[prop] });
+  }
+  console.log('obj2 in merchant graph', obj2);
+  let dateArray = [];
+  let revenueArray = [];
+
+  obj2.forEach((item, i) => {
+    dateArray.push(obj2[i].date);
+    revenueArray.push(obj2[i].price);
+  });
+
+  let finalGraphObj = {
+    date: dateArray,
+    revenue: revenueArray,
+  };
+  console.log('finalGraphObj', finalGraphObj);
+  res.send(finalGraphObj);
+});
+
+//merchant graphData by dates
+app.get('/merchantDasboardRevenueGraphByDates/:storeName/:start/:end', async (req, res) => {
+  console.log('req.body', req.params);
+  console.log("start", req.params.start);
+   const orderData = await Orders.find({"created_on": {"$gte": new Date(req.params.start), "$lt": new Date(req.params.end)}});
+   console.log("sort date data ", orderData);
+
+  let newOrderArray = [];
+
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+      if (product.sku !== undefined) {
+        newOrderArray.push({
+          orderId: item.product_name,
+          price: item.price,
+          created_on: item.created_on,
+          store: product.store,
+          sku: product.sku,
+
+
+        })
+      }
+    });
+  });
+
+
+
+  let tempArray = []
+  newOrderArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.storeName) {
+      tempArray.push({
+        orderId: item.orderId,
+        price: item.price,
+        created_on: item.created_on,
+        store: item.store,
+        sku: item.sku,
+      })
+    }
+  });
+
+  let productData = await Products.find()
+  let checkStore = []
+
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (tempArray[i].sku===productData[j].code) {
+      checkStore.push(tempArray[i])
+    }
+  });
+});
+console.log("checkStore in m Graoh", checkStore);
 
   var holder = {};
 
