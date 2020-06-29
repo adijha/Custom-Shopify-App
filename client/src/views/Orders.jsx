@@ -17,14 +17,11 @@ const Orders = () => {
   const [foundFu, setFoundFu] = useState("")
   const [expand, setExpand] = useState('');
 // var stripe = Stripe('pk_test_pmfKOqLm5AdRbXBfsqNrWew8');
-  const [product, setProduct] = useState({
-    name: "test product ashish",
-    price: 120
-  })
+  //const [product, setProduct] = useState({})
   const [pPrice, setPPrice]=useState()
   const [pName, setPName] = useState("");
   const [orderId, setOrderId] = useState("")
-
+  const [custDetail, setCustDetail] = useState({})
 
   useEffect(() => {
     getOrderDetails();
@@ -60,6 +57,9 @@ const Orders = () => {
       await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
         console.log("data is orders unfulfilled", data.data);
 
+        setOrderDetailsUn(data.data.unfulfilOrder);
+        setOrderDetails(data.data.allOrder);
+        setOrderDetailsFu(data.data.fulfilOrder);
 
          if (data.data.unfulfilOrder.length==0) {
            setFoundUn("No Order Found")
@@ -71,9 +71,7 @@ const Orders = () => {
            setFound("No Order Found")
          }
 
-         setOrderDetailsUn(data.data.unfulfilOrder);
-         setOrderDetails(data.data.allOrder);
-         setOrderDetailsFu(data.data.fulfilOrder);
+
         // else{
         //   setFoundUn("No order found")
         // }
@@ -116,7 +114,7 @@ const changeView = (e)=>{
 
   const handleClick = (data) => {
     let obj = {
-      orderId: data.orderId.toString()
+      orderId: orderId.toString()
     }
 
     console.log("obj is", obj);
@@ -175,32 +173,23 @@ const changeView = (e)=>{
 
 
       const handleClickTest = (data) => {
-        let obj = {
-          orderId: data.orderId.toString()
-        }
-        let newobj = {
-          name:data.productName,
-          price:parseInt(data.item_price)
-        }
-        setProduct(newobj)
+        console.log("data is ", data );
+         setPName(data.productName)
+         setPPrice(parseInt(data.item_price))
+         setCustDetail(data.customer_detail)
 
-        console.log("obj is", newobj);
-        // axios.patch('/api/supplierOrderFromMerchant/'+ data.orderId.toString())
-        // .then (res=>{
-        //   if (res) {
-        //     NotificationManager.success('Fulfilled Successfully');
-        //     getOrderDetails()
-        //     //console.log(filterItems.length, "length of filterItems")
-        //   }
-        //  else {
-        //   NotificationManager.error('Something wrong');
-        //   }
-
-        //})
   }
 
+
   let handlePayment = async (token) =>{
-    const body = {
+    let product={  name: pName,
+      price: Math.round(pPrice),
+      details: custDetail
+    };
+
+
+
+    const body = await {
       token,
       product
     }
@@ -218,20 +207,27 @@ const changeView = (e)=>{
     const headers = {
       "Content-Type": "application/json"
     }
-    // return
-    // axios({
-    //         method: 'post',
-    //         url: '.api/payment',
-    //         data: body
-    //       })
- return fetch('http://localhost:5000/api/payment', {
+
+ return fetch('http://www.melisxpress.com/api/payment', {
       method:"POST",
       headers,
       body: JSON.stringify(body)
     })
     .then(response=>{
       if (response.status===200) {
-        NotificationManager.success('Fulfilled Successfully');
+        NotificationManager.success('Payment Done Successfully');
+
+        axios.patch('/api/supplierOrderFromMerchant/'+ orderId.toString())
+        .then (res=>{
+          if (res) {
+            NotificationManager.success('Fulfilled Successfully');
+            getOrderDetails()
+            //console.log(filterItems.length, "length of filterItems")
+          }
+         else {
+          NotificationManager.error('Something wrong');
+          }
+        })
       }
     }).catch(err=>{
       console.log("last err", err);
@@ -299,21 +295,8 @@ const changeView = (e)=>{
                             <td>{item.pStatus}</td>
                             <td>${item.total_amount}</td>
                             <td>{item.shipping||'NA'}</td>
-                            <td>
-                            {`${item.pStatus==="Paid"}`? "Fulfilled":
-                              <button
-                                classsName="btn btn-primary"
-                                style={{
-                                  background: "White",
-                                  color: "black",
-                                  border: "1px solid lightblue",
-                                }}
-                                onClick={() => handleClick(item)}
-                              >
-                                Fulfill
-                              </button>
-                            }
-                            </td>
+                            <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
+
                           </tr>
 
                             {expand === item.orderId ? (
@@ -361,6 +344,10 @@ const changeView = (e)=>{
                                 setExpand(null);
                               } else {
                                 setExpand(item.orderId);
+                                setPName(item.productName)
+                                setPPrice(item.item_price)
+                                setCustDetail(item.customer_detail)
+                                setOrderId(item.orderId)
                               }
                             }}>
                             <td>{key+1}</td>
@@ -371,10 +358,11 @@ const changeView = (e)=>{
                             <td>{item.pStatus}</td>
                             <td>${item.total_amount}</td>
                             <td>{item.shipping||'NA'}</td>
-                            <td onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}><StriprCheckout  stripeKey = "pk_test_pmfKOqLm5AdRbXBfsqNrWew8" token={handlePayment} name="Pay for Order"
+                            <td >
+                            <StriprCheckout stripeKey = "pk_test_pmfKOqLm5AdRbXBfsqNrWew8" token={handlePayment} name="Pay for Order"
 
-                            amount= {product.price*100} onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}>
-                            <button className="btn btn-primary" onChange={(item)=>setProduct({name:item.productName, price:item.item_price})}>Pay</button></StriprCheckout>
+                            amount= {pPrice} > <button className="btn btn-primary">Pay</button>
+                            </StriprCheckout>
                               {/*<button
                                 classsName="btn btn-primary"
                                 style={{
@@ -382,7 +370,7 @@ const changeView = (e)=>{
                                   color: "black",
                                   border: "1px solid lightblue",
                                 }}
-                                onClick={() => handleClick(item)}
+                                onClick={() => handleClickTest(item)}
                               >
                                 Fulfill
                               </button>*/}

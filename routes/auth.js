@@ -2567,22 +2567,61 @@ router.post('/payment', async (req, res)=>{
   console.log("price*100", product.price);
   let idempontentKey = uuidv4();
   console.log({idempontentKey});
-
+//currently saving customer details instead of merchant
+// customer country in need need chipping/billing_details
   return stripe.customers.create({
     email: token.email,
-    source: token.id
-  }).then(customer=>{
+    source: token.id,
+    name: product.details.name,
+  address: {
+    line1: product.details.address,
+    postal_code: product.details.zip,
+    city: product.details.city,
+    state: product.details.state,
+    country: product.details.country,
+  },
+  
+
+  })
+  .then(customer=>{
     console.log("customer", customer);
-    stripe.charges.create({
-      amount: product.price,
-      currency: 'usd',
-      customer: customer.id,
-      receipt_email:token.email,
-      description: "purchase product.name"
-    }, {idempontentKey})
-  }).then(result=>{
-    console.log("result", result);
-    res.status(200).json(result)
+    stripe.charges.create(
+  {
+    amount: product.price,
+    currency: 'usd',
+    description: product.name,
+    customer: customer.id,
+    receipt_email:token.email,
+    source: token.card.id,
+    shipping: {
+      name: token.card.name,
+      address: {
+        line1: product.details.address,
+        country: token.card.country,
+      }
+    },
+  },
+  function(err, charge) {
+    if (!err) {
+      console.log("charge is", charge);
+      res.status(200).json(charge)
+    }
+    else {
+      console.log("err in charge", err);
+    }
+  }
+);
+  //   stripe.charges.create({
+  //     "amount": product.price,
+  //     "currency": 'usd',
+  //     "customer": customer.id,
+  //     "receipt_email":token.email,
+  //     "description": product.name
+  //   }, {idempontentKey})
+  // })
+  // .then(result=>{
+  //   console.log("result", result);
+  //   res.status(200).json(result)
   }).catch(err=>{
     console.log("payment errr", err);
   })
