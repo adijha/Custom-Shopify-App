@@ -1786,7 +1786,8 @@ app.post('/settingsUpdateMerchant', (req, res) => {
 
 //supplier orders fulfill and add tracking no.
 app.patch('/suppOrderFulfill/:id', async (req, res) => {
-
+console.log("req.params", req.params);
+console.log(req.body);
   const orderID = req.params.id;
   const trackno = req.body.fulfillment.tracking_number;
 
@@ -1813,6 +1814,7 @@ app.patch('/suppOrderFulfill/:id', async (req, res) => {
         },
         (err, result) => {
           if (!err) {
+            console.log("result is", result);
             res.json('success');
           } else {
             console.log('error ', err);

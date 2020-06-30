@@ -27,6 +27,7 @@ const SupplierOrders = () => {
   };
 
   const updateFulfillment = async (data) => {
+    let oId  = data.id
     console.log("order id is in supplier", data)
     console.log(data.store);
     console.log("token store", decode.store);
@@ -56,9 +57,10 @@ const SupplierOrders = () => {
        console.log("data", data);
        if (data.status===200) {
          NotificationManager.success('Track No. Updated Successfully');
-         axios.patch('/suppOrderFulfill/'+data.id, fulfilObject)
-         .then(updData=>{
-           if (updData.include('success')) {
+         axios.patch('/suppOrderFulfill/'+oId, fulfilObject)
+         .then((updData)=>{
+           if (updData.data.includes('success')) {
+             getOrderList()
              NotificationManager.success('Fulfilled Successfully');
            }
            else{
@@ -116,7 +118,8 @@ const SupplierOrders = () => {
                             <td>{item.sku || 'none'}</td>
                             <td>{item.customer.name || 'none'}</td>
                             <td>{item.pStatus || 'none'}</td>
-                            <td>{item.fullfillmentStatus || 'NA'}</td>
+                            <td>{item.fulfillmentStatus==="Fulfilled"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
+
                             <td>${item.price || 'none'}</td>
                             <td>{item.tracking_number||"NA"}</td>
                             <td>{item.invoice || 'none'}</td>
@@ -148,6 +151,7 @@ const SupplierOrders = () => {
                                 <tr>Quantity :- {item.quantity}</tr>
                                 <tr>Paid :- {item.paid}</tr>
                               </td>
+                              {item.fulfillmentStatus === "Fulfilled"?null:
                               <td colSpan='2'>
                                 <th>Fulfill Order</th>
                                 <tr
@@ -178,6 +182,7 @@ const SupplierOrders = () => {
                                 </tr>
                                 <tr></tr>
                               </td>
+                            }
                             </tr>
                           ) : null}
                         </>
