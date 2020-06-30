@@ -6,6 +6,8 @@ import { NotificationManager } from 'react-notifications';
 import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
+import Invoice from './Invoice.jsx';
+
 
 const SupplierOrders = () => {
   const token = localStorage.getItem('token');
@@ -76,6 +78,8 @@ const SupplierOrders = () => {
     })
   };
 
+
+
   return (
     <div className='content'>
       <Grid fluid>
@@ -122,7 +126,7 @@ const SupplierOrders = () => {
 
                             <td>${item.price || 'none'}</td>
                             <td>{item.tracking_number||"NA"}</td>
-                            <td>{item.invoice || 'none'}</td>
+                            <td><a href={`/invoice/`+decode.id+'/'+item.id}>View</a></td>
                           </tr>
 
                           {expand === item.id ? (

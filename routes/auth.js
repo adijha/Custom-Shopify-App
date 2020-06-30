@@ -2524,6 +2524,80 @@ router.get('/ordersList/:id', async (req, res) => {
   //   res.status(200).json(totalOrders)
 });
 
+
+//Supplier Order List from merchant
+
+router.get('/invoice/:supplierId/:orderId', async (req, res) => {
+  // console.log("id is", req.params.id);
+  let itemArray = [];
+  const data = await Orders.find({});
+  // console.log({data})
+  data.forEach((item, i) => {
+    item.products.forEach((subItem, i) => {
+      if (item.product_name === req.params.orderId.toString()) {
+        itemArray.push({
+          id: item.product_name,
+          productId: subItem.id,
+          sku: subItem.sku,
+          quantity: subItem.quantity,
+          customer: item.customer,
+          varient: item.varient,
+          paid: item.paid,
+          paymentStatus: item.paymentStatus,
+          fulfillmentStatus: item.fulfillmentStatus,
+          store: subItem.store,
+          paymentMode: item.paymentMode,
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number
+        });
+      }
+    });
+  });
+
+  let makeList = [];
+
+  const productData = await Products.find({ supplier_id: req.params.supplierId });
+
+  // console.log({ productData });
+
+  itemArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if ((product.code == item.sku)) {
+        let dataObj = {
+          id: item.id,
+          productId: item.productId,
+          customer: item.customer,
+          sku: item.sku,
+          name: product.name,
+          price: product.price,
+          quantity: item.quantity,
+          varient: item.varient,
+          paid: item.paid,
+          paymentStatus: item.paymentStatus,
+          fulfillmentStatus: item.fulfillmentStatus,
+          store: item.store,
+          paymentMode: item.paymentMode,
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number,
+          productImage: product.productImage[0].imgBufferData
+        };
+        // console.log(dataObj);
+        makeList.push(dataObj);
+      }
+    });
+  });
+
+
+
+   console.log(makeList , "invoice data ");
+  res.status(200).json(makeList);
+  // let totalOrders =   calOrder.reduce((a,b)=>a+b, 0)
+  // console.log(totalOrders);
+  //   res.status(200).json(totalOrders)
+});
+
+
+
 //requet product from merchant
 router.post('/requestProduct', async (req, res)=>{
 

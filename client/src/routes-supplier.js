@@ -59,6 +59,6 @@ const dashboardRoutes = [
     icon: "pe-7s-credit",
     component: SupplierPaymentDetails,
     layout: "/supplier",
-  },
+  }
 ];
 export default dashboardRoutes;
