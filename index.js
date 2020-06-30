@@ -373,32 +373,42 @@ app.get('/orders/:storeName', async (req, res) => {
 });
 
 //fulfill single orders
-app.post('/orders/:VendorString/:id', (req, res) => {
+app.post('/orders/:store/:id', async (req, res) => {
+
+  let storeFullName = req.params.store+'.myshopify.com'
+
+  let storeData = await Store.find({ name: storeFullName });
   console.log(req.params.id);
   console.log(req.body);
-  const shopRequestUrl =
-    'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/orders/' +
-    req.params.id +
-    '/fulfillments.json';
-  const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
-    'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
-    'X-Shopify-API-Version': '2020-01',
-  };
+
+    if (storeData.length > 0) {
+
+      const shopRequestUrl =
+        'https://' +
+        storeFullName +
+        '/admin/api/2020-01/orders/' +
+        req.params.id +
+        '/fulfillments.json';
+
+      const shopRequestHeaders = {
+        'X-Shopify-Access-Token': storeData[0].token,
+        'Content-Type': 'application/json',
+        'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+        'X-Shopify-Shop-Domain': storeData[0].name,
+        'X-Shopify-API-Version': '2020-01',
+      };
 
   request
     .post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
     .then((data) => {
-      res.send(data);
-      console.log(data);
+      return (data)
     })
     .catch((error) => {
-      console.log('ordre fulfil order is', error);
+      return(error)
     });
+  } else {
+    console.log('no data found in fulfil order api');
+  }
 });
 
 //get fulfilled Orders
@@ -1774,13 +1784,13 @@ app.post('/settingsUpdateMerchant', (req, res) => {
 });
 
 //supplier orders fulfill and add tracking no.
-app.post('/suppOrderFulfill/:store/:id', (req, res) => {
+app.post('/suppOrderFulfill/:store/:id', async (req, res) => {
   console.log('supplier order fulfill', req.params.id);
   const jsonData = req.body;
   const orderID = req.params.id;
   const trackno = req.body.fulfillment.tracking_number;
-
-  request
+console.log(jsonData, "jsonData");
+  await request
     .post(
       'https://www.melisxpress.com/orders/' +
         req.params.store +
@@ -1795,6 +1805,7 @@ app.post('/suppOrderFulfill/:store/:id', (req, res) => {
         },
         {
           tracking_number: trackno,
+          fulfillmentStatus: "Fulfilled"
         },
         {
           new: true,

@@ -2471,7 +2471,8 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: subItem.store,
           paymentMode: item.paymentMode,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number
         });
       }
     });
@@ -2500,7 +2501,8 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: item.store,
           paymentMode: item.paymentMode,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number
         };
         // console.log(dataObj);
         makeList.push(dataObj);

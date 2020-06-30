@@ -14,6 +14,8 @@ const SupplierOrders = () => {
   const [orderList, setOrderList] = useState([]);
   const [fulfill, setFulfill] = useState('');
 
+
+
   useEffect(() => {
     getOrderList();
   }, []);
@@ -27,11 +29,13 @@ const SupplierOrders = () => {
   const updateFulfillment = async (data) => {
     console.log("order id is in supplier", data)
     console.log(data.store);
+    console.log("token store", decode.store);
     let productIdArray=[];
     orderList.forEach((item, i) => {
+      console.log("item data", item);
       if (item.id == data.id) {
         productIdArray.push({
-          id:item.productId
+          id:item.productId,
         })
       }
     });
@@ -40,9 +44,11 @@ const SupplierOrders = () => {
       fulfillment: {
         location_id: 35210428495,
         tracking_number: fulfill,
-        notify_customer: true
+        notify_customer: true,
+        tracking_info: productIdArray
       }
     };
+    console.log("fulfiled obj", fulfilObject);
     try {
       let res = await axios.post('/suppOrderFulfill/' + data.store + "/" + data.id, fulfilObject);
       if (res.data.includes('success')) {
