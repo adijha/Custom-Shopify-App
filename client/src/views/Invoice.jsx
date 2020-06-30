@@ -28,7 +28,8 @@ const Invoice = (props) =>{
 
       res.data.map(item=>{
         setCustomer(item.customer)
-        price.push(parseInt(item.price))
+        let calprice = parseInt(item.price)*parseInt(item.quantity)
+        price.push(calprice)
         quantity.push(parseInt(item.quantity))
 
       })
@@ -44,7 +45,7 @@ const Invoice = (props) =>{
 
   return(
     <div>
-    {(token.length>0)?
+    {(token.length===0)? (<Redirect to= "/login-supplier"/>):
       <>
       <div className="container">
       <div className="row">
@@ -142,7 +143,7 @@ const Invoice = (props) =>{
       </div>
     </div>
       </>
-      :(<Redirect to= "/login-supplier"/>)
+
     }
     </div>
   )

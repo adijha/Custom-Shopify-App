@@ -346,7 +346,7 @@ console.log(req.params.store);
           item_price: product.price,
           quantity: product.quantity,
           store: product.store,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
         })
       }
     });
@@ -369,7 +369,7 @@ console.log(req.params.store);
 
 
         store: item.store,
-        pStatus: item.pStatus
+        pStatus: item.pStatus,
       })
     }
   });
@@ -392,7 +392,7 @@ tempArray.forEach((item, i) => {
         productName: product.name,
         shippingCharge: product.shippingCharge,
         store: item.store,
-        pStatus: item.pStatus
+        pStatus: item.pStatus,
       })
     }
   });

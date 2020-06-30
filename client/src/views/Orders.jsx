@@ -59,7 +59,8 @@ const Orders = () => {
 
       await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
         console.log("data is orders unfulfilled", data.data);
-
+        const sortedArray  = data.data.allOrder.sort((a,b) => new moment(a.date).format('YYYYMMDD ') - new moment(b.date).format('YYYYMMDD'))
+        console.log("sortedArray", sortedArray);
         setOrderDetailsUn(data.data.unfulfilOrder);
         setOrderDetails(data.data.allOrder);
         setOrderDetailsFu(data.data.fulfilOrder);
@@ -80,20 +81,8 @@ const Orders = () => {
         // }
       });
   };
-  // const getOrderDetailsFulfilled = async () => {
-  //   console.log(decode.store);
-  //
-  //     await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
-  //       console.log("data is orders", data.data);
-  //       setOrderDetailsFu(data.data);
-  //       //
-  //       // if (data.data.length>0) {
-  //       // }
-  //       // else{
-  //       //   setFoundFu("No order found")
-  //       // }
-  //     });
-  // };
+
+
 
 const changeView = (e)=>{
   e.preventDefault()
