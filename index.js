@@ -344,7 +344,7 @@ app.delete('/shopifyProduct/:storeName/:id', async (req, res) => {
 
 //get Orders list
 
-app.get('/orders/:storeName', async (req, res) => {
+app.get('/orders/:store', async (req, res) => {
   console.log('storeName', req.params.storeName);
   let storeData = await Store.find({ name: req.params.storeName });
   if (storeData.length > 0) {
@@ -373,9 +373,10 @@ app.get('/orders/:storeName', async (req, res) => {
 });
 
 //fulfill single orders
-app.post('/orders/:store/:id', async (req, res) => {
+app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
 
   let storeFullName = req.params.store+'.myshopify.com'
+  console.log("storeFullName", storeFullName);
 
   let storeData = await Store.find({ name: storeFullName });
   console.log(req.params.id);
@@ -398,13 +399,13 @@ app.post('/orders/:store/:id', async (req, res) => {
         'X-Shopify-API-Version': '2020-01',
       };
 
-  request
-    .post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+  request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
     .then((data) => {
-      return (data)
+      console.log("successfully track ", data);
+      res.send('success')
     })
     .catch((error) => {
-      return(error)
+      console.log("error is update tracking", error);
     });
   } else {
     console.log('no data found in fulfil order api');
@@ -1662,7 +1663,7 @@ app.post('/store/:shop/:topic/:subtopic', async function (request, response) {
       varient: request.body.varient,
       quantity: request.body.line_items.quantity,
       paid: request.body.total_price,
-      fulfillmentStatus: request.body.fulfillment_status,
+      fulfillmentStatus: "Unfulfilled",
     },
   });
 
@@ -1784,22 +1785,21 @@ app.post('/settingsUpdateMerchant', (req, res) => {
 });
 
 //supplier orders fulfill and add tracking no.
-app.post('/suppOrderFulfill/:store/:id', async (req, res) => {
-  console.log('supplier order fulfill', req.params.id);
-  const jsonData = req.body;
+app.patch('/suppOrderFulfill/:id', async (req, res) => {
+
   const orderID = req.params.id;
   const trackno = req.body.fulfillment.tracking_number;
-console.log(jsonData, "jsonData");
-  await request
-    .post(
-      'https://www.melisxpress.com/orders/' +
-        req.params.store +
-        '/' +
-        req.params.id,
-      { json: jsonData }
-    )
-    .then((data) => {
-      Orders.findOneAndUpdate(
+
+  // await request
+  //   .post(
+  //     'https://www.melisxpress.com/orders/' +
+  //       req.params.store +
+  //       '/' +
+  //       req.params.id,
+  //     { json: jsonData }
+  //   )
+  //   .then((data) => {
+      await Orders.findOneAndUpdate(
         {
           product_name: orderID,
         },
@@ -1819,10 +1819,10 @@ console.log(jsonData, "jsonData");
           }
         }
       );
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+    //})
+    // .catch((error) => {
+    //   console.log(error.message);
+    // });
 });
 
 if (process.env.NODE_ENV === 'production') {

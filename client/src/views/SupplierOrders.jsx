@@ -49,14 +49,29 @@ const SupplierOrders = () => {
       }
     };
     console.log("fulfiled obj", fulfilObject);
-    try {
-      let res = await axios.post('/suppOrderFulfill/' + data.store + "/" + data.id, fulfilObject);
-      if (res.data.includes('success')) {
-        NotificationManager.success('Fulfilled Successfully');
-      }
-    } catch (error) {
+
+
+     await axios.post('/updateOrdersTracking/' + data.store + "/" + data.id, fulfilObject)
+     .then(data=>{
+       console.log("data", data);
+       if (data.status===200) {
+         NotificationManager.success('Track No. Updated Successfully');
+         axios.patch('/suppOrderFulfill/'+data.id, fulfilObject)
+         .then(updData=>{
+           if (updData.include('success')) {
+             NotificationManager.success('Fulfilled Successfully');
+           }
+           else{
+             NotificationManager.error('Something wrong in Fulfilled');
+           }
+         })
+       }
+
+     })
+
+     .catch (error=> {
       NotificationManager.error('Something unusual happened');
-    }
+    })
   };
 
   return (
@@ -79,6 +94,7 @@ const SupplierOrders = () => {
                       <th>Payment Status</th>
                       <th>Fulfillment Status</th>
                       <th>Total Amount</th>
+                      <th>Tracking No.</th>
                       <th>Invoice</th>
                     </tr>
                   </thead>
@@ -100,8 +116,9 @@ const SupplierOrders = () => {
                             <td>{item.sku || 'none'}</td>
                             <td>{item.customer.name || 'none'}</td>
                             <td>{item.pStatus || 'none'}</td>
-                            <td>{item.fullfillmentStaus || 'none'}</td>
+                            <td>{item.fullfillmentStatus || 'NA'}</td>
                             <td>${item.price || 'none'}</td>
+                            <td>{item.tracking_number||"NA"}</td>
                             <td>{item.invoice || 'none'}</td>
                           </tr>
 
