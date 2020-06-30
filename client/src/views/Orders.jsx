@@ -6,6 +6,9 @@ import jwt_decode from "jwt-decode";
 import { NotificationManager } from 'react-notifications';
 import Checkout from './Checkout.jsx'
 import StriprCheckout from 'react-stripe-checkout'
+import moment from 'moment'
+
+
 const Orders = () => {
   const [tab, setTab] = useState(1)
   const [orderDetails, setOrderDetails] = useState([]);
@@ -207,6 +210,7 @@ const changeView = (e)=>{
     const headers = {
       "Content-Type": "application/json"
     }
+    let dateObj = {date: moment().format("MMM Do YYYY")}
 
  return fetch('http://www.melisxpress.com/api/payment', {
       method:"POST",
@@ -217,7 +221,7 @@ const changeView = (e)=>{
       if (response.status===200) {
         NotificationManager.success('Payment Done Successfully');
 
-        axios.patch('/api/supplierOrderFromMerchant/'+ orderId.toString())
+        axios.patch('/api/supplierOrderFromMerchant/'+ orderId.toString(), dateObj)
         .then (res=>{
           if (res) {
             NotificationManager.success('Fulfilled Successfully');

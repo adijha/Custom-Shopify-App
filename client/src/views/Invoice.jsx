@@ -13,6 +13,7 @@ const Invoice = (props) =>{
   const [customer, setCustomer] = useState({})
   const [totalAmount, setTotalAmount] = useState()
   const [totalQuantity, setTotalQuantity] = useState()
+  const [invoiceDate, setInvoiceDate] = useState("")
   useEffect(() => {
 
     getOrderList();
@@ -33,7 +34,7 @@ const Invoice = (props) =>{
       })
       let totalPrice = price.reduce((a,b)=>a+b, 0)
       let totalQuantity = quantity.reduce((a,b)=>a+b, 0)
-
+      setInvoiceDate(res.data[0].updated_on)
       setTotalAmount(totalPrice)
       setTotalQuantity(totalQuantity)
 
@@ -68,7 +69,7 @@ const Invoice = (props) =>{
             <div className="col-xs-6 text-right">
               <address>
                 <strong>Order Date:</strong><br />
-                March 7, 2014<br /><br />
+                {invoiceDate || "NA"}<br /><br />
               </address>
             </div>
           </div>

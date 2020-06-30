@@ -26,6 +26,9 @@ const OrderSchema = mongoose.Schema({
   pStatus: {
     type: String,
     default: "unpaid"
+  },
+  updated_on:{
+    type:String
   }
 });
 

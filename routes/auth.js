@@ -521,12 +521,14 @@ router.get('/supplierOrderMerchant', async (req, res)=>{
 //update merchant order status and sent to supplier
 router.patch('/supplierOrderFromMerchant/:orderId', async (req, res)=>{
 
+  console.log("req.body", req.body);
 
     try {
       const data = await Orders.findOneAndUpdate(
         { "product_name": req.params.orderId },
         { $set:{
             "pStatus": "Paid",
+            "updated_on": req.body.date
           }
         },{
           new: true,
@@ -2548,7 +2550,8 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
           store: subItem.store,
           paymentMode: item.paymentMode,
           pStatus: item.pStatus,
-          tracking_number: item.tracking_number
+          tracking_number: item.tracking_number,
+          updated_on: item.updated_on
         });
       }
     });
@@ -2579,7 +2582,8 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
           paymentMode: item.paymentMode,
           pStatus: item.pStatus,
           tracking_number: item.tracking_number,
-          productImage: product.productImage[0].imgBufferData
+          productImage: product.productImage[0].imgBufferData,
+          updated_on: item.updated_on
         };
         // console.log(dataObj);
         makeList.push(dataObj);
