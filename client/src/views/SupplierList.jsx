@@ -26,6 +26,8 @@ const SupplierList = () => {
   const [sOrder, setSOrder] = useState();
   const [productCount, setProductCount] = useState();
   const [sort, setSort] = useState([])
+  const [search, setSearch] = useState("");
+
   let checkArray = []
 
   useEffect(() => {
@@ -126,11 +128,13 @@ const SupplierList = () => {
   };
 
 
-  const filterItems = (suppliers.filter(plist=>{
-    return plist.email.toLowerCase();
-  }))
+  // const filterItems = (suppliers.filter(plist=>{
+  //   return plist.email.toLowerCase();
+  // }))
 
-
+  const filterItems = suppliers.filter((plist) => {
+    return plist.supplier_id.toLowerCase().includes(search.toLowerCase());
+  });
 
 const handleSort = e =>{
   e.preventDefault();
@@ -166,7 +170,7 @@ const handleSort = e =>{
           marginTop: '-20px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18, marginRight: "20px"}}>
 
           <select onChange = {(e)=> handleSort(e)}>
             <option value = "nothing">Sort By</option>
@@ -176,6 +180,16 @@ const handleSort = e =>{
           </select>
 
 
+
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: 18, marginRight: "20px"}}>
+        <input
+          type="search"
+          onChange={(e) => setSearch(e.target.value)}
+          className="primary"
+          placeholder="search supplier by username"
+          style={{ width: "400px" }}
+        />
         </div>
         <div
           style={{
@@ -199,7 +213,7 @@ const handleSort = e =>{
           </CsvDownloader>
         </div>
       </div>
-
+<br/>
       <Grid fluid>
         <Row>
           <Col md={12}>

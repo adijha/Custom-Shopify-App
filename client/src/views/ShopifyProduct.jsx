@@ -5,6 +5,7 @@ import Modal from "react-responsive-modal";
 import "../assets/css/shopifyProduct.css";
 import jwt_decode from 'jwt-decode';
 import axios from 'axios';
+import { NotificationManager } from 'react-notifications';
 
 
 
@@ -93,7 +94,7 @@ const UpdateProduct = async (e)=>{
           "title": name,
           "body_html": description,
           "vendor": decode.store,
-          "product_type": category,
+          "product_type": category
           // "tags": tagArray,
           // "variants":newVariant
 
@@ -104,22 +105,37 @@ const UpdateProduct = async (e)=>{
 
 
   console.log(product, "Update product is shopify")
-    await axios.put('/ShopifyProduct/'+storeName+'/'+code, product)
+    await axios.put('/ShopifyProduct/'+storeName.toLowerCase()+'/'+code, product)
     .then(data=>{
       console.log(data)
-      setStatus("Product Updated Successfully")
-      setOpen(false);
-      getShopifyProduct()
+      if (data) {
+        getShopifyProduct()
+        NotificationManager.success('Product Updated in Shopify Successfully');
 
+        setOpen(false);
+
+
+      }
+    else {
+      NotificationManager.error('Something wrong');
+
+    }
     })
 }
 
 const deleteProduct = (data)=>{
-  axios.delete('/ShopifyProduct/'+storeName+'/'+data.id)
+  axios.delete('/ShopifyProduct/'+storeName.toLowerCase()+'/'+data.id)
   .then(data=>{
-    console.log(data)
-    setStatus("product deleted Successfully")
-    getShopifyProduct()
+    if (data) {
+      getShopifyProduct()
+      NotificationManager.success('product Deleted  from Shopify Successfully');
+
+
+    }
+  else {
+    NotificationManager.error('Something wrong');
+
+  }
   })
   .catch(error=>{
     console.log("front product shopify error", error)
@@ -227,7 +243,7 @@ const deleteProduct = (data)=>{
                 className="form-control"
                 id="product_tag"
                 placeholder="Enter Tags of Product seperated by Commas"
-                
+
         />
       </div>
 

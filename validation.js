@@ -24,7 +24,9 @@ const userValidation = (data) =>{
 		profileId:Joi.string(),
 		trans_id:Joi.string(),
 		amount_paid:Joi.number(),
-		
+		margin:Joi.number(),
+		margin_updated: Joi.string(),
+
 	});
 
 	return schema.validate(data);

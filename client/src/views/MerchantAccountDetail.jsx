@@ -30,7 +30,7 @@ const MerchantAccountDetail = (props) => {
   const data = await axios.get('/api/merchant/'+merchantId)
     setDetail(data.data)
     console.log(data.data, "data");
-  const fetchOrder =  await axios.get('/api/merchantOrderDetail/'+data.data[0].store)
+  const fetchOrder =  await axios.get('/api/merchantOrderDetail/'+data.data[0].store.toLowerCase())
   setOrderDetail(fetchOrder.data)
   console.log(fetchOrder);
 };

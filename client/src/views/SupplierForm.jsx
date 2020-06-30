@@ -26,10 +26,12 @@ const SupplierForm = () => {
   const [returnManagement, setReturnManagement] = useState('');
   const [terms, setTerms] = useState(false);
   const [epacketCountry, setEpacketCountry] = useState("")
-
+  const [carrierName, setCarrierName] = useState("")
+  const [deliveryCharge, setDeliveryCharge] = useState("")
+  const [deliveryPeriod, setDeliveryPeriod] = useState("")
 const getFormData =async (e) =>{
   try{
-const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, epacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+const submitData = await axios.post('/api/SupplierForm', {name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement, carrierName, deliveryCharge, deliveryPeriod})
 
 if (submitData.data.includes('success')) {
   NotificationManager.success('submitted Successfully');
@@ -37,11 +39,14 @@ if (submitData.data.includes('success')) {
 } catch (error) {
 NotificationManager.error('Something wrong');
 }
-  console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement})
+  console.log({name, phoneNo, email, businessName, website, VAT, categories, warehouse, epacket, epacketShipping, processing, nonEpacketCountry, fastUS, brandedInvoice, brandedPackaging, minimumOrder, returnManagement, carrierName, deliveryCharge, deliveryPeriod})
 }
 
 
-
+const changeFastUS = (e)=>{
+    console.log("radio", e.target.value);
+    setFastUS(e.target.value)
+}
 
   return (
     <div>
@@ -326,14 +331,143 @@ position: "relative"}}/></Navbar.Brand>
                     Please tell us the shipping courier name, shipping charges
                     and approximate days of delivery.
                   </h5>
-                  <input
-                    type='text'
-                    className='sup-input-box'
-                    placeholder='Enter details about expressing shipping'
-                    value={fastUS}
-                    onChange={(e) => setFastUS(e.target.value)}
-                    required
-                  />
+                  <br/>
+
+
+
+                  <div className='form-group'>
+                    <div className='custom-control custom-checkbox'>
+                      <input
+                        className='form-check-input'
+                        type='radio'
+                        name='exampleRadios'
+                        id='exampleRadios1'
+                        style={{ marginRight: '10px' }}
+                        value='yes'
+                        onChange={(e) => setFastUS(e.target.value)}
+                      />
+                      <label
+                        className='form-check-label shippinglabel'
+                        for='exampleRadios1'
+                      >
+                        Yes
+                      </label>
+                    </div>
+                    <div className='custom-control custom-checkbox'>
+                      <input
+                        className='form-check-input'
+                        type='radio'
+                        name='exampleRadios'
+                        id='exampleRadios2'
+                        style={{ marginRight: '10px' }}
+                        value='no'
+                        onChange={(e) => setFastUS(e.target.value)}
+                      />
+                      <label
+                        className='form-check-label shippinglabel'
+                        for='exampleRadios2'
+                      >
+                        No
+                      </label>
+                    </div>
+                    <br />
+                    {fastUS === 'yes' ? (
+                      <div>
+                        <div className='form-group row'>
+                          <label className='col-sm-5 col-form-label'>Shipping Carrier Name</label>
+                          <div className='col-sm-7'>
+                            <div
+                              class='form-control '
+                              style={{
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                flexDirection: 'row',
+                              }}
+                            >
+
+                              <input
+                                class='input-with-icon'
+                                id='form-name'
+                                type='text'
+                                min='0'
+                                value={carrierName}
+                                onChange={(e) => setCarrierName(e.target.value)}
+                                id='product_price'
+                                style={{ border: 'none' }}
+                                placeholder='Enter Shipping Carrier.'
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className='form-group row'>
+                          <label className='col-sm-5 col-form-label'>Shipping Charges</label>
+                          <div className='col-sm-7'>
+                            <div
+                              class='form-control '
+                              style={{
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                flexDirection: 'row',
+                              }}
+                            >
+                              <span class='icon-wrapp'>
+                                <i class='input-icon fa fa-usd'></i>
+                              </span>
+                              <input
+                                class='input-with-icon'
+                                id='form-name'
+                                type='text'
+                                min='0'
+                                value={deliveryCharge}
+                                onChange={(e) => setDeliveryCharge(e.target.value)}
+                                id='product_price'
+                                style={{ border: 'none' }}
+                                placeholder='Enter Shipping Charges.'
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className='form-group row'>
+                          <label className='col-sm-5 col-form-label'>
+                            Delivery Period (in days)
+                          </label>
+                          <div className='col-sm-7'>
+                            <div
+                              class='form-control '
+                              style={{
+                                border: '1px solid #ddd',
+                                display: 'flex',
+                                flexDirection: 'row',
+                              }}
+                            >
+
+                              <input
+                                class='input-with-icon'
+                                id='form-name'
+                                type='text'
+                                min='0'
+                                value={deliveryPeriod}
+                                onChange={(e) => setDeliveryPeriod(e.target.value)}
+                                id='product_price'
+                                style={{ border: 'none' }}
+                                placeholder='Enter Delivery Period (in days)'
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+
+
+
+
+
+
+
+
                   <button
                     disabled={
                       epacket && processing && nonEpacketCountry && fastUS
@@ -400,6 +534,9 @@ position: "relative"}}/></Navbar.Brand>
                     onChange={(e) => setReturnManagement(e.target.value)}
                     required
                   />
+                  <br/>
+                  <p className="text-center">Please read our Supplier Aggrement from <a href="">here</a></p>
+                  <br/>
                   <p className='text-center'>
                     <span className='check'>
                       <input
@@ -409,6 +546,7 @@ position: "relative"}}/></Navbar.Brand>
                         onChange={() => setTerms(true)}
                       />
                     </span>
+
                     I agree to the terms & conditions
                   </p>
                   <button
@@ -416,7 +554,8 @@ position: "relative"}}/></Navbar.Brand>
                       returnManagement &&
                       minimumOrder &&
                       brandedPackaging &&
-                      brandedInvoice
+                      brandedInvoice &&
+                      terms
                         ? false
                         : true
                     }

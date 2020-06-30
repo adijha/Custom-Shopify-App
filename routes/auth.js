@@ -18,6 +18,8 @@ const PaymentMode = require('../model/PaymentMode');
 const Transaction = require('../model/Transaction');
 const axios = require('axios');
 var nodemailer = require('nodemailer');
+const stripe = require('stripe')('sk_test_6OA6yWmLoYcjfxPCzxGWbWtg')
+const { v4: uuidv4 } = require('uuid');
 const { google } = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 const RequestProduct = require('../model/RequestProduct')
@@ -150,7 +152,7 @@ router.get('/getTransaction', async (req, res)=>{
 })
 
 //merchant order from shopify
-router.get('/merchantShopifyOrders/:store', async (req, res)=>{
+router.get('/leftOrdermerchantShopify/:store', async (req, res)=>{
 console.log(req.params.store);
   const orderData = await Orders.find();
   let newOrderArray = []
@@ -174,11 +176,11 @@ console.log(req.params.store);
     });
   });
 
-  checkStore = []
-
+  let checkStore = []
+  let tempArray = []
   newOrderArray.forEach((item, i) => {
     if (item.store.toLowerCase()===req.params.store) {
-      checkStore.push({
+      tempArray.push({
         orderId: item.orderId,
         total_amount: item.total_amount,
         date: item.date,
@@ -198,23 +200,234 @@ console.log(req.params.store);
 
   let productData = await Products.find()
 
-  productData.forEach((product, i) => {
-    checkStore.forEach((check, index) => {
-      if (productData[i].code === checkStore[index].sku)
-      {
-        checkStore[index].productImage= productData[i].productImage;
-        checkStore[index].productName = productData[i].name
-        checkStore[index].shippingCharge = productData[i].shippingCharge
-      }
-    });
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (tempArray[i].sku===productData[j].code) {
+      checkStore.push({
+        orderId: item.orderId,
+        // total_amount: item.total_amount,
+        // date: item.date,
+        // paymentMode: item.paymentMode,
+        // customer_detail: item.customer_detail,
+        // item_price: item.item_price,
+        // sku: item.sku,
+        // productImage:product.productImage,
+        // quantity: item.quantity,
+        // productName: product.name,
+        // shippingCharge: product.shippingCharge,
+        // store: item.store,
+        pStatus: item.pStatus
+      })
+    }
   });
+});
+
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productImage= productData[i].productImage;
+  //       checkStore[index].productName = productData[i].name
+  //       checkStore[index].shippingCharge = productData[i].shippingCharge
+  //     }
+  //   });
+  // });
 let finalData = []
   checkStore.forEach((item, i) => {
     if (checkStore[i].pStatus==='unpaid') {
         finalData.push(checkStore[i])
     }
   });
-  console.log("final data array", finalData);
+//   console.log("final data array", finalData);
+  // const filterItems = (checkStore.filter(plist=>{
+  //   return plist.pStatus ==='Paid';
+  // }))
+  // console.log("order Deetails length", checkStore.length);
+  // console.log("result is paid order merchant", filterItems.length);
+  console.log("leftOrdermerchantShopify", finalData.length);
+  res.send(finalData)
+})
+//
+//
+//
+//
+// //merchant fulfiled order from shopify
+// router.get('/merchantShopifyOrdersFulfilled/:store', async (req, res)=>{
+// console.log(req.params.store);
+//   const orderData = await Orders.find();
+//   let newOrderArray = []
+//   orderData.forEach((item, i) => {
+//     item.products.forEach((product, j) => {
+//       if (product.sku !== undefined) {
+//         newOrderArray.push({
+//           orderId: item.product_name,
+//           total_amount: item.price,
+//           date: item.created_on,
+//           paymentMode: item.paymentMode,
+//           customer_name: item.customer,
+//
+//           sku: product.sku,
+//           item_price: product.price,
+//           quantity: product.quantity,
+//           store: product.store,
+//           pStatus: item.pStatus
+//         })
+//       }
+//     });
+//   });
+//
+//   checkStore = []
+//
+//   newOrderArray.forEach((item, i) => {
+//     if (item.store.toLowerCase()===req.params.store) {
+//       checkStore.push({
+//         orderId: item.orderId,
+//         total_amount: item.total_amount,
+//         date: item.date,
+//         paymentMode: item.paymentMode,
+//         customer_detail: item.customer_name,
+//         item_price: item.item_price,
+//         sku: item.sku,
+//         productImage:[],
+//         quantity: item.quantity,
+//         productName: '',
+//         shippingCharge: {},
+//         store: item.store,
+//         pStatus: item.pStatus
+//       })
+//     }
+//   });
+//
+//   let productData = await Products.find()
+//
+//   productData.forEach((product, i) => {
+//     checkStore.forEach((check, index) => {
+//       if (productData[i].code === checkStore[index].sku)
+//       {
+//         checkStore[index].productImage= productData[i].productImage;
+//         checkStore[index].productName = productData[i].name
+//         checkStore[index].shippingCharge = productData[i].shippingCharge
+//       }
+//     });
+//   });
+// let finalData = []
+//   checkStore.forEach((item, i) => {
+//     if (checkStore[i].pStatus==='Paid') {
+//         finalData.push(checkStore[i])
+//     }
+//   });
+//   console.log("final fulfilled data array", finalData);
+//   // const filterItems = (checkStore.filter(plist=>{
+//   //   return plist.pStatus ==='Paid';
+//   // }))
+//   // console.log("order Deetails length", checkStore.length);
+//   // console.log("result is paid order merchant", filterItems.length);
+//   res.send(finalData)
+// })
+
+
+
+//merchant unfulfilled order from shopify
+router.get('/merchantShopifyOrdersUnfulfilled/:store', async (req, res)=>{
+console.log(req.params.store);
+  const orderData = await Orders.find();
+  let newOrderArray = []
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+      if (product.sku !== undefined) {
+        newOrderArray.push({
+          orderId: item.product_name,
+          total_amount: item.price,
+          date: item.created_on,
+          paymentMode: item.paymentMode,
+          customer_name: item.customer,
+
+          sku: product.sku,
+          item_price: product.price,
+          quantity: product.quantity,
+          store: product.store,
+          pStatus: item.pStatus
+        })
+      }
+    });
+  });
+
+  let checkStore = []
+  let tempArray = []
+  newOrderArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.store) {
+      tempArray.push({
+        orderId: item.orderId,
+        total_amount: item.total_amount,
+        date: item.date,
+        paymentMode: item.paymentMode,
+        customer_detail: item.customer_name,
+        item_price: item.item_price,
+        sku: item.sku,
+
+        quantity: item.quantity,
+
+
+        store: item.store,
+        pStatus: item.pStatus
+      })
+    }
+  });
+
+  let productData = await Products.find()
+
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (item.sku===product.code) {
+      checkStore.push({
+        orderId: item.orderId,
+        total_amount: item.total_amount,
+        date: item.date,
+        paymentMode: item.paymentMode,
+        customer_detail: item.customer_detail,
+        item_price: item.item_price,
+        sku: item.sku,
+        productImage:product.productImage,
+        quantity: item.quantity,
+        productName: product.name,
+        shippingCharge: product.shippingCharge,
+        store: item.store,
+        pStatus: item.pStatus
+      })
+    }
+  });
+});
+
+
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productImage= productData[i].productImage;
+  //       checkStore[index].productName = productData[i].name
+  //       checkStore[index].shippingCharge = productData[i].shippingCharge
+  //     }
+  //   });
+  // });
+let finalDataUnpiad = []
+let finalDataPaid = []
+  checkStore.forEach((item, i) => {
+    if (checkStore[i].pStatus==='unpaid') {
+        finalDataUnpiad.push(checkStore[i])
+    }
+  });
+  checkStore.forEach((item, i) => {
+    if (checkStore[i].pStatus==='Paid') {
+        finalDataPaid.push(checkStore[i])
+    }
+  });
+
+  let finalData = {
+    allOrder: checkStore,
+    unfulfilOrder: finalDataUnpiad,
+    fulfilOrder: finalDataPaid
+  }
+  console.log("Custom order details", finalData);
   // const filterItems = (checkStore.filter(plist=>{
   //   return plist.pStatus ==='Paid';
   // }))
@@ -222,6 +435,12 @@ let finalData = []
   // console.log("result is paid order merchant", filterItems.length);
   res.send(finalData)
 })
+
+
+
+
+
+
 
 
 //merchant order sent to supplier after payment
@@ -352,10 +571,11 @@ router.get('/customOrderDetails', async (req, res)=>{
           sku: product.sku,
           total_price: item.price,
           quantity: product.quantity,
-          store: product.store,
+          store: product.store.toLowerCase(),
 
           customer_name: item.customer,
-          order_date: item.created_on
+          order_date: item.created_on,
+          pStatus:item.pStatus
         })
       }
 
@@ -378,7 +598,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           productImage:data.productImage,
           shipping: data.shippingCharge,
           product_price: data.price,
-          supplier_id: data.supplier_id
+          supplier_id: data.supplier_id,
+          pStatus: arr.pStatus
         })
       }
     });
@@ -401,8 +622,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           product_price: sArr.product_price,
           supplier_id: sArr.supplier_id,
           supplierName: user.supplier_id,
-          productImage:sArr.productImage
-
+          productImage:sArr.productImage,
+          pStatus:sArr.pStatus
         })
       }
 
@@ -414,7 +635,7 @@ const mUser = await MerchantUser.find()
 
 thirdArr.forEach((tArr, o) => {
   mUser.forEach((muser, p) => {
-    if (tArr.store===muser.store) {
+    if (tArr.store===muser.store.toLowerCase()) {
       doneArr.push({
         orderId: tArr.orderId,
         sku: tArr.sku,
@@ -428,13 +649,14 @@ thirdArr.forEach((tArr, o) => {
         supplier_id: tArr.supplier_id,
         supplierName: tArr.supplierName,
         productImage:tArr.productImage,
-        merchantName: muser.firstName
+        merchantName: muser.firstName,
+        pStatus: tArr.pStatus
       })
     }
   });
 
 });
-console.log("customMerchantDetail", doneArr);
+console.log("custom ordedr D", doneArr);
 
 res.send(doneArr)
 
@@ -548,11 +770,42 @@ router.get('/customMerchantDetail', async (req, res) => {
   const data = await MerchantUser.find();
   // console.log(data);
   const orderData = await Orders.find();
+  const productData = await Products.find()
+
+let newOrderArray = []
+
+    orderData.forEach((item, i) => {
+      item.products.forEach((product, j) => {
+        if (product.sku !== undefined) {
+          newOrderArray.push({
+            orderId: item.product_name,
+            price: product.price,
+            created_on: item.created_on,
+            store: product.store,
+            sku: product.sku,
+
+
+          })
+        }
+      });
+    });
+
+let makeOrderArray = []
+
+newOrderArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (newOrderArray[i].sku===productData[j].code) {
+      makeOrderArray.push(newOrderArray[i])
+    }
+  });
+
+});
+
 
   data.forEach((item, i) => {
-    orderData.forEach((od, j) => {
-      od.products.forEach((pro, k) => {
-        if (item.store === pro.store) {
+
+      makeOrderArray.forEach((pro, k) => {
+        if (item.store.toLowerCase() === pro.store) {
           const obj = {
             id: item._id,
             email: item.email,
@@ -560,17 +813,17 @@ router.get('/customMerchantDetail', async (req, res) => {
             lastName: item.lastName,
             phone: item.phoneNo,
             joiningDate: item.joiningDate,
-            store: pro.store,
+            store: pro.store.toLowerCase(),
             price: parseInt(pro.price),
             count: 1,
           };
 
           detail.push(obj);
         }
-        sName.push(item.store);
+        sName.push(item.store.toLowerCase());
 
       });
-    });
+
   });
   sName = [...new Set(sName)];
   console.log({ sName });
@@ -697,7 +950,7 @@ let newObject = {}
   data.forEach((delta, x) => {
     matchArray.forEach((final, Y) => {
 
-      if (delta.store === final.store) {
+      if (delta.store.toLowerCase() === final.store) {
          newObject = {
           id: delta._id,
           email: delta.email,
@@ -855,9 +1108,25 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
   let calPrice = 0;
 
   const data = await Orders.find();
+  const productData = await Products.find()
 
+  let itemArray = []
   data.forEach((item, i) => {
-    item.products.forEach((product, i) => {
+    item.products.forEach((sss, i) => {
+      if (sss.sku !== undefined) {
+        itemArray.push({
+          name: sss.name,
+          sku: sss.sku,
+          price: sss.price,
+          store: sss.store.toLowerCase()
+        });
+      }
+    });
+  });
+
+  let makeTempArray = []
+
+    itemArray.forEach((product, i) => {
       if (product.store == req.params.store) {
         const productObj = {
           name: product.name,
@@ -866,11 +1135,22 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
           store: product.store,
           count: 1,
         };
-        productArr.push(productObj);
+        makeTempArray.push(productObj);
         productNameArr.push(product.sku);
       }
-    });
+
   });
+
+  makeTempArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if (makeTempArray[i].sku === productData[j].code) {
+        productArr.push(makeTempArray[i])
+      }
+    });
+
+  });
+
+
   var finalArr = [];
 
   var holder = {};
@@ -919,6 +1199,7 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
     obj2.forEach((test, i) => {
       if (item.sku === test.sku) {
         const newObject = {
+          name:'',
           sku: test.sku,
           count: test.count,
           price: item.price,
@@ -969,10 +1250,20 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
 
 // console.log(finalObj, "final");
 
+newArray.forEach((Arr, i) => {
+  itemArray.forEach((item, index) => {
+    if (newArray[i].sku===itemArray[index].sku) {
+      newArray[i].name=itemArray[index].name
+    }
+  });
+
+});
+
+
 console.log("check data", newArray);
   res.send(newArray)
 
-  res.send(newArray);
+
 });
 
 /*Supplier Part*/
@@ -1293,6 +1584,11 @@ router.post('/SupplierForm', (req, res) => {
       </ul>
       <br>
   5. Do you provide fastest shipping or express shipping to US? Please tell us the shipping courier name, shipping charges and approximate days of delivery. : ${req.body.fastUS}
+    <ul>
+    <li>Shipping Carrier Name : ${req.body.carrierName}</li>
+    <li>Shipping Charges : ${req.body.deliveryCharge}</li>
+    <li>Delivery Period (in days) : ${req.body.deliveryPeriod}</li>
+    </ul>
   <br>
   <br>
   <b>Branding and Return Management</b>
@@ -1347,8 +1643,9 @@ router.get('/paymentDetails/:id', async (req, res) => {
 /*Product Part*/
 // product list
 router.get('/product', async (req, res) => {
+console.log("product api hit");
   try {
-    const item = await Products.find();
+    const item = await Products.find({});
     console.log("item", item);
     res.json(item);
   } catch (error) {
@@ -1369,8 +1666,7 @@ router.get('/customProductDetail', async (req, res)=>{
 
   productData.forEach((ddd, i) => {
     dupArray.push({
-      varients: ddd.varients,
-      options: ddd.options,
+
       _id: ddd._id,
       supplier_id: ddd.supplier_id,
       name: ddd.name,
@@ -2046,21 +2342,45 @@ router.delete('/product/:id', async (req, res) => {
   }
 });
 
+
+
+
 //update all products with some margin by Admin
 
 router.patch('/autoMargin', async (req, res) => {
   try {
-    const data = await Products.find({ category: req.body.category });
 
+    const currDate = (sep) => {
+      let d = new Date();
+      let DD = d.getDate();
+      let MM = d.getMonth() + 1;
+      let YY = d.getFullYear();
+      return DD + sep + MM + sep + YY;
+    };
+
+    const data = await Products.find({ category: req.body.category });
     data.forEach(async (item, i) => {
       let calPrice = item.price + (item.price * req.body.margin) / 100;
       let price = calPrice.toFixed(2);
-      const updatePrice = await Products.updateOne(
+      let updatePrice = await Products.updateOne(
         { _id: item._id },
-        { $set: { selliingPrice: price } }
+        { $set: { selliingPrice: price } },
+        {
+          new: true,
+          useFindAndModify: false,
+        }
       );
-      // console.log({ updatePrice });
+      console.log({ updatePrice });
     });
+    let categoryData = await Category.findOneAndUpdate(
+      {category: req.body.category},
+      { $set: { margin:req.body.margin, margin_updated: currDate('-') } },
+      {
+        new: true,
+        useFindAndModify: false,
+      })
+    //console.log("category updated", categoryData);
+    //console.log("");
     res.json('success');
   } catch (error) {
     console.log('update price error is:', error);
@@ -2243,4 +2563,72 @@ router.get('/getRequestProduct', async (req, res)=>{
   }
 })
 
+
+//merchant payment from stripe
+router.post('/payment', async (req, res)=>{
+  let product = req.body.product;
+  let token = req.body.token
+  console.log("product", product);
+  console.log("price*100", product.price);
+  let idempontentKey = uuidv4();
+  console.log({idempontentKey});
+//currently saving customer details instead of merchant
+// customer country in need need chipping/billing_details
+  return stripe.customers.create({
+    email: token.email,
+    source: token.id,
+    name: product.details.name,
+  address: {
+    line1: product.details.address,
+    postal_code: product.details.zip,
+    city: product.details.city,
+    state: product.details.state,
+    country: product.details.country,
+  },
+
+
+  })
+  .then(customer=>{
+    console.log("customer", customer);
+    stripe.charges.create(
+  {
+    amount: product.price,
+    currency: 'usd',
+    description: product.name,
+    customer: customer.id,
+    receipt_email:token.email,
+    source: token.card.id,
+    shipping: {
+      name: token.card.name,
+      address: {
+        line1: product.details.address,
+        country: token.card.country,
+      }
+    },
+  },
+  function(err, charge) {
+    if (!err) {
+      console.log("charge is", charge);
+      res.status(200).json(charge)
+    }
+    else {
+      console.log("err in charge", err);
+    }
+  }
+);
+  //   stripe.charges.create({
+  //     "amount": product.price,
+  //     "currency": 'usd',
+  //     "customer": customer.id,
+  //     "receipt_email":token.email,
+  //     "description": product.name
+  //   }, {idempontentKey})
+  // })
+  // .then(result=>{
+  //   console.log("result", result);
+  //   res.status(200).json(result)
+  }).catch(err=>{
+    console.log("payment errr", err);
+  })
+})
 module.exports = router;

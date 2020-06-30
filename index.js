@@ -161,6 +161,7 @@ app.get('/shopify/callback', (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
         req.session.code = code;
+        res.redirect('https://www.melisxpress.com/login-merchant')
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
@@ -200,7 +201,7 @@ app.post('/addToShopify/:storeName',async (req, res) => {
       title: req.body.product.title,
       body_html: req.body.product.body_html,
       vendor: req.body.product.vendor,
-      images: req.body.product.images,
+      images:[ {"attachment":req.body.product.images}],
       product_type: req.body.product.product_type
     }
 
@@ -268,7 +269,17 @@ app.get('/shopifyProduct/:storeName', async (req, res) => {
 
 //update request shopify product
 app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
+  console.log(req.params, "shopify update");
   let storeData = await Store.find({ name: req.params.storeName });
+  let obj = {
+    product:{
+      title: req.body.product.title,
+      body_html: req.body.product.body_html,
+      vendor: req.body.product.vendor,
+      product_type: req.body.product.product_type
+    }
+
+  }
   if (storeData.length > 0) {
 
   console.log(req.body);
@@ -287,10 +298,10 @@ app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
     'X-Shopify-API-Version': '2020-01',
   };
   request
-    .put(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+    .put(shopRequestUrl, { headers: shopRequestHeaders, json: obj })
     .then((data) => {
       console.log('update shopify product is ', data);
-      res.send(data);
+      res.send("success");
     })
     .catch((error) => {
       console.log('shopify error update is', error);
@@ -301,18 +312,20 @@ app.put('/ShopifyProduct/:storeName/:id', async (req, res) => {
   }
 });
 
-app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
+app.delete('/shopifyProduct/:storeName/:id', async (req, res) => {
+  let storeData = await Store.find({ name: req.params.storeName });
+  if (storeData.length > 0) {
   const shopRequestUrl =
     'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/products/' +
+    req.params.storeName +
+    '/admin/api/2020-01/products/' +
     req.params.id +
     '.json';
   const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
+    'X-Shopify-Access-Token': storeData[0].token,
     'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
+    'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+    'X-Shopify-Shop-Domain': req.params.storeName,
     'X-Shopify-API-Version': '2020-01',
   };
   request
@@ -324,6 +337,9 @@ app.delete('/shopifyProduct/:VendorString/:id', (req, res) => {
     .catch((error) => {
       console.log('shopify error delete is', error);
     });
+  } else {
+    console.log('storeData not found');
+  }
 });
 
 //get Orders list
@@ -576,8 +592,35 @@ app.get('/ordersData', async (req, res) => {
 
   try {
     const data = await Orders.find({});
-    console.log(data.length);
-    res.status(200).json(data.length);
+    const productData = await Products.find()
+    let itemArray = []
+
+    data.forEach((item, i) => {
+      item.products.forEach((sss, i) => {
+        if (sss.sku !== undefined) {
+          itemArray.push({
+            totalPrice: parseInt(item.price),
+            name: sss.name,
+            sku: sss.sku,
+            price: sss.price,
+            store: sss.store.toLowerCase()
+          });
+        }
+      });
+    });
+
+    let makeOrderArray = []
+    itemArray.forEach((item, i) => {
+      productData.forEach((product, j) => {
+        if (itemArray[i].sku===productData[j].code) {
+          makeOrderArray.push(itemArray[i])
+        }
+      });
+
+    });
+
+    console.log(makeOrderArray.length);
+    res.status(200).json(makeOrderArray.length);
   } catch (error) {
     console.log(error, 'orderData api');
   }
@@ -586,9 +629,34 @@ app.get('/ordersData', async (req, res) => {
 app.get('/revenue', async (req, res) => {
   const priceCal = [];
   const data = await Orders.find({});
+  const productData = await Products.find()
+  let itemArray = []
 
   data.forEach((item, i) => {
-    priceCal.push(item.price);
+    item.products.forEach((sss, i) => {
+      if (sss.sku !== undefined) {
+        itemArray.push({
+          totalPrice: parseInt(item.price),
+          name: sss.name,
+          sku: sss.sku,
+          price: sss.price,
+          store: sss.store.toLowerCase()
+        });
+      }
+    });
+  });
+let makeOrderArray = []
+itemArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (itemArray[i].sku===productData[j].code) {
+      makeOrderArray.push(itemArray[i])
+    }
+  });
+
+});
+console.log("makeOrderArray", makeOrderArray);
+  makeOrderArray.forEach((item, i) => {
+    priceCal.push(item.totalPrice);
   });
 
   const sumPrice = priceCal.reduce((a, b) => a + b, 0);
@@ -1228,53 +1296,44 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
         if (product.sku !== undefined) {
           newOrderArray.push({
             orderId: item.product_name,
-            total_amount: item.price,
-            date: item.created_on,
-            paymentMode: item.paymentMode,
-            customer_name: item.customer,
-
             sku: product.sku,
-            item_price: product.price,
-            quantity: product.quantity,
-            store: product.store,
-            pStatus: item.pStatus
+            store: product.store
           })
         }
       });
     });
 
-    let checkStore = []
-
+    let tempArray = []
     newOrderArray.forEach((item, i) => {
       if (item.store.toLowerCase()===req.params.storeName) {
-        checkStore.push({
+        tempArray.push({
           orderId: item.orderId,
-          total_amount: item.total_amount,
-          date: item.date,
-          paymentMode: item.paymentMode,
-          customer_detail: item.customer_name,
-          item_price: item.item_price,
+
           sku: item.sku,
-          productImage:[],
-          quantity: item.quantity,
-          productName: '',
-          shippingCharge: {},
           store: item.store,
-          pStatus: item.pStatus
         })
       }
     });
 
     let productData = await Products.find()
+    let checkStore = []
 
-    productData.forEach((product, i) => {
-      checkStore.forEach((check, index) => {
-        if (productData[i].code === checkStore[index].sku)
-        {
-          checkStore[index].productName = productData[i].name
-        }
-      });
+  tempArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if (tempArray[i].sku===productData[j].code) {
+        checkStore.push(tempArray[i])
+      }
     });
+  });
+
+    // productData.forEach((product, i) => {
+    //   checkStore.forEach((check, index) => {
+    //     if (productData[i].code === checkStore[index].sku)
+    //     {
+    //       checkStore[index].productName = productData[i].name
+    //     }
+    //   });
+    // });
   // let finalData = []
   //   checkStore.forEach((item, i) => {
   //     if (checkStore[i].pStatus==='unpaid') {
@@ -1292,17 +1351,6 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   const orderData = await Orders.find();
 
   let newOrderArray = [];
-  //
-  // orderData.forEach((item, i) => {
-  //   item.products.forEach((product, j) => {
-  //     if (product.store.toLowerCase() === req.params.storeName) {
-  //       newOrderArray.push(orderData[i]);
-  //     }
-  //   });
-  // });
-  //
-  //
-
 
   orderData.forEach((item, i) => {
     item.products.forEach((product, j) => {
@@ -1321,34 +1369,40 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   });
 
 
-  let checkStore = []
 
+  let tempArray = []
   newOrderArray.forEach((item, i) => {
     if (item.store.toLowerCase()===req.params.storeName) {
-      checkStore.push({
+      tempArray.push({
         orderId: item.orderId,
         price: item.price,
         created_on: item.created_on,
-        productName: '',
         store: item.store,
         sku: item.sku,
-
       })
     }
   });
 
-
-
   let productData = await Products.find()
+  let checkStore = []
 
-  productData.forEach((product, i) => {
-    checkStore.forEach((check, index) => {
-      if (productData[i].code === checkStore[index].sku)
-      {
-        checkStore[index].productName = productData[i].name
-      }
-    });
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (tempArray[i].sku===productData[j].code) {
+      checkStore.push(tempArray[i])
+    }
   });
+});
+console.log("checkStore in m Graoh", checkStore);
+
+  // productData.forEach((product, i) => {
+  //   checkStore.forEach((check, index) => {
+  //     if (productData[i].code === checkStore[index].sku)
+  //     {
+  //       checkStore[index].productName = productData[i].name
+  //     }
+  //   });
+  // });
 
 
 
@@ -1370,7 +1424,7 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
   for (var prop in holder) {
     obj2.push({ date: prop, price: holder[prop] });
   }
-  console.log('obj2', obj2);
+  console.log('obj2 in merchant graph', obj2);
   let dateArray = [];
   let revenueArray = [];
 
@@ -1383,7 +1437,92 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
     date: dateArray,
     revenue: revenueArray,
   };
-  //console.log('finalGraphObj', finalGraphObj);
+  console.log('finalGraphObj', finalGraphObj);
+  res.send(finalGraphObj);
+});
+
+//merchant graphData by dates
+app.get('/merchantDasboardRevenueGraphByDates/:storeName/:start/:end', async (req, res) => {
+  console.log('req.body', req.params);
+  console.log("start", req.params.start);
+   const orderData = await Orders.find({"created_on": {"$gte": new Date(req.params.start), "$lt": new Date(req.params.end)}});
+   console.log("sort date data ", orderData);
+
+  let newOrderArray = [];
+
+  orderData.forEach((item, i) => {
+    item.products.forEach((product, j) => {
+      if (product.sku !== undefined) {
+        newOrderArray.push({
+          orderId: item.product_name,
+          price: item.price,
+          created_on: item.created_on,
+          store: product.store,
+          sku: product.sku,
+
+
+        })
+      }
+    });
+  });
+
+
+
+  let tempArray = []
+  newOrderArray.forEach((item, i) => {
+    if (item.store.toLowerCase()===req.params.storeName) {
+      tempArray.push({
+        orderId: item.orderId,
+        price: item.price,
+        created_on: item.created_on,
+        store: item.store,
+        sku: item.sku,
+      })
+    }
+  });
+
+  let productData = await Products.find()
+  let checkStore = []
+
+tempArray.forEach((item, i) => {
+  productData.forEach((product, j) => {
+    if (tempArray[i].sku===productData[j].code) {
+      checkStore.push(tempArray[i])
+    }
+  });
+});
+console.log("checkStore in m Graoh", checkStore);
+
+  var holder = {};
+
+  checkStore.forEach(function (d) {
+    if (holder.hasOwnProperty(moment(d.created_on).format('MMM Do YY'))) {
+      holder[moment(d.created_on).format('MMM Do YY')] =
+        holder[moment(d.created_on).format('MMM Do YY')] + d.price;
+    } else {
+      holder[moment(d.created_on).format('MMM Do YY')] = d.price;
+    }
+  });
+
+  var obj2 = [];
+
+  for (var prop in holder) {
+    obj2.push({ date: prop, price: holder[prop] });
+  }
+  console.log('obj2 in merchant graph', obj2);
+  let dateArray = [];
+  let revenueArray = [];
+
+  obj2.forEach((item, i) => {
+    dateArray.push(obj2[i].date);
+    revenueArray.push(obj2[i].price);
+  });
+
+  let finalGraphObj = {
+    date: dateArray,
+    revenue: revenueArray,
+  };
+  console.log('finalGraphObj', finalGraphObj);
   res.send(finalGraphObj);
 });
 

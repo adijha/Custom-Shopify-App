@@ -8,15 +8,12 @@ const MerchantSupport = () => {
       <div className="content second-portion">
         <Grid fluid>
           <Row>
-            <Col md={4}>
-              <div className="box">
+              <div className="box text-center">
                 <div className="icon">
-                  <div className="image">
-                    <i className="fa fa-envelope" aria-hidden="true" />
-                  </div>
+
                   <div className="info">
-                    <h3 className="title">MAIL</h3>
-                    <p>
+                    <h3 className="title" style={{fontSize:"25px"}}>MAIL</h3>
+                    <p style={{fontSize:"20px"}}>
                       <i className="fa fa-envelope" aria-hidden="true" /> &nbsp;
                       Support@support.com
                       <br />
@@ -26,47 +23,7 @@ const MerchantSupport = () => {
                 </div>
                 <div className="space" />
               </div>
-            </Col>
-            <Col md={4}>
-              <div className="box">
-                <div className="icon">
-                  <div className="image">
-                    <i className="fa fa-mobile" aria-hidden="true" />
-                  </div>
-                  <div className="info">
-                    <h3 className="title">CONTACT</h3>
-                    <p>
-                      <i className="fa fa-mobile" aria-hidden="true" /> &nbsp;
-                      (+91)-9624XXXXX
-                      <br />
-                      <br />
-                      <i className="fa fa-mobile" aria-hidden="true" /> &nbsp;
-                      (+91)-756706XXXX
-                    </p>
-                  </div>
-                </div>
-                <div className="space" />
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="box">
-                <div className="icon">
-                  <div className="image">
-                    <i className="fa fa-map-marker" aria-hidden="true" />
-                  </div>
-                  <div className="info">
-                    <h3 className="title">ADDRESS</h3>
-                    <p>
-                      <i className="fa fa-map-marker" aria-hidden="true" />{" "}
-                      &nbsp; 15/3 Junction Building
-                      <br />
-                      "ABC New Krishna Krupa", State - 110000.
-                    </p>
-                  </div>
-                </div>
-                <div className="space" />
-              </div>
-            </Col>
+
           </Row>
         </Grid>
       </div>
