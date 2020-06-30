@@ -404,27 +404,14 @@ const Products = () => {
                     </div>
                     <div className="details col-md-6">
                       <h3 className="product-title">{product.name}</h3>
-                      <div className="rating">
-                        <div className="stars">
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star checked" />
-                          <span className="fa fa-star" />
-                          <span className="fa fa-star" />
-                        </div>
-                        <span className="review-no">41 reviews</span>
-                      </div>
+                    
                       <p className="product-description">
-                        HtmlConvert({product.description})
+                  { product.description?   product.description.replace(/(<([^>]+)>)/ig,""):null}
                       </p>
                       <h4 className="price">
                         current price: <span>${product.price}</span>
                       </h4>
-                      <p className="vote">
-                        <strong>91%</strong> of buyers enjoyed this product!
-                        <br /> <br />
-                        <strong>87 votes</strong>
-                      </p>
+                     
                       <h5 className="sizes">
                         Available Quantity: <span>{product.quantity}</span>
                       </h5>
