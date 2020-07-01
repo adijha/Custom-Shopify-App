@@ -56,11 +56,19 @@ const Orders = () => {
 
   const getOrderDetails = async () => {
     console.log(decode.store);
+    console.log("moment date, ", moment.utc('2020-06-30T21:09:43.000Z').format("YYYY-MM-DD,  h:mm:ss a"));
 
       await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
         console.log("data is orders unfulfilled", data.data);
-        const sortedArray  = data.data.allOrder.sort((a,b) => new moment(a.date).format('YYYYMMDD ') - new moment(b.date).format('YYYYMMDD'))
+        const sortedArray  = data.data.allOrder.sort((a,b) =>  moment(a.date).format("YYYY-MM-DD,  h:mm:ss a") -  moment(b.date).format("YYYY-MM-DD,  h:mm:ss a"))
+        const sortedActivities = data.data.allOrder.sort((a, b) => b.date - a.date)
+        let sortData = data.data.allOrder.filter(allOrd=>{
+          return moment(allOrd.date).subtract(1)
+        })
+        console.log("sortData", sortData);
         console.log("sortedArray", sortedArray);
+        console.log("sortedActivities", sortedActivities);
+
         setOrderDetailsUn(data.data.unfulfilOrder);
         setOrderDetails(data.data.allOrder);
         setOrderDetailsFu(data.data.fulfilOrder);

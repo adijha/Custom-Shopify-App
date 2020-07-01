@@ -33,7 +33,7 @@ const updatePrice = async (e) =>{
 }
 
 const getCategoryList = () =>{
-  axios.get('/api/totalCategory')
+  axios.get('/api/totalCategoryMargin')
   .then(data=>{
     setCategoryList(data.data)
   })

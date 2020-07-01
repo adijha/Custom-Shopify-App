@@ -20,6 +20,7 @@ const MerchantDetail = () => {
 
   const getMerchant = async () => {
     const res = await axios.get('/api/customMerchantDetail');
+
     setMerchantList(res.data);
     console.log(res.data);
   };

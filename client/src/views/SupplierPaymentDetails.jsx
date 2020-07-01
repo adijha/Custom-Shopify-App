@@ -22,7 +22,7 @@ const SupplierPaymentDetails = () => {
   const [lastName, setlastName] = useState("")
   const [address, setAddress] = useState("")
   const [westernId, setWesternId] = useState("")
-  const [savedDetails, setSavedDetails] = useState([])
+  const [savedDetails, setSavedDetails] = useState({})
 
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
@@ -41,8 +41,9 @@ const SupplierPaymentDetails = () => {
           accountno: accountno
         }
         let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, pmethod, ifscCode, supplier_id});
-        NotificationManager.success("Detail saved Successfully");
         getDetails();
+        NotificationManager.success("Detail saved Successfully");
+
       }
 
       catch (error) {
@@ -54,9 +55,10 @@ const SupplierPaymentDetails = () => {
     console.log({name, accountno, pmethod, sortCode});
     try {
 
-        let res = await axios.post("/api/supplierPaymentUpdate", );
-        NotificationManager.success("Detail saved Successfully");
+        let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, sortCode});
         getDetails();
+        NotificationManager.success("Detail saved Successfully");
+
       }
 
       catch (error) {
@@ -69,8 +71,9 @@ const SupplierPaymentDetails = () => {
     try {
 
         let res = await axios.post("/api/supplierPaymentUpdate", {name, profileId, pmethod, supplier_id});
-        NotificationManager.success("Detail saved Successfully");
         getDetails();
+        NotificationManager.success("Detail saved Successfully");
+
       }
 
       catch (error) {
@@ -83,8 +86,9 @@ const SupplierPaymentDetails = () => {
     try {
 
         let res = await axios.post("/api/supplierPaymentUpdate", {firstName, lastName, westernId, address, pmethod, supplier_id});
-        NotificationManager.success("Detail saved Successfully");
         getDetails();
+        NotificationManager.success("Detail saved Successfully");
+
       }
 
       catch (error) {
@@ -95,7 +99,8 @@ const SupplierPaymentDetails = () => {
 const getDetails = () =>{
   axios.get('/api/paymentDetails/'+decode.id)
   .then(data=>{
-    setSavedDetails(data.data);
+    console.log(data.data);
+    setSavedDetails(data.data.info);
   })
 }
 
@@ -125,11 +130,9 @@ const getDetails = () =>{
                   <br/>
                   <div>
                   <h4>Saved Details</h4>
-                  {savedDetails.map(item=>{
-                    return(
-                      <p>{item.info.pmethod} :-  {item.info.name} : {item.info.profileId || item.info.ifscCode}</p>
-                    )
-                  })}
+                      <p>{savedDetails._id}</p>
+                      <p>{savedDetails.pmethod} :-  {savedDetails.name} : {savedDetails.profileId || savedDetails.ifscCode}</p>
+
                   </div>
                   <br/>
 

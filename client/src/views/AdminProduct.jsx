@@ -322,7 +322,7 @@ const AdminProduct = () => {
                                     Total no. of orders :- {sDetail.order || 0}
                                   </tr>
                                   <tr>
-                                    Total Revenue :- {sDetail.revenue || 0}
+                                    Total Revenue :- ${sDetail.revenue || 0}
                                   </tr>
                                 </td>
                               </tr>

@@ -135,7 +135,7 @@ const SupplierList = () => {
                               ? item.pmethod
                               : item.transactionType}
                           </td>
-                          <td>{item.amount_paid}</td>
+                          <td>${item.amount_paid}</td>
                           <td>{item.trans_id}</td>
                           <td>
                             {context === 'supplier'

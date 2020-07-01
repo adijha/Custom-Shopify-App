@@ -13,7 +13,7 @@ const SupplierList = () => {
     moment('01-01-2019').format('Y-MM-DD')
   );
   const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('0');
   const [method, setMethod] = useState('');
   const [id, setId] = useState('');
   const [transData, setTransdata] = useState([])
@@ -56,6 +56,22 @@ const SupplierList = () => {
       time:t
     }
     console.log({obj});
+    console.log("item is ", item);
+    console.log("if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
+    if (!item.amount) {
+      if (parseInt(amount)>parseInt(item.revenue)) {
+        console.log("if if cond", parseInt(amount), parseInt(item.revenue));
+
+        return NotificationManager.error('Total paid amount is higher than dues');
+
+      }
+    }
+    else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
+      console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
+
+      return NotificationManager.error('Total paid amount is higher than dues');
+
+    } else{
     axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
@@ -70,6 +86,7 @@ const SupplierList = () => {
       NotificationManager.error('Something unusual happened');
     }
     })
+  }
   };
 
 
@@ -194,14 +211,14 @@ const SupplierList = () => {
                             <td>{key + 1}</td>
                             <td style={{ width: '20%' }}>{item.name||'NA'}</td>
                             <td>{item.email}</td>
-                            <td>{item.revenue}</td>
-                            <td>{item.lastWeek||0}</td>
-                            <td>{item.amount || 0}</td>
-                            <td>{item.revenue-(item.amount||0)}</td>
+                            <td>${item.revenue}</td>
+                            <td>${item.lastWeek||0}</td>
+                            <td>${item.amount || 0}</td>
+                            <td>${item.revenue-(item.amount||0)}</td>
                             <td>${item.amount || 0}</td>
                           </tr>
 
-                          {expand === item.email ? (
+                          {(expand === item.email && item.revenue!=0) ? (
                             <>
                               <tr key={9898989}>
                                 <td></td>
