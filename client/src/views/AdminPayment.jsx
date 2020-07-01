@@ -55,24 +55,22 @@ const SupplierList = () => {
       date:d,
       time:t
     }
-    console.log({obj});
-    console.log("item is ", item);
-    console.log("if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
+
     if (!item.amount) {
       if (parseInt(amount)>parseInt(item.revenue)) {
         console.log("if if cond", parseInt(amount), parseInt(item.revenue));
 
-        return NotificationManager.error('Total paid amount is higher than dues');
+         NotificationManager.error('Entered paid amount is higher than dues');
 
       }
     }
     else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
       console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
 
-      return NotificationManager.error('Total paid amount is higher than dues');
+       NotificationManager.error('Total paid amount is higher than dues');
 
     } else if (parseInt(amount)+parseInt(item.amount)<parseInt(item.revenue)){
-    axios.post('/api/transactionDetail', obj)
+    await axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
       if (res.data.includes('success')) {
