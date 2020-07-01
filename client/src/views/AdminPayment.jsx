@@ -79,7 +79,6 @@ const SupplierList = () => {
         }
         })
       }
-      }
     }
     else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
       console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
