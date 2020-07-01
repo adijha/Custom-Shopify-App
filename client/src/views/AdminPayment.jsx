@@ -63,16 +63,31 @@ const SupplierList = () => {
          NotificationManager.error('Entered paid amount is higher than dues');
 
       }
+      else{
+        await axios.post('/api/transactionDetail', obj)
+        .then(res=>{
+          try{
+          if (res.data.includes('success')) {
+            axios.get('/api/adminPaymentSupplier').then((res) => {
+              setPayments(res.data);
+              NotificationManager.success('Transaction Updated Successfully');
+              // console.log(res.data);
+            });
+          }
+        } catch (error) {
+          NotificationManager.error('Something unusual happened');
+        }
+        })
+      }
+      }
     }
-
     else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
       console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
 
        NotificationManager.error('Total paid amount is higher than dues');
 
-    }
-
-    return await axios.post('/api/transactionDetail', obj)
+    } else if (parseInt(amount)+parseInt(item.amount)<parseInt(item.revenue)){
+    await axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
       if (res.data.includes('success')) {
@@ -86,7 +101,7 @@ const SupplierList = () => {
       NotificationManager.error('Something unusual happened');
     }
     })
-
+  }
   };
 
 
