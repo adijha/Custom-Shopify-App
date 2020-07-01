@@ -71,7 +71,7 @@ const SupplierList = () => {
 
       return NotificationManager.error('Total paid amount is higher than dues');
 
-    } else{
+    } else if (parseInt(amount)+parseInt(item.amount)<parseInt(item.revenue)){
     axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
@@ -177,6 +177,7 @@ const SupplierList = () => {
           </CsvDownloader>
         </div>
       </div>
+      <br/>
       <Grid fluid>
         <Row>
           <Col md={12}>

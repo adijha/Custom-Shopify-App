@@ -234,7 +234,7 @@ const MerchantDashboard = () => {
 						<StatsCard
 							bigIcon={<i className='fa fa-user text-info' />}
 							statsText='Total Revenue'
-							statsValue={revenue}
+							statsValue={`$ ${revenue}`}
 							statsIcon={<i className='fa fa-refresh' />}
 							statsIconText='Updated'
 						/>
