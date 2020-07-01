@@ -535,7 +535,7 @@ position: "relative"}}/></Navbar.Brand>
                     required
                   />
                   <br/>
-                  <p className="text-center">Please read our Supplier Aggrement from <a href="">here</a></p>
+                  <p className="text-center">Please read our Supplier Aggrement from <a href="/supplier-t&c" target="_blank">here</a></p>
                   <br/>
                   <p className='text-center'>
                     <span className='check'>

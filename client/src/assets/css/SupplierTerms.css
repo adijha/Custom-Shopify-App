@@ -1,0 +1,15 @@
+
+.role-ul{
+  font-size: 17px;
+text-align: justify;
+margin-top:20px;
+}
+
+.role-li{
+  margin-top: 8px;
+}
+.role-li>span{
+  margin-left: 1rem;
+text-align: justify;
+display: block;
+}
