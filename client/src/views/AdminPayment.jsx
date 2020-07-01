@@ -64,13 +64,15 @@ const SupplierList = () => {
 
       }
     }
+
     else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
       console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
 
        NotificationManager.error('Total paid amount is higher than dues');
 
-    } else if (parseInt(amount)+parseInt(item.amount)<parseInt(item.revenue)){
-    await axios.post('/api/transactionDetail', obj)
+    }
+
+    return await axios.post('/api/transactionDetail', obj)
     .then(res=>{
       try{
       if (res.data.includes('success')) {
@@ -84,7 +86,7 @@ const SupplierList = () => {
       NotificationManager.error('Something unusual happened');
     }
     })
-  }
+
   };
 
 
