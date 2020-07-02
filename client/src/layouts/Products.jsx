@@ -198,8 +198,7 @@ const Products = () => {
   };
 
   const handleCategory = (e) => {
-    e.preventDefault();
-    const selectedCategory = e.target.value;
+    const selectedCategory = e;
     console.log("selectedCategory", selectedCategory);
 
     if (selectedCategory === "Select Category") {
@@ -268,6 +267,9 @@ const Products = () => {
       });
   };
 
+ 
+  
+
   return (
     <div
       className=""
@@ -330,6 +332,7 @@ const Products = () => {
                   flexWrap: "wrap",
                   alignSelf: "center",
                 }}
+               
               >
                 {[
                   {
@@ -387,8 +390,10 @@ const Products = () => {
                           border: "2px solid #fafafa",
                           cursor: "pointer",
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
                           console.log(item.category);
+                          handleCategory(e.target.childNodes[0])
+                          console.log(e.target.childNodes[0])
                         }}
                       >
                         <i className={item.icon} style={{ fontSize: 40 }} />
@@ -429,7 +434,7 @@ const Products = () => {
             
             }}
             style={{padding:10
-              ,border:'1px solid #fafafa',cursor:'pointer',textAlign:'center'}}
+              ,border:'1px solid #F0F0F0',cursor:'pointer',textAlign:'center'}}
             >
               <div>
                 <img
