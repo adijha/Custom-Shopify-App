@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Grid, Row, Col, Table, DropdownButton } from "react-bootstrap";
 import Modal from "react-responsive-modal";
 import jwt_decode from "jwt-decode";
-import Card from "../components/Card/Card.jsx";
 import "../assets/css/productPage.css";
 import { NotificationManager } from 'react-notifications';
 
@@ -213,44 +211,44 @@ const Products = () => {
               >
                 {[
                   {
-                    category: "Men's Clothing and Accessories",
-                    icon:'pe-7s-bicycle'
+                    category: "Men’s Clothing & Accessories",
+                    icon:'pe-7s-users'
                   },
                   {
-                    category: "Electronics",
-                    icon:'pe-7s-bicycle'
+                    category: "Women’s Clothing & Accessories",
+                    icon:'pe-7s-user-female'
                   },
                   {
-                    category: "Home and Kitchen",
-                    icon:'pe-7s-home'
+                    category: "Toys & Hobbies",
+                    icon:'pe-7s-arc'
                   },
                   {
-                    category: "Beauty",
-                    icon:'pe-7s-bicycle'
+                    category: "Health & Beauty",
+                    icon:'pe-7s-gym'
                   },
                   {
-                    category: "Pets",
-                    icon:'pe-7s-bicycle'
+                    category: "Pet Supplies",
+                    icon:'pe-7s-piggy'
                   },
                   {
-                    category: "Gadgets",
-                    icon:'pe-7s-light'
+                    category: "Jewellery & Watches",
+                    icon:'pe-7s-wristwatch'
                   },
                   {
-                    category: "Medicine ",
-                    icon:'pe-7s-bicycle'
+                    category: "Home & Garden",
+                    icon:'pe-7s-leaf'
                   },
                   {
-                    category: "Sports and Enternainment",
-                    icon:'pe-7s-bicycle'
+                    category: "Mother & Kids",
+                    icon:'pe-7s-joy'
                   },
                   {
-                    category: "Jwellery",
-                    icon:'pe-7s-bicycle'
+                    category: "Sports",
+                    icon:'pe-7s-ball'
                   },
                   ,
                   {
-                    category: "More",
+                    category: "More	",
                     icon:'pe-7s-more'
 
                   },
