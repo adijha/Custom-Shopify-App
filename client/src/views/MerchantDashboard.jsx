@@ -136,7 +136,7 @@ const MerchantDashboard = () => {
 		<div>
 		<h2 className="text-center">Welcome Back</h2>
 		<br/>
-		<p className="text-center">Lets see what happened while you are away.</p>
+		<p className="text-center">Let's see what happened while you were away.</p>
 		<br/>
 		<div className='content'>
 			<Grid fluid>
