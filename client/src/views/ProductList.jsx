@@ -1,174 +1,172 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Row, Col, Table } from 'react-bootstrap';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-import Modal from 'react-responsive-modal';
-import { NotificationManager } from 'react-notifications';
-import Card from '../components/Card/Card.jsx';
-import '../assets/css/productList.css';
-import CustomButton from '../components/CustomButton/CustomButton.jsx';
+import React, { useState, useEffect } from "react";
+import { Grid, Row, Col, Table } from "react-bootstrap";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import Modal from "react-responsive-modal";
+import { NotificationManager } from "react-notifications";
+import Card from "../components/Card/Card.jsx";
+import "../assets/css/productList.css";
+import CustomButton from "../components/CustomButton/CustomButton.jsx";
 
 const ProductList = () => {
-  const [productItems, setProductItems] = useState([{
-    category: "Beauty",
-    code: "122121",
-    description: "<p>Aloknath</p>",
-    name: "brush kumar",
-    options: [
-      
-    ],
-    name: "title",
-    values: [
-      [
-        "add",
-        "sub"
+  const [productItems, setProductItems] = useState([
+    {
+      category: "Beauty",
+      code: "122121",
+      description: "<p>Aloknath</p>",
+      name: "brush kumar",
+      options: [],
+      name: "title",
+      values: [
+        ["add", "sub"],
+        {
+          name: "style",
+          values: Array(1),
+        },
+        {
+          name: "material",
+          values: Array(0),
+        },
       ],
-      {
-        name: "style",
-        values: Array(1)
+      price: 988,
+      productImage: [
+        {
+          _id: "5ef2b55a361800272dcddd39",
+          imgName: "image/jpeg",
+          imgBufferData:
+            "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQ…AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q==",
+        },
+      ],
+      quantity: 4,
+      selliingPrice: 1086.8,
+      shippingCharge: {
+        method: "freeShipping",
+        usa: "2.5",
+        canada: "2.5",
+        unitedKingdom: "2.5",
+        australia: "2.5",
       },
-      {
-        name: "material",
-        values: Array(0)
-      }
-    ],
-    price: 988,
-    productImage: [
-      {
-        _id: "5ef2b55a361800272dcddd39",
-        imgName: "image/jpeg",
-        imgBufferData: "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQ…AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q=="
-      }
-    ],
-    quantity: 4,
-    selliingPrice: 1086.8,
-    shippingCharge: {
-      method: "freeShipping",
-      usa: "2.5",
-      canada: "2.5",
-      unitedKingdom: "2.5",
-      australia: "2.5"
+      size: "33",
+      supplier_id: "5e2daa9ac562680ab159b23f",
+      uploaded_on: "2020-06-24T02:07:22.000Z",
+      varients: [
+        {
+          option1: "add ",
+          option2: " mul",
+        },
+        {
+          option1: "add ",
+          option2: " mul",
+        },
+        {
+          option1: "add ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "add ",
+          option2: " mul",
+        },
+        {
+          option1: "add ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+        {
+          option1: "sub ",
+          option2: " mul",
+        },
+      ],
+      _id: "5ef2b55a361800",
     },
-    size: "33",
-    supplier_id: "5e2daa9ac562680ab159b23f",
-    uploaded_on: "2020-06-24T02:07:22.000Z",
-    varients: [
-      {
-        option1: "add ",
-        option2: " mul"
-      },
-      {
-        option1: "add ",
-        option2: " mul"
-      },
-      {
-        option1: "add ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "add ",
-        option2: " mul"
-      },
-      {
-        option1: "add ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      },
-      {
-        option1: "sub ",
-        option2: " mul"
-      }
-    ],
-    _id: "5ef2b55a361800"
-  }]);
-  const token = localStorage.getItem('token');
+  ]);
+  const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [warranty, setWarranty] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [code, setCode] = useState('');
-  const [status, setStatus] = useState('');
-  const [itemId, setItemId] = useState('');
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [warranty, setWarranty] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [code, setCode] = useState("");
+  const [status, setStatus] = useState("");
+  const [itemId, setItemId] = useState("");
   const [open, setOpen] = useState(false);
 
   const modalStyle = {
-    margin: 'auto',
-    position: 'relative',
+    margin: "auto",
+    position: "relative",
   };
 
   let Editor = {};
   Editor.modules = {
     toolbar: [
       [{ header: [1, 2, false] }],
-      ['bold'],
-      ['italic'],
-      ['underline'],
-      ['strike'],
-      ['blockquote'],
-      [{ list: 'ordered' }],
-      [{ list: 'bullet' }],
-      [{ indent: '+1' }],
-      [{ indent: '-1' }],
-      ['link'],
-      ['video'],
-      ['image'],
+      ["bold"],
+      ["italic"],
+      ["underline"],
+      ["strike"],
+      ["blockquote"],
+      [{ list: "ordered" }],
+      [{ list: "bullet" }],
+      [{ indent: "+1" }],
+      [{ indent: "-1" }],
+      ["link"],
+      ["video"],
+      ["image"],
     ],
   };
 
   Editor.formats = [
-    'header',
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
+    "header",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
   ];
 
   useEffect(() => {
@@ -176,14 +174,14 @@ const ProductList = () => {
   }, []);
 
   const getProductData = () => {
-    axios.get('/api/supplier/product/' + decode.id).then((products) => {
+    axios.get("/api/supplier/product/" + decode.id).then((products) => {
       setProductItems(products.data);
-      console.log(products.data)
+      console.log(products.data);
     });
   };
 
   const updateProduct = (item) => {
-    console.log('updateProduct', item._id);
+    console.log("updateProduct", item._id);
     setName(item.name);
     setPrice(item.price);
     setQuantity(item.quantity);
@@ -200,10 +198,10 @@ const ProductList = () => {
   };
 
   const deleteProduct = (item) => {
-    console.log('delete' + item._id);
-    axios.delete('/api/product/' + item._id).then((data) => {
+    console.log("delete" + item._id);
+    axios.delete("/api/product/" + item._id).then((data) => {
       if (data) {
-        NotificationManager.success('Product Deleted');
+        NotificationManager.success("Product Deleted");
         getProductData();
       }
     });
@@ -223,41 +221,41 @@ const ProductList = () => {
     };
     console.log(object);
     axios
-      .patch('/api/product/update', object)
+      .patch("/api/product/update", object)
       .then((data) => {
         if (data) {
-          NotificationManager.success('Product Updated Successfully');
-          setName('');
-          setPrice('');
-          setQuantity('');
-          setWarranty('');
-          setDescription('');
-          setCategory('');
-          setCode('');
+          NotificationManager.success("Product Updated Successfully");
+          setName("");
+          setPrice("");
+          setQuantity("");
+          setWarranty("");
+          setDescription("");
+          setCategory("");
+          setCode("");
           setOpen(false);
           getProductData();
         }
       })
       .catch((err) => {
-        NotificationManager.error('Something unexpected happened');
-        console.log('update product error is:', err.message);
+        NotificationManager.error("Something unexpected happened");
+        console.log("update product error is:", err.message);
       });
   };
 
   return (
     <div>
       <br />
-      <div id='hideStatus' className='status text-center'>
+      <div id="hideStatus" className="status text-center">
         {status}
       </div>
 
-      <div className='content'>
+      <div className="content">
         <Grid fluid>
           <Row>
             <Col md={12}>
               <Card
-                title='Product List'
-                category={'Total Products :' + productItems.length}
+                title="Product List"
+                category={"Total Products :" + productItems.length}
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -276,34 +274,37 @@ const ProductList = () => {
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
-                            <td style={{ width: '15%' }}>
+                            <td style={{ width: "15%" }}>
                               {!!item.productImage[0].imgBufferData ? (
                                 <img
-                                  className='product-logo'
+                                  className="product-logo"
                                   src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                                 />
                               ) : (
-                                'Image not Available'
+                                "Image not Available"
                               )}
                             </td>
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{'$ ' + Number(item.price).toFixed(2)}</td>
-                            <td >
-                              <div style={{ maxWidth: '100px',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis'
-                            }}>
-                              {item.description
-                                ? item.description.replace(/<[^>]*>/g, '')
-                                : null}
-                                </div>
+                            <td>{"$ " + Number(item.price).toFixed(2)}</td>
+                            <td>
+                              <div
+                                style={{
+                                  maxWidth: "100px",
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                }}
+                              >
+                                {item.description
+                                  ? item.description.replace(/<[^>]*>/g, "")
+                                  : null}
+                              </div>
                             </td>
                             <td>
                               <button
-                                className='btn btn-primary btn-sm'
+                                className="btn btn-primary btn-sm"
                                 onClick={() => updateProduct(item)}
                               >
                                 Edit
@@ -311,16 +312,18 @@ const ProductList = () => {
                             </td>
                             <td>
                               <button
-                                className='btn btn-danger btn-sm'
+                                className="btn btn-danger btn-sm"
                                 onClick={() => deleteProduct(item)}
-                              >Delete
+                              >
+                                Delete
                               </button>
                             </td>
                           </tr>
                         );
                       })}
                     </tbody>
-                  </Table>}
+                  </Table>
+                }
               />
             </Col>
           </Row>
@@ -328,13 +331,13 @@ const ProductList = () => {
       </div>
       <Modal open={true} onClose={() => setOpen(false)}>
         <br />
-        <h3 style={{ color: 'red' }} className='text-center'>
+        <h3 style={{ color: "red" }} className="text-center">
           Edit Product Details:
         </h3>
         <br />
 
         <form style={modalStyle} onSubmit={updateProductItem}>
-          <div className='card card-update'>
+          <div className="card card-update">
             {/* <div className='form-group'>
               <label for='product_id'>ID/SKU</label>
               <input
@@ -401,108 +404,88 @@ const ProductList = () => {
               />
             </div> 
             */}
-            <div className='form-group'>
-              <label for='product_description'>Description</label>
+            <div className="form-group">
+              <label for="product_description">Description</label>
               <ReactQuill
                 required
-                theme={'snow'}
+                theme={"snow"}
                 onChange={(value) => setDescription(value)}
                 // style={{ minHeight: '18rem' }}
                 value={description}
                 modules={Editor.modules}
                 formats={Editor.formats}
-                placeholder={'Write description'}
+                placeholder={"Write description"}
               />
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div className='form-group'>
-            
-
-              <div  style={{display:'flex',justifyContent:'space-between'}}>
-<p style={{flex:1}} >Varient</p>
-<p style={{flex:1}} >Price</p>
-<p style={{flex:1}} >Quantity</p>
-<p style={{flex:1}} >SKU</p>
-              </div >
-        {[
-          {varient:'red/32/short',price:10,quantity:10,sku:'andjnsdjnsjd'}
-        ,{varient:'green/39/big',price:1,quantity:100,sku:'andjnsdjnsjd'}
-        ,{varient:'yellow/22/large',price:1990,quantity:1110,sku:'andjnsdjnsjd'}
-        ].map((e)=>  <div style={{display:'flex',alignItems:'center'}}>
-              <label 
-              style={{flex:1}}
-              for='product_warranty'>{e.varient}</label>
-              <input
-              style={{flex:1}}
-                type='text'
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-                className='form-control'
-                id='product_warranty'
-                placeholder='Price in dollers'
-                required
-                />
-              <input
-              style={{flex:1}}
-                type='text'
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-                className='form-control'
-                id='product_warranty'
-                placeholder='Enter Quantity'
-                required
-                />
-              <input
-              style={{flex:1}}
-                type='text'
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-                className='form-control'
-                id='product_warranty'
-                placeholder='Enter SKU'
-                required
-                />
-
-                </div>)}
+            <div className="form-group">
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <p style={{ flex: 1 }}>Varient</p>
+                <p style={{ flex: 1 }}>Price</p>
+                <p style={{ flex: 1 }}>Quantity</p>
+                <p style={{ flex: 1 }}>SKU</p>
+              </div>
+              {[
+                {
+                  varient: "red/32/short",
+                  price: 10,
+                  quantity: 10,
+                  sku: "andjnsdjnsjd",
+                },
+                {
+                  varient: "green/39/big",
+                  price: 1,
+                  quantity: 100,
+                  sku: "andjnsdjnsjd",
+                },
+                {
+                  varient: "yellow/22/large",
+                  price: 1990,
+                  quantity: 1110,
+                  sku: "andjnsdjnsjd",
+                },
+              ].map((e) => (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <label style={{ flex: 1 }} for="product_warranty">
+                    {e.varient}
+                  </label>
+                  <input
+                    style={{ flex: 1 }}
+                    type="text"
+                    value={warranty}
+                    onChange={(e) => setWarranty(e.target.value)}
+                    className="form-control"
+                    id="product_warranty"
+                    placeholder="Price in dollers"
+                    required
+                  />
+                  <input
+                    style={{ flex: 1 }}
+                    type="text"
+                    value={warranty}
+                    onChange={(e) => setWarranty(e.target.value)}
+                    className="form-control"
+                    id="product_warranty"
+                    placeholder="Enter Quantity"
+                    required
+                  />
+                  <input
+                    style={{ flex: 1 }}
+                    type="text"
+                    value={warranty}
+                    onChange={(e) => setWarranty(e.target.value)}
+                    className="form-control"
+                    id="product_warranty"
+                    placeholder="Enter SKU"
+                    required
+                  />
+                </div>
+              ))}
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           </div>
-         
 
-          <div className='card-button'>
-            <CustomButton round fill type='submit'>
+          <div className="card-button">
+            <CustomButton round fill type="submit">
               Update Product
             </CustomButton>
           </div>

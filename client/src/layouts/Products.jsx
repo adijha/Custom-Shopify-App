@@ -32,7 +32,7 @@ const Products = () => {
     axios.get("/api/product").then((data) => {
       console.log("get api of product list", data);
       setProductList(data.data);
-      console.log(data.data); 
+      console.log(data.data);
     });
   };
 
@@ -51,12 +51,8 @@ const Products = () => {
   };
 
   const filterItems = productList.filter((plist) => {
-
     return plist.name.toLowerCase().includes(search.toLowerCase());
-
-
   });
-
 
   const handlClick = (e) => {
     e.preventDefault();
@@ -149,9 +145,6 @@ const Products = () => {
       });
   };
 
- 
-  
-
   return (
     <div
       className=""
@@ -214,7 +207,6 @@ const Products = () => {
                   flexWrap: "wrap",
                   alignSelf: "center",
                 }}
-               
               >
                 {[
                   {
@@ -274,8 +266,8 @@ const Products = () => {
                         }}
                         onClick={(e) => {
                           console.log(item.category);
-                          handleCategory(e.target.childNodes[0])
-                          console.log(e.target.childNodes[0])
+                          handleCategory(e.target.childNodes[0]);
+                          console.log(e.target.childNodes[0]);
                         }}
                       >
                         <i className={item.icon} style={{ fontSize: 40 }} />
@@ -299,7 +291,12 @@ const Products = () => {
       </div>
       <div
         className="container-fluid"
-        style={{ backgroundColor: "#fff", padding: "6px", paddingTop: "2rem",margin:20 }}
+        style={{
+          backgroundColor: "#fff",
+          padding: "6px",
+          paddingTop: "2rem",
+          margin: 20,
+        }}
       >
         <div
           className="text-center"
@@ -310,37 +307,57 @@ const Products = () => {
         </div>
         {filterItems.map((list) => {
           return (
-            <div className="col-sm-3 card" onClick={() => {
-             
-              getProductId(list);
-            
-            }}
-            style={{padding:10
-              ,border:'1px solid #F0F0F0',cursor:'pointer',textAlign:'center'}}
+            <div
+              className="col-sm-3 card"
+              onClick={() => {
+                getProductId(list);
+              }}
+              style={{
+                padding: 10,
+                border: "1px solid #F0F0F0",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
             >
               <div>
-                {list.productImage[0]?
-                <img
-                  src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
-                  alt="Product Image"
-                  className="scale-product-img img-responsive"
-                  style={{width:'100%',alignSelf:'center',height:'250px',objectFit:'cover'}}
-                />:
-                <p style={{height:'250px'}}
-                > No Image Available</p>}
-                <div style={{display:'flex',justifyContent:'space-between',marginTop:20,paddingLeft:'3%',paddingRight:'3%'}}>
-                <p 
-                
-                style={{ maxWidth: '100px',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            fontSize:'1.5rem'
-                            }}
+                {list.productImage[0] ? (
+                  <img
+                    src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
+                    alt="Product Image"
+                    className="scale-product-img img-responsive"
+                    style={{
+                      width: "100%",
+                      alignSelf: "center",
+                      height: "250px",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  <p style={{ height: "250px" }}> No Image Available</p>
+                )}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: 20,
+                    paddingLeft: "3%",
+                    paddingRight: "3%",
+                  }}
                 >
-                  {list.name}
-                </p>
-                <b style={{fontSize:'1.5rem'}}>$ {list.price.toFixed(1)}</b>
+                  <p
+                    style={{
+                      maxWidth: "100px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontSize: "1.5rem",
+                    }}
+                  >
+                    {list.name}
+                  </p>
+                  <b style={{ fontSize: "1.5rem" }}>
+                    $ {list.price.toFixed(1)}
+                  </b>
                 </div>
               </div>
             </div>
