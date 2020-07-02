@@ -323,13 +323,21 @@ const Products = () => {
                 <img
                   src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
                   alt="Product Image"
-                  className="scale-product-img"
-                  style={{width:'92%',alignSelf:'center'}}
+                  className="scale-product-img img-responsive"
+                  style={{width:'100%',alignSelf:'center',height:'250px',objectFit:'cover'}}
                 />:
-                <p
+                <p style={{height:'250px'}}
                 > No Image Available</p>}
                 <div style={{display:'flex',justifyContent:'space-between',marginTop:20,paddingLeft:'3%',paddingRight:'3%'}}>
-                <p style={{fontSize:'1.5rem'}}>
+                <p 
+                
+                style={{ maxWidth: '100px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize:'1.5rem'
+                            }}
+                >
                   {list.name}
                 </p>
                 <b style={{fontSize:'1.5rem'}}>$ {list.price.toFixed(1)}</b>

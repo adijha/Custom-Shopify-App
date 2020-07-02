@@ -173,7 +173,7 @@ const deleteProduct = (data)=>{
 
                           <td>{item.id}</td>
                           <td>{item.title}</td>
-                          <td style={{width:'20%'}}>{item.body_html}</td>
+                          <td style={{width:'20%'}}>{item.body_html? item.body_html.replace( /(<([^>]+)>)/ig, ''):item.body_html}</td>
                           <td>{item.product_type}</td>
                           <td><button className="btn btn-primary btn-sm" onClick={()=>updateProductOpen(item)}>Edit</button></td>
                           <td><button className="btn btn-danger btn-sm" onClick={()=>deleteProduct(item)}>Delete</button></td>
