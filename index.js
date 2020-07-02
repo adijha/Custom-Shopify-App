@@ -17,7 +17,7 @@ const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
   'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
-const forwardingAddress = 'https://www.melisxpress.com';
+const forwardingAddress = 'https://www.Melisxpress.com';
 let hmacc, tokenn;
 // let shop;
 let topic = 'orders/create';
@@ -161,7 +161,7 @@ app.get('/shopify/callback', (req, res) => {
         req.session.hmac = hmac;
         req.session.token = accessTokenResponse.access_token;
         req.session.code = code;
-        res.redirect('https://www.melisxpress.com/login-merchant')
+        res.redirect('https://www.Melisxpress.com/login-merchant')
         //console.log("makeWebook in callback", {shop, token, hmac});
 
         // tokenn = accessTokenResponse.access_token;
@@ -172,7 +172,7 @@ app.get('/shopify/callback', (req, res) => {
         //   "X-Shopify-Access-Token": tokenn,
         // };
         // request
-        //   .get("https://www.melisxpress.com/webhook")
+        //   .get("https://www.Melisxpress.com/webhook")
         //   .then((shopResponse) => {
         //     res.send(shopResponse);
         //   })
@@ -466,7 +466,7 @@ const makeWebook = (token, shop, hmac, code) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+      address: `https://www.Melisxpress.com/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -566,7 +566,7 @@ app.get('/webhook', (req, res) => {
   const webhookPayload = {
     webhook: {
       topic: 'orders/create',
-      address: `https://www.melisxpress.com/store/${shop}/orders/create`,
+      address: `https://www.Melisxpress.com/store/${shop}/orders/create`,
       format: 'json',
     },
   };
@@ -1793,7 +1793,7 @@ console.log(req.body);
 
   // await request
   //   .post(
-  //     'https://www.melisxpress.com/orders/' +
+  //     'https://www.Melisxpress.com/orders/' +
   //       req.params.store +
   //       '/' +
   //       req.params.id,
