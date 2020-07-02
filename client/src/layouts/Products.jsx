@@ -40,6 +40,7 @@ const Products = () => {
     axios.get("/api/product").then((data) => {
       console.log("get api of product list", data);
       setProductList(data.data);
+      console.log(data.data); 
     });
   };
 
