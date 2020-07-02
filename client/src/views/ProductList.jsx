@@ -11,7 +11,113 @@ import '../assets/css/productList.css';
 import CustomButton from '../components/CustomButton/CustomButton.jsx';
 
 const ProductList = () => {
-  const [productItems, setProductItems] = useState([]);
+  const [productItems, setProductItems] = useState([{
+    category: "Beauty",
+    code: "122121",
+    description: "<p>Aloknath</p>",
+    name: "brush kumar",
+    options: [
+      
+    ],
+    name: "title",
+    values: [
+      [
+        "add",
+        "sub"
+      ],
+      {
+        name: "style",
+        values: Array(1)
+      },
+      {
+        name: "material",
+        values: Array(0)
+      }
+    ],
+    price: 988,
+    productImage: [
+      {
+        _id: "5ef2b55a361800272dcddd39",
+        imgName: "image/jpeg",
+        imgBufferData: "/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQ…AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q=="
+      }
+    ],
+    quantity: 4,
+    selliingPrice: 1086.8,
+    shippingCharge: {
+      method: "freeShipping",
+      usa: "2.5",
+      canada: "2.5",
+      unitedKingdom: "2.5",
+      australia: "2.5"
+    },
+    size: "33",
+    supplier_id: "5e2daa9ac562680ab159b23f",
+    uploaded_on: "2020-06-24T02:07:22.000Z",
+    varients: [
+      {
+        option1: "add ",
+        option2: " mul"
+      },
+      {
+        option1: "add ",
+        option2: " mul"
+      },
+      {
+        option1: "add ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "add ",
+        option2: " mul"
+      },
+      {
+        option1: "add ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      },
+      {
+        option1: "sub ",
+        option2: " mul"
+      }
+    ],
+    _id: "5ef2b55a361800"
+  }]);
   const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
   const [name, setName] = useState('');
@@ -66,7 +172,7 @@ const ProductList = () => {
   ];
 
   useEffect(() => {
-    getProductData();
+    // getProductData();
   }, []);
 
   const getProductData = () => {
@@ -185,17 +291,10 @@ const ProductList = () => {
                             <td>{item.category}</td>
                             <td>{'$ ' + Number(item.price).toFixed(2)}</td>
                             <td >
-                              <div style={{ maxWidth: '100px' 
-                            
-                            ,
+                              <div style={{ maxWidth: '100px',
                             whiteSpace: 'nowrap',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis'
-                            
-                            
-                            
-                            
-                            
                             }}>
                               {item.description
                                 ? item.description.replace(/<[^>]*>/g, '')
@@ -214,22 +313,20 @@ const ProductList = () => {
                               <button
                                 className='btn btn-danger btn-sm'
                                 onClick={() => deleteProduct(item)}
-                              >
-                                Delete
+                              >Delete
                               </button>
                             </td>
                           </tr>
                         );
                       })}
                     </tbody>
-                  </Table>
-                }
+                  </Table>}
               />
             </Col>
           </Row>
         </Grid>
       </div>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal open={true} onClose={() => setOpen(false)}>
         <br />
         <h3 style={{ color: 'red' }} className='text-center'>
           Edit Product Details:
@@ -238,7 +335,7 @@ const ProductList = () => {
 
         <form style={modalStyle} onSubmit={updateProductItem}>
           <div className='card card-update'>
-            <div className='form-group'>
+            {/* <div className='form-group'>
               <label for='product_id'>ID/SKU</label>
               <input
                 type='text'
@@ -249,7 +346,7 @@ const ProductList = () => {
                 placeholder='Enter Unique Id of Product'
                 required
               />
-            </div>
+            </div> 
             <div className='form-group'>
               <label for='product_name'>Title</label>
               <input
@@ -273,9 +370,10 @@ const ProductList = () => {
                 placeholder='Enter category of Product'
                 required
               />
-            </div>
-          </div>
-          <div className='card card-update'>
+            </div> 
+            
+            
+          
             <div className='form-group'>
               <label for='product_price'>Price in Dollars</label>
               <input
@@ -301,35 +399,108 @@ const ProductList = () => {
                 placeholder='Enter available quantity of product'
                 required
               />
-            </div>
-            <div className='form-group'>
-              <label for='product_warranty'>Warranty</label>
-              <input
-                type='text'
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-                className='form-control'
-                id='product_warranty'
-                placeholder='Enter available warranty of product'
-                required
-              />
-            </div>
-          </div>
-          <div className='card card-update'>
+            </div> 
+            */}
             <div className='form-group'>
               <label for='product_description'>Description</label>
               <ReactQuill
                 required
                 theme={'snow'}
                 onChange={(value) => setDescription(value)}
-                style={{ minHeight: '18em' }}
+                // style={{ minHeight: '18rem' }}
                 value={description}
                 modules={Editor.modules}
                 formats={Editor.formats}
                 placeholder={'Write description'}
               />
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div className='form-group'>
+            
+
+              <div  style={{display:'flex',justifyContent:'space-between'}}>
+<p style={{flex:1}} >Varient</p>
+<p style={{flex:1}} >Price</p>
+<p style={{flex:1}} >Quantity</p>
+<p style={{flex:1}} >SKU</p>
+              </div >
+        {[
+          {varient:'red/32/short',price:10,quantity:10,sku:'andjnsdjnsjd'}
+        ,{varient:'green/39/big',price:1,quantity:100,sku:'andjnsdjnsjd'}
+        ,{varient:'yellow/22/large',price:1990,quantity:1110,sku:'andjnsdjnsjd'}
+        ].map((e)=>  <div style={{display:'flex',alignItems:'center'}}>
+              <label 
+              style={{flex:1}}
+              for='product_warranty'>{e.varient}</label>
+              <input
+              style={{flex:1}}
+                type='text'
+                value={warranty}
+                onChange={(e) => setWarranty(e.target.value)}
+                className='form-control'
+                id='product_warranty'
+                placeholder='Price in dollers'
+                required
+                />
+              <input
+              style={{flex:1}}
+                type='text'
+                value={warranty}
+                onChange={(e) => setWarranty(e.target.value)}
+                className='form-control'
+                id='product_warranty'
+                placeholder='Enter Quantity'
+                required
+                />
+              <input
+              style={{flex:1}}
+                type='text'
+                value={warranty}
+                onChange={(e) => setWarranty(e.target.value)}
+                className='form-control'
+                id='product_warranty'
+                placeholder='Enter SKU'
+                required
+                />
+
+                </div>)}
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           </div>
+         
+
           <div className='card-button'>
             <CustomButton round fill type='submit'>
               Update Product
