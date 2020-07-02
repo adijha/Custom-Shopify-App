@@ -344,7 +344,7 @@ app.delete('/shopifyProduct/:storeName/:id', async (req, res) => {
 
 //get Orders list
 
-app.get('/orders/:storeName', async (req, res) => {
+app.get('/orders/:store', async (req, res) => {
   console.log('storeName', req.params.storeName);
   let storeData = await Store.find({ name: req.params.storeName });
   if (storeData.length > 0) {
@@ -373,32 +373,43 @@ app.get('/orders/:storeName', async (req, res) => {
 });
 
 //fulfill single orders
-app.post('/orders/:VendorString/:id', (req, res) => {
+app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
+
+  let storeFullName = req.params.store+'.myshopify.com'
+  console.log("storeFullName", storeFullName);
+
+  let storeData = await Store.find({ name: storeFullName });
   console.log(req.params.id);
   console.log(req.body);
-  const shopRequestUrl =
-    'https://' +
-    req.params.VendorString +
-    '.myshopify.com/admin/api/2020-01/orders/' +
-    req.params.id +
-    '/fulfillments.json';
-  const shopRequestHeaders = {
-    'X-Shopify-Access-Token': tokenn,
-    'Content-Type': 'application/json',
-    'X-Shopify-Hmac-Sha256': hmacc,
-    'X-Shopify-Shop-Domain': req.params.VendorString + '.myshopify.com',
-    'X-Shopify-API-Version': '2020-01',
-  };
 
-  request
-    .post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+    if (storeData.length > 0) {
+
+      const shopRequestUrl =
+        'https://' +
+        storeFullName +
+        '/admin/api/2020-01/orders/' +
+        req.params.id +
+        '/fulfillments.json';
+
+      const shopRequestHeaders = {
+        'X-Shopify-Access-Token': storeData[0].token,
+        'Content-Type': 'application/json',
+        'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+        'X-Shopify-Shop-Domain': storeData[0].name,
+        'X-Shopify-API-Version': '2020-01',
+      };
+
+  request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
     .then((data) => {
-      res.send(data);
-      console.log(data);
+      console.log("successfully track ", data);
+      res.send('success')
     })
     .catch((error) => {
-      console.log('ordre fulfil order is', error);
+      console.log("error is update tracking", error);
     });
+  } else {
+    console.log('no data found in fulfil order api');
+  }
 });
 
 //get fulfilled Orders
@@ -1088,7 +1099,7 @@ app.get('/supplierOrders/:id', async (req, res) => {
       if (sss.sku !== undefined) {
         itemArray.push({
           sku: sss.sku,
-          count: sss.quantity,
+          count: 1,
         });
       }
     });
@@ -1652,7 +1663,7 @@ app.post('/store/:shop/:topic/:subtopic', async function (request, response) {
       varient: request.body.varient,
       quantity: request.body.line_items.quantity,
       paid: request.body.total_price,
-      fulfillmentStatus: request.body.fulfillment_status,
+      fulfillmentStatus: "Unfulfilled",
     },
   });
 
@@ -1774,27 +1785,28 @@ app.post('/settingsUpdateMerchant', (req, res) => {
 });
 
 //supplier orders fulfill and add tracking no.
-app.post('/suppOrderFulfill/:store/:id', (req, res) => {
-  console.log('supplier order fulfill', req.params.id);
-  const jsonData = req.body;
+app.patch('/suppOrderFulfill/:id', async (req, res) => {
+console.log("req.params", req.params);
+console.log(req.body);
   const orderID = req.params.id;
   const trackno = req.body.fulfillment.tracking_number;
 
-  request
-    .post(
-      'https://www.melisxpress.com/orders/' +
-        req.params.store +
-        '/' +
-        req.params.id,
-      { json: jsonData }
-    )
-    .then((data) => {
-      Orders.findOneAndUpdate(
+  // await request
+  //   .post(
+  //     'https://www.melisxpress.com/orders/' +
+  //       req.params.store +
+  //       '/' +
+  //       req.params.id,
+  //     { json: jsonData }
+  //   )
+  //   .then((data) => {
+      await Orders.findOneAndUpdate(
         {
           product_name: orderID,
         },
         {
           tracking_number: trackno,
+          fulfillmentStatus: "Fulfilled"
         },
         {
           new: true,
@@ -1802,16 +1814,17 @@ app.post('/suppOrderFulfill/:store/:id', (req, res) => {
         },
         (err, result) => {
           if (!err) {
+            console.log("result is", result);
             res.json('success');
           } else {
             console.log('error ', err);
           }
         }
       );
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+    //})
+    // .catch((error) => {
+    //   console.log(error.message);
+    // });
 });
 
 if (process.env.NODE_ENV === 'production') {

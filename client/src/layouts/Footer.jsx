@@ -52,7 +52,7 @@ const Footer=()=> {
 
             <a href="#">Terms & Conditions</a>
             <a href="#">Privacy policy</a>
-            <a href="#">Become a supplier</a>
+            <a href="/supplier-form" target="_blank">Become a supplier</a>
 
 
           </div>

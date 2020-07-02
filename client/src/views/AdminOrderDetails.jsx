@@ -22,7 +22,7 @@ const SupplierList = () => {
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
       setOrders(res.data);
-      // console.log(res.data);
+       console.log(res.data);
     });
   };
   const sortByDate = () => {
@@ -203,7 +203,7 @@ const SupplierList = () => {
                             <tr key={9898989}>
                               <td></td>
                               <td colSpan='3'>
-                                <td>Product Price : {item.product_price}</td>
+                                <td>Product Price : ${item.product_price}</td>
                               </td>
                               <td colSpan='3'>
                                 <td>

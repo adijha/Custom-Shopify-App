@@ -21,11 +21,14 @@ const OrderSchema = mongoose.Schema({
   paid: { type: Number },
   paymentStatus: { type: Boolean },
   paymentMode: {type:String},
-  fulfillmentStatus: { type: Boolean },
+  fulfillmentStatus: { type: String },
   tracking_number:{type:String, default:null},
   pStatus: {
     type: String,
     default: "unpaid"
+  },
+  updated_on:{
+    type:String
   }
 });
 

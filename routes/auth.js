@@ -144,7 +144,7 @@ router.post('/transactionDetail',async (req, res)=>{
 
 router.get('/getTransaction', async (req, res)=>{
   try {
-    let data = await Transaction.find()
+    let data = await Transaction.find().sort({date:-1})
     res.send(data)
   } catch (e) {
       console.log("get tranaction", e);
@@ -330,7 +330,7 @@ let finalData = []
 //merchant unfulfilled order from shopify
 router.get('/merchantShopifyOrdersUnfulfilled/:store', async (req, res)=>{
 console.log(req.params.store);
-  const orderData = await Orders.find();
+  const orderData = await Orders.find().sort({created_on: -1});
   let newOrderArray = []
   orderData.forEach((item, i) => {
     item.products.forEach((product, j) => {
@@ -346,7 +346,7 @@ console.log(req.params.store);
           item_price: product.price,
           quantity: product.quantity,
           store: product.store,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
         })
       }
     });
@@ -369,7 +369,7 @@ console.log(req.params.store);
 
 
         store: item.store,
-        pStatus: item.pStatus
+        pStatus: item.pStatus,
       })
     }
   });
@@ -392,7 +392,7 @@ tempArray.forEach((item, i) => {
         productName: product.name,
         shippingCharge: product.shippingCharge,
         store: item.store,
-        pStatus: item.pStatus
+        pStatus: item.pStatus,
       })
     }
   });
@@ -521,12 +521,14 @@ router.get('/supplierOrderMerchant', async (req, res)=>{
 //update merchant order status and sent to supplier
 router.patch('/supplierOrderFromMerchant/:orderId', async (req, res)=>{
 
+  console.log("req.body", req.body);
 
     try {
       const data = await Orders.findOneAndUpdate(
         { "product_name": req.params.orderId },
         { $set:{
             "pStatus": "Paid",
+            "updated_on": req.body.date
           }
         },{
           new: true,
@@ -553,7 +555,7 @@ router.patch('/supplierOrderFromMerchant/:orderId', async (req, res)=>{
 
 router.get('/customOrderDetails', async (req, res)=>{
 
-  const orderData = await Orders.find();
+  const orderData = await Orders.find().sort({created_on:-1});
 
 
   let firstArr = []
@@ -767,7 +769,7 @@ router.get('/customMerchantDetail', async (req, res) => {
 
   let resArray = [];
 
-  const data = await MerchantUser.find();
+  const data = await MerchantUser.find().sort({joiningDate:-1});
   // console.log(data);
   const orderData = await Orders.find();
   const productData = await Products.find()
@@ -1286,6 +1288,7 @@ router.post('/signUp', async (req, res) => {
     supplier_id: req.body.supplier_id,
     email: req.body.email,
     password: hashPassword,
+    created_on: new Date()
   });
 
   try {
@@ -1356,7 +1359,7 @@ router.get('/supplierFullDetails', async (req, res) => {
 
 const newFunction =async ()=>{
 
-  const supplierData = await User.find()
+  const supplierData = await User.find().sort({created_on:-1})
 
   let suppObj = {}
 
@@ -1386,6 +1389,7 @@ const newFunction =async ()=>{
 //get Supplier Revenue and order
 router.get('/supplier/newData', async (req, res)=>{
   const data = await newFunction()
+  console.log("new Data", data);
   res.send(data)
 })
 
@@ -1614,11 +1618,13 @@ router.post('/SupplierForm', (req, res) => {
 });
 
 //save supplier payment details
-router.post('/paymentDetails', async (req, res) => {
+router.post('/supplierPaymentUpdate', async (req, res) => {
   const paymentMode = new PaymentMode({
     supplier_id: req.body.supplier_id,
     info: req.body,
+    created_on: Date()
   });
+  console.log("paymentmode", paymentMode);
   try {
     const data = await paymentMode.save();
     // console.log('data is', data);
@@ -1633,8 +1639,8 @@ router.post('/paymentDetails', async (req, res) => {
 router.get('/paymentDetails/:id', async (req, res) => {
   console.log(req.params.id);
   try {
-    const data = await PaymentMode.find({ supplier_id: req.params.id });
-    res.send(data);
+    const data = await PaymentMode.find({ supplier_id: req.params.id }).sort({created_on:-1});
+    res.send(data[0]);
   } catch (error) {
     res.send(error);
   }
@@ -1869,7 +1875,18 @@ router.post('/addCategory', async (req, res) => {
 //get category
 router.get('/totalCategory', async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).sort({created_on:-1});
+    // console.log(categories);
+    res.json(categories);
+  } catch (error) {
+    console.log('error in get category', error);
+  }
+});
+
+//get category
+router.get('/totalCategoryMargin', async (req, res) => {
+  try {
+    const categories = await Category.find({}).sort({margin_updated:-1});
     // console.log(categories);
     res.json(categories);
   } catch (error) {
@@ -2017,7 +2034,7 @@ obj2.forEach((priceObj, j) => {
   });
 });
 
-const categoryData = await Category.find()
+const categoryData = await Category.find().sort({created_on:-1})
 
 let countArray = []
 
@@ -2454,7 +2471,7 @@ router.get('/csv/product', async (req, res) => {
 router.get('/ordersList/:id', async (req, res) => {
   // console.log("id is", req.params.id);
   let itemArray = [];
-  const data = await Orders.find({});
+  const data = await Orders.find().sort({updated_on:-1});
   // console.log({data})
   data.forEach((item, i) => {
     item.products.forEach((subItem, i) => {
@@ -2471,7 +2488,9 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: subItem.store,
           paymentMode: item.paymentMode,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number,
+
         });
       }
     });
@@ -2500,7 +2519,8 @@ router.get('/ordersList/:id', async (req, res) => {
           fulfillmentStatus: item.fulfillmentStatus,
           store: item.store,
           paymentMode: item.paymentMode,
-          pStatus: item.pStatus
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number
         };
         // console.log(dataObj);
         makeList.push(dataObj);
@@ -2521,6 +2541,82 @@ router.get('/ordersList/:id', async (req, res) => {
   // console.log(totalOrders);
   //   res.status(200).json(totalOrders)
 });
+
+
+//Supplier Order List from merchant
+
+router.get('/invoice/:supplierId/:orderId', async (req, res) => {
+  // console.log("id is", req.params.id);
+  let itemArray = [];
+  const data = await Orders.find({});
+  // console.log({data})
+  data.forEach((item, i) => {
+    item.products.forEach((subItem, i) => {
+      if (item.product_name === req.params.orderId.toString()) {
+        itemArray.push({
+          id: item.product_name,
+          productId: subItem.id,
+          sku: subItem.sku,
+          quantity: subItem.quantity,
+          customer: item.customer,
+          varient: item.varient,
+          paid: item.paid,
+          paymentStatus: item.paymentStatus,
+          fulfillmentStatus: item.fulfillmentStatus,
+          store: subItem.store,
+          paymentMode: item.paymentMode,
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number,
+          updated_on: item.updated_on
+        });
+      }
+    });
+  });
+
+  let makeList = [];
+
+  const productData = await Products.find({ supplier_id: req.params.supplierId });
+
+  // console.log({ productData });
+
+  itemArray.forEach((item, i) => {
+    productData.forEach((product, j) => {
+      if ((product.code == item.sku)) {
+        let dataObj = {
+          id: item.id,
+          productId: item.productId,
+          customer: item.customer,
+          sku: item.sku,
+          name: product.name,
+          price: product.price,
+          quantity: item.quantity,
+          varient: item.varient,
+          paid: item.paid,
+          paymentStatus: item.paymentStatus,
+          fulfillmentStatus: item.fulfillmentStatus,
+          store: item.store,
+          paymentMode: item.paymentMode,
+          pStatus: item.pStatus,
+          tracking_number: item.tracking_number,
+          productImage: product.productImage[0].imgBufferData,
+          updated_on: item.updated_on
+        };
+        // console.log(dataObj);
+        makeList.push(dataObj);
+      }
+    });
+  });
+
+
+
+   console.log(makeList , "invoice data ");
+  res.status(200).json(makeList);
+  // let totalOrders =   calOrder.reduce((a,b)=>a+b, 0)
+  // console.log(totalOrders);
+  //   res.status(200).json(totalOrders)
+});
+
+
 
 //requet product from merchant
 router.post('/requestProduct', async (req, res)=>{
@@ -2545,7 +2641,7 @@ router.post('/requestProduct', async (req, res)=>{
 //get Requested product list
 router.get('/getRequestProduct', async (req, res)=>{
   try {
-    let reqData = await RequestProduct.find();
+    let reqData = await RequestProduct.find().sort({date:-1});
     let merchantData = await MerchantUser.find();
     let newData = []
     reqData.forEach((data, i) => {

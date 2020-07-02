@@ -75,7 +75,7 @@ const orderSupplier = async (id) =>{
       if (sss.sku !== undefined) {
         itemArray.push({
           sku: sss.sku,
-          count: sss.quantity,
+          count: 1,
         });
       }
     });

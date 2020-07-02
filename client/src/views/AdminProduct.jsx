@@ -264,7 +264,7 @@ const AdminProduct = () => {
                               }}
                             >
                               {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
-                              <td>
+                              <td style={{width:"16%"}}>
                                 {item.productImage.length != 0 ? (
                                   <img
                                     className="product-logo"
@@ -306,7 +306,7 @@ const AdminProduct = () => {
                             {expand === item._id ? (
                               <tr key={9898989}>
                                 <td colSpan="4">
-                                  <th>Customer Details</th>
+                                  <th>Supplier Details</th>
                                   <tr>Id :- {sDetail.supplier_id}</tr>
 
                                   <tr>Name :- {sDetail.name || "NA"}</tr>
@@ -322,7 +322,7 @@ const AdminProduct = () => {
                                     Total no. of orders :- {sDetail.order || 0}
                                   </tr>
                                   <tr>
-                                    Total Revenue :- {sDetail.revenue || 0}
+                                    Total Revenue :- ${sDetail.revenue || 0}
                                   </tr>
                                 </td>
                               </tr>

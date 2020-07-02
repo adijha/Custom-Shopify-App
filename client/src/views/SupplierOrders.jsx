@@ -6,6 +6,8 @@ import { NotificationManager } from 'react-notifications';
 import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
+import Invoice from './Invoice.jsx';
+
 
 const SupplierOrders = () => {
   const token = localStorage.getItem('token');
@@ -13,6 +15,8 @@ const SupplierOrders = () => {
   const [expand, setExpand] = useState('');
   const [orderList, setOrderList] = useState([]);
   const [fulfill, setFulfill] = useState('');
+
+
 
   useEffect(() => {
     getOrderList();
@@ -25,13 +29,16 @@ const SupplierOrders = () => {
   };
 
   const updateFulfillment = async (data) => {
+    let oId  = data.id
     console.log("order id is in supplier", data)
     console.log(data.store);
+    console.log("token store", decode.store);
     let productIdArray=[];
     orderList.forEach((item, i) => {
+      console.log("item data", item);
       if (item.id == data.id) {
         productIdArray.push({
-          id:item.productId
+          id:item.productId,
         })
       }
     });
@@ -40,18 +47,38 @@ const SupplierOrders = () => {
       fulfillment: {
         location_id: 35210428495,
         tracking_number: fulfill,
-        notify_customer: true
+        notify_customer: true,
+        tracking_info: productIdArray
       }
     };
-    try {
-      let res = await axios.post('/suppOrderFulfill/' + data.store + "/" + data.id, fulfilObject);
-      if (res.data.includes('success')) {
-        NotificationManager.success('Fulfilled Successfully');
-      }
-    } catch (error) {
+    console.log("fulfiled obj", fulfilObject);
+
+
+     await axios.post('/updateOrdersTracking/' + data.store + "/" + data.id, fulfilObject)
+     .then(data=>{
+       console.log("data", data);
+       if (data.status===200) {
+         NotificationManager.success('Track No. Updated Successfully');
+         axios.patch('/suppOrderFulfill/'+oId, fulfilObject)
+         .then((updData)=>{
+           if (updData.data.includes('success')) {
+             getOrderList()
+             NotificationManager.success('Fulfilled Successfully');
+           }
+           else{
+             NotificationManager.error('Something wrong in Fulfilled');
+           }
+         })
+       }
+
+     })
+
+     .catch (error=> {
       NotificationManager.error('Something unusual happened');
-    }
+    })
   };
+
+
 
   return (
     <div className='content'>
@@ -73,6 +100,7 @@ const SupplierOrders = () => {
                       <th>Payment Status</th>
                       <th>Fulfillment Status</th>
                       <th>Total Amount</th>
+                      <th>Tracking No.</th>
                       <th>Invoice</th>
                     </tr>
                   </thead>
@@ -94,9 +122,11 @@ const SupplierOrders = () => {
                             <td>{item.sku || 'none'}</td>
                             <td>{item.customer.name || 'none'}</td>
                             <td>{item.pStatus || 'none'}</td>
-                            <td>{item.fullfillmentStaus || 'none'}</td>
-                            <td>${item.price || 'none'}</td>
-                            <td>{item.invoice || 'none'}</td>
+                            <td>{item.fulfillmentStatus==="Fulfilled"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
+
+                            <td>${item.price*item.quantity || 'none'}</td>
+                            <td>{item.tracking_number||"NA"}</td>
+                            <td><a href={`/invoice/`+decode.id+'/'+item.id}>View</a></td>
                           </tr>
 
                           {expand === item.id ? (
@@ -125,6 +155,7 @@ const SupplierOrders = () => {
                                 <tr>Quantity :- {item.quantity}</tr>
                                 <tr>Paid :- {item.paid}</tr>
                               </td>
+                              {item.fulfillmentStatus === "Fulfilled"?null:
                               <td colSpan='2'>
                                 <th>Fulfill Order</th>
                                 <tr
@@ -155,6 +186,7 @@ const SupplierOrders = () => {
                                 </tr>
                                 <tr></tr>
                               </td>
+                            }
                             </tr>
                           ) : null}
                         </>
