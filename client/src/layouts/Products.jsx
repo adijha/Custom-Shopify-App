@@ -54,7 +54,7 @@ const Products = () => {
 
     return plist.name.toLowerCase().includes(search.toLowerCase());
 
-    
+
   });
 
 
@@ -319,12 +319,15 @@ const Products = () => {
               ,border:'1px solid #F0F0F0',cursor:'pointer',textAlign:'center'}}
             >
               <div>
+                {list.productImage[0]?
                 <img
                   src={`data:image/jpeg;base64, ${list.productImage[0].imgBufferData}`}
                   alt="Product Image"
                   className="scale-product-img"
                   style={{width:'92%',alignSelf:'center'}}
-                />
+                />:
+                <p
+                > No Image Available</p>}
                 <div style={{display:'flex',justifyContent:'space-between',marginTop:20,paddingLeft:'3%',paddingRight:'3%'}}>
                 <p style={{fontSize:'1.5rem'}}>
                   {list.name}
