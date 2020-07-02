@@ -209,7 +209,7 @@ const changeView = (e)=>{
     }
     let dateObj = {date: moment().format("MMM Do YYYY")}
 
- return fetch('http://www.melisxpress.com/api/payment', {
+ return fetch('http://www.Melisxpress.com/api/payment', {
       method:"POST",
       headers,
       body: JSON.stringify(body)

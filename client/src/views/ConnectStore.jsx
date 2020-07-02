@@ -13,7 +13,7 @@ const urlOpen = ()=>{
     NotificationManager.error('Enter Shopify Store Name');
   }
   else{
-    const url = `https://melisxpress.com/shopify?shop=${query}`;
+    const url = `https://Melisxpress.com/shopify?shop=${query}`;
     const win = window.open(url, '_blank');
     win.focus()
   }

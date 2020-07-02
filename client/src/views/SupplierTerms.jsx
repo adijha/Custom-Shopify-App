@@ -104,7 +104,7 @@ const SupplierTerms = () =>{
           <br/>
           <h3>Non-Payment:</h3>
           <ul className="role-ul">
-          <li className="role-li"><span>Non-payment by the buyer will result in immediate removal from melisxpress.com & legal actions will be taken against the buyer.</span></li>
+          <li className="role-li"><span>Non-payment by the buyer will result in immediate removal from Melisxpress.com & legal actions will be taken against the buyer.</span></li>
           <li className="role-li"><span>The supplier is not responsible for any payment problem.</span></li>
           </ul>
           <br/>
