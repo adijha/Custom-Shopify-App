@@ -43,7 +43,112 @@ const AddProduct = () => {
   const [uk, setUk] = useState();
   const [australia, setAustralia] = useState();
   const [international, setInternational] = useState();
+let localVarients=[
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
 
+
+
+
+
+
+
+
+]
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -1010,23 +1115,31 @@ console.log({varients})
                               borderBottomLeftRadius: 0,
                             }}
                             onChange={(e) => {
-                              let itemm = {};
-                              let targets = item.split("/");
-                              if (targets[0]) {
-                                itemm.option1 = targets[0];
-                              }
-                              if (targets[1]) {
-                                itemm.option2 = targets[1];
-                              }
-                              if (targets[2]) {
-                                itemm.option3 = targets[2];
-                              }
-                              itemm.price=e.target.value
-                              console.log(itemm)
-                              let newArray =[...varients, itemm]
 
-                              setVarients(newArray);
-                              setPrices([...prices, e.target.value]);
+
+                              // if (index===0) {
+                              // let itemm = varients[index]?varients[index]:{};
+                              let targets = item.split("/");
+                              localVarients[index]={}
+                              if (localVarients) {
+                                
+                                if (targets[0]) {
+                                  localVarients[index].option1 = targets[0];
+                                }
+                                if (targets[1]) {
+                                  localVarients[index].option2 = targets[1];
+                                }
+                                if (targets[2]) {
+                                  localVarients[index].option3 = targets[2];
+                                }
+                                if (
+                                  localVarients[index]
+                                ) {
+                                  
+                                  localVarients[index].price=e.target.value
+                                }
+                              }
+                              console.log({localVarients})
                             }}
                             className="form-control"
                             id="product_price"
@@ -1035,23 +1148,29 @@ console.log({varients})
                         <input
                           type="text"
                           onChange={(e) => {
-                            let itemm = {};
                             let targets = item.split("/");
-                            if (targets[0]) {
-                              itemm.option1 = targets[0];
+                            localVarients[index]={}
+                            if (localVarients) {
+                              
+                              if (targets[0]) {
+                                localVarients[index].option1 = targets[0];
+                              }
+                              if (targets[1]) {
+                                localVarients[index].option2 = targets[1];
+                              }
+                              if (targets[2]) {
+                                localVarients[index].option3 = targets[2];
+                              }
+                              if (
+                                localVarients[index]
+                              ) {
+                                
+                                localVarients[index].quantity=e.target.value
+                              }
                             }
-                            if (targets[1]) {
-                              itemm.option2 = targets[1];
-                            }
-                            if (targets[2]) {
-                              itemm.option3 = targets[2];
-                            }
-                            itemm.quantity=e.target.value
-                            let newArray =[...varients, itemm]
-
-
-                            setVarients(newArray);
                             setQuantities([...quantities, e.target.value]);
+                            console.log({localVarients})
+
                           }}
                           className="form-control"
                           id="product_size"
@@ -1061,23 +1180,27 @@ console.log({varients})
                           type="text"
                           onChange={(e) => {
                             let targets = item.split("/");
-                            let itemm = {};
-                            if (targets[0]) {
-                              itemm.option1 = targets[0];
+                            localVarients[index]={}
+                            if (localVarients) {
+                              
+                              if (targets[0]) {
+                                localVarients[index].option1 = targets[0];
+                              }
+                              if (targets[1]) {
+                                localVarients[index].option2 = targets[1];
+                              }
+                              if (targets[2]) {
+                                localVarients[index].option3 = targets[2];
+                              }
+                              if (
+                                localVarients[index]
+                              ) {
+                                
+                                localVarients[index].sku=e.target.value
+                              }
                             }
-                            if (targets[1]) {
-                              itemm.option2 = targets[1];
-                            }
-                            if (targets[2]) {
-                              itemm.option3 = targets[2];
-                            }
-                            itemm.sku=e.target.value
-                            let newArray =[...varients, itemm]
-
-
-                            setVarients(newArray);
                             setSkus([...skus, e.target.value]);
-                            console.log(varients)
+                            console.log({localVarients})
                           }}
                           className="form-control"
                           id="product_size"
