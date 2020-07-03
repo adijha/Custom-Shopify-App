@@ -28,8 +28,11 @@ const AddProduct = () => {
   const [option1, setOption1] = useState("color");
   const [option2, setOption2] = useState("size");
   const [option3, setOption3] = useState("material");
-  const token = localStorage.getItem("token");
-  const decode = jwt_decode(token);
+  //const token = localStorage.getItem("token");
+  //const decode = jwt_decode(token);
+  let decode = {
+    id:"1"
+  }
   const [moreOption, setMoreOption] = useState(false);
   const [moreOption1, setMoreOption1] = useState(false);
   const [combo, setCombo] = useState([]);
@@ -43,9 +46,119 @@ const AddProduct = () => {
   const [uk, setUk] = useState();
   const [australia, setAustralia] = useState();
   const [international, setInternational] = useState();
-  const [tempPrice, setTempPrice] = useState("");
-  const [tempQuant, setTempQuant] = useState("")
-  const [tempSku, setTempSku] =useState("")
+
+
+  let [tempPrice, setTempPrice] = useState("")
+  let [tempQuan, setTempQuant] = useState("")
+  let [tempSku, setTempSku] = useState("")
+
+
+let localVarients=[
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+  {
+option1:'',
+option2:'',
+option3:'',
+price:'',
+quantity:'',
+sku:'',
+},
+
+
+
+
+
+
+
+
+]
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -977,6 +1090,8 @@ console.log({varients})
                   </div>
                   {combo.map((item, index) => (
                     <div key={index}>
+                    <div><input type="checkbox" class="form-check-input" id={`exampleCheck1${index}`} onChange={()=>console.log({item, tempPrice, tempSku, tempQuan})}/></div>
+
                       <div
                         style={{
                           display: "flex",
@@ -1012,29 +1127,32 @@ console.log({varients})
                             }}
                             value={item.price}
                             onChange={(e) => {
-                              let itemm = {};
+
+
+                              // if (index===0) {
+                              // let itemm = varients[index]?varients[index]:{};
                               let targets = item.split("/");
-                              if (targets[0]) {
-                                itemm.option1 = targets[0];
-                              }
-                              if (targets[1]) {
-                                itemm.option2 = targets[1];
-                              }
-                              if (targets[2]) {
-                                itemm.option3 = targets[2];
-                              }
-                              //itemm.price=e.target.value
-                              // let newArray =[...varients, itemm]
-                              // let priceArrayNew = []
-                              // let priceObjNew = e.target.value
-                                setTempPrice(e.target.value)
+                              localVarients[index]={}
+                              if (localVarients) {
 
+                                if (targets[0]) {
+                                  localVarients[index].option1 = targets[0];
+                                }
+                                if (targets[1]) {
+                                  localVarients[index].option2 = targets[1];
+                                }
+                                if (targets[2]) {
+                                  localVarients[index].option3 = targets[2];
+                                }
+                                if (
+                                  localVarients[index]
+                                ) {
 
-                                itemm.price = tempPrice
-                              setVarients([...varients, itemm]);
-                                //priceArrayNew.push(priceObjNew)
-                              //setPrices(priceArrayNew);
-                              setPrices([...prices, itemm])
+                                  localVarients[index].price=e.target.value
+                                }
+                              }
+                              console.log({localVarients})
+                              setTempPrice(e.target.value)
                             }}
                             className="form-control"
                             id="product_price"
@@ -1043,25 +1161,30 @@ console.log({varients})
                         <input
                           type="text"
                           onChange={(e) => {
-                            let itemm = {};
                             let targets = item.split("/");
-                            if (targets[0]) {
-                              itemm.option1 = targets[0];
-                            }
-                            if (targets[1]) {
-                              itemm.option2 = targets[1];
-                            }
-                            if (targets[2]) {
-                              itemm.option3 = targets[2];
-                            }
-                            //itemm.quantity=e.target.value
-                              setTempQuant(e.target.value)
-                            itemm.quantity = tempQuant
-                            let newArray =[...varients, itemm]
+                            localVarients[index]={}
+                            if (localVarients) {
 
-                            setQuantities([...quantities, itemm])
-                            setVarients([...varients, itemm]);
-                            //setQuantities([...quantities, e.target.value]);
+                              if (targets[0]) {
+                                localVarients[index].option1 = targets[0];
+                              }
+                              if (targets[1]) {
+                                localVarients[index].option2 = targets[1];
+                              }
+                              if (targets[2]) {
+                                localVarients[index].option3 = targets[2];
+                              }
+                              if (
+                                localVarients[index]
+                              ) {
+
+                                localVarients[index].quantity=e.target.value
+                              }
+                            }
+                            setQuantities([...quantities, e.target.value]);
+                            console.log({localVarients})
+                            setTempQuant(e.target.value)
+
                           }}
                           className="form-control"
                           id="product_size"
@@ -1071,27 +1194,30 @@ console.log({varients})
                           type="text"
                           onChange={(e) => {
                             let targets = item.split("/");
-                            let itemm = {};
-                            if (targets[0]) {
-                              itemm.option1 = targets[0];
-                            }
-                            if (targets[1]) {
-                              itemm.option2 = targets[1];
-                            }
-                            if (targets[2]) {
-                              itemm.option3 = targets[2];
-                            }
-                            //itemm.sku=e.target.value
-                            setTempSku(e.target.value)
-                            itemm.sku = tempSku
-                            let newArray =[...varients, itemm]
+                            localVarients[index]={}
+                            if (localVarients) {
 
-                            console.log("checking", {itemm});
-                            setVarients([...varients, itemm]);
-                            setSkus([...skus, itemm]);
-                            //console.log(varients)
-                            console.log([...varients, ]);
+                              if (targets[0]) {
+                                localVarients[index].option1 = targets[0];
+                              }
+                              if (targets[1]) {
+                                localVarients[index].option2 = targets[1];
+                              }
+                              if (targets[2]) {
+                                localVarients[index].option3 = targets[2];
+                              }
+                              if (
+                                localVarients[index]
+                              ) {
+
+                                localVarients[index].sku=e.target.value
+                              }
+                            }
+                            setSkus([...skus, e.target.value]);
+                            console.log({localVarients})
+                            setTempSku(e.target.value)
                           }}
+
                           className="form-control"
                           id="product_size"
                           style={{ flex: 1 }}
