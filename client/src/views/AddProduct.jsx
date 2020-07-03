@@ -43,7 +43,9 @@ const AddProduct = () => {
   const [uk, setUk] = useState();
   const [australia, setAustralia] = useState();
   const [international, setInternational] = useState();
-
+  const [tempPrice, setTempPrice] = useState("");
+  const [tempQuant, setTempQuant] = useState("")
+  const [tempSku, setTempSku] =useState("")
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -127,6 +129,9 @@ console.log({varients})
     console.log({options})
     console.log({prices})
     console.log({quantities})
+    console.log("option", options);
+    console.log("data", data);
+    console.log("varients", varients);
     // axios
     //   .post("/api/addProduct", data)
     //   .then((res) => {
@@ -370,13 +375,11 @@ console.log({varients})
               className="form-control"
               id="product_name"
               placeholder="Enter Title of Product"
-              required
             />
           </div>
           <div className="form-group">
             <label for="product_description">Detail Description</label>
             <ReactQuill
-              required
               theme={"snow"}
               onChange={(value) => setDescription(value)}
               style={{ minHeight: "18em" }}
@@ -390,7 +393,7 @@ console.log({varients})
             <label for="productImage">Image upload</label>
             <input
               type="file"
-              required
+
               name="productImage"
               className="form-control"
               onChange={(e) => setProductImage(e.target.files)}
@@ -428,7 +431,7 @@ console.log({varients})
               className="form-control"
               id="product_id"
               placeholder="Enter Unique Id of Product"
-              required
+
             />
           </div>
         </div>
@@ -456,7 +459,6 @@ console.log({varients})
                 id="product_price"
                 style={{ border: "none", width: "48vw" }}
                 placeholder="Enter Price"
-                required
               />
             </div>
           </div>
@@ -471,7 +473,6 @@ console.log({varients})
               className="form-control"
               id="product_quantity"
               placeholder="Enter Available Quanity of Product"
-              required
             />
           </div>
           <div className="form-group">
@@ -1009,6 +1010,7 @@ console.log({varients})
                               borderTopLeftRadius: 0,
                               borderBottomLeftRadius: 0,
                             }}
+                            value={item.price}
                             onChange={(e) => {
                               let itemm = {};
                               let targets = item.split("/");
@@ -1021,12 +1023,18 @@ console.log({varients})
                               if (targets[2]) {
                                 itemm.option3 = targets[2];
                               }
-                              itemm.price=e.target.value
-                              console.log(itemm)
-                              let newArray =[...varients, itemm]
+                              //itemm.price=e.target.value
+                              // let newArray =[...varients, itemm]
+                              // let priceArrayNew = []
+                              // let priceObjNew = e.target.value
+                                setTempPrice(e.target.value)
 
-                              setVarients(newArray);
-                              setPrices([...prices, e.target.value]);
+
+                                itemm.price = tempPrice
+                              setVarients([...varients, itemm]);
+                                //priceArrayNew.push(priceObjNew)
+                              //setPrices(priceArrayNew);
+                              setPrices([...prices, itemm])
                             }}
                             className="form-control"
                             id="product_price"
@@ -1046,12 +1054,14 @@ console.log({varients})
                             if (targets[2]) {
                               itemm.option3 = targets[2];
                             }
-                            itemm.quantity=e.target.value
+                            //itemm.quantity=e.target.value
+                              setTempQuant(e.target.value)
+                            itemm.quantity = tempQuant
                             let newArray =[...varients, itemm]
 
-
-                            setVarients(newArray);
-                            setQuantities([...quantities, e.target.value]);
+                            setQuantities([...quantities, itemm])
+                            setVarients([...varients, itemm]);
+                            //setQuantities([...quantities, e.target.value]);
                           }}
                           className="form-control"
                           id="product_size"
@@ -1071,13 +1081,16 @@ console.log({varients})
                             if (targets[2]) {
                               itemm.option3 = targets[2];
                             }
-                            itemm.sku=e.target.value
+                            //itemm.sku=e.target.value
+                            setTempSku(e.target.value)
+                            itemm.sku = tempSku
                             let newArray =[...varients, itemm]
 
-
-                            setVarients(newArray);
-                            setSkus([...skus, e.target.value]);
-                            console.log(varients)
+                            console.log("checking", {itemm});
+                            setVarients([...varients, itemm]);
+                            setSkus([...skus, itemm]);
+                            //console.log(varients)
+                            console.log([...varients, ]);
                           }}
                           className="form-control"
                           id="product_size"
