@@ -65,6 +65,9 @@ const ProductSchema = mongoose.Schema({
   },
   shippingCharge:{
     type:Object
+  },
+  varientArray:{
+    type:Array
   }
 });
 

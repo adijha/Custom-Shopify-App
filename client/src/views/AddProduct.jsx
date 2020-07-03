@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "axios";
@@ -28,11 +28,9 @@ const AddProduct = () => {
   const [option1, setOption1] = useState("color");
   const [option2, setOption2] = useState("size");
   const [option3, setOption3] = useState("material");
-  //const token = localStorage.getItem("token");
-  //const decode = jwt_decode(token);
-  let decode = {
-    id:"1"
-  }
+  const token = localStorage.getItem("token");
+  const decode = jwt_decode(token);
+
   const [moreOption, setMoreOption] = useState(false);
   const [moreOption1, setMoreOption1] = useState(false);
   const [combo, setCombo] = useState([]);
@@ -48,120 +46,15 @@ const AddProduct = () => {
   const [international, setInternational] = useState();
 
 
-  let [tempPrice, setTempPrice] = useState("")
-  let [tempQuan, setTempQuant] = useState("")
-  let [tempSku, setTempSku] = useState("")
+  const [length, setLength] = useState()
+  const [varientArray, setVarientArray] = useState([])
 
 
-let localVarients=[
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-  {
-option1:'',
-option2:'',
-option3:'',
-price:'',
-quantity:'',
-sku:'',
-},
-
-
-
-
-
-
-
-
-]
   useEffect(() => {
     getCategoryList();
   }, []);
+
+
   let Editor = {};
   Editor.modules = {
     toolbar: [
@@ -196,10 +89,37 @@ sku:'',
     "image",
     "video",
   ];
+
+
+//combo Handler
+
+const comboHandler = (e)=>{
+
+  e.preventDefault();
+  let tempVarientArray = []
+  console.log("length is", length);
+  for (var i = 0; i < length; i++) {
+    tempVarientArray.push({
+        varient: document.getElementById(`varientName${i}`).value,
+        price: document.getElementById(`varientPrice${i}`).value,
+        quantity: document.getElementById(`varientQuantity${i}`).value,
+        sku: document.getElementById(`varientSku${i}`).value
+    })
+  // console.log({
+  //   varient: document.getElementById(`varientName${i}`).value,
+  //   price: document.getElementById(`varientPrice${i}`).value,
+  //   quantity: document.getElementById(`varientQuantity${i}`).value,
+  //   sku: document.getElementById(`varientSku${i}`).value
+  // });
+}
+setVarientArray(tempVarientArray)
+}
+
+
+
   //Add Product
   const addProduct = (e) => {
     e.preventDefault();
-console.log({varients})
     if (shippingDetails === "freeShipping") {
       setUsa(2.5);
       setCanada(2.5);
@@ -239,39 +159,35 @@ console.log({varients})
     data.append("uk", uk);
     data.append("australia", australia);
     data.append("international", international);
-    console.log({options})
-    console.log({prices})
-    console.log({quantities})
-    console.log("option", options);
-    console.log("data", data);
-    console.log("varients", varients);
-    // axios
-    //   .post("/api/addProduct", data)
-    //   .then((res) => {
-    //     if (res.data.includes("Success")) {
-    //       NotificationManager.success("Product Added Successfully");
-    //       setStatus("Product Added Successfully");
-    //       setName("");
-    //       setPrice("");
-    //       setQuantity("");
-    //       setWarranty("");
-    //       setDescription("");
-    //       setCategory("");
-    //       setCode("");
-    //       setProductImage([]);
-    //       setVarients([]);
-    //     } else {
-    //       res.data.error
-    //         ? NotificationManager.error(res.data.error.toString())
-    //         : NotificationManager.error("There is a problem with your entries");
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     err
-    //       ? NotificationManager.error(err.toString())
-    //       : NotificationManager.error("There is a problem with your entries");
-    //     setVarients([]);
-    //   });
+    data.append("varientArray", varientArray);
+    //console.log("varientArray", varientArray);
+    axios
+      .post("/api/addProduct", data)
+      .then((res) => {
+      //  if (res.data.includes("Success")) {
+        //   NotificationManager.success("Product Added Successfully");
+        //   setStatus("Product Added Successfully");
+        //   setName("");
+        //   setPrice("");
+        //   setQuantity("");
+        //   setWarranty("");
+        //   setDescription("");
+        //   setCategory("");
+        //   setCode("");
+        //   setProductImage([]);
+        //   setVarients([]);
+        // } else {
+        //   res.data.error
+        //     ? NotificationManager.error(res.data.error.toString())
+        //     : NotificationManager.error("There is a problem with your entries");
+        // }
+      })
+      .catch((err) => {
+        err
+          ? NotificationManager.error(err.toString())
+          : NotificationManager.error("There is a problem with your entries");
+        //setVarients([]);
+      });
   };
 
   //Add Product from CSV File
@@ -326,6 +242,7 @@ console.log({varients})
       r[i] = str;
       res = r;
     }
+    setLength(res.length)
     return res;
   }
 
@@ -1053,7 +970,7 @@ console.log({varients})
                 </div>
               ) : null}
               {!combo ? null : (
-                <div>
+                <div >
                   <h4>Preview</h4>
                   <div style={{ display: "flex", flexDirection: "row" }}>
                     <h5
@@ -1088,9 +1005,9 @@ console.log({varients})
                       SKU
                     </h5>
                   </div>
+                  <form onSubmit={comboHandler}>
                   {combo.map((item, index) => (
                     <div key={index}>
-                    <div><input type="checkbox" class="form-check-input" id={`exampleCheck1${index}`} onChange={()=>console.log({item, tempPrice, tempSku, tempQuan})}/></div>
 
                       <div
                         style={{
@@ -1099,7 +1016,19 @@ console.log({varients})
                           flexDirection: "row",
                         }}
                       >
-                        <h5 style={{ flex: 1, marginRight: 13 }}> {item} </h5>
+                        <input
+                        id={`varientName${index}`}
+                          type="text"
+                          style={{
+                            flex: 1,
+                            borderTopLeftRadius: 0,
+                            borderBottomLeftRadius: 0,
+                          }}
+                          value={item}
+                          disabled
+
+                          className="form-control"
+                        />
                         <div style={{ display: "flex", flex: 1 }}>
                           <h5
                             style={{
@@ -1119,6 +1048,7 @@ console.log({varients})
                             $
                           </h5>
                           <input
+                          id={`varientPrice${index}`}
                             type="text"
                             style={{
                               flex: 1,
@@ -1126,105 +1056,29 @@ console.log({varients})
                               borderBottomLeftRadius: 0,
                             }}
                             value={item.price}
-                            onChange={(e) => {
 
-
-                              // if (index===0) {
-                              // let itemm = varients[index]?varients[index]:{};
-                              let targets = item.split("/");
-                              localVarients[index]={}
-                              if (localVarients) {
-
-                                if (targets[0]) {
-                                  localVarients[index].option1 = targets[0];
-                                }
-                                if (targets[1]) {
-                                  localVarients[index].option2 = targets[1];
-                                }
-                                if (targets[2]) {
-                                  localVarients[index].option3 = targets[2];
-                                }
-                                if (
-                                  localVarients[index]
-                                ) {
-
-                                  localVarients[index].price=e.target.value
-                                }
-                              }
-                              console.log({localVarients})
-                              setTempPrice(e.target.value)
-                            }}
                             className="form-control"
-                            id="product_price"
                           />
                         </div>
                         <input
                           type="text"
-                          onChange={(e) => {
-                            let targets = item.split("/");
-                            localVarients[index]={}
-                            if (localVarients) {
-
-                              if (targets[0]) {
-                                localVarients[index].option1 = targets[0];
-                              }
-                              if (targets[1]) {
-                                localVarients[index].option2 = targets[1];
-                              }
-                              if (targets[2]) {
-                                localVarients[index].option3 = targets[2];
-                              }
-                              if (
-                                localVarients[index]
-                              ) {
-
-                                localVarients[index].quantity=e.target.value
-                              }
-                            }
-                            setQuantities([...quantities, e.target.value]);
-                            console.log({localVarients})
-                            setTempQuant(e.target.value)
-
-                          }}
+                          value={item.quantity}
                           className="form-control"
-                          id="product_size"
+                          id={`varientQuantity${index}`}
                           style={{ flex: 1 }}
                         />
                         <input
                           type="text"
-                          onChange={(e) => {
-                            let targets = item.split("/");
-                            localVarients[index]={}
-                            if (localVarients) {
-
-                              if (targets[0]) {
-                                localVarients[index].option1 = targets[0];
-                              }
-                              if (targets[1]) {
-                                localVarients[index].option2 = targets[1];
-                              }
-                              if (targets[2]) {
-                                localVarients[index].option3 = targets[2];
-                              }
-                              if (
-                                localVarients[index]
-                              ) {
-
-                                localVarients[index].sku=e.target.value
-                              }
-                            }
-                            setSkus([...skus, e.target.value]);
-                            console.log({localVarients})
-                            setTempSku(e.target.value)
-                          }}
-
+                          value={item.sku}
                           className="form-control"
-                          id="product_size"
+                          id={`varientSku${index}`}
                           style={{ flex: 1 }}
                         />
                       </div>
                     </div>
                   ))}
+                  <button className="btn btn-primary">Add Variant</button>
+                  </form>
                 </div>
               )}
             </>
