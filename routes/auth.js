@@ -2299,18 +2299,20 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     options: JSON.parse(req.body.options),
     varients: JSON.parse(req.body.varients),
     shippingCharge: shippingObj,
-    varientArray: JSON.parse(req.body.varientArray)
+    varientArray: JSON.stringify(req.body.varientArray),
+    selliingPrice: req.body.price
     //  color: req.body.color,
     //  tag:req.body.tag
   });
    console.log(product, "backend is");
-  // try {
-  //   const newProduct = await product.save();
-  //   res.status(200).send('Success');
-  // } catch (error) {
-  //   res.status(500).send(`Failed because of${error}`);
-  //   console.log(error);
-  // }
+  try {
+    const newProduct = await product.save();
+    res.status(200).send('Success');
+    console.log(newProduct, "added product");
+  } catch (error) {
+    res.status(500).send(`Failed because of${error}`);
+    console.log(error);
+  }
 });
 
 // product list by Specific Supplier

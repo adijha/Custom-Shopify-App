@@ -39,11 +39,11 @@ const AddProduct = () => {
   const [quantities, setQuantities] = useState([]);
   const [skus, setSkus] = useState([]);
   const [shippingDetails, setShippingDetails] = useState("");
-  const [usa, setUsa] = useState();
-  const [canada, setCanada] = useState();
-  const [uk, setUk] = useState();
-  const [australia, setAustralia] = useState();
-  const [international, setInternational] = useState();
+  const [usa, setUsa] = useState(2.5);
+  const [canada, setCanada] = useState(2.5);
+  const [uk, setUk] = useState(2.5);
+  const [australia, setAustralia] = useState(2.5);
+  const [international, setInternational] = useState(2.5);
 
 
   const [length, setLength] = useState()
@@ -94,8 +94,7 @@ const AddProduct = () => {
 //combo Handler
 
 const comboHandler = (e)=>{
-
-  e.preventDefault();
+e.preventDefault()
   let tempVarientArray = []
   console.log("length is", length);
   for (var i = 0; i < length; i++) {
@@ -113,27 +112,35 @@ const comboHandler = (e)=>{
   // });
 }
 setVarientArray(tempVarientArray)
+addProduct()
 }
 
 
 
   //Add Product
-  const addProduct = (e) => {
-    e.preventDefault();
-    if (shippingDetails === "freeShipping") {
-      setUsa(2.5);
-      setCanada(2.5);
-      setUk(2.5);
-      setAustralia(2.5);
-      setInternational(2.5);
-    }
+  const addProduct = async () => {
+    //e.preventDefault();
+  //  await comboHandler()
+
+    console.log("varientArray", varientArray);
+
+    // if (shippingDetails === "freeShipping") {
+    //   setUsa(2.5);
+    //   setCanada(2.5);
+    //   setUk(2.5);
+    //   setAustralia(2.5);
+    //   setInternational(2.5);
+    // }
 
     let options = [
       { name: option1, values: tag0 },
       { name: option2, values: tag1 },
       { name: option3, values: tag2 },
     ];
-    const data = new FormData();
+
+
+
+    const data = await new FormData();
     data.append("productImage", productImage[0]);
     data.append("productImage", productImage[1]);
     data.append("productImage", productImage[2]);
@@ -160,27 +167,25 @@ setVarientArray(tempVarientArray)
     data.append("australia", australia);
     data.append("international", international);
     data.append("varientArray", varientArray);
-    //console.log("varientArray", varientArray);
     axios
       .post("/api/addProduct", data)
       .then((res) => {
-      //  if (res.data.includes("Success")) {
-        //   NotificationManager.success("Product Added Successfully");
-        //   setStatus("Product Added Successfully");
-        //   setName("");
-        //   setPrice("");
-        //   setQuantity("");
-        //   setWarranty("");
-        //   setDescription("");
-        //   setCategory("");
-        //   setCode("");
-        //   setProductImage([]);
-        //   setVarients([]);
-        // } else {
-        //   res.data.error
-        //     ? NotificationManager.error(res.data.error.toString())
-        //     : NotificationManager.error("There is a problem with your entries");
-        // }
+       if (res.data.includes("Success")) {
+          NotificationManager.success("Product Added Successfully");
+          // setName("");
+          // setPrice("");
+          // setQuantity("");
+          // setWarranty("");
+          // setDescription("");
+          // setCategory("");
+          // setCode("");
+          // setProductImage([]);
+          // setVarients([]);
+        } else {
+          res.data.error
+            ? NotificationManager.error(res.data.error.toString())
+            : NotificationManager.error("There is a problem with your entries");
+        }
       })
       .catch((err) => {
         err
@@ -394,7 +399,7 @@ setVarientArray(tempVarientArray)
   return (
     <div className="container-fluid">
       <br />
-      <form onSubmit={addProduct}>
+      <form onSubmit={comboHandler}>
         <div className="card card-input">
           <div className="form-group">
             <label for="product_name">Title</label>
@@ -1005,7 +1010,6 @@ setVarientArray(tempVarientArray)
                       SKU
                     </h5>
                   </div>
-                  <form onSubmit={comboHandler}>
                   {combo.map((item, index) => (
                     <div key={index}>
 
@@ -1077,8 +1081,6 @@ setVarientArray(tempVarientArray)
                       </div>
                     </div>
                   ))}
-                  <button className="btn btn-primary">Add Variant</button>
-                  </form>
                 </div>
               )}
             </>
