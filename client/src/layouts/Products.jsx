@@ -439,7 +439,9 @@ const Products = () => {
                       <h5 className="varients">
                         Available Varients:
                         {product.varientArray.map((item, i)=>{
+                          return(
                           <p>{item.varient} - {item.sku}  {item.quantity}  ${item.price}</p>
+                        )
                         })}
                       </h5>
                       <button
