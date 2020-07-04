@@ -203,11 +203,26 @@ const SupplierList = () => {
                             <tr key={9898989}>
                               <td></td>
                               <td colSpan='3'>
-                                <td>Product Price : ${item.product_price}</td>
+                                <td>Product Price : $ 
+                                  
+                                  
+                                {(new Intl.NumberFormat('en-US').format(item.product_price ))}
+                                   
+                                   
+                                   
+                                   </td>
                               </td>
                               <td colSpan='3'>
                                 <td>
-                                  Shipping Price: {item.shipping_price || 'NA'}
+                                  Shipping Price: {
+                                  
+                                  (new Intl.NumberFormat('en-US').format(item.shipping_price ))
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  || 'NA'}
                                 </td>
                               </td>
                             </tr>

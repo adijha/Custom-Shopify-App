@@ -3,28 +3,27 @@ import axios from "axios";
 import { Grid, Row, Col, Table } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import jwt_decode from "jwt-decode";
-import { NotificationManager } from 'react-notifications';
-import Checkout from './Checkout.jsx'
-import StriprCheckout from 'react-stripe-checkout'
-import moment from 'moment'
-
+import { NotificationManager } from "react-notifications";
+import Checkout from "./Checkout.jsx";
+import StriprCheckout from "react-stripe-checkout";
+import moment from "moment";
 
 const Orders = () => {
-  const [tab, setTab] = useState(1)
+  const [tab, setTab] = useState(1);
   const [orderDetails, setOrderDetails] = useState([]);
   const [orderDetailsUn, setOrderDetailsUn] = useState([]);
   const [orderDetailsFu, setOrderDetailsFu] = useState([]);
   const [msg, setMsg] = useState("");
-  const [found, setFound] = useState("")
-  const [foundUn, setFoundUn] = useState("")
-  const [foundFu, setFoundFu] = useState("")
-  const [expand, setExpand] = useState('');
-// var stripe = Stripe('pk_test_pmfKOqLm5AdRbXBfsqNrWew8');
+  const [found, setFound] = useState("");
+  const [foundUn, setFoundUn] = useState("");
+  const [foundFu, setFoundFu] = useState("");
+  const [expand, setExpand] = useState("");
+  // var stripe = Stripe('pk_test_pmfKOqLm5AdRbXBfsqNrWew8');
   //const [product, setProduct] = useState({})
-  const [pPrice, setPPrice]=useState()
+  const [pPrice, setPPrice] = useState();
   const [pName, setPName] = useState("");
-  const [orderId, setOrderId] = useState("")
-  const [custDetail, setCustDetail] = useState({})
+  const [orderId, setOrderId] = useState("");
+  const [custDetail, setCustDetail] = useState({});
 
   useEffect(() => {
     getOrderDetails();
@@ -35,7 +34,7 @@ const Orders = () => {
   const tokenData = localStorage.getItem("token");
   let decode = jwt_decode(tokenData);
   let str = decode.email;
-  let storeName = `${decode.store}.myshopify.com`
+  let storeName = `${decode.store}.myshopify.com`;
   //let VendorString = str.substring(0, str.lastIndexOf("@"));
   //console.log(VendorString);
 
@@ -56,15 +55,29 @@ const Orders = () => {
 
   const getOrderDetails = async () => {
     console.log(decode.store);
-    console.log("moment date, ", moment.utc('2020-06-30T21:09:43.000Z').format("YYYY-MM-DD,  h:mm:ss a"));
+    console.log(
+      "moment date, ",
+      moment.utc("2020-06-30T21:09:43.000Z").format("YYYY-MM-DD,  h:mm:ss a")
+    );
 
-      await axios.get("/api/merchantShopifyOrdersUnfulfilled/" + decode.store.toLowerCase().toString()).then((data) => {
+    await axios
+      .get(
+        "/api/merchantShopifyOrdersUnfulfilled/" +
+          decode.store.toLowerCase().toString()
+      )
+      .then((data) => {
         console.log("data is orders unfulfilled", data.data);
-        const sortedArray  = data.data.allOrder.sort((a,b) =>  moment(a.date).format("YYYY-MM-DD,  h:mm:ss a") -  moment(b.date).format("YYYY-MM-DD,  h:mm:ss a"))
-        const sortedActivities = data.data.allOrder.sort((a, b) => b.date - a.date)
-        let sortData = data.data.allOrder.filter(allOrd=>{
-          return moment(allOrd.date).subtract(1)
-        })
+        const sortedArray = data.data.allOrder.sort(
+          (a, b) =>
+            moment(a.date).format("YYYY-MM-DD,  h:mm:ss a") -
+            moment(b.date).format("YYYY-MM-DD,  h:mm:ss a")
+        );
+        const sortedActivities = data.data.allOrder.sort(
+          (a, b) => b.date - a.date
+        );
+        let sortData = data.data.allOrder.filter((allOrd) => {
+          return moment(allOrd.date).subtract(1);
+        });
         console.log("sortData", sortData);
         console.log("sortedArray", sortedArray);
         console.log("sortedActivities", sortedActivities);
@@ -73,16 +86,13 @@ const Orders = () => {
         setOrderDetails(data.data.allOrder);
         setOrderDetailsFu(data.data.fulfilOrder);
 
-         if (data.data.unfulfilOrder.length==0) {
-           setFoundUn("No Order Found")
-         }
-         else if (data.data.fulfilOrder.length==0) {
-           setFoundFu("No Order Found")
-         }
-         else if (data.data.allOrder.length==0) {
-           setFound("No Order Found")
-         }
-
+        if (data.data.unfulfilOrder.length == 0) {
+          setFoundUn("No Order Found");
+        } else if (data.data.fulfilOrder.length == 0) {
+          setFoundFu("No Order Found");
+        } else if (data.data.allOrder.length == 0) {
+          setFound("No Order Found");
+        }
 
         // else{
         //   setFoundUn("No order found")
@@ -90,23 +100,17 @@ const Orders = () => {
       });
   };
 
-
-
-const changeView = (e)=>{
-  e.preventDefault()
-  console.log(e.target.value);
-  if(e.target.value==="all") {
-   setTab(1);
-  }
-  else if(e.target.value==="unfulfil") {
-    setTab(2);
-  }
-  else if (e.target.value==="fulfil") {
-      setTab(3)
-  }
-
-
-}
+  const changeView = (e) => {
+    e.preventDefault();
+    console.log(e.target.value);
+    if (e.target.value === "all") {
+      setTab(1);
+    } else if (e.target.value === "unfulfil") {
+      setTab(2);
+    } else if (e.target.value === "fulfil") {
+      setTab(3);
+    }
+  };
 
   // const filterItems = (orderDetails.filter(plist=>{
   //     return plist.pStatus ==='Paid';
@@ -114,24 +118,21 @@ const changeView = (e)=>{
 
   const handleClick = (data) => {
     let obj = {
-      orderId: orderId.toString()
-    }
+      orderId: orderId.toString(),
+    };
 
     console.log("obj is", obj);
-    axios.patch('/api/supplierOrderFromMerchant/'+ data.orderId.toString())
-    .then (res=>{
-      if (res) {
-        NotificationManager.success('Fulfilled Successfully');
-        getOrderDetails()
-        //console.log(filterItems.length, "length of filterItems")
-      }
-     else {
-      NotificationManager.error('Something wrong');
-      }
-
-    })
-
-
+    axios
+      .patch("/api/supplierOrderFromMerchant/" + data.orderId.toString())
+      .then((res) => {
+        if (res) {
+          NotificationManager.success("Fulfilled Successfully");
+          getOrderDetails();
+          //console.log(filterItems.length, "length of filterItems")
+        } else {
+          NotificationManager.error("Something wrong");
+        }
+      });
 
     //console.log("data is", data);
     // const line_items_Array = [];
@@ -171,28 +172,24 @@ const changeView = (e)=>{
     //console.log("order Array is ", orderArray);
   };
 
+  const handleClickTest = (data) => {
+    console.log("data is ", data);
+    setPName(data.productName);
+    setPPrice(parseInt(data.item_price));
+    setCustDetail(data.customer_detail);
+  };
 
-      const handleClickTest = (data) => {
-        console.log("data is ", data );
-         setPName(data.productName)
-         setPPrice(parseInt(data.item_price))
-         setCustDetail(data.customer_detail)
-
-  }
-
-
-  let handlePayment = async (token) =>{
-    let product={  name: pName,
+  let handlePayment = async (token) => {
+    let product = {
+      name: pName,
       price: Math.round(pPrice),
-      details: custDetail
+      details: custDetail,
     };
-
-
 
     const body = await {
       token,
-      product
-    }
+      product,
+    };
     console.log("body is", body);
     console.log();
     // return await axios.post('/api/payment', body)
@@ -205,36 +202,39 @@ const changeView = (e)=>{
     // })
 
     const headers = {
-      "Content-Type": "application/json"
-    }
-    let dateObj = {date: moment().format("MMM Do YYYY")}
+      "Content-Type": "application/json",
+    };
+    let dateObj = { date: moment().format("MMM Do YYYY") };
 
- return fetch('http://www.Melisxpress.com/api/payment', {
-      method:"POST",
+    return fetch("http://www.Melisxpress.com/api/payment", {
+      method: "POST",
       headers,
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     })
-    .then(response=>{
-      if (response.status===200) {
-        NotificationManager.success('Payment Done Successfully');
+      .then((response) => {
+        if (response.status === 200) {
+          NotificationManager.success("Payment Done Successfully");
 
-        axios.patch('/api/supplierOrderFromMerchant/'+ orderId.toString(), dateObj)
-        .then (res=>{
-          if (res) {
-            NotificationManager.success('Fulfilled Successfully');
-            getOrderDetails()
-            //console.log(filterItems.length, "length of filterItems")
-          }
-         else {
-          NotificationManager.error('Something wrong');
-          }
-        })
-      }
-    }).catch(err=>{
-      console.log("last err", err);
-    })
-
-  }
+          axios
+            .patch(
+              "/api/supplierOrderFromMerchant/" + orderId.toString(),
+              dateObj
+            )
+            .then((res) => {
+              if (res) {
+                NotificationManager.success("Fulfilled Successfully");
+                getOrderDetails();
+                //console.log(filterItems.length, "length of filterItems")
+              } else {
+                NotificationManager.error("Something wrong");
+              }
+            });
+        }
+      })
+      .catch((err) => {
+        console.log("last err", err);
+      });
+  };
 
   return (
     <div>
@@ -242,14 +242,14 @@ const changeView = (e)=>{
         <div className="text-center" style={{ color: "green" }}>
           {msg}
         </div>
-        <br/>
+        <br />
         <select onChange={(e) => changeView(e)}>
           <option value="all">All Orders</option>
           <option value="unfulfil">Unfulfilled</option>
           <option value="fulfil">Fulfilled</option>
         </select>
-        <br/>
-        <br/>
+        <br />
+        <br />
         <Grid fluid>
           <Row>
             <Col md={12}>
@@ -258,12 +258,10 @@ const changeView = (e)=>{
                 ctTableFullWidth
                 ctTableResponsive
                 content={
-
-
                   <Table striped hover>
                     <thead>
                       <tr>
-                      <th>S.No</th>
+                        <th>S.No</th>
                         <th>Order Id</th>
                         <th>Date</th>
                         <th>Customer</th>
@@ -275,96 +273,140 @@ const changeView = (e)=>{
                       </tr>
                     </thead>
 
-                    {tab===1?
-                    <tbody>
-                    <tr>{found}</tr>
-                      {orderDetails.map((item, key) => {
-                        return (
-                          <>
-                          <tr key={key}   onClick={() => {
-                              if (expand === item.orderId) {
-                                setExpand(null);
-                              } else {
-                                setExpand(item.orderId);
-                              }
-                            }}>
-                            <td>{key+1}</td>
-                            <td>{item.orderId}</td>
-                            <td>{item.date}</td>
-                            <td>{item.customer_detail.name}</td>
-                            <td>{item.paymentMode||'NA'}</td>
-                            <td>{item.pStatus}</td>
-                            <td>${item.total_amount}</td>
-                            <td>{item.shipping||'NA'}</td>
-                            <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
-
-                          </tr>
-
-                            {expand === item.orderId ? (
-                              <tr key={9898989}>
-                              <td colSpan='1'>
-                              <th>Product Detail</th>
-                              <tr>
-                              {item.productImage.length>0?(<img
-                                className='product-logo'
-                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`
-                              }/>):("NA")}
+                    {tab === 1 ? (
+                      <tbody>
+                        <tr>{found}</tr>
+                        {orderDetails.map((item, key) => {
+                          return (
+                            <>
+                              <tr
+                                key={key}
+                                onClick={() => {
+                                  if (expand === item.orderId) {
+                                    setExpand(null);
+                                  } else {
+                                    setExpand(item.orderId);
+                                  }
+                                }}
+                              >
+                                <td>{key + 1}</td>
+                                <td>{item.orderId}</td>
+                                <td>{item.date}</td>
+                                <td>{item.customer_detail.name}</td>
+                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.pStatus}</td>
+                                <td>
+                                  $
+                                  {new Intl.NumberFormat("en-US").format(
+                                    item.total_amount
+                                  )}
+                                </td>
+                                <td>{item.shipping || "NA"}</td>
+                                <td>
+                                  {item.pStatus === "Paid" ? (
+                                    <span
+                                      style={{
+                                        backgroundColor: "yellowgreen",
+                                        width: "100px",
+                                        height: "100px",
+                                        borderRadius: "10%",
+                                      }}
+                                    >
+                                      Fulfilled
+                                    </span>
+                                  ) : (
+                                    <span
+                                      style={{
+                                        backgroundColor: "#ffcccb",
+                                        width: "100px",
+                                        height: "100px",
+                                        borderRadius: "10%",
+                                      }}
+                                    >
+                                      Unfulfilled
+                                    </span>
+                                  )}
+                                </td>
                               </tr>
 
-                              </td>
+                              {expand === item.orderId ? (
+                                <tr key={9898989}>
+                                  <td colSpan="1">
+                                    <th>Product Detail</th>
+                                    <tr>
+                                      {item.productImage.length > 0 ? (
+                                        <img
+                                          className="product-logo"
+                                          src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                                        />
+                                      ) : (
+                                        "NA"
+                                      )}
+                                    </tr>
+                                  </td>
 
-                              <td colSpan='2'>
-                              <tr>{item.productName}</tr>
-                              </td>
+                                  <td colSpan="2">
+                                    <tr>{item.productName}</tr>
+                                  </td>
 
-                              <td colSpan='2'>
-                              <tr>{item.sku}</tr>
-                              </td>
+                                  <td colSpan="2">
+                                    <tr>{item.sku}</tr>
+                                  </td>
 
-                              <td colSpan='1'>
-                              <tr>${item.item_price}x{item.quantity}</tr>
-                              </td>
-                              </tr>
-                            ):(null)}
+                                  <td colSpan="1">
+                                    <tr>
+                                      ${item.item_price}x{item.quantity}
+                                    </tr>
+                                  </td>
+                                </tr>
+                              ) : null}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    ) : null}
 
-                          </>
-
-                        );
-                      })}
-                    </tbody>
-                    :null}
-
-                    {tab===2?
-                    <tbody>
-                    <tr>{foundUn}</tr>
-                      {orderDetailsUn.map((item, key) => {
-                        return (
-                          <>
-                          <tr key={key}   onClick={() => {
-                              if (expand === item.orderId) {
-                                setExpand(null);
-                              } else {
-                                setExpand(item.orderId);
-                                setPName(item.productName)
-                                setPPrice(item.item_price)
-                                setCustDetail(item.customer_detail)
-                                setOrderId(item.orderId)
-                              }
-                            }}>
-                            <td>{key+1}</td>
-                            <td>{item.orderId}</td>
-                            <td>{item.date}</td>
-                            <td>{item.customer_detail.name}</td>
-                            <td>{item.paymentMode||'NA'}</td>
-                            <td>{item.pStatus}</td>
-                            <td>${item.total_amount}</td>
-                            <td>{item.shipping||'NA'}</td>
-                            <td >
-                            <StriprCheckout stripeKey = "pk_test_pmfKOqLm5AdRbXBfsqNrWew8" token={handlePayment} name="Pay for Order"
-
-                            amount= {pPrice} > <button className="btn btn-primary">Pay</button>
-                            </StriprCheckout>
-                              {/*<button
+                    {tab === 2 ? (
+                      <tbody>
+                        <tr>{foundUn}</tr>
+                        {orderDetailsUn.map((item, key) => {
+                          return (
+                            <>
+                              <tr
+                                key={key}
+                                onClick={() => {
+                                  if (expand === item.orderId) {
+                                    setExpand(null);
+                                  } else {
+                                    setExpand(item.orderId);
+                                    setPName(item.productName);
+                                    setPPrice(item.item_price);
+                                    setCustDetail(item.customer_detail);
+                                    setOrderId(item.orderId);
+                                  }
+                                }}
+                              >
+                                <td>{key + 1}</td>
+                                <td>{item.orderId}</td>
+                                <td>{item.date}</td>
+                                <td>{item.customer_detail.name}</td>
+                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.pStatus}</td>
+                                <td>${item.total_amount}</td>
+                                <td>{item.shipping || "NA"}</td>
+                                <td>
+                                  <StriprCheckout
+                                    stripeKey="pk_test_pmfKOqLm5AdRbXBfsqNrWew8"
+                                    token={handlePayment}
+                                    name="Pay for Order"
+                                    amount={pPrice}
+                                  >
+                                    {" "}
+                                    <button className="btn btn-primary">
+                                      Pay
+                                    </button>
+                                  </StriprCheckout>
+                                  {/*<button
                                 classsName="btn btn-primary"
                                 style={{
                                   background: "White",
@@ -375,105 +417,109 @@ const changeView = (e)=>{
                               >
                                 Fulfill
                               </button>*/}
-
-                            </td>
-                          </tr>
-
-                            {expand === item.orderId ? (
-                              <tr key={9898989}>
-                              <td colSpan='1'>
-                              <th>Product Detail</th>
-                              <tr>
-                              {item.productImage.length>0?(<img
-                                className='product-logo'
-                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`
-                              }/>):("NA")}
+                                </td>
                               </tr>
 
-                              </td>
+                              {expand === item.orderId ? (
+                                <tr key={9898989}>
+                                  <td colSpan="1">
+                                    <th>Product Detail</th>
+                                    <tr>
+                                      {item.productImage.length > 0 ? (
+                                        <img
+                                          className="product-logo"
+                                          src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                                        />
+                                      ) : (
+                                        "NA"
+                                      )}
+                                    </tr>
+                                  </td>
 
-                              <td colSpan='2'>
-                              <tr>{item.productName}</tr>
-                              </td>
+                                  <td colSpan="2">
+                                    <tr>{item.productName}</tr>
+                                  </td>
 
-                              <td colSpan='2'>
-                              <tr>{item.sku}</tr>
-                              </td>
+                                  <td colSpan="2">
+                                    <tr>{item.sku}</tr>
+                                  </td>
 
-                              <td colSpan='1'>
-                              <tr>${item.item_price}x{item.quantity}</tr>
-                              </td>
+                                  <td colSpan="1">
+                                    <tr>
+                                      ${item.item_price}x{item.quantity}
+                                    </tr>
+                                  </td>
+                                </tr>
+                              ) : null}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    ) : null}
+
+                    {tab === 3 ? (
+                      <tbody>
+                        <tr>{foundFu}</tr>
+                        {orderDetailsFu.map((item, key) => {
+                          return (
+                            <>
+                              <tr
+                                key={key}
+                                onClick={() => {
+                                  if (expand === item.orderId) {
+                                    setExpand(null);
+                                  } else {
+                                    setExpand(item.orderId);
+                                  }
+                                }}
+                              >
+                                <td>{key + 1}</td>
+                                <td>{item.orderId}</td>
+                                <td>{item.date}</td>
+                                <td>{item.customer_detail.name}</td>
+                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.pStatus}</td>
+                                <td>${item.total_amount}</td>
+                                <td>{item.shipping || "NA"}</td>
+                                <td>Fulfilled</td>
                               </tr>
-                            ):(null)}
 
-                          </>
+                              {expand === item.orderId ? (
+                                <tr key={9898989}>
+                                  <td colSpan="1">
+                                    <th>Product Detail</th>
+                                    <tr>
+                                      {item.productImage.length > 0 ? (
+                                        <img
+                                          className="product-logo"
+                                          src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                                        />
+                                      ) : (
+                                        "NA"
+                                      )}
+                                    </tr>
+                                  </td>
 
-                        );
-                      })}
-                    </tbody>
-                    :null}
+                                  <td colSpan="2">
+                                    <tr>{item.productName}</tr>
+                                  </td>
 
-                    {tab===3?
-                    <tbody>
-                    <tr>{foundFu}</tr>
-                      {orderDetailsFu.map((item, key) => {
-                        return (
-                          <>
-                          <tr key={key}   onClick={() => {
-                              if (expand === item.orderId) {
-                                setExpand(null);
-                              } else {
-                                setExpand(item.orderId);
-                              }
-                            }}>
-                            <td>{key+1}</td>
-                            <td>{item.orderId}</td>
-                            <td>{item.date}</td>
-                            <td>{item.customer_detail.name}</td>
-                            <td>{item.paymentMode||'NA'}</td>
-                            <td>{item.pStatus}</td>
-                            <td>${item.total_amount}</td>
-                            <td>{item.shipping||'NA'}</td>
-                            <td>
+                                  <td colSpan="2">
+                                    <tr>{item.sku}</tr>
+                                  </td>
 
-                                Fulfilled
-                            </td>
-                          </tr>
-
-                            {expand === item.orderId ? (
-                              <tr key={9898989}>
-                              <td colSpan='1'>
-                              <th>Product Detail</th>
-                              <tr>
-                              {item.productImage.length>0?(<img
-                                className='product-logo'
-                                src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`
-                              }/>):("NA")}
-                              </tr>
-
-                              </td>
-
-                              <td colSpan='2'>
-                              <tr>{item.productName}</tr>
-                              </td>
-
-                              <td colSpan='2'>
-                              <tr>{item.sku}</tr>
-                              </td>
-
-                              <td colSpan='1'>
-                              <tr>${item.item_price}x{item.quantity}</tr>
-                              </td>
-                              </tr>
-                            ):(null)}
-
-                          </>
-
-                        );
-                      })}
-                    </tbody>
-                    :null}
-
+                                  <td colSpan="1">
+                                    <tr>
+                                      ${item.item_price}x{item.quantity}
+                                    </tr>
+                                  </td>
+                                </tr>
+                              ) : null}
+                            </>
+                          );
+                        })}
+                      </tbody>
+                    ) : null}
                   </Table>
                 }
               />
