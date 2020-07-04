@@ -57,7 +57,7 @@ const SupplierList = () => {
     }
 
     if (!item.amount) {
-      if (parseInt(amount)>parseInt(item.revenue)) {
+      if (parseInt(amount)>parseInt(item.revenue) || parseInt(amount)===0) {
         console.log("if if cond", parseInt(amount), parseInt(item.revenue));
 
          NotificationManager.error('Entered paid amount is higher than dues');
@@ -79,6 +79,10 @@ const SupplierList = () => {
         }
         })
       }
+    }
+    else if (parseInt(amount)===0) {
+      NotificationManager.error('Invalid Amount');
+
     }
     else if (parseInt(amount)+parseInt(item.amount)>parseInt(item.revenue)) {
       console.log("else if cond", parseInt(amount)+parseInt(item.amount), parseInt(item.revenue));
