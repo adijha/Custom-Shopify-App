@@ -2302,11 +2302,12 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     options: JSON.parse(req.body.options),
     varients: JSON.parse(req.body.varients),
     shippingCharge: shippingObj,
-    varientArray: req.body.varientArray,
+    varientArray: JSON.parse(req.body.varientArray),
     selliingPrice: req.body.price
     //  color: req.body.color,
     //  tag:req.body.tag
   });
+  console.log("produxt Add data", product);
   try {
     const newProduct = await product.save();
     res.send('Success');

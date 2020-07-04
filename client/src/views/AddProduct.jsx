@@ -110,10 +110,10 @@ const AddProduct = () => {
     console.log("length is", length);
     for (var i = 0; i < length; i++) {
       let obj = {
-          varient: document.getElementById(`varientName${i}`).value,
-          price: document.getElementById(`varientPrice${i}`).value,
-          quantity: document.getElementById(`varientQuantity${i}`).value,
-          sku: document.getElementById(`varientSku${i}`).value
+          "varient": document.getElementById(`varientName${i}`).value,
+          "price": document.getElementById(`varientPrice${i}`).value,
+          "quantity": document.getElementById(`varientQuantity${i}`).value,
+          "sku": document.getElementById(`varientSku${i}`).value
       }
     // console.log({
     //   varient: document.getElementById(`varientName${i}`).value,
@@ -121,7 +121,7 @@ const AddProduct = () => {
     //   quantity: document.getElementById(`varientQuantity${i}`).value,
     //   sku: document.getElementById(`varientSku${i}`).value
     // });
-    tempVarientArray.push(JSON.stringify(obj))
+    tempVarientArray.push(obj)
 
 }
     const data = await new FormData();
@@ -150,7 +150,8 @@ const AddProduct = () => {
     data.append("uk", uk);
     data.append("australia", australia);
     data.append("international", international);
-    data.append("varientArray", tempVarientArray);
+    data.append("varientArray", JSON.stringify(tempVarientArray));
+    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)));
     axios
       .post("/api/addProduct", data)
       .then((res) => {
