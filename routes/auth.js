@@ -1640,11 +1640,13 @@ router.get('/paymentDetails/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const data = await PaymentMode.find({ supplier_id: req.params.id }).sort({created_on:-1});
-    res.send(data[0]);
+    res.send(data);
+    console.log("data", data);
   } catch (error) {
     res.send(error);
   }
 });
+
 
 /*Product Part*/
 // product list

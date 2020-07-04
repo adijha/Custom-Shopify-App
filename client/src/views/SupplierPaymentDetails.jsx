@@ -99,8 +99,10 @@ const SupplierPaymentDetails = () => {
 const getDetails = () =>{
   axios.get('/api/paymentDetails/'+decode.id)
   .then(data=>{
-    console.log(data.data);
-    setSavedDetails(data.data.info);
+    data.data.sort(function(a,b){
+    return new Date(b.created_on) - new Date(a.created_on)
+  })
+    setSavedDetails(data.data[0].info);
   })
 }
 
