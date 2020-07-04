@@ -120,15 +120,27 @@ const Products = () => {
     //   });
     // });
 
+    let vArray = []
+    t.varientArray.forEach((item, i) => {
+      vArray.push({
+        "option1": item.varient,
+        "price": item.price,
+        "inventory_quantity": item.quantity,
+        "sku": item.sku
+      })
+    });
+
+
     let product = {
-      product: {
-        title: t.name,
-        body_html: t.description,
-        vendor: decode.store,
-        product_type: t.category,
-        images: t.productImage[0].imgBufferData,
+      "product": {
+        "title": t.name,
+        "body_html": t.description,
+        "vendor": decode.store,
+        "product_type": t.category,
+
+        "images": images,
         // tags: tagArray,
-        //variants: colorVariant,
+        "variants": vArray
       },
     };
     console.log("product added for shopify is", product);

@@ -62,7 +62,7 @@ const MerchantDashboard = () => {
 	}, []);
 
 	const getProductData = () => {
-		let checkStore = decode.store.toLowerCase().toString();
+		let checkStore = (decode.store).toLowerCase().toString();
     console.log("new value of store", checkStore);
 		axios.get('/api/leftOrdermerchantShopify/' + checkStore).then((res) => {
 			setFulfilOrder(res.data.length);
