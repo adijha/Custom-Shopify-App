@@ -2384,17 +2384,48 @@ router.patch('/autoMargin', async (req, res) => {
 
     const data = await Products.find({ category: req.body.category });
     data.forEach(async (item, i) => {
-      let calPrice = item.price + (item.price * req.body.margin) / 100;
-      let price = calPrice.toFixed(2);
-      let updatePrice = await Products.updateOne(
-        { _id: item._id },
-        { $set: { selliingPrice: price } },
-        {
-          new: true,
-          useFindAndModify: false,
-        }
-      );
-      console.log({ updatePrice });
+      let newArray = [];
+      if (item.price==='') {
+        item.varientArray.forEach((arr, i) => {
+          console.log("varientArray", arr);
+
+          let obj = {
+            varient: arr.varient,
+            price: arr.price,
+            sku: arr.sku,
+            quantity: arr.quantity,
+            selliingPrice: parseInt(arr.price) + ((parseInt(arr.price) * req.body.margin) / 100)
+          }
+
+          console.log({obj});
+          newArray.push(obj)
+
+        });
+        let updatePrice = await Products.updateOne(
+          { _id: item._id },
+          { $set: { varientArray: newArray } },
+          {
+            new: true,
+            useFindAndModify: false,
+          }
+        );
+        console.log({ updatePrice });
+      }
+      else {
+        let calPrice = item.price + (item.price * req.body.margin) / 100;
+        let price = calPrice.toFixed(2);
+        let updatePrice = await Products.updateOne(
+          { _id: item._id },
+          { $set: { selliingPrice: price } },
+          {
+            new: true,
+            useFindAndModify: false,
+          }
+        );
+        console.log({ updatePrice });
+      }
+
+      //console.log("newArray", newArray);
     });
     let categoryData = await Category.findOneAndUpdate(
       {category: req.body.category},

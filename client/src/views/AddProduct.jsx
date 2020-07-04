@@ -113,7 +113,8 @@ const AddProduct = () => {
           "varient": document.getElementById(`varientName${i}`).value,
           "price": document.getElementById(`varientPrice${i}`).value,
           "quantity": document.getElementById(`varientQuantity${i}`).value,
-          "sku": document.getElementById(`varientSku${i}`).value
+          "sku": document.getElementById(`varientSku${i}`).value,
+          "selliingPrice": document.getElementById(`varientPrice${i}`).value
       }
     // console.log({
     //   varient: document.getElementById(`varientName${i}`).value,

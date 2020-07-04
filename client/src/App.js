@@ -28,7 +28,7 @@ function App() {
           <Route exact path="/login-admin" component={ALogin} />
           <Route exact path="/login-supplier" component={SLogin} />
           <Route exact path="/login-merchant" component={MLogin} />
-          <Route exact path="/merchantSignup" component={MerchantSignup} />
+          <Route exact path="/merchant-signup" component={MerchantSignup} />
           <Route exact path="/connect-Store" component={ConnectStore} />
           <Route exact path="/supplier-form" component={SupplierForm} />
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
@@ -37,7 +37,6 @@ function App() {
           <Route path='/merchant' render={props => <MerchantLayout {...props} />} />
           <Route exact path='/invoice/:supplierId/:orderId' component={Invoice} />
           <Route exact path='/supplier-t&c' component={SupplierTerms} />
-          <Route exact path='/add' component={AddProduct} />
 
         </Switch>
       </div>
