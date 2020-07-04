@@ -58,14 +58,15 @@ const authRoute = require('./routes/auth');
 // const postroute = require('./routes/posts');
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit:"50mb"}));
 
 // app.use(fileUpload({
 //   useTempFiles : true,
 //    tempFileDir : '/tmp/'
 // }));
 //Middleware
-app.use(express.json());
+//app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
 //Route Middleware
 app.use('/api', authRoute);
@@ -195,14 +196,15 @@ app.post('/addToShopify/:storeName',async (req, res) => {
 
   let storeData = await Store.find({ name: req.params.storeName });
   // console.log(storeData, "found");
-  // console.log(req.body);
+   //console.log(req.body);
   let obj = {
     product:{
       title: req.body.product.title,
       body_html: req.body.product.body_html,
       vendor: req.body.product.vendor,
-      images:[ {"attachment":req.body.product.images}],
-      product_type: req.body.product.product_type
+      images:req.body.product.images,
+      product_type: req.body.product.product_type,
+      variants: req.body.product.variants
     }
 
   }
