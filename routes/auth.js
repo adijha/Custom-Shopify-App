@@ -2275,6 +2275,7 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     });
   });
 
+
   let shippingObj = {
     method: req.body.method,
     usa: req.body.usa,
@@ -2283,6 +2284,8 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     australia: req.body.australia,
     international: req.body.international,
   };
+
+
   const product = await new Products({
     supplier_id: req.body.supplier_id,
     name: req.body.name,
@@ -2299,16 +2302,14 @@ router.post('/addProduct', upload.array('productImage'), async (req, res) => {
     options: JSON.parse(req.body.options),
     varients: JSON.parse(req.body.varients),
     shippingCharge: shippingObj,
-    varientArray: JSON.stringify(req.body.varientArray),
+    varientArray: req.body.varientArray,
     selliingPrice: req.body.price
     //  color: req.body.color,
     //  tag:req.body.tag
   });
-   console.log(product, "backend is");
   try {
     const newProduct = await product.save();
-    res.status(200).send('Success');
-    console.log(newProduct, "added product");
+    res.send('Success');
   } catch (error) {
     res.status(500).send(`Failed because of${error}`);
     console.log(error);

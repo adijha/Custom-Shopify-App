@@ -47,7 +47,6 @@ const AddProduct = () => {
 
 
   const [length, setLength] = useState()
-  const [varientArray, setVarientArray] = useState([])
 
 
   useEffect(() => {
@@ -91,46 +90,15 @@ const AddProduct = () => {
   ];
 
 
-//combo Handler
 
-const comboHandler = (e)=>{
-e.preventDefault()
-  let tempVarientArray = []
-  console.log("length is", length);
-  for (var i = 0; i < length; i++) {
-    tempVarientArray.push({
-        varient: document.getElementById(`varientName${i}`).value,
-        price: document.getElementById(`varientPrice${i}`).value,
-        quantity: document.getElementById(`varientQuantity${i}`).value,
-        sku: document.getElementById(`varientSku${i}`).value
-    })
-  // console.log({
-  //   varient: document.getElementById(`varientName${i}`).value,
-  //   price: document.getElementById(`varientPrice${i}`).value,
-  //   quantity: document.getElementById(`varientQuantity${i}`).value,
-  //   sku: document.getElementById(`varientSku${i}`).value
-  // });
-}
-setVarientArray(tempVarientArray)
-addProduct()
-}
 
 
 
   //Add Product
-  const addProduct = async () => {
-    //e.preventDefault();
-  //  await comboHandler()
+  const addProduct = async (e) => {
+    e.preventDefault();
 
-    console.log("varientArray", varientArray);
 
-    // if (shippingDetails === "freeShipping") {
-    //   setUsa(2.5);
-    //   setCanada(2.5);
-    //   setUk(2.5);
-    //   setAustralia(2.5);
-    //   setInternational(2.5);
-    // }
 
     let options = [
       { name: option1, values: tag0 },
@@ -138,8 +106,24 @@ addProduct()
       { name: option3, values: tag2 },
     ];
 
+    let tempVarientArray = []
+    console.log("length is", length);
+    for (var i = 0; i < length; i++) {
+      let obj = {
+          varient: document.getElementById(`varientName${i}`).value,
+          price: document.getElementById(`varientPrice${i}`).value,
+          quantity: document.getElementById(`varientQuantity${i}`).value,
+          sku: document.getElementById(`varientSku${i}`).value
+      }
+    // console.log({
+    //   varient: document.getElementById(`varientName${i}`).value,
+    //   price: document.getElementById(`varientPrice${i}`).value,
+    //   quantity: document.getElementById(`varientQuantity${i}`).value,
+    //   sku: document.getElementById(`varientSku${i}`).value
+    // });
+    tempVarientArray.push(JSON.stringify(obj))
 
-
+}
     const data = await new FormData();
     data.append("productImage", productImage[0]);
     data.append("productImage", productImage[1]);
@@ -166,21 +150,21 @@ addProduct()
     data.append("uk", uk);
     data.append("australia", australia);
     data.append("international", international);
-    data.append("varientArray", varientArray);
+    data.append("varientArray", tempVarientArray);
     axios
       .post("/api/addProduct", data)
       .then((res) => {
        if (res.data.includes("Success")) {
           NotificationManager.success("Product Added Successfully");
-          // setName("");
-          // setPrice("");
-          // setQuantity("");
-          // setWarranty("");
-          // setDescription("");
-          // setCategory("");
-          // setCode("");
-          // setProductImage([]);
-          // setVarients([]);
+          setName("");
+          setPrice("");
+          setQuantity("");
+          setWarranty("");
+          setDescription("");
+          setCategory("");
+          setCode("");
+          setProductImage([]);
+          setVarients([]);
         } else {
           res.data.error
             ? NotificationManager.error(res.data.error.toString())
@@ -399,7 +383,7 @@ addProduct()
   return (
     <div className="container-fluid">
       <br />
-      <form onSubmit={comboHandler}>
+      <form onSubmit={addProduct}>
         <div className="card card-input">
           <div className="form-group">
             <label for="product_name">Title</label>

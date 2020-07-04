@@ -436,6 +436,12 @@ const Products = () => {
                       <h5 className="sizes">
                         Available Quantity: <span>{product.quantity}</span>
                       </h5>
+                      <h5 className="varients">
+                        Available Varients:
+                        {product.varientArray.map((item, i)=>{
+                          <p>{item.varient} - {item.sku}  {item.quantity}  ${item.price}</p>
+                        })}
+                      </h5>
                       <button
                         onClick={() => AddInShopify(product)}
                         className="btn btn-primary"
