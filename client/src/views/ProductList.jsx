@@ -50,15 +50,33 @@ const ProductList = () => {
       },
       size: "33",
       selliingPrice: 999,
-shippingCharge: {method: "freeShipping", usa: "2.5", canada: "2.5", unitedKingdom: "2.5", australia: "2.5",international: "2.5"},
-size: "s m, l",
-supplier_id: "5e2daa9ac562680ab159b23f",
-uploaded_on: "2020-07-04T18:10:39.000Z",
+      shippingCharge: {
+        method: "freeShipping",
+        usa: "2.5",
+        canada: "2.5",
+        unitedKingdom: "2.5",
+        australia: "2.5",
+        international: "2.5",
+      },
+      size: "s m, l",
+      supplier_id: "5e2daa9ac562680ab159b23f",
+      uploaded_on: "2020-07-04T18:10:39.000Z",
       arientArray: [
-{varient: "Metal / S", price: "999", quantity: "10", sku: "Pate1001"}
-,{varient: "Metal / L", price: "998", quantity: "9", sku: "Pate1001"}
-,{varient: "Plastic / S", price: "997", quantity: "8", sku: "Pate1001"}
-,{varient: "Plastic / L", price: "996", quantity: "7", sku: "Pate1001"}],
+        { varient: "Metal / S", price: "999", quantity: "10", sku: "Pate1001" },
+        { varient: "Metal / L", price: "998", quantity: "9", sku: "Pate1001" },
+        {
+          varient: "Plastic / S",
+          price: "997",
+          quantity: "8",
+          sku: "Pate1001",
+        },
+        {
+          varient: "Plastic / L",
+          price: "996",
+          quantity: "7",
+          sku: "Pate1001",
+        },
+      ],
       _id: "5ef2b55a361800",
     },
   ]);
@@ -74,7 +92,7 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
   const [status, setStatus] = useState("");
   const [itemId, setItemId] = useState("");
   const [open, setOpen] = useState(false);
-  const [varient, setVarient] = useState([])
+  const [varient, setVarient] = useState([]);
 
   const modalStyle = {
     margin: "auto",
@@ -118,7 +136,6 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
 
   useEffect(() => {
     getProductData();
-   
   }, []);
 
   const getProductData = () => {
@@ -138,7 +155,7 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
     setCategory(item.category);
     setCode(item.code);
     setItemId(item._id);
-    setVarient(item.varientArray)
+    setVarient(item.varientArray);
     setOpen(true);
   };
 
@@ -190,36 +207,29 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
         console.log("update product error is:", err.message);
       });
   };
-  const updateFieldChanged = (index,ref) => e => {
+  const updateFieldChanged = (index, ref) => (e) => {
+    console.log("index: " + index);
 
-    console.log('index: ' + index);
-    console.log('property name: '+ e.target.name);
-
+    console.log("property name: " + e.target.name);
 
     let newArr = [...varient]; // copying the old datas array
 
     switch (ref) {
-      case 'price':
-        newArr[index].price = e.target.value; 
+      case "price":
+        newArr[index].price = e.target.value;
         break;
-      case 'quantity':
-        newArr[index].quantity = e.target.value; 
+      case "quantity":
+        newArr[index].quantity = e.target.value;
         break;
-      case 'sku':
-        newArr[index].sku = e.target.value; 
+      case "sku":
+        newArr[index].sku = e.target.value;
         break;
-     
-    
       default:
-        newArr[index].price = e.target.value; 
+        newArr[index].price = e.target.value;
         break;
     }
-   // replace e.target.value with whatever you want to change it to
-
-    setVarient(newArr); // ??
-
-}
-
+    setVarient(newArr);
+  };
 
   return (
     <div>
@@ -327,7 +337,71 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
                 modules={Editor.modules}
                 formats={Editor.formats}
                 placeholder={"Write description"}
-                />
+              />
+            </div>
+
+            <div className="form-group">
+              <label for="product_id">ID/SKU</label>
+              <input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                className="form-control"
+                id="product_id"
+                placeholder="Enter Unique Id of Product"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label for="product_name">Title</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="form-control"
+                id="product_name"
+                placeholder="Enter Title of Product"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label for="product_category">Category</label>
+              <input
+                type="text"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="form-control"
+                id="product_category"
+                placeholder="Enter category of Product"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label for="product_price">Price in Dollars</label>
+              <input
+                type="text"
+                min="0"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="form-control"
+                id="product_price"
+                placeholder="Enter Price of Product"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label for="product_quantity">Quantity</label>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                min="0"
+                className="form-control"
+                id="product_quantity"
+                placeholder="Enter available quantity of product"
+                required
+              />
             </div>
 
             <div className="form-group">
@@ -337,7 +411,7 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
                 <p style={{ flex: 1 }}>Quantity</p>
                 <p style={{ flex: 1 }}>SKU</p>
               </div>
-              {varient.map((e,index) => (
+              {varient.map((e, index) => (
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <label style={{ flex: 1 }} for="product_warranty">
                     {e.varient}
@@ -346,45 +420,39 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
                     style={{ flex: 1 }}
                     type="text"
                     value={e.price}
-                    onChange={updateFieldChanged(index,'price')}
+                    onChange={updateFieldChanged(index, "price")}
                     className="form-control"
                     id="product_warranty"
                     placeholder="Price in dollers"
                     required
-                    />
+                  />
                   <input
                     style={{ flex: 1 }}
                     type="text"
                     value={e.quantity}
-                    onChange={updateFieldChanged(index,'quantity')}
+                    onChange={updateFieldChanged(index, "quantity")}
                     className="form-control"
                     id="product_warranty"
                     placeholder="Enter Quantity"
                     required
-                    />
+                  />
                   <input
                     style={{ flex: 1 }}
                     type="text"
                     value={e.sku}
-                    onChange={updateFieldChanged(index,'sku')}
+                    onChange={updateFieldChanged(index, "sku")}
                     className="form-control"
                     id="product_warranty"
                     placeholder="Enter SKU"
                     required
-                    />
+                  />
                 </div>
               ))}
             </div>
           </div>
 
           <div className="card-button">
-            <CustomButton round fill
-            
-            // type="submit"
-            onClick={()=>console.log(varient)}
-            
-            
-            >
+            <CustomButton round fill type="submit">
               Update Product
             </CustomButton>
           </div>
@@ -395,70 +463,3 @@ uploaded_on: "2020-07-04T18:10:39.000Z",
 };
 
 export default ProductList;
-
-{/* <div className='form-group'>
-  <label for='product_id'>ID/SKU</label>
-  <input
-    type='text'
-    value={code}
-    onChange={(e) => setCode(e.target.value)}
-    className='form-control'
-    id='product_id'
-    placeholder='Enter Unique Id of Product'
-    required
-  />
-</div>
-<div className='form-group'>
-  <label for='product_name'>Title</label>
-  <input
-    type='text'
-    value={name}
-    onChange={(e) => setName(e.target.value)}
-    className='form-control'
-    id='product_name'
-    placeholder='Enter Title of Product'
-    required
-  />
-</div>
-<div className='form-group'>
-  <label for='product_category'>Category</label>
-  <input
-    type='text'
-    value={category}
-    onChange={(e) => setCategory(e.target.value)}
-    className='form-control'
-    id='product_category'
-    placeholder='Enter category of Product'
-    required
-  />
-</div>
-
-
-
-<div className='form-group'>
-  <label for='product_price'>Price in Dollars</label>
-  <input
-    type='text'
-    min='0'
-    value={price}
-    onChange={(e) => setPrice(e.target.value)}
-    className='form-control'
-    id='product_price'
-    placeholder='Enter Price of Product'
-    required
-  />
-</div>
-<div className='form-group'>
-  <label for='product_quantity'>Quantity</label>
-  <input
-    type='number'
-    value={quantity}
-    onChange={(e) => setQuantity(e.target.value)}
-    min='0'
-    className='form-control'
-    id='product_quantity'
-    placeholder='Enter available quantity of product'
-    required
-  />
-</div>
-*/}
