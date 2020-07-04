@@ -329,7 +329,7 @@ const ProductList = () => {
           </Row>
         </Grid>
       </div>
-      <Modal open={true} onClose={() => setOpen(false)}>
+      <Modal open={false} onClose={() => setOpen(false)}>
         <br />
         <h3 style={{ color: "red" }} className="text-center">
           Edit Product Details:
@@ -349,7 +349,7 @@ const ProductList = () => {
                 placeholder='Enter Unique Id of Product'
                 required
               />
-            </div> 
+            </div>
             <div className='form-group'>
               <label for='product_name'>Title</label>
               <input
@@ -373,10 +373,10 @@ const ProductList = () => {
                 placeholder='Enter category of Product'
                 required
               />
-            </div> 
-            
-            
-          
+            </div>
+
+
+
             <div className='form-group'>
               <label for='product_price'>Price in Dollars</label>
               <input
@@ -402,7 +402,7 @@ const ProductList = () => {
                 placeholder='Enter available quantity of product'
                 required
               />
-            </div> 
+            </div>
             */}
             <div className="form-group">
               <label for="product_description">Description</label>

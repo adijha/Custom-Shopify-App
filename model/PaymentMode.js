@@ -8,7 +8,7 @@ info:{
   type:Object
 },
 created_on:{
-  type:String
+  type:Date
 }
 
 })

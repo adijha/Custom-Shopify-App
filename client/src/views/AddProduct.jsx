@@ -88,6 +88,12 @@ const AddProduct = () => {
     "image",
     "video",
   ];
+
+
+
+
+
+
   //Add Product
   const addProduct = async (e) => {
     e.preventDefault();

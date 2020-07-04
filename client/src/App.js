@@ -16,6 +16,7 @@ import ConnectStore from './views/ConnectStore.jsx';
 import SupplierForm from './views/SupplierForm.jsx';
 import Invoice from "./views/Invoice.jsx";
 import SupplierTerms from "./views/SupplierTerms.jsx";
+import AddProduct from "./views/AddProduct.jsx";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
           <Route path='/merchant' render={props => <MerchantLayout {...props} />} />
           <Route exact path='/invoice/:supplierId/:orderId' component={Invoice} />
           <Route exact path='/supplier-t&c' component={SupplierTerms} />
+          <Route exact path='/add' component={AddProduct} />
 
         </Switch>
       </div>
