@@ -377,7 +377,7 @@ const Products = () => {
         })}
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal open={open} onClose={() => setOpen(false)} className="model-test"style={{maxWidth:"100% !important"}}>
         <div className="container-fluid">
           <div className="text-center" style={{ color: "green" }}>
             {msg}
@@ -434,29 +434,128 @@ const Products = () => {
                       </ul>
                     </div>
                     <div className="details col-md-6">
-                      <h3 className="product-title">{product.name}</h3>
+                      <h2 className="product-title">{product.name}</h2>
+                      <br/>
+                      <br/>
 
-                      <p className="product-description">
+                      <h5 className="price">
+                        Price Range:
+                        <span>$
+                        </span>
+                        </h5>
+
+
+                              <div>
+                                <div className="panel with-nav-tabs panel-default">
+                                  <div className="panel-heading">
+                                    <ul className="nav nav-tabs">
+                                      <li className="active"><a href="#tab1default" data-toggle="tab">Varients</a></li>
+                                      <li ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
+                                      <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
+                                    </ul>
+                                  </div>
+                                  <div className="panel-body">
+                                    <div className="tab-content">
+
+                                      <div className="tab-pane fade   in active" id="tab1default">
+                                      <table className="table table-sm">
+                                      <thead className="text-center">
+                                      <tr>
+
+                                      <th>Name</th>
+                                      <th>Sku</th>
+                                      <th>Qunantity</th>
+                                      <th>Price</th>
+                                      </tr>
+                                      </thead>
+                                      {product.varientArray.map((item, i)=>{
+                                        return(
+
+                                          <tbody>
+                                            <tr>
+                                              <td>{item.varient}</td>
+                                              <td>{item.sku}</td>
+                                              <td className="text-center">{item.quantity}</td>
+                                              <td>${item.selliingPrice}</td>
+                                            </tr>
+                                          </tbody>
+                                      )
+                                      })}
+                                      </table>
+
+                                      </div>
+
+                                      <div className="tab-pane fade" id="tab2default">
+                                      <table className="table table-sm">
+
+                                      <thead>
+                                      <th>Country</th>
+                                      <th>Est. Delivery Time</th>
+                                      <th>Cost</th>
+                                      </thead>
+                                      <tbody>
+                                      <tr>
+                                      <td>USA</td>
+                                      <td>10-12 days</td>
+                                      <td>${product.shippingCharge.usa}</td>
+                                      </tr>
+
+                                      <tr>
+                                      <td>Canada</td>
+                                      <td>10-12 days</td>
+                                      <td>${product.shippingCharge.canada}</td>
+                                      </tr>
+
+                                      <tr>
+                                      <td>Australia</td>
+                                      <td>10-12 days</td>
+                                      <td>${product.shippingCharge.australia}</td>
+                                      </tr>
+
+                                      <tr>
+                                      <td>UK</td>
+                                      <td>10-12 days</td>
+                                      <td>${product.shippingCharge.unitedKingdom}</td>
+                                      </tr>
+
+                                      <tr>
+                                      <td>International</td>
+                                      <td>Variable</td>
+                                      <td>${product.shippingCharge.international}</td>
+                                      </tr>
+
+                                      </tbody>
+                                      </table>
+                                      </div>
+
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+
+
+
+
+                      <br/>
+                      <br/>
+                      <h5 className="price">Description:</h5>
+                      <p>
                         {product.description
                           ? product.description.replace(/(<([^>]+)>)/gi, "")
                           : null}
                       </p>
-                      <h4 className="price">
-                        current price: <span>${product.price}
-                        </span>
-                      </h4>
 
-                      <h5 className="sizes">
-                        Available Quantity: <span>{product.quantity}</span>
-                      </h5>
-                      <h5 className="varients">
-                        Available Varients:
-                        {product.varientArray.map((item, i)=>{
-                          return(
-                          <p>{item.varient} - {item.sku}  {item.quantity}  ${item.price}</p>
-                        )
-                        })}
-                      </h5>
+                      <br/>
+                      <br/>
+                      {(product.quantity!="" || product.quantity!=0)?(<div><h5 className="price">
+                            Available Quantity:
+                          </h5>
+                           <p>{product.quantity}</p></div>):null}
+
+
                       <button
                         onClick={() => AddInShopify(product)}
                         className="btn btn-primary"

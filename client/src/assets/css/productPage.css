@@ -1,5 +1,9 @@
 * {
-  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-family: HKGroteskPro, serif;
+}
+
+.styles_modal__gNwvD{
+  max-width: 90% !important;
 }
 
 .scale-product-img:hover{
