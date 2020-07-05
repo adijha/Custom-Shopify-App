@@ -438,13 +438,21 @@ const Products = () => {
                       <br/>
                       <br/>
 
-                      <h5 className="price">
-                        Price Range:
-                        <span>$
-                        </span>
-                        </h5>
+                      {(product.varientArray.length!==0)?(
+                        <h5 className="price">
+                          Price Range:
+                          <span>$
+                          </span>
+                          </h5>
+                      ):(
+                        <h5 className="price">
+                          Price:
+                          <span>${product.price}
+                          </span>
+                          </h5>
+                      )}
 
-
+                            {(product.varientArray.length!=0)?(
                               <div>
                                 <div className="panel with-nav-tabs panel-default">
                                   <div className="panel-heading">
@@ -534,7 +542,68 @@ const Products = () => {
                                 </div>
                               </div>
 
+):(
+  <div>
+    <div className="panel with-nav-tabs panel-default">
+      <div className="panel-heading">
+        <ul className="nav nav-tabs">
+          <li className="active" ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
+          <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
+        </ul>
+      </div>
+      <div className="panel-body">
+        <div className="tab-content">
 
+          <div className="tab-pane fade" id="tab2default">
+          <table className="table table-sm">
+
+          <thead>
+          <th>Country</th>
+          <th>Est. Delivery Time</th>
+          <th>Cost</th>
+          </thead>
+          <tbody>
+          <tr>
+          <td>USA</td>
+          <td>10-12 days</td>
+          <td>${product.shippingCharge.usa}</td>
+          </tr>
+
+          <tr>
+          <td>Canada</td>
+          <td>10-12 days</td>
+          <td>${product.shippingCharge.canada}</td>
+          </tr>
+
+          <tr>
+          <td>Australia</td>
+          <td>10-12 days</td>
+          <td>${product.shippingCharge.australia}</td>
+          </tr>
+
+          <tr>
+          <td>UK</td>
+          <td>10-12 days</td>
+          <td>${product.shippingCharge.unitedKingdom}</td>
+          </tr>
+
+          <tr>
+          <td>International</td>
+          <td>Variable</td>
+          <td>${product.shippingCharge.international}</td>
+          </tr>
+
+          </tbody>
+          </table>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+)}
 
 
 
@@ -550,7 +619,7 @@ const Products = () => {
 
                       <br/>
                       <br/>
-                      {(product.quantity!="" || product.quantity!=0)?(<div><h5 className="price">
+                      {(product.varientArray.length===0)?(<div><h5 className="price">
                             Available Quantity:
                           </h5>
                            <p>{product.quantity}</p></div>):null}
