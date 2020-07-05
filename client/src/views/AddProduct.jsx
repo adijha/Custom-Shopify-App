@@ -100,7 +100,6 @@ const AddProduct = () => {
     console.log("length is", length);
     for (var i = 0; i < length; i++) {
       let obj = {
-<<<<<<< HEAD
           "varient": document.getElementById(`varientName${i}`).value,
           "price": document.getElementById(`varientPrice${i}`).value,
           "quantity": document.getElementById(`varientQuantity${i}`).value,
@@ -113,15 +112,11 @@ const AddProduct = () => {
     //   quantity: document.getElementById(`varientQuantity${i}`).value,
     //   sku: document.getElementById(`varientSku${i}`).value
     // });
-    tempVarientArray.push(obj)
-
-}
-=======
-        varient: document.getElementById(`varientName${i}`).value,
-        price: document.getElementById(`varientPrice${i}`).value,
-        quantity: document.getElementById(`varientQuantity${i}`).value,
-        sku: document.getElementById(`varientSku${i}`).value,
-      };
+//     tempVarientArray.push(obj)
+// 
+// }
+//
+//       };
       // console.log({
       //   varient: document.getElementById(`varientName${i}`).value,
       //   price: document.getElementById(`varientPrice${i}`).value,
@@ -130,7 +125,6 @@ const AddProduct = () => {
       // });
       tempVarientArray.push(obj);
     }
->>>>>>> 50ee83da77dd6816587ca9e6c49700419109a38d
     const data = await new FormData();
     data.append("productImage", productImage[0]);
     data.append("productImage", productImage[1]);
