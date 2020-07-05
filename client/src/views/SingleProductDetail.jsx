@@ -145,207 +145,260 @@ const SingleProductDetail = (props) => {
   };
 
   return (
-    <div className='container-fluid'>
-      <div className='text-center' style={{ color: 'green' }}>
-        {status || msg || ''}
+    <div className="container-fluid">
+      <div className="text-center" style={{ color: "green" }}>
+        {msg}
       </div>
-
       {singleProduct.map((product) => {
         return (
-          <div className='card card-class'>
-            <div className='container-fliud'>
-              <div className=' row'>
-                <div className='preview col-md-6'>
-                  <div className='preview-pic tab-content'>
-                    <div className='tab-pane active' id='pic-1'>
-                      {!!product.productImage[0] ? (
+          <div className="card card-class">
+            <div className="container-fliud">
+              <div className=" row">
+                <div className="preview col-md-6">
+                  <div className="preview-pic tab-content">
+                    <div className="tab-pane active" id="pic-1">
+                      {product.productImage[0] ? (
                         <img
                           src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`}
                         />
                       ) : (
-                        'Image not Available'
+                        <h5>no image available</h5>
                       )}
                     </div>
-                    <div className='tab-pane' id='pic-2'>
-                      {!!product.productImage[1] ? (
+                    <div className="tab-pane" id="pic-2">
+                      {product.productImage[0] ? (
                         <img
                           src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`}
                         />
                       ) : (
-                        'Image not Available'
+                        <h5>no image available</h5>
                       )}
                     </div>
                   </div>
-                  <ul className='preview-thumbnail nav nav-tabs'>
-                    <li className='active'>
-                      <a data-target='#pic-1' data-toggle='tab'>
-                        {!!product.productImage[0] ? (
+                  <ul className="preview-thumbnail nav nav-tabs">
+                    <li className="active">
+                      <a data-target="#pic-1" data-toggle="tab">
+                        {product.productImage[0] ? (
                           <img
                             src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`}
                           />
                         ) : (
-                          'Image not Available'
+                          <h5>no image available</h5>
                         )}
                       </a>
                     </li>
                     <li>
-                      <a data-target='#pic-2' data-toggle='tab'>
-                        {!!product.productImage[1] ? (
+                      <a data-target="#pic-2" data-toggle="tab">
+                        {product.productImage[1] ? (
                           <img
                             src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`}
                           />
                         ) : (
-                          'Image not Available'
+                          <h5>no image available</h5>
                         )}
                       </a>
                     </li>
                   </ul>
                 </div>
-                <div className='details col-md-6'>
-                  <h3 className='product-title'>{product.name}</h3>
-                  <p>Sku: {product.code}</p>
-                  <p>Category: {product.category}</p>
-                  <p>Variant: {product.variant || 'NA'}</p>
-                  <p className='product-description'>
-                    Description: <br />
-                    {product.description}
+                <div className="details col-md-6">
+                  <h2 className="product-title">{product.name}</h2>
+                  <br/>
+                  <br/>
+
+                  {(product.varientArray.length!==0)?(
+                    <h5 className="price">
+                      Price Range:
+                      <span>$
+                      </span>
+                      </h5>
+                  ):(
+                    <h5 className="price">
+                      Price:
+                      <span>${product.price}
+                      </span>
+                      </h5>
+                  )}
+
+                        {(product.varientArray.length!=0)?(
+                          <div>
+                            <div className="panel with-nav-tabs panel-default">
+                              <div className="panel-heading">
+                                <ul className="nav nav-tabs">
+                                  <li className="active"><a href="#tab1default" data-toggle="tab">Varients</a></li>
+                                  <li ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
+                                  <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
+                                </ul>
+                              </div>
+                              <div className="panel-body">
+                                <div className="tab-content">
+
+                                  <div className="tab-pane fade   in active" id="tab1default">
+                                  <table className="table table-sm">
+                                  <thead className="text-center">
+                                  <tr>
+
+                                  <th>Name</th>
+                                  <th>Sku</th>
+                                  <th>Qunantity</th>
+                                  <th>Price</th>
+                                  </tr>
+                                  </thead>
+                                  {product.varientArray.map((item, i)=>{
+                                    return(
+
+                                      <tbody>
+                                        <tr>
+                                          <td>{item.varient}</td>
+                                          <td>{item.sku}</td>
+                                          <td className="text-center">{item.quantity}</td>
+                                          <td>${item.selliingPrice}</td>
+                                        </tr>
+                                      </tbody>
+                                  )
+                                  })}
+                                  </table>
+
+                                  </div>
+
+                                  <div className="tab-pane fade" id="tab2default">
+                                  <table className="table table-sm">
+
+                                  <thead>
+                                  <th>Country</th>
+                                  <th>Est. Delivery Time</th>
+                                  <th>Cost</th>
+                                  </thead>
+                                  <tbody>
+                                  <tr>
+                                  <td>USA</td>
+                                  <td>10-12 days</td>
+                                  <td>${product.shippingCharge.usa}</td>
+                                  </tr>
+
+                                  <tr>
+                                  <td>Canada</td>
+                                  <td>10-12 days</td>
+                                  <td>${product.shippingCharge.canada}</td>
+                                  </tr>
+
+                                  <tr>
+                                  <td>Australia</td>
+                                  <td>10-12 days</td>
+                                  <td>${product.shippingCharge.australia}</td>
+                                  </tr>
+
+                                  <tr>
+                                  <td>UK</td>
+                                  <td>10-12 days</td>
+                                  <td>${product.shippingCharge.unitedKingdom}</td>
+                                  </tr>
+
+                                  <tr>
+                                  <td>International</td>
+                                  <td>Variable</td>
+                                  <td>${product.shippingCharge.international}</td>
+                                  </tr>
+
+                                  </tbody>
+                                  </table>
+                                  </div>
+
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+):(
+<div>
+<div className="panel with-nav-tabs panel-default">
+  <div className="panel-heading">
+    <ul className="nav nav-tabs">
+      <li className="active" ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
+      <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
+    </ul>
+  </div>
+  <div className="panel-body">
+    <div className="tab-content">
+
+      <div className="tab-pane fade" id="tab2default">
+      <table className="table table-sm">
+
+      <thead>
+      <th>Country</th>
+      <th>Est. Delivery Time</th>
+      <th>Cost</th>
+      </thead>
+      <tbody>
+      <tr>
+      <td>USA</td>
+      <td>10-12 days</td>
+      <td>${product.shippingCharge.usa}</td>
+      </tr>
+
+      <tr>
+      <td>Canada</td>
+      <td>10-12 days</td>
+      <td>${product.shippingCharge.canada}</td>
+      </tr>
+
+      <tr>
+      <td>Australia</td>
+      <td>10-12 days</td>
+      <td>${product.shippingCharge.australia}</td>
+      </tr>
+
+      <tr>
+      <td>UK</td>
+      <td>10-12 days</td>
+      <td>${product.shippingCharge.unitedKingdom}</td>
+      </tr>
+
+      <tr>
+      <td>International</td>
+      <td>Variable</td>
+      <td>${product.shippingCharge.international}</td>
+      </tr>
+
+      </tbody>
+      </table>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>
+
+)}
+
+
+
+
+                  <br/>
+                  <br/>
+                  <h5 className="price">Description:</h5>
+                  <p>
+                    {product.description
+                      ? product.description.replace(/(<([^>]+)>)/gi, "")
+                      : null}
                   </p>
-                  <h4 className='price'>
-                    current price: <span>&#x20b9;{product.price}</span>
-                  </h4>
-                  <h5 className='sizes'>
-                    Available Quantity: <span>{product.quantity}</span>
-                  </h5>
-                  <div
-                    className=''
-                    style={{
-                      width: '50%',
-                      display: 'flex',
-                      position: 'relative',
-                    }}
-                  >
-                    <button
-                      className='btn btn-primary'
-                      onClick={() => updateProduct(product)}
-                    >
-                      Edit
-                    </button>
-                    <button className='btn btn-danger'>Delete</button>
-                  </div>
+
+                  <br/>
+                  <br/>
+                  {(product.varientArray.length===0)?(<div><h5 className="price">
+                        Available Quantity:
+                      </h5>
+                       <p>{product.quantity}</p></div>):null}
+
                 </div>
               </div>
             </div>
           </div>
         );
       })}
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <br />
-        <h3 style={{ color: 'red' }} className='text-center'>
-          Edit Product Details:
-        </h3>
-        <br />
 
-        <form style={modalStyle} onSubmit={updateProductItem}>
-          <div className='card card-update'>
-            <div className='form-group'>
-              <label for='product_id'>ID/SKU</label>
-              <input
-                type='text'
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className='form-control'
-                id='product_id'
-                placeholder='Enter Unique Id of Product'
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label for='product_name'>Title</label>
-              <input
-                type='text'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className='form-control'
-                id='product_name'
-                placeholder='Enter Title of Product'
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label for='product_category'>Category</label>
-              <input
-                type='text'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className='form-control'
-                id='product_category'
-                placeholder='Enter category of Product'
-                required
-              />
-            </div>
-          </div>
-          <div className='card card-update'>
-            <div className='form-group'>
-              <label for='product_price'>Price</label>
-              <input
-                type='text'
-                min='0'
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className='form-control'
-                id='product_price'
-                placeholder='Enter Price of Product'
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label for='product_quantity'>Quantity</label>
-              <input
-                type='number'
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                min='0'
-                className='form-control'
-                id='product_quantity'
-                placeholder='Enter available quantity of product'
-                required
-              />
-            </div>
-            <div className='form-group'>
-              <label for='product_warranty'>Warranty</label>
-              <input
-                type='text'
-                value={warranty}
-                onChange={(e) => setWarranty(e.target.value)}
-                className='form-control'
-                id='product_warranty'
-                placeholder='Enter available warranty of product'
-                required
-              />
-            </div>
-          </div>
-          <div className='card card-update'>
-            <div className='form-group'>
-              <label for='product_description'>Description</label>
-              <ReactQuill
-                required
-                theme={'snow'}
-                onChange={(value) => setDescription(value)}
-                style={{ minHeight: '18em' }}
-                value={description}
-                modules={Editor.modules}
-                formats={Editor.formats}
-                placeholder={'Write description'}
-              />
-            </div>
-          </div>
-          <div className='card-button'>
-            <CustomButton round fill type='submit'>
-              Update Product
-            </CustomButton>
-          </div>
-        </form>
-      </Modal>
+
     </div>
   );
 };

@@ -2385,7 +2385,7 @@ router.patch('/autoMargin', async (req, res) => {
     const data = await Products.find({ category: req.body.category });
     data.forEach(async (item, i) => {
       let newArray = [];
-      if (item.price==='') {
+      if (item.varientArray.length!==0) {
         item.varientArray.forEach((arr, i) => {
           console.log("varientArray", arr);
 
