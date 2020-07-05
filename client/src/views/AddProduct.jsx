@@ -45,14 +45,11 @@ const AddProduct = () => {
   const [australia, setAustralia] = useState(2.5);
   const [international, setInternational] = useState(2.5);
 
-
-  const [length, setLength] = useState()
-
+  const [length, setLength] = useState();
 
   useEffect(() => {
     getCategoryList();
   }, []);
-
 
   let Editor = {};
   Editor.modules = {
@@ -89,16 +86,9 @@ const AddProduct = () => {
     "video",
   ];
 
-
-
-
-
-
   //Add Product
   const addProduct = async (e) => {
     e.preventDefault();
-
-
 
     let options = [
       { name: option1, values: tag0 },
@@ -106,10 +96,11 @@ const AddProduct = () => {
       { name: option3, values: tag2 },
     ];
 
-    let tempVarientArray = []
+    let tempVarientArray = [];
     console.log("length is", length);
     for (var i = 0; i < length; i++) {
       let obj = {
+<<<<<<< HEAD
           "varient": document.getElementById(`varientName${i}`).value,
           "price": document.getElementById(`varientPrice${i}`).value,
           "quantity": document.getElementById(`varientQuantity${i}`).value,
@@ -125,6 +116,21 @@ const AddProduct = () => {
     tempVarientArray.push(obj)
 
 }
+=======
+        varient: document.getElementById(`varientName${i}`).value,
+        price: document.getElementById(`varientPrice${i}`).value,
+        quantity: document.getElementById(`varientQuantity${i}`).value,
+        sku: document.getElementById(`varientSku${i}`).value,
+      };
+      // console.log({
+      //   varient: document.getElementById(`varientName${i}`).value,
+      //   price: document.getElementById(`varientPrice${i}`).value,
+      //   quantity: document.getElementById(`varientQuantity${i}`).value,
+      //   sku: document.getElementById(`varientSku${i}`).value
+      // });
+      tempVarientArray.push(obj);
+    }
+>>>>>>> 50ee83da77dd6816587ca9e6c49700419109a38d
     const data = await new FormData();
     data.append("productImage", productImage[0]);
     data.append("productImage", productImage[1]);
@@ -156,7 +162,7 @@ const AddProduct = () => {
     axios
       .post("/api/addProduct", data)
       .then((res) => {
-       if (res.data.includes("Success")) {
+        if (res.data.includes("Success")) {
           NotificationManager.success("Product Added Successfully");
           setName("");
           setPrice("");
@@ -233,7 +239,7 @@ const AddProduct = () => {
       r[i] = str;
       res = r;
     }
-    setLength(res.length)
+    setLength(res.length);
     return res;
   }
 
@@ -414,7 +420,6 @@ const AddProduct = () => {
             <label for="productImage">Image upload</label>
             <input
               type="file"
-
               name="productImage"
               className="form-control"
               onChange={(e) => setProductImage(e.target.files)}
@@ -452,7 +457,6 @@ const AddProduct = () => {
               className="form-control"
               id="product_id"
               placeholder="Enter Unique Id of Product"
-
             />
           </div>
         </div>
@@ -961,7 +965,7 @@ const AddProduct = () => {
                 </div>
               ) : null}
               {!combo ? null : (
-                <div >
+                <div>
                   <h4>Preview</h4>
                   <div style={{ display: "flex", flexDirection: "row" }}>
                     <h5
@@ -998,7 +1002,6 @@ const AddProduct = () => {
                   </div>
                   {combo.map((item, index) => (
                     <div key={index}>
-
                       <div
                         style={{
                           display: "flex",
@@ -1007,7 +1010,7 @@ const AddProduct = () => {
                         }}
                       >
                         <input
-                        id={`varientName${index}`}
+                          id={`varientName${index}`}
                           type="text"
                           style={{
                             flex: 1,
@@ -1016,7 +1019,6 @@ const AddProduct = () => {
                           }}
                           value={item}
                           disabled
-
                           className="form-control"
                         />
                         <div style={{ display: "flex", flex: 1 }}>
@@ -1038,7 +1040,7 @@ const AddProduct = () => {
                             $
                           </h5>
                           <input
-                          id={`varientPrice${index}`}
+                            id={`varientPrice${index}`}
                             type="text"
                             style={{
                               flex: 1,
@@ -1046,7 +1048,6 @@ const AddProduct = () => {
                               borderBottomLeftRadius: 0,
                             }}
                             value={item.price}
-
                             className="form-control"
                           />
                         </div>

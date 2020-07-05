@@ -6,15 +6,15 @@ import "../assets/css/settings.css";
 import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import CustomButton from "../components/CustomButton/CustomButton";
-import 'react-phone-number-input/style.css'
-import PhoneInput from 'react-phone-number-input'
+import "react-phone-number-input/style.css";
+import PhoneInput from "react-phone-number-input";
 
 const MerchantProfileSetting = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNo, setPhoneNo]=useState()
+  const [phoneNo, setPhoneNo] = useState();
 
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
@@ -29,14 +29,21 @@ const MerchantProfileSetting = () => {
       setEmail(res.data.email);
       setFirstName(res.data.firstName);
       setLastName(res.data.lastName);
-      setPhoneNo(res.data.phoneNo?res.data.phoneNo.toString():res.data.phoneNo)
+      setPhoneNo(
+        res.data.phoneNo ? res.data.phoneNo.toString() : res.data.phoneNo
+      );
     });
   };
 
   const updateSettings = async (e) => {
     e.preventDefault();
     try {
-      let res = await axios.post("/settingsUpdateMerchant", { firstName, lastName, email, phoneNo });
+      let res = await axios.post("/settingsUpdateMerchant", {
+        firstName,
+        lastName,
+        email,
+        phoneNo,
+      });
       NotificationManager.success("Settings Updated Successfully");
     } catch (error) {
       NotificationManager.error("something unusual happened");
@@ -100,8 +107,9 @@ const MerchantProfileSetting = () => {
                         placeholder="Enter phone number"
                         className="form-control"
                         value={phoneNo}
-                        onChange={setPhoneNo} required/>
-
+                        onChange={setPhoneNo}
+                        required
+                      />
                     </div>
                     <CustomButton round fill type="submit" name="button">
                       Update Profile

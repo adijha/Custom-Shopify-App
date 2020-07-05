@@ -368,7 +368,7 @@ const Products = () => {
                     {list.name}
                   </p>
                   <b style={{ fontSize: "1.5rem" }}>
-                    $ {list.price.toFixed(1)}
+                    $ {(new Intl.NumberFormat('en-US').format(list.price.toFixed(1) ))}
                   </b>
                 </div>
               </div>
@@ -442,7 +442,8 @@ const Products = () => {
                           : null}
                       </p>
                       <h4 className="price">
-                        current price: <span>${product.price}</span>
+                        current price: <span>${product.price}
+                        </span>
                       </h4>
 
                       <h5 className="sizes">

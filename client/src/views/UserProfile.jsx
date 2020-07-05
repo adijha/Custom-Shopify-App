@@ -5,7 +5,7 @@ import {
   Col,
   FormGroup,
   ControlLabel,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 
 import { Card } from "../components/Card/Card.jsx";
@@ -34,21 +34,21 @@ class UserProfile extends Component {
                           bsClass: "form-control",
                           placeholder: "Company",
                           defaultValue: "Creative Code Inc.",
-                          disabled: true
+                          disabled: true,
                         },
                         {
                           label: "Username",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Username",
-                          defaultValue: "michael23"
+                          defaultValue: "michael23",
                         },
                         {
                           label: "Email address",
                           type: "email",
                           bsClass: "form-control",
-                          placeholder: "Email"
-                        }
+                          placeholder: "Email",
+                        },
                       ]}
                     />
                     <FormInputs
@@ -59,15 +59,15 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "First name",
-                          defaultValue: "Mike"
+                          defaultValue: "Mike",
                         },
                         {
                           label: "Last name",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Last name",
-                          defaultValue: "Andrew"
-                        }
+                          defaultValue: "Andrew",
+                        },
                       ]}
                     />
                     <FormInputs
@@ -79,8 +79,8 @@ class UserProfile extends Component {
                           bsClass: "form-control",
                           placeholder: "Home Adress",
                           defaultValue:
-                            "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                        }
+                            "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09",
+                        },
                       ]}
                     />
                     <FormInputs
@@ -91,21 +91,21 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "City",
-                          defaultValue: "Mike"
+                          defaultValue: "Mike",
                         },
                         {
                           label: "Country",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: "Andrew"
+                          defaultValue: "Andrew",
                         },
                         {
                           label: "Postal Code",
                           type: "number",
                           bsClass: "form-control",
-                          placeholder: "ZIP Code"
-                        }
+                          placeholder: "ZIP Code",
+                        },
                       ]}
                     />
 

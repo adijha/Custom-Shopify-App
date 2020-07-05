@@ -124,7 +124,11 @@ const SupplierOrders = () => {
                             <td>{item.pStatus || 'none'}</td>
                             <td>{item.fulfillmentStatus==="Fulfilled"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
 
-                            <td>${item.price*item.quantity || 'none'}</td>
+                            <td>$
+                            {new Intl.NumberFormat("en-US").format(
+                              item.price*item.quantity
+                            )
+                             || 'none'}</td>
                             <td>{item.tracking_number||"NA"}</td>
                             <td><a href={`/invoice/`+decode.id+'/'+item.id}>View</a></td>
                           </tr>

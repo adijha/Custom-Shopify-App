@@ -3,7 +3,7 @@ import { Grid, Row, Col, Table } from "react-bootstrap";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Modal from "react-responsive-modal";
-import { NotificationManager } from 'react-notifications';
+import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import "../assets/css/productList.css";
 
@@ -58,7 +58,7 @@ const CsvProduct = () => {
     console.log("delete" + item._id);
     axios.delete("/api/product/" + item._id).then((data) => {
       if (data) {
-        NotificationManager.success('Product Deleted');
+        NotificationManager.success("Product Deleted");
         getProductData();
       }
     });
@@ -81,8 +81,8 @@ const CsvProduct = () => {
       .patch("/api/product/update", object)
       .then((data) => {
         if (data) {
-          NotificationManager.success('Product Updated Successfully');
-          
+          NotificationManager.success("Product Updated Successfully");
+
           setName("");
           setPrice("");
           setQuantity("");
@@ -95,16 +95,15 @@ const CsvProduct = () => {
         }
       })
 
-      
-
       .catch((err) => {
-        NotificationManager.error('Product Updated Error');
+        NotificationManager.error("Product Updated Error");
       });
   };
 
   return (
     <div>
-      <br /><div className="content">
+      <br />
+      <div className="content">
         <Grid fluid>
           <Row>
             <Col md={12}>
@@ -130,7 +129,14 @@ const CsvProduct = () => {
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{item.price}</td>
+                            <td>{
+                            
+                            new Intl.NumberFormat("en-US").format(
+                              item.price 
+                            
+                           
+                          )
+                            }</td>
                             <td>
                               <button
                                 className="btn btn-primary btn-sm"

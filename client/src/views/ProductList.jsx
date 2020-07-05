@@ -183,7 +183,7 @@ const ProductList = () => {
                   <Table striped hover>
                     <thead>
                       <tr>
-                        <th></th>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>

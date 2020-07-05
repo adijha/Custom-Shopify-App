@@ -265,7 +265,7 @@ const AdminProduct = () => {
                               }}
                             >
                               {/*  <td style={{width:"15%"}}><img className="product-logo" src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`} /></td>*/}
-                              <td style={{width:"16%"}}>
+                              <td style={{ width: "16%" }}>
                                 {item.productImage.length != 0 ? (
                                   <img
                                     className="product-logo"
@@ -283,10 +283,25 @@ const AdminProduct = () => {
                               </td>
                               <td>{item.code}</td>
                               <td>{item.category}</td>
-                              <td>${item.price.toFixed(2)}</td>
-                              <td>${item.selliingPrice.toFixed(2)}</td>
+                              <td>
+                                $
+                                {new Intl.NumberFormat("en-US").format(
+                                  item.price.toFixed(2)
+                                )}
+                              </td>
+                              <td>
+                                $
+                                {new Intl.NumberFormat("en-US").format(
+                                  item.selliingPrice.toFixed(2)
+                                )}
+                              </td>
                               <td>{item.order}</td>
-                              <td>${item.revenue}</td>
+                              <td>
+                                $
+                                {new Intl.NumberFormat("en-US").format(
+                                  item.revenue
+                                )}
+                              </td>
                               <td>
                                 <button
                                   className="btn btn-primary btn-sm"
@@ -324,7 +339,10 @@ const AdminProduct = () => {
                                     Total no. of orders :- {sDetail.order || 0}
                                   </tr>
                                   <tr>
-                                    Total Revenue :- ${sDetail.revenue || 0}
+                                    Total Revenue :- $
+                                    {new Intl.NumberFormat("en-US").format(
+                                      sDetail.revenue || 0
+                                    )}
                                   </tr>
                                 </td>
                               </tr>
