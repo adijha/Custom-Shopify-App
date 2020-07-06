@@ -264,12 +264,14 @@ const ProductList = () => {
                             <td>
                               <div
                                 style={{
-                                  maxWidth: "100px",
+                                  maxWidth: "160px",
                                   whiteSpace: "nowrap",
                                   overflow: "hidden",
                                   textOverflow: "ellipsis",
                                 }}
                               >
+
+                                
                                 {item.description
                                   ? item.description.replace(/<[^>]*>/g, "")
                                   : null}

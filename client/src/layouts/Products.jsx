@@ -632,9 +632,18 @@ const Products = () => {
                       <br/>
                       <h5 className="price">Description:</h5>
                       <p>
+
+                      {product.description
+                                  ? <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: product.description
+                                  }}></div>
+                                  : null}
+
+{/* 
                         {product.description
                           ? product.description.replace(/(<([^>]+)>)/gi, "")
-                          : null}
+                          : null} */}
                       </p>
 
                       <br/>
