@@ -48,6 +48,8 @@ const AddProduct = () => {
   const [length, setLength] = useState();
 
   const [preview, setPreview] = useState([]);
+
+  const [multerImage, setMulterImage] = useState([])
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -383,6 +385,19 @@ const AddProduct = () => {
     }
   };
 
+  const showImage = e =>{
+    e.preventDefault();
+    console.log("pLength", e.target.files.length);
+    let images = []
+    for (var i = 0; i < e.target.files.length; i++) {
+      images.push(URL.createObjectURL(e.target.files[i]))
+      console.log(URL.createObjectURL(e.target.files[i]));
+
+    }
+console.log("Image", images);
+    setMulterImage(images)
+  }
+
   return (
     <div className="container-fluid">
       <br />
@@ -420,11 +435,22 @@ const AddProduct = () => {
               className="form-control"
               onChange={(e) => {
                 setProductImage(e.target.files);
+                showImage(e)
               }}
               multiple
               accept="image/*"
             />
           </div>
+          {(multerImage.length!==0)?(
+            <div>
+            {multerImage.map((image, i)=>{
+              return(
+              <img src={image} style={{width:"30%"}} alt="upload-image" className="process_Image"/>
+              )
+            })}
+            </div>
+          ):null}
+
         </div>
         <div className="card card-input">
           <div className="form-group">
