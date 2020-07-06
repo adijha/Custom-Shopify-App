@@ -12,7 +12,6 @@ const RequestProduct = () => {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
   const [id, setId] = useState("");
-  const [description, setDescription] = useState("");
   let date, merchantId
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
@@ -31,14 +30,13 @@ const RequestProduct = () => {
     let d = moment().format('DD-MM-YY')
 
     console.log({name, link, description, d, id});
-    axios.post('/api/requestProduct', {name, link, description, d, id})
+    axios.post('/api/requestProduct', {name, link, d, id})
     .then(res=>{
       if (res.data) {
         NotificationManager.success(
           'Request Product Submitted Successfully'
         );
         setName("")
-        setDescription("")
         setLink("")
       }
       else{
@@ -73,19 +71,7 @@ const RequestProduct = () => {
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label for="product_name">Product Description</label>
-                    <input
-                      type="text"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      min="0"
-                      className="form-control"
-                      id="product_name"
-                      placeholder="Enter Product Description "
-                      required
-                    />
-                  </div>
+
 
                   <div className="form-group">
                     <label for="product_name">Link</label>

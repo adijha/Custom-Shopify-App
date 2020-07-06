@@ -2732,7 +2732,6 @@ router.post('/requestProduct', async (req, res)=>{
     merchantId:req.body.id,
     date:req.body.d,
     name:req.body.name,
-    description:req.body.description,
     link:req.body.link
   });
 

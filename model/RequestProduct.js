@@ -10,9 +10,7 @@ const RequestProductSchema = mongoose.Schema({
   name:{
     type:String
   },
-  description:{
-    type:String
-  },
+
   link:{
     type:String
   }
