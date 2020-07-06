@@ -120,27 +120,26 @@ const Products = () => {
     //   });
     // });
 
-    let vArray = []
+    let vArray = [];
     t.varientArray.forEach((item, i) => {
       vArray.push({
-        "option1": item.varient,
-        "price": item.price,
-        "inventory_quantity": item.quantity,
-        "sku": item.sku
-      })
+        option1: item.varient,
+        price: item.price,
+        inventory_quantity: item.quantity,
+        sku: item.sku,
+      });
     });
 
-
     let product = {
-      "product": {
-        "title": t.name,
-        "body_html": t.description,
-        "vendor": decode.store,
-        "product_type": t.category,
+      product: {
+        title: t.name,
+        body_html: t.description,
+        vendor: decode.store,
+        product_type: t.category,
 
-        "images": images,
+        images: images,
         // tags: tagArray,
-        "variants": vArray
+        variants: vArray,
       },
     };
     console.log("product added for shopify is", product);
@@ -157,21 +156,29 @@ const Products = () => {
       });
   };
 
-
-  const getSellingRange = (arr) =>{
-
-    let maxSellingValue = arr.reduce(function(prev, curr) {
-      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice) ? prev : curr;
+  const getSellingRange = (arr) => {
+    let maxSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
     });
-    let minSellingValue = arr.reduce(function(prev, curr) {
-      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice) ? prev : curr;
+    let minSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
     });
-    let sellingRange = ' $ '+`${new Intl.NumberFormat("en-US").format(parseFloat(minSellingValue.selliingPrice).toFixed(2))}`
-                        + ' - ' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxSellingValue.selliingPrice).toFixed(2))}`
+    let sellingRange =
+      " $ " +
+      `${new Intl.NumberFormat("en-US").format(
+        parseFloat(minSellingValue.selliingPrice).toFixed(2)
+      )}` +
+      " - " +
+      `${new Intl.NumberFormat("en-US").format(
+        parseFloat(maxSellingValue.selliingPrice).toFixed(2)
+      )}`;
     console.log("selling", sellingRange);
-    return  sellingRange
-  }
-
+    return sellingRange;
+  };
 
   return (
     <div
@@ -384,12 +391,13 @@ const Products = () => {
                     {list.name}
                   </p>
                   <b style={{ fontSize: "1.5rem" }}>
-                  {(list.varientArray.length!==0)?(getSellingRange(list.varientArray))
-                   :(
-
-                      `$`(new Intl.NumberFormat("en-US").format(list.selliingPrice.toFixed(2)))
-                 )
-                 }
+                    {list.varientArray.length !== 0
+                      ? getSellingRange(list.varientArray)
+                      : `$`(
+                          new Intl.NumberFormat("en-US").format(
+                            list.selliingPrice.toFixed(2)
+                          )
+                        )}
                   </b>
                 </div>
               </div>
@@ -398,7 +406,12 @@ const Products = () => {
         })}
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} className="model-test"style={{maxWidth:"100% !important"}}>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        className="model-test"
+        style={{ maxWidth: "100% !important" }}
+      >
         <div className="container-fluid">
           <div className="text-center" style={{ color: "green" }}>
             {msg}
@@ -456,194 +469,231 @@ const Products = () => {
                     </div>
                     <div className="details col-md-6">
                       <h2 className="product-title">{product.name}</h2>
-                      <br/>
-                      <br/>
+                      <br />
+                      <br />
 
-                      {(product.varientArray.length!==0)?(
+                      {product.varientArray.length !== 0 ? (
                         <h5 className="price">
                           Price Range:
-                          <span>{getSellingRange(product.varientArray)}
-                          </span>
-                          </h5>
-                      ):(
+                          <span>{getSellingRange(product.varientArray)}</span>
+                        </h5>
+                      ) : (
                         <h5 className="price">
                           Price:
-                          <span>{`$`(new Intl.NumberFormat("en-US").format(product.selliingPrice.toFixed(2)))}
+                          <span>
+                            {`$`(
+                              new Intl.NumberFormat("en-US").format(
+                                product.selliingPrice.toFixed(2)
+                              )
+                            )}
                           </span>
-                          </h5>
+                        </h5>
                       )}
-                            {(product.varientArray.length!=0)?(
-                              <div>
-                                <div className="panel with-nav-tabs panel-default">
-                                  <div className="panel-heading">
-                                    <ul className="nav nav-tabs">
-                                      <li className="active"><a href="#tab1default" data-toggle="tab">Varients</a></li>
-                                      <li ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
-                                      <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
-                                    </ul>
-                                  </div>
-                                  <div className="panel-body">
-                                    <div className="tab-content">
-
-                                      <div className="tab-pane fade   in active" id="tab1default">
-                                      <table className="table table-sm">
-                                      <thead className="text-center">
+                      {product.varientArray.length != 0 ? (
+                        <div>
+                          <div className="panel with-nav-tabs panel-default">
+                            <div className="panel-heading">
+                              <ul className="nav nav-tabs">
+                                <li className="active">
+                                  <a href="#tab1default" data-toggle="tab">
+                                    Varients
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#tab2default" data-toggle="tab">
+                                    Shipping Detils
+                                  </a>
+                                </li>
+                                <li style={{ float: "right" }}>
+                                  Processing Time: <strong>1-3 days</strong>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="panel-body">
+                              <div className="tab-content">
+                                <div
+                                  className="tab-pane fade   in active"
+                                  id="tab1default"
+                                >
+                                  <table className="table table-sm">
+                                    <thead className="text-center">
                                       <tr>
-
-                                      <th>Name</th>
-                                      <th>Sku</th>
-                                      <th>Qunantity</th>
-                                      <th>Price</th>
+                                        <th>Name</th>
+                                        <th>Sku</th>
+                                        <th>Qunantity</th>
+                                        <th>Price</th>
                                       </tr>
-                                      </thead>
-                                      {product.varientArray.map((item, i)=>{
-                                        return(
+                                    </thead>
+                                    {product.varientArray.map((item, i) => {
+                                      return (
+                                        <tbody>
+                                          <tr>
+                                            <td>{item.varient}</td>
+                                            <td>{item.sku}</td>
+                                            <td className="text-center">
+                                              {item.quantity}
+                                            </td>
+                                            <td>${item.selliingPrice}</td>
+                                          </tr>
+                                        </tbody>
+                                      );
+                                    })}
+                                  </table>
+                                </div>
 
-                                          <tbody>
-                                            <tr>
-                                              <td>{item.varient}</td>
-                                              <td>{item.sku}</td>
-                                              <td className="text-center">{item.quantity}</td>
-                                              <td>${item.selliingPrice}</td>
-                                            </tr>
-                                          </tbody>
-                                      )
-                                      })}
-                                      </table>
-
-                                      </div>
-
-                                      <div className="tab-pane fade" id="tab2default">
-                                      <table className="table table-sm">
-
-                                      <thead>
+                                <div className="tab-pane fade" id="tab2default">
+                                  <table className="table table-sm">
+                                    <thead>
                                       <th>Country</th>
                                       <th>Est. Delivery Time</th>
                                       <th>Cost</th>
-                                      </thead>
-                                      <tbody>
+                                    </thead>
+                                    <tbody>
                                       <tr>
-                                      <td>USA</td>
-                                      <td>10-12 days</td>
-                                      <td>${product.shippingCharge.usa}</td>
+                                        <td>USA</td>
+                                        <td>10-12 days</td>
+                                        <td>${product.shippingCharge.usa}</td>
                                       </tr>
 
                                       <tr>
-                                      <td>Canada</td>
-                                      <td>10-12 days</td>
-                                      <td>${product.shippingCharge.canada}</td>
+                                        <td>Canada</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          ${product.shippingCharge.canada}
+                                        </td>
                                       </tr>
 
                                       <tr>
-                                      <td>Australia</td>
-                                      <td>10-12 days</td>
-                                      <td>${product.shippingCharge.australia}</td>
+                                        <td>Australia</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          ${product.shippingCharge.australia}
+                                        </td>
                                       </tr>
 
                                       <tr>
-                                      <td>UK</td>
-                                      <td>10-12 days</td>
-                                      <td>${product.shippingCharge.unitedKingdom}</td>
+                                        <td>UK</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          $
+                                          {product.shippingCharge.unitedKingdom}
+                                        </td>
                                       </tr>
 
                                       <tr>
-                                      <td>International</td>
-                                      <td>Variable</td>
-                                      <td>${product.shippingCharge.international}</td>
+                                        <td>International</td>
+                                        <td>Variable</td>
+                                        <td>
+                                          $
+                                          {product.shippingCharge.international}
+                                        </td>
                                       </tr>
-
-                                      </tbody>
-                                      </table>
-                                      </div>
-
-
-                                    </div>
-                                  </div>
+                                    </tbody>
+                                  </table>
                                 </div>
                               </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="panel with-nav-tabs panel-default">
+                            <div className="panel-heading">
+                              <ul className="nav nav-tabs">
+                                <li className="active">
+                                  <a href="#tab2default" data-toggle="tab">
+                                    Shipping Detils
+                                  </a>
+                                </li>
+                                <li style={{ float: "right" }}>
+                                  Processing Time: <strong>1-3 days</strong>
+                                </li>
+                              </ul>
+                            </div>
+                            <div className="panel-body">
+                              <div className="tab-content">
+                                <div className="tab-pane fade" id="tab2default">
+                                  <table className="table table-sm">
+                                    <thead>
+                                      <th>Country</th>
+                                      <th>Est. Delivery Time</th>
+                                      <th>Cost</th>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>USA</td>
+                                        <td>10-12 days</td>
+                                        <td>${product.shippingCharge.usa}</td>
+                                      </tr>
 
-):(
-  <div>
-    <div className="panel with-nav-tabs panel-default">
-      <div className="panel-heading">
-        <ul className="nav nav-tabs">
-          <li className="active" ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
-          <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
-        </ul>
-      </div>
-      <div className="panel-body">
-        <div className="tab-content">
+                                      <tr>
+                                        <td>Canada</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          ${product.shippingCharge.canada}
+                                        </td>
+                                      </tr>
 
-          <div className="tab-pane fade" id="tab2default">
-          <table className="table table-sm">
+                                      <tr>
+                                        <td>Australia</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          ${product.shippingCharge.australia}
+                                        </td>
+                                      </tr>
 
-          <thead>
-          <th>Country</th>
-          <th>Est. Delivery Time</th>
-          <th>Cost</th>
-          </thead>
-          <tbody>
-          <tr>
-          <td>USA</td>
-          <td>10-12 days</td>
-          <td>${product.shippingCharge.usa}</td>
-          </tr>
+                                      <tr>
+                                        <td>UK</td>
+                                        <td>10-12 days</td>
+                                        <td>
+                                          $
+                                          {product.shippingCharge.unitedKingdom}
+                                        </td>
+                                      </tr>
 
-          <tr>
-          <td>Canada</td>
-          <td>10-12 days</td>
-          <td>${product.shippingCharge.canada}</td>
-          </tr>
+                                      <tr>
+                                        <td>International</td>
+                                        <td>Variable</td>
+                                        <td>
+                                          $
+                                          {product.shippingCharge.international}
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
-          <tr>
-          <td>Australia</td>
-          <td>10-12 days</td>
-          <td>${product.shippingCharge.australia}</td>
-          </tr>
-
-          <tr>
-          <td>UK</td>
-          <td>10-12 days</td>
-          <td>${product.shippingCharge.unitedKingdom}</td>
-          </tr>
-
-          <tr>
-          <td>International</td>
-          <td>Variable</td>
-          <td>${product.shippingCharge.international}</td>
-          </tr>
-
-          </tbody>
-          </table>
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-)}
-
-
-
-
-                      <br/>
-                      <br/>
+                      <br />
+                      <br />
                       <h5 className="price">Description:</h5>
                       <p>
+                        {product.description ? (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: product.description,
+                            }}
+                          ></div>
+                        ) : null}
+
+                        {/* 
                         {product.description
                           ? product.description.replace(/(<([^>]+)>)/gi, "")
-                          : null}
+                          : null} */}
                       </p>
 
-                      <br/>
-                      <br/>
-                      {(product.varientArray.length===0)?(<div><h5 className="price">
-                            Available Quantity:
-                          </h5>
-                           <p>{product.quantity}</p></div>):null}
-
+                      <br />
+                      <br />
+                      {product.varientArray.length === 0 ? (
+                        <div>
+                          <h5 className="price">Available Quantity:</h5>
+                          <p>{product.quantity}</p>
+                        </div>
+                      ) : null}
 
                       <button
                         onClick={() => AddInShopify(product)}

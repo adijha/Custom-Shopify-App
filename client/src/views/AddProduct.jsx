@@ -47,7 +47,7 @@ const AddProduct = () => {
 
   const [length, setLength] = useState();
 
-  const [preview, setPreview] = useState([])
+  const [preview, setPreview] = useState([]);
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -87,10 +87,6 @@ const AddProduct = () => {
     "video",
   ];
 
-
-
-
-
   //Add Product
   const addProduct = async (e) => {
     e.preventDefault();
@@ -105,23 +101,23 @@ const AddProduct = () => {
     console.log("length is", length);
     for (var i = 0; i < length; i++) {
       let obj = {
-          "varient": document.getElementById(`varientName${i}`).value,
-          "price": document.getElementById(`varientPrice${i}`).value,
-          "quantity": document.getElementById(`varientQuantity${i}`).value,
-          "sku": document.getElementById(`varientSku${i}`).value,
-          "selliingPrice": document.getElementById(`varientPrice${i}`).value
-      }
-    // console.log({
-    //   varient: document.getElementById(`varientName${i}`).value,
-    //   price: document.getElementById(`varientPrice${i}`).value,
-    //   quantity: document.getElementById(`varientQuantity${i}`).value,
-    //   sku: document.getElementById(`varientSku${i}`).value
-    // });
-//     tempVarientArray.push(obj)
-//
-// }
-//
-//       };
+        varient: document.getElementById(`varientName${i}`).value,
+        price: document.getElementById(`varientPrice${i}`).value,
+        quantity: document.getElementById(`varientQuantity${i}`).value,
+        sku: document.getElementById(`varientSku${i}`).value,
+        selliingPrice: document.getElementById(`varientPrice${i}`).value,
+      };
+      // console.log({
+      //   varient: document.getElementById(`varientName${i}`).value,
+      //   price: document.getElementById(`varientPrice${i}`).value,
+      //   quantity: document.getElementById(`varientQuantity${i}`).value,
+      //   sku: document.getElementById(`varientSku${i}`).value
+      // });
+      //     tempVarientArray.push(obj)
+      //
+      // }
+      //
+      //       };
       // console.log({
       //   varient: document.getElementById(`varientName${i}`).value,
       //   price: document.getElementById(`varientPrice${i}`).value,
@@ -422,12 +418,13 @@ const AddProduct = () => {
               type="file"
               name="productImage"
               className="form-control"
-              onChange={(e) => {setProductImage(e.target.files); }}
+              onChange={(e) => {
+                setProductImage(e.target.files);
+              }}
               multiple
               accept="image/*"
             />
           </div>
-
         </div>
         <div className="card card-input">
           <div className="form-group">

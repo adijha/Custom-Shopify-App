@@ -166,12 +166,12 @@ const ShopifyProduct = () => {
                             </td>
                             <td>{item.product_type}</td>
                             <td>
-                              <button
+                              {/* <button
                                 className="btn btn-primary btn-sm"
                                 onClick={() => updateProductOpen(item)}
                               >
                                 Edit
-                              </button>
+                              </button> */}
                             </td>
                             <td>
                               <button
@@ -284,9 +284,7 @@ const ShopifyProduct = () => {
                             placeholder="selling Price"
                           />
                         </td>
-                        <td className="td-variant">
-                           ${selling - sss.price}
-                        </td>
+                        <td className="td-variant">${selling - sss.price}</td>
                       </tr>
                     );
                   })}
