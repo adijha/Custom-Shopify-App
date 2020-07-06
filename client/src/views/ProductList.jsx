@@ -150,9 +150,14 @@ const ProductList = () => {
           setDescription("");
           setCategory("");
           setCode("");
+          setVarient([]);
+          setCanada("");
+          setAustralia("");
+          setInternational("");
+          setUsa("");
+          setUk("");
           setOpen(false);
           getProductData();
-          setVarient([]);
         }
       })
       .catch((err) => {

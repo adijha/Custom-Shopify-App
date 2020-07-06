@@ -290,23 +290,7 @@ const AddProduct = () => {
       event.target.value = "";
     }
   };
-  const selectedTags = (tag) => {
-    if (!moreOption || !moreOption1) {
-      if (tag.length != 0 && tag1.length === 0 && tag2.length === 0) {
-        let r = makeCombo(tag);
-        setCombo(r);
-      }
-      if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
-        let r = makeCombo(tag0, tag1);
-        setCombo(r);
-      }
-      if (tag0.length != 0 && tag1.length != 0 && tag2.length != 0) {
-        let r = makeCombo(tag0, tag1, tag2);
-        setCombo(r);
-      }
-    }
-  };
-
+  
   const handelDelete = () => {
     //! normal user flow
     if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
@@ -353,7 +337,23 @@ const AddProduct = () => {
       setCombo(r);
     }
   };
-
+  
+  const selectedTags = (tag) => {
+    if (!moreOption || !moreOption1) {
+      if (tag.length != 0 && tag1.length === 0 && tag2.length === 0) {
+        let r = makeCombo(tag);
+        setCombo(r);
+      }
+      if (tag0.length != 0 && tag1.length != 0 && tag2.length === 0) {
+        let r = makeCombo(tag0, tag1);
+        setCombo(r);
+      }
+      if (tag0.length != 0 && tag1.length != 0 && tag2.length != 0) {
+        let r = makeCombo(tag0, tag1, tag2);
+        setCombo(r);
+      }
+    }
+  };
   const selectedTag1 = (tag1) => {
     if (!moreOption1) {
       if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
@@ -451,304 +451,6 @@ console.log("Image", images);
             </div>
           ):null}
 
-        </div>
-        <div className="card card-input">
-          <div className="form-group">
-            <label for="product_category">Category</label>
-            <select
-              className="form-control"
-              id="product_category"
-              onChange={(e) => {
-                setCategory(e.target.value);
-              }}
-              placeholder="Enter category"
-            >
-              {categoryList.map((item, i) => {
-                return (
-                  <option key={i} value={item.category}>
-                    {item.category}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
-          <div className="form-group">
-            <label for="product_id">ID/SKU</label>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="form-control"
-              id="product_id"
-              placeholder="Enter Unique Id of Product"
-            />
-          </div>
-        </div>
-        <div className="card card-input">
-          <div className="form-group">
-            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
-            <div
-              class="form-control "
-              style={{
-                border: "1px solid #ddd",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <span class="icon-wrapp">
-                <i class="input-icon fa fa-usd"></i>
-              </span>
-              <input
-                class="input-with-icon"
-                id="form-name"
-                type="text"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                id="product_price"
-                style={{ border: "none", width: "48vw" }}
-                placeholder="Enter Price"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label for="product_quantity">Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              min="0"
-              className="form-control"
-              id="product_quantity"
-              placeholder="Enter Available Quanity of Product"
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_warranty">Weight</label>
-            <input
-              type="text"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Weight of Product in Grams"
-            />
-          </div>
-          <div className="form-group">
-            <label for="product_warranty">Warranty</label>
-            <input
-              type="text"
-              value={warranty}
-              onChange={(e) => setWarranty(e.target.value)}
-              className="form-control"
-              id="product_warranty"
-              placeholder="Enter Available warranty of Product"
-            />
-          </div>
-          <div className="form-group" style={{ marginTop: 20 }}>
-            <label for="product_size">Size</label>
-            <input
-              type="text"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className="form-control"
-              id="product_size"
-              placeholder="Enter Different sizes seperated by ',' commas"
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="productImage">Shipping Details</label>
-            <div className="custom-control custom-checkbox">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios1"
-                style={{ marginRight: "10px" }}
-                value="freeShipping"
-                onChange={(e) => setShippingDetails(e.target.value)}
-              />
-              <label
-                className="form-check-label shippinglabel"
-                for="exampleRadios1"
-              >
-                Free ePacket Shipping
-              </label>
-            </div>
-            <div className="custom-control custom-checkbox">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="exampleRadios"
-                id="exampleRadios2"
-                style={{ marginRight: "10px" }}
-                value="standardShipping"
-                onChange={(e) => setShippingDetails(e.target.value)}
-              />
-              <label
-                className="form-check-label shippinglabel"
-                for="exampleRadios2"
-              >
-                Standard ePacket Shipping
-              </label>
-            </div>
-            <br />
-            {shippingDetails === "standardShipping" ? (
-              <div>
-                <h5>Shipping Price</h5>
-                <div className="form-group row">
-                  <label className="col-sm-2 col-form-label">USA</label>
-                  <div className="col-sm-10">
-                    <div
-                      class="form-control "
-                      style={{
-                        border: "1px solid #ddd",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span class="icon-wrapp">
-                        <i class="input-icon fa fa-usd"></i>
-                      </span>
-                      <input
-                        class="input-with-icon"
-                        id="form-name"
-                        type="text"
-                        min="0"
-                        value={usa}
-                        onChange={(e) => setUsa(e.target.value)}
-                        id="product_price"
-                        style={{ border: "none" }}
-                        placeholder="Enter Shipping Charges."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-2 col-form-label">Canada</label>
-                  <div className="col-sm-10">
-                    <div
-                      class="form-control "
-                      style={{
-                        border: "1px solid #ddd",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span class="icon-wrapp">
-                        <i class="input-icon fa fa-usd"></i>
-                      </span>
-                      <input
-                        class="input-with-icon"
-                        id="form-name"
-                        type="text"
-                        min="0"
-                        value={canada}
-                        onChange={(e) => setCanada(e.target.value)}
-                        id="product_price"
-                        style={{ border: "none" }}
-                        placeholder="Enter Shipping Charges."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-2 col-form-label">
-                    United Kingdom
-                  </label>
-                  <div className="col-sm-10">
-                    <div
-                      class="form-control "
-                      style={{
-                        border: "1px solid #ddd",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span class="icon-wrapp">
-                        <i class="input-icon fa fa-usd"></i>
-                      </span>
-                      <input
-                        class="input-with-icon"
-                        id="form-name"
-                        type="text"
-                        min="0"
-                        value={uk}
-                        onChange={(e) => setUk(e.target.value)}
-                        id="product_price"
-                        style={{ border: "none" }}
-                        placeholder="Enter Shipping Charges."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-2 col-form-label">Australia</label>
-                  <div className="col-sm-10">
-                    <div
-                      class="form-control "
-                      style={{
-                        border: "1px solid #ddd",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span class="icon-wrapp">
-                        <i class="input-icon fa fa-usd"></i>
-                      </span>
-                      <input
-                        class="input-with-icon"
-                        id="form-name"
-                        type="text"
-                        min="0"
-                        value={australia}
-                        onChange={(e) => setAustralia(e.target.value)}
-                        id="product_price"
-                        style={{ border: "none" }}
-                        placeholder="Enter Shipping Charges."
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-group row">
-                  <label className="col-sm-2 col-form-label">
-                    International
-                  </label>
-                  <div className="col-sm-10">
-                    <div
-                      class="form-control "
-                      style={{
-                        border: "1px solid #ddd",
-                        display: "flex",
-                        flexDirection: "row",
-                      }}
-                    >
-                      <span class="icon-wrapp">
-                        <i class="input-icon fa fa-usd"></i>
-                      </span>
-                      <input
-                        class="input-with-icon"
-                        id="form-name"
-                        type="text"
-                        min="0"
-                        value={international}
-                        onChange={(e) => setInternational(e.target.value)}
-                        id="product_price"
-                        style={{ border: "none" }}
-                        placeholder="Enter Shipping Charges."
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : null}
-          </div>
         </div>
         <div className="card card-input py-0 ll">
           <h4 className="text-left" style={{ margin: 0, marginBottom: 15 }}>
@@ -1097,13 +799,314 @@ console.log("Image", images);
             </>
           ) : null}
 
-          <div className="card-button" style={{ marginTop: 20 }}>
+         
+        </div>
+     
+
+        <div className="card card-input">
+          <div className="form-group">
+            <label for="product_category">Category</label>
+            <select
+              className="form-control"
+              id="product_category"
+              onChange={(e) => {
+                setCategory(e.target.value);
+              }}
+              placeholder="Enter category"
+            >
+              {categoryList.map((item, i) => {
+                return (
+                  <option key={i} value={item.category}>
+                    {item.category}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="form-group">
+            <label for="product_id">ID/SKU</label>
+            <input
+              type="text"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              className="form-control"
+              id="product_id"
+              placeholder="Enter Unique Id of Product"
+            />
+          </div>
+        </div>
+        <div className="card card-input">
+          <div className="form-group">
+            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
+            <div
+              class="form-control "
+              style={{
+                border: "1px solid #ddd",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <span class="icon-wrapp">
+                <i class="input-icon fa fa-usd"></i>
+              </span>
+              <input
+                class="input-with-icon"
+                id="form-name"
+                type="text"
+                min="0"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id="product_price"
+                style={{ border: "none", width: "48vw" }}
+                placeholder="Enter Price"
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label for="product_quantity">Quantity</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              min="0"
+              className="form-control"
+              id="product_quantity"
+              placeholder="Enter Available Quanity of Product"
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Weight</label>
+            <input
+              type="text"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              className="form-control"
+              id="product_warranty"
+              placeholder="Enter Weight of Product in Grams"
+            />
+          </div>
+          <div className="form-group">
+            <label for="product_warranty">Warranty</label>
+            <input
+              type="text"
+              value={warranty}
+              onChange={(e) => setWarranty(e.target.value)}
+              className="form-control"
+              id="product_warranty"
+              placeholder="Enter Available warranty of Product"
+            />
+          </div>
+          <div className="form-group" style={{ marginTop: 20 }}>
+            <label for="product_size">Size</label>
+            <input
+              type="text"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="form-control"
+              id="product_size"
+              placeholder="Enter Different sizes seperated by ',' commas"
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="productImage">Shipping Details</label>
+            <div className="custom-control custom-checkbox">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios1"
+                style={{ marginRight: "10px" }}
+                value="freeShipping"
+                onChange={(e) => setShippingDetails(e.target.value)}
+              />
+              <label
+                className="form-check-label shippinglabel"
+                for="exampleRadios1"
+              >
+                Free ePacket Shipping
+              </label>
+            </div>
+            <div className="custom-control custom-checkbox">
+              <input
+                className="form-check-input"
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios2"
+                style={{ marginRight: "10px" }}
+                value="standardShipping"
+                onChange={(e) => setShippingDetails(e.target.value)}
+              />
+              <label
+                className="form-check-label shippinglabel"
+                for="exampleRadios2"
+              >
+                Standard ePacket Shipping
+              </label>
+            </div>
+            <br />
+            {shippingDetails === "standardShipping" ? (
+              <div>
+                <h5>Shipping Price</h5>
+                <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">USA</label>
+                  <div className="col-sm-10">
+                    <div
+                      class="form-control "
+                      style={{
+                        border: "1px solid #ddd",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span class="icon-wrapp">
+                        <i class="input-icon fa fa-usd"></i>
+                      </span>
+                      <input
+                        class="input-with-icon"
+                        id="form-name"
+                        type="text"
+                        min="0"
+                        value={usa}
+                        onChange={(e) => setUsa(e.target.value)}
+                        id="product_price"
+                        style={{ border: "none" }}
+                        placeholder="Enter Shipping Charges."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">Canada</label>
+                  <div className="col-sm-10">
+                    <div
+                      class="form-control "
+                      style={{
+                        border: "1px solid #ddd",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span class="icon-wrapp">
+                        <i class="input-icon fa fa-usd"></i>
+                      </span>
+                      <input
+                        class="input-with-icon"
+                        id="form-name"
+                        type="text"
+                        min="0"
+                        value={canada}
+                        onChange={(e) => setCanada(e.target.value)}
+                        id="product_price"
+                        style={{ border: "none" }}
+                        placeholder="Enter Shipping Charges."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">
+                    United Kingdom
+                  </label>
+                  <div className="col-sm-10">
+                    <div
+                      class="form-control "
+                      style={{
+                        border: "1px solid #ddd",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span class="icon-wrapp">
+                        <i class="input-icon fa fa-usd"></i>
+                      </span>
+                      <input
+                        class="input-with-icon"
+                        id="form-name"
+                        type="text"
+                        min="0"
+                        value={uk}
+                        onChange={(e) => setUk(e.target.value)}
+                        id="product_price"
+                        style={{ border: "none" }}
+                        placeholder="Enter Shipping Charges."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">Australia</label>
+                  <div className="col-sm-10">
+                    <div
+                      class="form-control "
+                      style={{
+                        border: "1px solid #ddd",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span class="icon-wrapp">
+                        <i class="input-icon fa fa-usd"></i>
+                      </span>
+                      <input
+                        class="input-with-icon"
+                        id="form-name"
+                        type="text"
+                        min="0"
+                        value={australia}
+                        onChange={(e) => setAustralia(e.target.value)}
+                        id="product_price"
+                        style={{ border: "none" }}
+                        placeholder="Enter Shipping Charges."
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-sm-2 col-form-label">
+                    International
+                  </label>
+                  <div className="col-sm-10">
+                    <div
+                      class="form-control "
+                      style={{
+                        border: "1px solid #ddd",
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <span class="icon-wrapp">
+                        <i class="input-icon fa fa-usd"></i>
+                      </span>
+                      <input
+                        class="input-with-icon"
+                        id="form-name"
+                        type="text"
+                        min="0"
+                        value={international}
+                        onChange={(e) => setInternational(e.target.value)}
+                        id="product_price"
+                        style={{ border: "none" }}
+                        placeholder="Enter Shipping Charges."
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <div className="card-button" style={{ marginTop: 20 }}>
             <CustomButton round fill type="submit">
               Save Product
             </CustomButton>
           </div>
-        </div>
-      </form>
+       </form>
       <br />
       <div className="container-fluid">
         <form onSubmit={addCSvProduct}>
