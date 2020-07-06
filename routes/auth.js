@@ -1093,9 +1093,9 @@ let newObject = {}
 else {
   let newObject = {}
     data.forEach((delta, x) => {
-      matchArray.forEach((final, Y) => {
 
-        if (delta.store.toLowerCase() === final.store) {
+
+
            newObject = {
             id: delta._id,
             email: delta.email,
@@ -1109,11 +1109,11 @@ else {
           }
           mDetail.push(newObject);
 
-        }
+        
 
 
 
-      });
+
       // finalArrU.forEach((final, y)=>{
       //   if (delta.store !== final.store) {
       //     mDetail.push({
