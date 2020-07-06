@@ -166,12 +166,12 @@ const ShopifyProduct = () => {
                             </td>
                             <td>{item.product_type}</td>
                             <td>
-                              <button
+                              {/* <button
                                 className="btn btn-primary btn-sm"
                                 onClick={() => updateProductOpen(item)}
                               >
                                 Edit
-                              </button>
+                              </button> */}
                             </td>
                             <td>
                               <button
