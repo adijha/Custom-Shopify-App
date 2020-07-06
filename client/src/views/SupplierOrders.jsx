@@ -130,7 +130,7 @@ const SupplierOrders = () => {
                             )
                              || 'none'}</td>
                             <td>{item.tracking_number||"NA"}</td>
-                            <td><a href={`/invoice/`+decode.id+'/'+item.id}>View</a></td>
+                            <td><a href={`/invoice/`+decode.id+'/'+item.id} target="_blank">View</a></td>
                           </tr>
 
                           {expand === item.id ? (

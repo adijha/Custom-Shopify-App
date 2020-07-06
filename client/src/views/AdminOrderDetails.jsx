@@ -13,7 +13,7 @@ const SupplierList = () => {
   );
   const [endDate, setEndDate] = useState(moment().format('Y-MM-DD'));
   const [search, setSearch] = useState("");
-
+  const [found, setFound] = useState("")
 
   useEffect(() => {
     getSupplierData();
@@ -21,8 +21,14 @@ const SupplierList = () => {
 
   const getSupplierData = async () => {
     axios.get('/api/customOrderDetails').then((res) => {
-      setOrders(res.data);
-       console.log(res.data);
+      if (res.data.length===0) {
+        setFound("No Order Found")
+      }
+      else {
+        setOrders(res.data);
+         // console.log(res.data);
+      }
+
     });
   };
   const sortByDate = () => {
@@ -158,7 +164,9 @@ const SupplierList = () => {
                       <th>Status</th>
                     </tr>
                   </thead>
+
                   <tbody>
+                  <tr className="text-center">{found}</tr>
                     {filterItems.map((item, key) => {
                       return (
                         <>
@@ -203,25 +211,25 @@ const SupplierList = () => {
                             <tr key={9898989}>
                               <td></td>
                               <td colSpan='3'>
-                                <td>Product Price : $ 
-                                  
-                                  
+                                <td>Product Price : $
+
+
                                 {(new Intl.NumberFormat('en-US').format(item.product_price ))}
-                                   
-                                   
-                                   
+
+
+
                                    </td>
                               </td>
                               <td colSpan='3'>
                                 <td>
                                   Shipping Price: {
-                                  
+
                                   (new Intl.NumberFormat('en-US').format(item.shipping_price ))
-                                  
-                                  
-                                  
-                                  
-                                  
+
+
+
+
+
                                   || 'NA'}
                                 </td>
                               </td>

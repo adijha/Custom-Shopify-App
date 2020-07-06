@@ -6,6 +6,7 @@ import { NotificationManager } from 'react-notifications';
 import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
+import moment from 'moment';
 
 const RequestProductList = () => {
   const [requestList, setRequestList] = useState([]);
@@ -16,6 +17,9 @@ const RequestProductList = () => {
 
   const getMerchant = async () => {
     const res = await axios.get('/api/getRequestProduct');
+    res.data.sort((a,b) =>
+      new moment(b.date).format('DD-MM-YY h:mm') - new moment(a.date).format('DD-MM-YY h:mm')
+    )
     setRequestList(res.data);
     console.log(res.data);
   };
@@ -54,7 +58,7 @@ const RequestProductList = () => {
                             <td>{item.merchantId || 'NA'}</td>
                             <td>{item.date || 'NA'}</td>
                             <td>{item.name || 'NA'}</td>
-                            <td><a href={item.link}>{item.link}</a></td>
+                            <td><a href={item.link} target="_blank">{item.link}</a></td>
 
                           </tr>
                         </>

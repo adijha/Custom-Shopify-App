@@ -239,7 +239,7 @@ const AdminProduct = () => {
                     <thead>
                       <tr>
                         <th>image</th>
-                        <th>Supplier Id</th>
+                        <th>Supplier Name</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
@@ -275,7 +275,7 @@ const AdminProduct = () => {
                                   "No Image Available"
                                 )}
                               </td>
-                              <td>{item.supplier_id}</td>
+                              <td>{item.supplier_name}</td>
                               <td>
                                 <a href={"/admin/single-product/" + item._id}>
                                   {item.name}

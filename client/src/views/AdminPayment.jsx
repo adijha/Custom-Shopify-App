@@ -241,7 +241,7 @@ const SupplierList = () => {
                               $
                               {new Intl.NumberFormat("en-US").format(
                                 item.amount
-                              ) || 0}
+                              ||0)}
                             </td>
                             <td>
                               $
@@ -253,7 +253,7 @@ const SupplierList = () => {
                               $
                               {new Intl.NumberFormat("en-US").format(
                                 item.amount
-                              ) || 0}
+                              ||0)}
                             </td>
                           </tr>
 

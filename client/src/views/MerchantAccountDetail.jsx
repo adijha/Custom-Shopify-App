@@ -17,7 +17,7 @@ const MerchantAccountDetail = (props) => {
   const [store, setStore] = useState("")
   const [fulfill, setFulfill] = useState('');
   const [orderDetail, setOrderDetail] = useState([])
-
+  const [found , setFound] = useState('')
   let merchantId = props.match.params.id;
 
   useEffect(() => {
@@ -31,8 +31,14 @@ const MerchantAccountDetail = (props) => {
     setDetail(data.data)
     console.log(data.data, "data");
   const fetchOrder =  await axios.get('/api/merchantOrderDetail/'+data.data[0].store.toLowerCase())
-  setOrderDetail(fetchOrder.data)
-  console.log(fetchOrder);
+  if (fetchOrder.length!==0) {
+    setOrderDetail(fetchOrder.data)
+    console.log(fetchOrder);
+  }
+  else{
+    setFound("No Order Found")
+  }
+
 };
 
 
@@ -74,6 +80,7 @@ const MerchantAccountDetail = (props) => {
                     </tr>
                   </thead>
                   <tbody>
+                  <tr className="text-center">{found}</tr>
                     {orderDetail.map((od, key) => {
                       return (
                         <>

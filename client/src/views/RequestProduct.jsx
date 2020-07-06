@@ -27,7 +27,7 @@ const RequestProduct = () => {
 
   const updateSettings = async (e) => {
     e.preventDefault()
-    let d = moment().format('DD-MM-YY')
+    let d = moment().format('DD-MM-YY h:mm')
 
     console.log({name, link, d, id});
     axios.post('/api/requestProduct', {name, link, d, id})

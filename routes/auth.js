@@ -1109,7 +1109,7 @@ else {
           }
           mDetail.push(newObject);
 
-        
+
 
 
 
@@ -1294,9 +1294,24 @@ router.get('/merchantOrderDetail/:store', async (req, res) => {
 
   makeTempArray.forEach((item, i) => {
     productData.forEach((product, j) => {
-      if (makeTempArray[i].sku === productData[j].code) {
-        productArr.push(makeTempArray[i])
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===item.sku) {
+            productArr.push(makeTempArray[i])
+
+          }
+        });
+
       }
+      else if(product.code===item.sku) {
+        productArr.push(makeTempArray[i])
+
+      }
+
+      // if (makeTempArray[i].sku === productData[j].code) {
+      //   productArr.push(makeTempArray[i])
+      // }
     });
 
   });
@@ -1815,7 +1830,7 @@ router.get('/customProductDetail', async (req, res)=>{
 
   const productData = await Products.find()
   const orderData = await Orders.find()
-
+  const supplierData = await User.find()
   let priceArr = []
   let quanArr = []
   let finalArray = []
@@ -1826,6 +1841,7 @@ router.get('/customProductDetail', async (req, res)=>{
 
       _id: ddd._id,
       supplier_id: ddd.supplier_id,
+      supplier_name:'',
       name: ddd.name,
       price: ddd.price,
       quantity: ddd.qauntity,
@@ -1840,7 +1856,9 @@ router.get('/customProductDetail', async (req, res)=>{
       shippingCharge: ddd.shippingCharge,
       selliingPrice: ddd.selliingPrice,
       revenue: 0,
-      order:0
+      order:0,
+      varientArray:ddd.varientArray
+
 
     })
   });
@@ -1850,16 +1868,46 @@ console.log("new product Array achievement", dupArray);
   orderData.forEach((item, i) => {
       item.products.forEach((data, j) => {
         productData.forEach((pro, i) => {
-          if (pro.code === data.sku) {
+
+
+          if (pro.varientArray.length!=0) {
+            pro.varientArray.forEach((vArr, l) => {
+              if (vArr.sku===data.sku) {
+                priceArr.push({
+                  sku: data.sku,
+                  price: parseInt(vArr.price)
+                })
+                quanArr.push({
+                  sku: data.sku,
+                  quantity: parseInt(data.quantity)
+                })
+              }
+            });
+
+          }
+          else if (pro.code === data.sku) {
             priceArr.push({
               sku: data.sku,
-              price: parseInt(data.price)
+              price: parseInt(pro.price)
             })
             quanArr.push({
               sku: data.sku,
               quantity: parseInt(data.quantity)
             })
           }
+
+
+
+          // if (pro.code === data.sku) {
+          //   priceArr.push({
+          //     sku: data.sku,
+          //     price: parseInt(data.price)
+          //   })
+          //   quanArr.push({
+          //     sku: data.sku,
+          //     quantity: parseInt(data.quantity)
+          //   })
+          // }
         });
 
 
@@ -1921,13 +1969,27 @@ console.log("new product Array achievement", dupArray);
 
   dupArray.forEach((product, x) => {
     skuArr.forEach((final, index) => {
-      if (dupArray[x].code === skuArr[index].sku) {
+
+    if (dupArray[x].code === skuArr[index].sku) {
         dupArray[x].revenue=skuArr[index].revenue
         dupArray[x].order = skuArr[index].order
       }
     });
 
   });
+
+supplierData.forEach((supplier, index) => {
+  dupArray.forEach((item, x) => {
+    if (dupArray[x].supplier_id === supplierData[index]._id.toString()) {
+      dupArray[x].supplier_name=supplierData[index].supplier_id
+    }
+  });
+
+});
+
+
+
+
   res.send(dupArray)
 //console.log("new Product Data", productData);
 
