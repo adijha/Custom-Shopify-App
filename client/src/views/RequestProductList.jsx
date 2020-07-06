@@ -38,7 +38,6 @@ const RequestProductList = () => {
                       <th>Merchant Name</th>
                       <th>Date</th>
                       <th>Name</th>
-                      <th>Description</th>
                       <th>Link</th>
                     </tr>
                   </thead>
@@ -55,7 +54,6 @@ const RequestProductList = () => {
                             <td>{item.merchantId || 'NA'}</td>
                             <td>{item.date || 'NA'}</td>
                             <td>{item.name || 'NA'}</td>
-                            <td>{item.description || 'NA'}</td>
                             <td><a href={item.link}>{item.link}</a></td>
 
                           </tr>

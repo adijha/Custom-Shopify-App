@@ -1317,11 +1317,30 @@ app.get('/supplierRevenue/:id', async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            let countPrice = vArr.price * arr.count;
+
+            calPrice.push(~~countPrice);
+          }
+        });
+
+      }
+      else if(product.code===arr.sku) {
         let countPrice = product.price * arr.count;
 
         calPrice.push(~~countPrice);
       }
+
+
+      // if (product.code === arr.sku) {
+      //   let countPrice = product.price * arr.count;
+      //
+      //   calPrice.push(~~countPrice);
+      // }
     });
   });
   console.log({ calPrice });
@@ -1382,11 +1401,29 @@ app.get('/supplierOrders/:id', async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            let countItem = arr.count;
+
+            calOrder.push(countItem);
+          }
+        });
+
+      }
+      else if(product.code===arr.sku) {
         let countItem = arr.count;
 
         calOrder.push(countItem);
       }
+
+
+      // if (product.code === arr.sku) {
+      //   let countItem = arr.count;
+      //
+      //   calOrder.push(countItem);
+      // }
     });
   });
   console.log({ calOrder });
@@ -1446,7 +1483,26 @@ app.get('/topProducts/:id', async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+
+
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            let countItem = vArr.price * arr.count;
+
+            calOrder.push({
+              name: vArr.varient,
+              sku: vArr.sku,
+              count: arr.count,
+              price: vArr.price,
+              revenue: countItem,
+            });
+          }
+        });
+
+      }
+      else if(product.code===arr.sku) {
         let countItem = product.price * arr.count;
 
         calOrder.push({
@@ -1457,10 +1513,23 @@ app.get('/topProducts/:id', async (req, res) => {
           revenue: countItem,
         });
       }
+
+
+      // if (product.code === arr.sku) {
+      //   let countItem = product.price * arr.count;
+      //
+      //   calOrder.push({
+      //     name: product.name,
+      //     sku: product.code,
+      //     count: arr.count,
+      //     price: product.price,
+      //     revenue: countItem,
+      //   });
+      // }
     });
   });
   //console.log({calOrder});
-  let totalOrders = calOrder.sort((a, b) => b - a);
+  let totalOrders = calOrder.sort((a, b) => b.count - a.count);
   let top5 = totalOrders.slice(0, 5);
   //console.log({totalOrders});
   res.status(200).json(top5);
@@ -1508,12 +1577,33 @@ app.get('/supplierGraphRevenue/:id', async (req, res) => {
 
   itemArray.forEach((dash, i) => {
     productData.forEach((item, i) => {
-      if (item.code === dash.sku) {
+
+
+      if (item.varientArray.length!=0) {
+        item.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===dash.sku) {
+            newArray.push({
+              date: dash.date,
+              price: vArr.price,
+            });
+          }
+        });
+
+      }
+      else if(item.code===dash.sku) {
         newArray.push({
           date: dash.date,
           price: item.price,
         });
       }
+
+
+      // if (item.code === dash.sku) {
+      //   newArray.push({
+      //     date: dash.date,
+      //     price: item.price,
+      //   });
+      // }
     });
   });
 
@@ -1901,7 +1991,7 @@ app.get('/merchantTopProducts/:store', async (req, res) => {
           let countItem = vArr.selliingPrice * arr.count;
 
           calOrder.push({
-            name: product.name,
+            name: vArr.varient,
             productImage: product.productImage,
             sku: vArr.sku,
             count: arr.count,

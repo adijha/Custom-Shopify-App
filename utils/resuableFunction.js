@@ -43,10 +43,29 @@ const revenueSupplier = async (id) =>{
   // console.log(productData.length);
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            let countPrice = vArr.price * arr.count;
+
+            calPrice.push(~~countPrice);
+          }
+        });
+
+      }
+      else if(product.code===arr.sku) {
         let countPrice = product.price * arr.count;
+
         calPrice.push(~~countPrice);
       }
+
+
+      // if (product.code === arr.sku) {
+      //   let countPrice = product.price * arr.count;
+      //   calPrice.push(~~countPrice);
+      // }
     });
   });
   // console.log({ calPrice });
@@ -106,11 +125,28 @@ const orderSupplier = async (id) =>{
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            let countItem = arr.count;
+
+            calOrder.push(countItem);
+          }
+        });
+
+      }
+      else if(product.code===arr.sku) {
         let countItem = arr.count;
 
         calOrder.push(countItem);
       }
+
+      // if (product.code === arr.sku) {
+      //   let countItem = arr.count;
+      //
+      //   calOrder.push(countItem);
+      // }
     });
   });
   // console.log({ calOrder });

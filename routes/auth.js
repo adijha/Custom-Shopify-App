@@ -563,7 +563,18 @@ router.get('/supplierOrderMerchant', async (req, res)=>{
 
     productData.forEach((product, i) => {
       checkStore.forEach((check, index) => {
-        if (productData[i].code === checkStore[index].sku)
+
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (checkStore[index].sku===vArr.sku) {
+              checkStore[index].productImage= productData[i].productImage;
+              checkStore[index].productName = vArr.name
+              checkStore[index].shippingCharge = productData[i].shippingCharge
+            }
+          });
+
+        }
+        else if(productData[i].code === checkStore[index].sku)
         {
           checkStore[index].productImage= productData[i].productImage;
           checkStore[index].productName = productData[i].name
@@ -865,156 +876,175 @@ let makeOrderArray = []
 
 newOrderArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (newOrderArray[i].sku===productData[j].code) {
+
+
+    if (product.varientArray.length!=0) {
+      product.varientArray.forEach((vArr, l) => {
+        if (vArr.sku===newOrderArray[i].sku) {
+          makeOrderArray.push(newOrderArray[i])
+        }
+      });
+
+    }
+    else if(newOrderArray[i].sku===productData[j].code) {
       makeOrderArray.push(newOrderArray[i])
     }
+
+    // if (newOrderArray[i].sku===productData[j].code) {
+    //   makeOrderArray.push(newOrderArray[i])
+    // }
   });
 
 });
 
+  if (makeOrderArray.length!==0) {
 
-  data.forEach((item, i) => {
+    data.forEach((item, i) => {
 
-      makeOrderArray.forEach((pro, k) => {
-        if (item.store.toLowerCase() === pro.store) {
-          const obj = {
-            id: item._id,
-            email: item.email,
-            firstName: item.firstName,
-            lastName: item.lastName,
-            phone: item.phoneNo,
-            joiningDate: item.joiningDate,
-            store: pro.store.toLowerCase(),
-            price: parseInt(pro.price),
-            count: 1,
-          };
+        makeOrderArray.forEach((pro, k) => {
+          if (item.store.toLowerCase() === pro.store) {
+            const obj = {
+              id: item._id,
+              email: item.email,
+              firstName: item.firstName,
+              lastName: item.lastName,
+              phone: item.phoneNo,
+              joiningDate: item.joiningDate,
+              store: pro.store.toLowerCase(),
+              price: parseInt(pro.price),
+              count: 1,
+            };
 
-          detail.push(obj);
+            detail.push(obj);
+          }
+          sName.push(item.store.toLowerCase());
+
+        });
+
+    });
+    sName = [...new Set(sName)];
+    console.log({ sName });
+    //
+    // sName.forEach((sn, m) => {
+    //   detail.forEach((det, n) => {
+    //     if (sn === det.store) {
+    //       countItem += det.count;
+    //       countPrice += det.price;
+    //     } else {
+    //       countItem = 0;
+    //       countPrice = 0;
+    //     }
+    //     const finalObj = {
+    //       store: sn,
+    //       price: countPrice,
+    //       count: countItem,
+    //     };
+    //
+    //     finalArrU.push(finalObj);
+    //   });
+    //
+    // });
+
+
+    var holder = {};
+
+    detail.forEach(function (d) {
+      if (holder.hasOwnProperty(d.store)) {
+        holder[d.store] = holder[d.store] + d.price;
+      } else {
+        holder[d.store] = d.price;
+      }
+    });
+
+    var obj2 = [];
+
+    for (var prop in holder) {
+      obj2.push({ store: prop, price: holder[prop] });
+    }
+
+    var holder1 = {};
+
+    detail.forEach(function (d) {
+      if (holder1.hasOwnProperty(d.store)) {
+        holder1[d.store] = holder1[d.store] + d.count;
+      } else {
+        holder1[d.store] = d.count;
+      }
+    });
+
+    var obj3 = [];
+
+    for (var prop in holder1) {
+      obj3.push({ store: prop, count: holder1[prop] });
+    }
+    console.log({obj2});
+    console.log({obj3});
+
+  let randomArray = []
+    obj2.forEach((priceObj, i) => {
+      obj3.forEach((countObj, j) => {
+        if (countObj.store=== priceObj.store) {
+          randomArray.push({
+            store: priceObj.store,
+            price: priceObj.price,
+            count: countObj.count,
+          })
         }
-        sName.push(item.store.toLowerCase());
 
       });
+    });
+  console.log("randomArray", randomArray);
+
+  sName.forEach((name, i) => {
+    let obj={};
+    randomArray.forEach((item, i) => {
+
+      if (name === item.store) {
+        obj={
+          store: name,
+          price: item.price,
+          count: item.count
+        }
+      }
+      // else if(name!= item.store){
+      //   obj={
+      //     store: name,
+      //     price:0,
+      //     count:0
+      //   }
+      // }
+
+    });
+
+  finalArrU.push(obj)
 
   });
-  sName = [...new Set(sName)];
-  console.log({ sName });
-  //
-  // sName.forEach((sn, m) => {
-  //   detail.forEach((det, n) => {
-  //     if (sn === det.store) {
-  //       countItem += det.count;
-  //       countPrice += det.price;
-  //     } else {
-  //       countItem = 0;
-  //       countPrice = 0;
-  //     }
-  //     const finalObj = {
-  //       store: sn,
-  //       price: countPrice,
-  //       count: countItem,
-  //     };
-  //
-  //     finalArrU.push(finalObj);
-  //   });
-  //
-  // });
 
 
-  var holder = {};
 
-  detail.forEach(function (d) {
-    if (holder.hasOwnProperty(d.store)) {
-      holder[d.store] = holder[d.store] + d.price;
-    } else {
-      holder[d.store] = d.price;
-    }
+
+
+  let matchArray =[]
+  sName.forEach((name, i) => {
+    matchArray.push({
+      store:name,
+      price:0,
+      count:0
+    })
   });
-
-  var obj2 = [];
-
-  for (var prop in holder) {
-    obj2.push({ store: prop, price: holder[prop] });
-  }
-
-  var holder1 = {};
-
-  detail.forEach(function (d) {
-    if (holder1.hasOwnProperty(d.store)) {
-      holder1[d.store] = holder1[d.store] + d.count;
-    } else {
-      holder1[d.store] = d.count;
-    }
-  });
-
-  var obj3 = [];
-
-  for (var prop in holder1) {
-    obj3.push({ store: prop, count: holder1[prop] });
-  }
-  console.log({obj2});
-  console.log({obj3});
-
-let randomArray = []
-  obj2.forEach((priceObj, i) => {
-    obj3.forEach((countObj, j) => {
-      if (countObj.store=== priceObj.store) {
-        randomArray.push({
-          store: priceObj.store,
-          price: priceObj.price,
-          count: countObj.count,
-        })
+  console.log("match Array", matchArray);
+  let decideArray = []
+  matchArray.forEach((match, i) => {
+    randomArray.forEach((random, index) => {
+      if (matchArray[i].store === randomArray[index].store)
+      { matchArray[i].price = randomArray[index].price;
+        matchArray[i].count = randomArray[index].count;
       }
 
     });
-  });
-console.log("randomArray", randomArray);
-
-sName.forEach((name, i) => {
-  let obj={};
-  randomArray.forEach((item, i) => {
-
-    if (name === item.store) {
-      obj={
-        store: name,
-        price: item.price,
-        count: item.count
-      }
-    }
-    // else if(name!= item.store){
-    //   obj={
-    //     store: name,
-    //     price:0,
-    //     count:0
-    //   }
-    // }
 
   });
-
-finalArrU.push(obj)
-
-});
-let matchArray =[]
-sName.forEach((name, i) => {
-  matchArray.push({
-    store:name,
-    price:0,
-    count:0
-  })
-});
-console.log("match Array", matchArray);
-let decideArray = []
-matchArray.forEach((match, i) => {
-  randomArray.forEach((random, index) => {
-    if (matchArray[i].store === randomArray[index].store)
-    { matchArray[i].price = randomArray[index].price;
-      matchArray[i].count = randomArray[index].count;
-    }
-
-  });
-
-});
-console.log("decideArray", matchArray);
-
+  console.log("decideArray", matchArray);
 
   //console.log("finalArrU", finalArrU);
 let newObject = {}
@@ -1057,6 +1087,56 @@ let newObject = {}
     // })
 
   });
+
+  }
+
+else {
+  let newObject = {}
+    data.forEach((delta, x) => {
+      matchArray.forEach((final, Y) => {
+
+        if (delta.store.toLowerCase() === final.store) {
+           newObject = {
+            id: delta._id,
+            email: delta.email,
+            firstName: delta.firstName,
+            lastName: delta.lastName,
+            phone: delta.phoneNo,
+            joiningDate: delta.joiningDate,
+            store: 0,
+            price: 0,
+            count: 0,
+          }
+          mDetail.push(newObject);
+
+        }
+
+
+
+      });
+      // finalArrU.forEach((final, y)=>{
+      //   if (delta.store !== final.store) {
+      //     mDetail.push({
+      //       id: delta._id,
+      //       email: delta.email,
+      //       firstName: delta.firstName,
+      //       lastName: delta.lastName,
+      //       phone: delta.phoneNo,
+      //       joiningDate: delta.joiningDate,
+      //       store: delta.store,
+      //       price: 0,
+      //       count: 0,
+      //     })
+      //   }
+      // })
+
+    });
+
+
+}
+
+
+
 
   // console.log('final object is', mDetail);
 
