@@ -18,7 +18,7 @@ const RequestProductList = () => {
   const getMerchant = async () => {
     const res = await axios.get('/api/getRequestProduct');
     res.data.sort((a,b) =>
-      new moment(b.date).format('DD-MM-YY h:mm') - new moment(a.date).format('DD-MM-YY h:mm')
+      new Date(b.date) - new Date(a.date)
     )
     setRequestList(res.data);
     console.log(res.data);
