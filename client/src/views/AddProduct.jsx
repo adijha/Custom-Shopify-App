@@ -129,6 +129,7 @@ const AddProduct = () => {
       tempVarientArray.push(obj);
     }
     const data = await new FormData();
+    console.log(productImage, "add button image");
     data.append("productImage", productImage[0]);
     data.append("productImage", productImage[1]);
     data.append("productImage", productImage[2]);
@@ -290,7 +291,7 @@ const AddProduct = () => {
       event.target.value = "";
     }
   };
-  
+
   const handelDelete = () => {
     //! normal user flow
     if (tag0.length != 0 && tag1.length === 0 && tag2.length === 0) {
@@ -337,7 +338,7 @@ const AddProduct = () => {
       setCombo(r);
     }
   };
-  
+
   const selectedTags = (tag) => {
     if (!moreOption || !moreOption1) {
       if (tag.length != 0 && tag1.length === 0 && tag2.length === 0) {
@@ -387,15 +388,38 @@ const AddProduct = () => {
 
   const showImage = e =>{
     e.preventDefault();
-    console.log("pLength", e.target.files.length);
+    console.log("pLength", e.target.files);
     let images = []
+    let images1=[]
     for (var i = 0; i < e.target.files.length; i++) {
-      images.push(URL.createObjectURL(e.target.files[i]))
-      console.log(URL.createObjectURL(e.target.files[i]));
+      images1.push(e.target.files[i])
+      images.push({
+        url:URL.createObjectURL(e.target.files[i]),
+        name:e.target.files[i].name
+      })
+
 
     }
-console.log("Image", images);
+    setProductImage(images1)
     setMulterImage(images)
+    console.log(productImage, "pImage array");
+
+  }
+
+  const handleDeleteImage = (data, indexToRemove) =>{
+    setMulterImage([...multerImage.filter((_, index) => index !== indexToRemove)]);
+    setProductImage([...productImage.filter((_, index) => index !== indexToRemove)]);
+// let tempArray = []
+// multerImage.forEach((image, i) => {
+//   productImage.forEach((item, j) => {
+//     console.log({item});
+//     if (multerImage[i].name === productImage[j].name) {
+//         tempArray.push(productImage[j])
+//     }
+//   });
+//
+//   });
+//   setProductImage(tempArray)
   }
 
   return (
@@ -442,10 +466,15 @@ console.log("Image", images);
             />
           </div>
           {(multerImage.length!==0)?(
-            <div>
+            <div className="image-preview">
             {multerImage.map((image, i)=>{
               return(
-              <img src={image} style={{width:"30%"}} alt="upload-image" className="process_Image"/>
+                <div className="col-md-4">
+                <button style={{display:"flex"}} type="button" className="close" aria-label="Close" onClick={()=>handleDeleteImage(image, i)}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <img src={image.url} alt="upload-image" className="process_Image"/>
+              </div>
               )
             })}
             </div>
@@ -799,9 +828,9 @@ console.log("Image", images);
             </>
           ) : null}
 
-         
+
         </div>
-     
+
 
         <div className="card card-input">
           <div className="form-group">
