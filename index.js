@@ -1583,6 +1583,20 @@ app.get('/MerchantDashboardOrder/:storeName', async (req, res) => {
 
   tempArray.forEach((item, i) => {
     productData.forEach((product, j) => {
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===item.sku) {
+            checkStore.push(tempArray[i])
+          }
+        });
+
+      }
+      else if(product.code===item.sku) {
+        checkStore.push(tempArray[i])
+      }
+
+
       if (tempArray[i].sku===productData[j].code) {
         checkStore.push(tempArray[i])
       }
@@ -1651,9 +1665,25 @@ app.get('/merchantDasboardGraph/:storeName', async (req, res) => {
 
 tempArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (tempArray[i].sku===productData[j].code) {
-      checkStore.push(tempArray[i])
+
+
+    if (product.varientArray.length!=0) {
+      product.varientArray.forEach((vArr, l) => {
+        if (vArr.sku===item.sku) {
+          checkStore.push(tempArray[i])
+        }
+      });
+
     }
+    else if(product.code===item.sku) {
+    checkStore.push(tempArray[i])
+    }
+
+
+    //
+    // if (tempArray[i].sku===productData[j].code) {
+    //   checkStore.push(tempArray[i])
+    // }
   });
 });
 console.log("checkStore in m Graoh", checkStore);
@@ -1749,9 +1779,22 @@ app.get('/merchantDasboardRevenueGraphByDates/:storeName/:start/:end', async (re
 
 tempArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (tempArray[i].sku===productData[j].code) {
-      checkStore.push(tempArray[i])
+
+    if (product.varientArray.length!=0) {
+      product.varientArray.forEach((vArr, l) => {
+        if (vArr.sku===item.sku) {
+          checkStore.push(tempArray[i])
+        }
+      });
+
     }
+    else if(product.code===item.sku) {
+    checkStore.push(tempArray[i])
+    }
+
+    // if (tempArray[i].sku===productData[j].code) {
+    //   checkStore.push(tempArray[i])
+    // }
   });
 });
 console.log("checkStore in m Graoh", checkStore);
@@ -1809,7 +1852,7 @@ app.get('/merchantTopProducts/:store', async (req, res) => {
       if (sss.sku !== undefined) {
         itemArray.push({
           sku: sss.sku,
-          count: sss.quantity,
+          count: 1,
           store: sss.store
         });
       }
@@ -1848,18 +1891,56 @@ app.get('/merchantTopProducts/:store', async (req, res) => {
 
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
-        let countItem = product.price * arr.count;
+
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+
+          if(vArr.sku===arr.sku){
+
+          let countItem = vArr.selliingPrice * arr.count;
+
+          calOrder.push({
+            name: product.name,
+            productImage: product.productImage,
+            sku: vArr.sku,
+            count: arr.count,
+            price: parseInt(vArr.selliingPrice),
+            revenue: countItem,
+          })
+        }
+        });
+
+      }
+      else if(product.code===arr.sku) {
+        let countItem = product.selliingPrice * arr.count;
 
         calOrder.push({
           name: product.name,
           productImage: product.productImage,
           sku: product.code,
           count: arr.count,
-          price: product.price,
+          price: parseInt(product.selliingPrice),
           revenue: countItem,
-        });
+        })
       }
+
+      //
+      // if (product.code === arr.sku) {
+      //   let countItem = product.price * arr.count;
+      //
+      //   calOrder.push({
+      //     name: product.name,
+      //     productImage: product.productImage,
+      //     sku: product.code,
+      //     count: arr.count,
+      //     price: product.price,
+      //     revenue: countItem,
+      //   });
+      // }
+
+
+
     });
   });
 

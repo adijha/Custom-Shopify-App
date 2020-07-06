@@ -202,23 +202,41 @@ console.log(req.params.store);
 
 tempArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (tempArray[i].sku===productData[j].code) {
+
+    if (product.varientArray.length!=0) {
+      product.varientArray.forEach((vArr, l) => {
+        if (vArr.sku===item.sku) {
+          checkStore.push({
+            orderId: item.orderId,
+            pStatus: item.pStatus
+          })
+        }
+      });
+
+    }
+    else if(product.code===item.sku) {
       checkStore.push({
         orderId: item.orderId,
-        // total_amount: item.total_amount,
-        // date: item.date,
-        // paymentMode: item.paymentMode,
-        // customer_detail: item.customer_detail,
-        // item_price: item.item_price,
-        // sku: item.sku,
-        // productImage:product.productImage,
-        // quantity: item.quantity,
-        // productName: product.name,
-        // shippingCharge: product.shippingCharge,
-        // store: item.store,
         pStatus: item.pStatus
       })
     }
+    // if (tempArray[i].sku===productData[j].code) {
+    //   checkStore.push({
+    //     orderId: item.orderId,
+    //     // total_amount: item.total_amount,
+    //     // date: item.date,
+    //     // paymentMode: item.paymentMode,
+    //     // customer_detail: item.customer_detail,
+    //     // item_price: item.item_price,
+    //     // sku: item.sku,
+    //     // productImage:product.productImage,
+    //     // quantity: item.quantity,
+    //     // productName: product.name,
+    //     // shippingCharge: product.shippingCharge,
+    //     // store: item.store,
+    //     pStatus: item.pStatus
+    //   })
+    // }
   });
 });
 
@@ -376,27 +394,78 @@ console.log(req.params.store);
 
   let productData = await Products.find()
 
-tempArray.forEach((item, i) => {
-  productData.forEach((product, j) => {
-    if (item.sku===product.code) {
-      checkStore.push({
-        orderId: item.orderId,
-        total_amount: item.total_amount,
-        date: item.date,
-        paymentMode: item.paymentMode,
-        customer_detail: item.customer_detail,
-        item_price: item.item_price,
-        sku: item.sku,
-        productImage:product.productImage,
-        quantity: item.quantity,
-        productName: product.name,
-        shippingCharge: product.shippingCharge,
-        store: item.store,
-        pStatus: item.pStatus,
-      })
-    }
+
+
+  tempArray.forEach((item, j) => {
+    productData.forEach((product, k) => {
+
+      if (product.varientArray.length!=0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===item.sku) {
+            checkStore.push({
+              orderId: item.orderId,
+              total_amount: item.total_amount,
+              date: item.date,
+              paymentMode: item.paymentMode,
+              customer_detail: item.customer_detail,
+              item_price: item.item_price,
+              sku: item.sku,
+              productImage:product.productImage,
+              quantity: item.quantity,
+              productName: vArr.varient,
+              shippingCharge: product.shippingCharge,
+              store: item.store,
+              pStatus: item.pStatus,
+            })
+          }
+        });
+
+      }
+      else if(product.code===item.sku) {
+        checkStore.push({
+          orderId: item.orderId,
+          total_amount: item.total_amount,
+          date: item.date,
+          paymentMode: item.paymentMode,
+          customer_detail: item.customer_detail,
+          item_price: item.item_price,
+          sku: item.sku,
+          productImage:product.productImage,
+          quantity: item.quantity,
+          productName: product.name,
+          shippingCharge: product.shippingCharge,
+          store: item.store,
+          pStatus: item.pStatus,
+        })
+      }
+
+    });
+
   });
-});
+
+
+
+// tempArray.forEach((item, i) => {
+//   productData.forEach((product, j) => {
+//     if (item.sku===product.code) {
+//       checkStore.push({
+//         orderId: item.orderId,
+//         total_amount: item.total_amount,
+//         date: item.date,
+//         paymentMode: item.paymentMode,
+//         customer_detail: item.customer_detail,
+//         item_price: item.item_price,
+//         sku: item.sku,
+//         productImage:product.productImage,
+//         quantity: item.quantity,
+//         productName: product.name,
+//         shippingCharge: product.shippingCharge,
+//         store: item.store,
+//         pStatus: item.pStatus,
+//       })
+//     }
+//   });
+// });
 
 
   // productData.forEach((product, i) => {
