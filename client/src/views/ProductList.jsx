@@ -9,7 +9,6 @@ import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import "../assets/css/productList.css";
 import CustomButton from "../components/CustomButton/CustomButton.jsx";
-import { set } from "mongoose";
 
 const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
@@ -270,8 +269,6 @@ const ProductList = () => {
                                   textOverflow: "ellipsis",
                                 }}
                               >
-
-                                
                                 {item.description
                                   ? item.description.replace(/<[^>]*>/g, "")
                                   : null}

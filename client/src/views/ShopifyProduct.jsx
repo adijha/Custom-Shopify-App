@@ -284,9 +284,7 @@ const ShopifyProduct = () => {
                             placeholder="selling Price"
                           />
                         </td>
-                        <td className="td-variant">
-                           ${selling - sss.price}
-                        </td>
+                        <td className="td-variant">${selling - sss.price}</td>
                       </tr>
                     );
                   })}
