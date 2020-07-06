@@ -9,6 +9,7 @@ import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import "../assets/css/productList.css";
 import CustomButton from "../components/CustomButton/CustomButton.jsx";
+import { set } from "mongoose";
 
 const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
@@ -116,6 +117,7 @@ const ProductList = () => {
       description: description,
       category: category,
       code: code,
+      varients: varient,
     };
     console.log(object);
     axios
@@ -132,6 +134,7 @@ const ProductList = () => {
           setCode("");
           setOpen(false);
           getProductData();
+          setVarient([]);
         }
       })
       .catch((err) => {
@@ -163,23 +166,26 @@ const ProductList = () => {
     setVarient(newArr);
   };
 
-  const getRange = (arr) =>{
+  const getRange = (arr) => {
     console.log("arr", arr);
-    let maxValue = arr.reduce(function(prev, curr) {
+    let maxValue = arr.reduce(function (prev, curr) {
       return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
-    })
-    let minValue = arr.reduce(function(prev, curr) {
+    });
+    let minValue = arr.reduce(function (prev, curr) {
       return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
     });
 
-
-
-    let range= '$'+`${new Intl.NumberFormat("en-US").format(parseFloat(minValue.price).toFixed(2))}`
-                        + '-' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxValue.price).toFixed(2))}`
-    return range
-  }
-
-
+    let range =
+      "$" +
+      `${new Intl.NumberFormat("en-US").format(
+        parseFloat(minValue.price).toFixed(2)
+      )}` +
+      "-" +
+      `${new Intl.NumberFormat("en-US").format(
+        parseFloat(maxValue.price).toFixed(2)
+      )}`;
+    return range;
+  };
 
   return (
     <div>
@@ -226,13 +232,15 @@ const ProductList = () => {
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td> {(item.varientArray.length!==0)?(getRange(item.varientArray))
-                              :(
-                                `$`(new Intl.NumberFormat("en-US").format(item.price.toFixed(2)))
-
-
-                          )
-                            }
+                            <td>
+                              {" "}
+                              {item.varientArray.length !== 0
+                                ? getRange(item.varientArray)
+                                : `$`(
+                                    new Intl.NumberFormat("en-US").format(
+                                      item.price.toFixed(2)
+                                    )
+                                  )}
                             </td>
                             <td>
                               <div
@@ -334,6 +342,36 @@ const ProductList = () => {
               />
             </div>
 
+            <div className="form-group row">
+              <label className="col-sm-2 col-form-label">Canada</label>
+              <div className="col-sm-10">
+                <div
+                  class="form-control "
+                  style={{
+                    border: "1px solid #ddd",
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <span class="icon-wrapp">
+                    <i class="input-icon fa fa-usd"></i>
+                  </span>
+                  <input
+                    class="input-with-icon"
+                    type="text"
+                    min="0"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    id="product_price"
+                    style={{ border: "none" }}
+                    placeholder="Enter Price of Product"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* 
             <div className="form-group">
               <label for="product_price">Price in Dollars</label>
               <input
@@ -346,7 +384,8 @@ const ProductList = () => {
                 placeholder="Enter Price of Product"
                 required
               />
-            </div>
+            </div> */}
+
             <div className="form-group">
               <label for="product_quantity">Quantity</label>
               <input
