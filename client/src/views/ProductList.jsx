@@ -342,34 +342,33 @@ const ProductList = () => {
               />
             </div>
 
-            <div className="form-group row">
-              <label className="col-sm-2 col-form-label">Canada</label>
-              <div className="col-sm-10">
-                <div
-                  class="form-control "
-                  style={{
-                    border: "1px solid #ddd",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <span class="icon-wrapp">
-                    <i class="input-icon fa fa-usd"></i>
-                  </span>
-                  <input
-                    class="input-with-icon"
-                    type="text"
-                    min="0"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    id="product_price"
-                    style={{ border: "none" }}
-                    placeholder="Enter Price of Product"
-                    required
-                  />
-                </div>
-              </div>
+            <div className="form-group">
+            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
+            <div
+              class="form-control "
+              style={{
+                border: "1px solid #ddd",
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <span class="icon-wrapp">
+                <i class="input-icon fa fa-usd"></i>
+              </span>
+              <input
+                class="input-with-icon"
+                id="form-name"
+                type="text"
+                min="0"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                id="product_price"
+                style={{ border: "none", width: "48vw" }}
+                placeholder="Enter Price"
+              />
             </div>
+          </div>
+
 
             {/* 
             <div className="form-group">
