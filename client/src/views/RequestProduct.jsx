@@ -29,7 +29,7 @@ const RequestProduct = () => {
     e.preventDefault()
     let d = moment().format('DD-MM-YY')
 
-    console.log({name, link, description, d, id});
+    console.log({name, link, d, id});
     axios.post('/api/requestProduct', {name, link, d, id})
     .then(res=>{
       if (res.data) {
