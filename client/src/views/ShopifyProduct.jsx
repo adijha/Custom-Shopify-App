@@ -285,7 +285,7 @@ const ShopifyProduct = () => {
                           />
                         </td>
                         <td className="td-variant">
-                          &#8377; {selling - sss.price}
+                           ${selling - sss.price}
                         </td>
                       </tr>
                     );

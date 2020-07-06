@@ -625,7 +625,15 @@ app.get('/ordersData', async (req, res) => {
     let makeOrderArray = []
     itemArray.forEach((item, i) => {
       productData.forEach((product, j) => {
-        if (itemArray[i].sku===productData[j].code) {
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, k) => {
+            if (vArr.sku===itemArray[i].sku) {
+              makeOrderArray.push(itemArray[i])
+            }
+          });
+
+        }
+        else if (itemArray[i].sku===productData[j].code) {
           makeOrderArray.push(itemArray[i])
         }
       });
@@ -653,7 +661,8 @@ app.get('/revenue', async (req, res) => {
           name: sss.name,
           sku: sss.sku,
           price: sss.price,
-          store: sss.store.toLowerCase()
+          store: sss.store.toLowerCase(),
+
         });
       }
     });
@@ -661,15 +670,38 @@ app.get('/revenue', async (req, res) => {
 let makeOrderArray = []
 itemArray.forEach((item, i) => {
   productData.forEach((product, j) => {
-    if (itemArray[i].sku===productData[j].code) {
-      makeOrderArray.push(itemArray[i])
+
+    if (product.varientArray.length!=0) {
+      product.varientArray.forEach((vArr, k) => {
+        if (vArr.sku===itemArray[i].sku) {
+          makeOrderArray.push({
+            totalPrice:item.totalPrice,
+            name:item.name,
+            sku:item.sku,
+            price:item.price,
+            store:item.store,
+            product_price:parseInt(vArr.price),
+          })
+        }
+      });
+
+    }
+    else if (itemArray[i].sku===productData[j].code) {
+      makeOrderArray.push({
+        totalPrice:item.totalPrice,
+        name:item.name,
+        sku:item.sku,
+        price:item.price,
+        store:item.store,
+        product_price:parseInt(productData[j].price),
+      })
     }
   });
 
 });
 console.log("makeOrderArray", makeOrderArray);
   makeOrderArray.forEach((item, i) => {
-    priceCal.push(item.totalPrice);
+    priceCal.push(item.product_price);
   });
 
   const sumPrice = priceCal.reduce((a, b) => a + b, 0);
@@ -701,15 +733,49 @@ app.get('/newTimeGraph', async (req, res) => {
 
   const data = await Orders.find({});
 
+  const productData = await Products.find()
+
+  let orderArray = []
+
   data.forEach((item, i) => {
-    newAray.push(item.created_on.toDateString());
+    item.products.forEach((itemProduct, j) => {
+      productData.forEach((product, k) => {
+
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===itemProduct.sku) {
+              orderArray.push({
+                created_on: item.created_on.toDateString(),
+                price: parseInt(vArr.price)
+              })
+            }
+          });
+
+        }
+        else if(product.code===itemProduct.sku) {
+          orderArray.push({
+            created_on: item.created_on.toDateString(),
+            price: parseInt(product.price)
+          })
+        }
+
+      });
+
+    });
+
+  });
+
+
+
+  orderArray.forEach((item, i) => {
+    newAray.push(item.created_on);
   });
 
   //var uniqueItems = Array.from(new Set(newAray)) // distinct value of dates
 
-  data.forEach((item, i) => {
+  orderArray.forEach((item, i) => {
     timeData.push({
-      date: item.created_on.toDateString(),
+      date: item.created_on,
       price: item.price,
     });
   });
@@ -731,7 +797,7 @@ app.get('/newTimeGraph', async (req, res) => {
     price: priceArray,
   };
   res.status(200).json(graphData);
-  //console.log("Final Array is", graphData)
+  console.log("Final Array is showing", graphData)
 });
 
 //Revenue by State
@@ -743,7 +809,42 @@ app.get('/statePie', async (req, res) => {
 
   const data = await Orders.find({});
 
+
+  const productData = await Products.find()
+
+  let orderArray = []
+
   data.forEach((item, i) => {
+    item.products.forEach((itemProduct, j) => {
+      productData.forEach((product, k) => {
+
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===itemProduct.sku) {
+              orderArray.push({
+                price: parseInt(vArr.price),
+                customer: item.customer
+              })
+            }
+          });
+
+        }
+        else if(product.code===itemProduct.sku) {
+          orderArray.push({
+            customer: item.customer,
+            price: parseInt(product.price)
+          })
+        }
+
+      });
+
+    });
+
+  });
+
+
+
+  orderArray.forEach((item, i) => {
     stateData.push({
       state: item.customer.city,
       price: item.price,
@@ -788,6 +889,14 @@ app.get('/categoryRevenue', async (req, res) => {
   let finalArray = [];
   const data = await Orders.find({});
 
+
+
+  const productData = await Products.find({ });
+
+
+  let orderArray = []
+
+
   data.forEach((item, i) => {
     item.products.forEach((sss, i) => {
       if (sss.sku !== undefined) {
@@ -799,36 +908,65 @@ app.get('/categoryRevenue', async (req, res) => {
     });
   });
 
-  var holder = {};
 
-  obj.forEach(function (d) {
-    if (holder.hasOwnProperty(d.sku)) {
-      holder[d.sku] = holder[d.sku] + d.price;
-    } else {
-      holder[d.sku] = d.price;
-    }
-  });
+  obj.forEach((item, i) => {
 
-  var obj2 = [];
+      productData.forEach((product, k) => {
 
-  for (var prop in holder) {
-    obj2.push({ sku: prop, price: holder[prop] });
-  }
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===item.sku) {
+              orderArray.push({
+                category: product.category,
+                price: parseInt(vArr.price)
+              })
+            }
+          });
 
-  console.log({ obj2 });
+        }
+        else if(product.code===item.sku) {
+          orderArray.push({
+            category: product.category,
+            price: parseInt(product.price)
+          })
+        }
 
-  const productData = await Products.find({ category: req.body.category });
+      });
 
-  productData.forEach((sk, i) => {
-    obj2.forEach((cat, i) => {
-      if (sk.code === cat.sku) {
-        categoryArray.push({ category: sk.category, price: cat.price });
-      }
     });
-  });
+
+
+
+  //   var holder = {};
+  //
+  //   obj.forEach(function (d) {
+  //     if (holder.hasOwnProperty(d.sku)) {
+  //       holder[d.sku] = holder[d.sku] + d.price;
+  //     } else {
+  //       holder[d.sku] = d.price;
+  //     }
+  //   });
+  //
+  //   var obj2 = [];
+  //
+  //   for (var prop in holder) {
+  //     obj2.push({ sku: prop, price: holder[prop] });
+  //   }
+  //
+  //   console.log({ obj2 });
+  //
+  //
+  //
+  // productData.forEach((sk, i) => {
+  //   obj2.forEach((cat, i) => {
+  //     if (sk.code === cat.sku) {
+  //       categoryArray.push({ category: sk.category, price: cat.price });
+  //     }
+  //   });
+  // });
   var holder1 = {};
 
-  categoryArray.forEach(function (d) {
+  orderArray.forEach(function (d) {
     if (holder1.hasOwnProperty(d.category)) {
       holder1[d.category] = holder1[d.category] + d.price;
     } else {
@@ -852,9 +990,13 @@ app.get('/categoryRevenue', async (req, res) => {
     category: arrCategory,
     revenue: arrRevenue,
   };
-
+console.log("category Revenue", categoryRevenue);
   res.status(200).json(categoryRevenue);
 });
+
+
+
+
 
 //Admin Top 10 selling Product
 
@@ -862,6 +1004,7 @@ app.get('/topSelling', async (req, res) => {
   let itemArray = [];
 
   const data = await Orders.find({});
+
 
   data.forEach((item, i) => {
     item.products.forEach((sss, i) => {
@@ -897,6 +1040,45 @@ app.get('/topSelling', async (req, res) => {
 
   //console.log(productData.length);
 
+
+  let orderArray = []
+
+  obj2.forEach((arr, i) => {
+      productData.forEach((product, k) => {
+
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===arr.sku) {
+              let countItem = parseInt(vArr.price) * arr.count;
+
+              calOrder.push({
+                name: product.name,
+                sku: product.code,
+                count: arr.count,
+                price: parseInt(vArr.price),
+                revenue: countItem,
+              })
+            }
+          });
+
+        }
+        else if(product.code===arr.sku) {
+          let countItem = parseInt(product.price) * arr.count;
+
+          calOrder.push({
+            name: product.name,
+            sku: product.code,
+            count: arr.count,
+            price: parseInt(product.price),
+            revenue: countItem,
+          })
+        }
+
+      });
+
+  });
+
+
   obj2.forEach((arr, i) => {
     productData.forEach((product, j) => {
       if (product.code === arr.sku) {
@@ -913,7 +1095,7 @@ app.get('/topSelling', async (req, res) => {
     });
   });
   //console.log({calOrder});
-  let totalOrders = calOrder.sort((a, b) => b - a);
+  let totalOrders = calOrder.sort((a, b) => b.count - a.count);
   let top10 = totalOrders.slice(0, 10);
   //console.log({totalOrders});
   res.status(200).json(top10);
@@ -925,18 +1107,52 @@ app.get('/orderTime', async (req, res) => {
 
   const data = await Orders.find({});
 
+  const productData = await Products.find()
+
+  let orderArray = []
+
   data.forEach((item, i) => {
-    timeData.push({
-      date: item.created_on.toDateString(),
-      count: 1,
+    item.products.forEach((itemProduct, j) => {
+      productData.forEach((product, k) => {
+
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===itemProduct.sku) {
+              orderArray.push({
+                date: item.created_on.toDateString(),
+                count: 1,
+              })
+            }
+          });
+
+        }
+        else if(product.code===itemProduct.sku) {
+          orderArray.push({
+            date: item.created_on.toDateString(),
+            count: 1,
+          })
+        }
+
+      });
+
     });
+
   });
 
-  console.log({ timeData });
+
+
+  // data.forEach((item, i) => {
+  //   timeData.push({
+  //     date: item.created_on.toDateString(),
+  //     count: 1,
+  //   });
+  // });
+  //
+  // console.log({ timeData });
 
   var holder = {};
 
-  timeData.forEach(function (d) {
+  orderArray.forEach(function (d) {
     if (holder.hasOwnProperty(d.date)) {
       holder[d.date] = holder[d.date] + d.count;
     } else {
@@ -963,7 +1179,7 @@ app.get('/orderTime', async (req, res) => {
     date: timeArray,
     orders: countArray,
   };
-  console.log(finalObj);
+  console.log("finalObj",finalObj);
   res.status(200).json(finalObj);
 });
 
@@ -976,17 +1192,51 @@ app.get('/stateOrderGraph', async (req, res) => {
 
   const data = await Orders.find({});
 
-  data.forEach((item, i) => {
-    stateData.push({
-      state: item.customer.city,
-      count: 1,
-    });
-  });
+    const productData = await Products.find()
 
-  console.log({ stateData });
+    let orderArray = []
+
+    data.forEach((item, i) => {
+      item.products.forEach((itemProduct, j) => {
+        productData.forEach((product, k) => {
+
+          if (product.varientArray.length!=0) {
+            product.varientArray.forEach((vArr, l) => {
+              if (vArr.sku===itemProduct.sku) {
+                orderArray.push({
+                  state: item.customer.city,
+                  count: 1,
+                })
+              }
+            });
+
+          }
+          else if(product.code===itemProduct.sku) {
+            orderArray.push({
+              state: item.customer.city,
+              count: 1,
+            })
+          }
+
+        });
+
+      });
+
+    });
+
+
+
+  // data.forEach((item, i) => {
+  //   stateData.push({
+  //     state: item.customer.city,
+  //     count: 1,
+  //   });
+  // });
+  //
+  // console.log({ stateData });
   var holder = {};
 
-  stateData.forEach(function (d) {
+  orderArray.forEach(function (d) {
     if (holder.hasOwnProperty(d.state)) {
       holder[d.state] = holder[d.state] + d.count;
     } else {

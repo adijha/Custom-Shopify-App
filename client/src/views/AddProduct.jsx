@@ -47,6 +47,7 @@ const AddProduct = () => {
 
   const [length, setLength] = useState();
 
+  const [preview, setPreview] = useState([])
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -86,6 +87,10 @@ const AddProduct = () => {
     "video",
   ];
 
+
+
+
+
   //Add Product
   const addProduct = async (e) => {
     e.preventDefault();
@@ -113,7 +118,7 @@ const AddProduct = () => {
     //   sku: document.getElementById(`varientSku${i}`).value
     // });
 //     tempVarientArray.push(obj)
-// 
+//
 // }
 //
 //       };
@@ -410,17 +415,19 @@ const AddProduct = () => {
               placeholder={"Write something"}
             />
           </div>
+
           <div className="form-group">
             <label for="productImage">Image upload</label>
             <input
               type="file"
               name="productImage"
               className="form-control"
-              onChange={(e) => setProductImage(e.target.files)}
+              onChange={(e) => {setProductImage(e.target.files); }}
               multiple
               accept="image/*"
             />
           </div>
+
         </div>
         <div className="card card-input">
           <div className="form-group">

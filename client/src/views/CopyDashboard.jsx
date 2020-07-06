@@ -331,7 +331,7 @@ const CopyDashboard = () => {
                           <tr key={key}>
                             <td>{item.sku}</td>
                             <td>{item.name}</td>
-                            <td>{item.price}</td>
+                            <td>${item.price}</td>
                             <td>{item.count}</td>
                           </tr>
                         );

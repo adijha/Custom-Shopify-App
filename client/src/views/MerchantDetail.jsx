@@ -68,7 +68,7 @@ const MerchantDetail = () => {
                             <td>{item.joiningDate || 'NA'}</td>
                             <td>{item.plan || 'NA'}</td>
                             <td>{item.count || 'NA'}</td>
-                            <td>&#x24; {'$'(new Intl.NumberFormat("en-US").format(item.price))|| 'NA'}</td>
+                            <td>&#x24; {`${(new Intl.NumberFormat("en-US").format(item.price))}`|| 'NA'}</td>
                             <td>
                               <a href={'/admin/merchant/' + item.id}>
                                 View More
