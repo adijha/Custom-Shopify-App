@@ -157,6 +157,22 @@ const Products = () => {
       });
   };
 
+
+  const getSellingRange = (arr) =>{
+
+    let maxSellingValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice) ? prev : curr;
+    });
+    let minSellingValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice) ? prev : curr;
+    });
+    let sellingRange = ' $ '+`${new Intl.NumberFormat("en-US").format(parseFloat(minSellingValue.selliingPrice).toFixed(2))}`
+                        + ' - ' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxSellingValue.selliingPrice).toFixed(2))}`
+    console.log("selling", sellingRange);
+    return  sellingRange
+  }
+
+
   return (
     <div
       className=""
@@ -368,7 +384,12 @@ const Products = () => {
                     {list.name}
                   </p>
                   <b style={{ fontSize: "1.5rem" }}>
-                    $ {(new Intl.NumberFormat('en-US').format(list.price.toFixed(1) ))}
+                  {(list.varientArray.length!==0)?(getSellingRange(list.varientArray))
+                   :(
+
+                      `$`(new Intl.NumberFormat("en-US").format(list.selliingPrice.toFixed(2)))
+                 )
+                 }
                   </b>
                 </div>
               </div>
@@ -441,17 +462,16 @@ const Products = () => {
                       {(product.varientArray.length!==0)?(
                         <h5 className="price">
                           Price Range:
-                          <span>$
+                          <span>{getSellingRange(product.varientArray)}
                           </span>
                           </h5>
                       ):(
                         <h5 className="price">
                           Price:
-                          <span>${product.price}
+                          <span>{`$`(new Intl.NumberFormat("en-US").format(product.selliingPrice.toFixed(2)))}
                           </span>
                           </h5>
                       )}
-
                             {(product.varientArray.length!=0)?(
                               <div>
                                 <div className="panel with-nav-tabs panel-default">

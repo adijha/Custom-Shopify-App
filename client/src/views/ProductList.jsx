@@ -163,6 +163,24 @@ const ProductList = () => {
     setVarient(newArr);
   };
 
+  const getRange = (arr) =>{
+    console.log("arr", arr);
+    let maxValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
+    })
+    let minValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
+    });
+
+
+
+    let range= '$'+`${new Intl.NumberFormat("en-US").format(parseFloat(minValue.price).toFixed(2))}`
+                        + '-' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxValue.price).toFixed(2))}`
+    return range
+  }
+
+
+
   return (
     <div>
       <br />
@@ -208,7 +226,14 @@ const ProductList = () => {
                             <td>{item.name}</td>
                             <td>{item.code}</td>
                             <td>{item.category}</td>
-                            <td>{"$ " + Number(item.price).toFixed(2)}</td>
+                            <td> {(item.varientArray.length!==0)?(getRange(item.varientArray))
+                              :(
+                                `$`(new Intl.NumberFormat("en-US").format(item.price.toFixed(2)))
+
+
+                          )
+                            }
+                            </td>
                             <td>
                               <div
                                 style={{

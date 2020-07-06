@@ -157,6 +157,39 @@ const AdminProduct = () => {
     setSDetail(supplierDetail.data);
   };
 
+
+  const getRange = (arr) =>{
+    console.log("arr", arr);
+    let maxValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
+    })
+    let minValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
+    });
+
+
+
+    let range= '$'+`${new Intl.NumberFormat("en-US").format(parseFloat(minValue.price).toFixed(2))}`
+                        + '-' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxValue.price).toFixed(2))}`
+    return range
+  }
+
+  const getSellingRange = (arr) =>{
+
+    let maxSellingValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice) ? prev : curr;
+    });
+    let minSellingValue = arr.reduce(function(prev, curr) {
+      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice) ? prev : curr;
+    });
+    let sellingRange = '$'+`${new Intl.NumberFormat("en-US").format(parseFloat(minSellingValue.selliingPrice).toFixed(2))}`
+                        + '-' +  `${new Intl.NumberFormat("en-US").format(parseFloat(maxSellingValue.selliingPrice).toFixed(2))}`
+    console.log("selling", sellingRange);
+    return  sellingRange
+  }
+
+  
+
   return (
     <div style={{ overflowX: "hidden" }}>
       <br />
@@ -284,17 +317,23 @@ const AdminProduct = () => {
                               <td>{item.code}</td>
                               <td>{item.category}</td>
                               <td>
-                                $
-                                {new Intl.NumberFormat("en-US").format(
-                                  item.price.toFixed(2)
-                                )}
-                              </td>
-                              <td>
-                                $
-                                {new Intl.NumberFormat("en-US").format(
-                                  item.selliingPrice.toFixed(2)
-                                )}
-                              </td>
+                             {(item.varientArray.length!==0)?(getRange(item.varientArray))
+                              :(
+                                `$`(new Intl.NumberFormat("en-US").format(item.price.toFixed(2)))
+
+
+                          )
+                            }
+                            </td>
+                            <td>
+                            {(item.varientArray.length!==0)?(getSellingRange(item.varientArray))
+                             :(
+
+                                `$`(new Intl.NumberFormat("en-US").format(item.selliingPrice.toFixed(2)))
+                           )
+                           }
+                           </td>
+
                               <td>{item.order}</td>
                               <td>
                                 $
