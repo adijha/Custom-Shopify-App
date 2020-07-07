@@ -129,8 +129,9 @@ const Products = () => {
         sku: item.sku,
       });
     });
+    let product={};
     if (t.varientArray.length!==0) {
-      let product = {
+       product = {
         product: {
           title: t.name,
           body_html: t.description,
@@ -144,7 +145,7 @@ const Products = () => {
       };
     }
     else {
-      let product = {
+       product = {
         product: {
           title: t.name,
           body_html: t.description,
