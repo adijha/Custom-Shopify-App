@@ -221,7 +221,7 @@ app.post('/addToShopify/:storeName',async (req, res) => {
     };
 
     request
-      .post(shopRequestUrl, { headers: shopRequestHeaders, json: obj })
+      .post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
       .then(async (shopResponse) => {
         try {
           const makeCopy = await new ProductCopy(shopResponse);

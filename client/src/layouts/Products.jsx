@@ -129,19 +129,36 @@ const Products = () => {
         sku: item.sku,
       });
     });
+    if (t.varientArray.length!==0) {
+      let product = {
+        product: {
+          title: t.name,
+          body_html: t.description,
+          vendor: decode.store,
+          product_type: t.category,
 
-    let product = {
-      product: {
-        title: t.name,
-        body_html: t.description,
-        vendor: decode.store,
-        product_type: t.category,
+          images: images,
+          // tags: tagArray,
+          variants: vArray,
+        }
+      };
+    }
+    else {
+      let product = {
+        product: {
+          title: t.name,
+          body_html: t.description,
+          vendor: decode.store,
+          product_type: t.category,
+          price:t.price,
+          quantity:t.quantity,
+          sku:t.sku,
+          images: images,
+          // tags: tagArray,
+        }
+      };
+    }
 
-        images: images,
-        // tags: tagArray,
-        variants: vArray,
-      },
-    };
     console.log("product added for shopify is", product);
     axios
       .post("/addToShopify/" + storeName.toLowerCase(), product)
@@ -680,7 +697,7 @@ const Products = () => {
                           ></div>
                         ) : null}
 
-                        {/* 
+                        {/*
                         {product.description
                           ? product.description.replace(/(<([^>]+)>)/gi, "")
                           : null} */}

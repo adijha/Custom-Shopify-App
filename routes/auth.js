@@ -2188,10 +2188,26 @@ checkProductOrderSku = []
 
 orderArray.forEach((order, i) => {
   productData.forEach((product, i) => {
-    if (order.sku === product.code) {
+
+    if (product.varientArray.length!==0) {
+      product.varientArray.forEach((vArr, l) => {
+        if (vArr.sku==order.sku) {
+          checkProductOrderSku.push({
+            category: product.category,
+            price: vArr.price,
+            quantity: order.quantity
+          })
+        }
+      });
+
+    }
+
+
+
+    else if (order.sku === product.code) {
       checkProductOrderSku.push({
         category: product.category,
-        price: order.price,
+        price: product.price,
         quantity: order.quantity
       })
     }
