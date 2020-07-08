@@ -156,7 +156,7 @@ const AddProduct = () => {
     data.append("australia", australia);
     data.append("international", international);
     data.append("varientArray", JSON.stringify(tempVarientArray));
-    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)));
+    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)))
     axios
       .post("/api/addProduct", data)
       .then((res) => {
@@ -171,6 +171,11 @@ const AddProduct = () => {
           setCode("");
           setProductImage([]);
           setVarients([]);
+          setCanada("");
+          setAustralia("");
+          setInternational("");
+          setUsa("");
+          setUk("");
         } else {
           res.data.error
             ? NotificationManager.error(res.data.error.toString())
@@ -518,23 +523,6 @@ const AddProduct = () => {
               ></div>
               <div>
                 <div>
-                  {/* <select
-                    style={{
-                      width: 150,
-                      height: 40,
-                      border: '1px solid grey',
-                      borderRadius: 5,
-                      marginBottom: 13,
-                    }}
-                    onChange={(e) => setOption1(e.target.value)}
-                  >
-                    <option value='color'>Color</option>
-                    <option value='size'>Size</option>
-                    <option value='style'>Style</option>
-                    <option value='material'>Material</option>
-                    <option value='title'>Title</option>
-                  </select> */}
-                  {/* <div> */}
                   <input
                     type="text"
                     name="city"
