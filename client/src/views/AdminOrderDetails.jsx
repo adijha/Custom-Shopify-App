@@ -222,15 +222,12 @@ const SupplierList = () => {
                               </td>
                               <td colSpan='3'>
                                 <td>
-                                  Shipping Price: {
-
-                                  (new Intl.NumberFormat('en-US').format(item.shipping_price ))
-
-
-
-
-
-                                  || 'NA'}
+                                <th>Shipping Details</th>
+                                  <tr>USA:            ${(new Intl.NumberFormat('en-US').format(item.shipping.usa ))|| 'NA'}</tr>
+                                  <tr>Canada:         ${(new Intl.NumberFormat('en-US').format(item.shipping.canada ))|| 'NA'}</tr>
+                                  <tr>United Kingdom: ${(new Intl.NumberFormat('en-US').format(item.shipping.uk ))|| 'NA'}</tr>
+                                  <tr>Australia:      ${(new Intl.NumberFormat('en-US').format(item.shipping.australia ))|| 'NA'}</tr>
+                                  <tr>International:  ${(new Intl.NumberFormat('en-US').format(item.shipping.international ))|| 'NA'}</tr>
                                 </td>
                               </td>
                             </tr>

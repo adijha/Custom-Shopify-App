@@ -54,7 +54,15 @@ const SupplierList = () => {
       time: t,
     };
 
-    if (!item.amount) {
+    if ((method==='')||(id==='')) {
+      NotificationManager.error("Something missing in details");
+
+    }
+    // else if ((id='')) {
+    //   NotificationManager.error("Something missing in details");
+    //
+    // }
+    else if (!item.amount) {
       if (parseInt(amount) > parseInt(item.revenue) || parseInt(amount) === 0) {
         console.log("if if cond", parseInt(amount), parseInt(item.revenue));
 
