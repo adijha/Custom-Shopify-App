@@ -36,13 +36,19 @@ const SupplierPaymentDetails = () => {
   const saveBankDetails = async () =>{
     console.log({name, accountno, pmethod, ifscCode});
     try {
-        let obj = {
-          name: name,
-          accountno: accountno
+      if (name ==='' || accountno ==='' || pmethod ==='' || ifscCode === '') {
+        NotificationManager.error("Please fill all fields");
+
+      }
+        else {
+          let obj = {
+            name: name,
+            accountno: accountno
+          }
+          let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, pmethod, ifscCode, supplier_id});
+          getDetails();
+          NotificationManager.success("Detail saved Successfully");
         }
-        let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, pmethod, ifscCode, supplier_id});
-        getDetails();
-        NotificationManager.success("Detail saved Successfully");
 
       }
 
@@ -54,10 +60,16 @@ const SupplierPaymentDetails = () => {
   const saveTransferwiseDetails = async () =>{
     console.log({name, accountno, pmethod, sortCode});
     try {
+      if (name ==='' || accountno==='' || pmethod==='' || sortCode === '') {
+        NotificationManager.error("Please fill all fields");
 
+      }
+      else {
         let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, sortCode});
         getDetails();
         NotificationManager.success("Detail saved Successfully");
+      }
+
 
       }
 
@@ -69,10 +81,16 @@ const SupplierPaymentDetails = () => {
   const savePaypalDetails =async  () =>{
     console.log({name, profileId, pmethod});
     try {
+      if (name ==='' || profileId==='' || pmethod === '') {
+        NotificationManager.error("Please fill all fields");
 
+      }
+      else {
         let res = await axios.post("/api/supplierPaymentUpdate", {name, profileId, pmethod, supplier_id});
         getDetails();
         NotificationManager.success("Detail saved Successfully");
+      }
+
 
       }
 
@@ -84,10 +102,15 @@ const SupplierPaymentDetails = () => {
   const saveWesternDetails =  async () =>{
     console.log({firstName, lastName, westernId, address, pmethod, supplier_id});
     try {
-
+      if (firstName==='' || lastName==='' || westernId ==='' || address === '' || pmethod ==='' || supplier_id === '') {
+        NotificationManager.error("Please fill all fields");
+      }
+      else {
         let res = await axios.post("/api/supplierPaymentUpdate", {firstName, lastName, westernId, address, pmethod, supplier_id});
         getDetails();
         NotificationManager.success("Detail saved Successfully");
+      }
+
 
       }
 
@@ -151,6 +174,7 @@ const getDetails = () =>{
                         className="form-control"
                         id="product_id"
                         placeholder="Enter name"
+                        required
                       />
                     </div>
                     <div className="form-group">
@@ -160,9 +184,11 @@ const getDetails = () =>{
                         value={accountno}
                         onChange={(e) => setAccountno(e.target.value)}
                         min="0"
+                        maxLength="20"
                         className="form-control"
                         id="product_id"
                         placeholder="Enter Account No."
+                        required
                       />
                     </div>
                     <div className="form-group">
@@ -174,7 +200,9 @@ const getDetails = () =>{
                         min="0"
                         className="form-control"
                         id="product_id"
-                        placeholder="Enter name"
+                        placeholder="Enter IFSC Code"
+                        maxLength="12"
+                        required
                       />
                     </div>
                     <CustomButton  onClick={saveBankDetails}>Save Details</CustomButton>
@@ -199,6 +227,7 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter name"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -208,9 +237,11 @@ const getDetails = () =>{
                       value={accountno}
                       onChange={(e) => setAccountno(e.target.value)}
                       min="0"
+                      maxLength="40"
                       className="form-control"
                       id="product_id"
                       placeholder="Enter Account No."
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -220,9 +251,11 @@ const getDetails = () =>{
                       value={sortCode}
                       onChange={(e) => setSortCode(e.target.value)}
                       min="0"
+                      maxLength="20"
                       className="form-control"
                       id="product_id"
                       placeholder="Enter name"
+                      required
                     />
                   </div>
                   <CustomButton  onClick={saveTransferwiseDetails}>Save Details</CustomButton>
@@ -245,15 +278,16 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter name"
+                      required
                     />
                   </div>
                   <div className="form-group">
                     <label for="product_quantity">Profile Id</label>
                     <input
-                      type="text"
+                      type="email"
                       value={profileId}
                       onChange={(e) => setProfileId(e.target.value)}
-                      min="0"
+
                       className="form-control"
                       id="product_id"
                       placeholder="Enter Paypal Profile id or username"
@@ -282,6 +316,7 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter Western Union Id"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -294,6 +329,7 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter First Name"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -306,6 +342,7 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter Last Name"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -318,6 +355,7 @@ const getDetails = () =>{
                       className="form-control"
                       id="product_id"
                       placeholder="Enter Full Address"
+                      required
                     />
                   </div>
 
