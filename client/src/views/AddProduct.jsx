@@ -826,6 +826,64 @@ const AddProduct = () => {
             </>
           ) : null}
         </div>
+{varien? null : 
+        <div className="card card-input">
+                <div className="form-group">
+                  <label for="product_id">ID/SKU</label>
+                  <input
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    className="form-control"
+                    id="product_id"
+                    placeholder="Enter Unique Id of Product"
+                  />
+                </div>
+                <div className="form-group">
+                  <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
+                  <div
+                    class="form-control "
+                    style={{
+                      border: "1px solid #ddd",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <span class="icon-wrapp">
+                      <i class="input-icon fa fa-usd"></i>
+                    </span>
+                    <input
+                      class="input-with-icon"
+                      id="form-name"
+                      type="text"
+                      min="0"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      id="product_price"
+                      style={{ border: "none", width: "48vw" }}
+                      placeholder="Enter Price"
+                    />
+                  </div>
+                </div>
+                    <div className="form-group">
+                      <label for="product_quantity">Quantity</label>
+                      <input
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_quantity"
+                        placeholder="Enter Available Quanity of Product"
+                      />
+                    </div>
+      
+                
+
+        </div>
+}
+
+
 
         <div className="card card-input">
           <div className="form-group">
@@ -847,58 +905,8 @@ const AddProduct = () => {
               })}
             </select>
           </div>
-          <div className="form-group">
-            <label for="product_id">ID/SKU</label>
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="form-control"
-              id="product_id"
-              placeholder="Enter Unique Id of Product"
-            />
-          </div>
-        </div>
-        <div className="card card-input">
-          <div className="form-group">
-            <p style={{ marginBottom: 4, fontSize: 15 }}>PRICE</p>
-            <div
-              class="form-control "
-              style={{
-                border: "1px solid #ddd",
-                display: "flex",
-                flexDirection: "row",
-              }}
-            >
-              <span class="icon-wrapp">
-                <i class="input-icon fa fa-usd"></i>
-              </span>
-              <input
-                class="input-with-icon"
-                id="form-name"
-                type="text"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                id="product_price"
-                style={{ border: "none", width: "48vw" }}
-                placeholder="Enter Price"
-              />
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label for="product_quantity">Quantity</label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              min="0"
-              className="form-control"
-              id="product_quantity"
-              placeholder="Enter Available Quanity of Product"
-            />
-          </div>
+          
+          
           <div className="form-group">
             <label for="product_warranty">Weight</label>
             <input
