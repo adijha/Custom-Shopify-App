@@ -9,7 +9,7 @@ import { NotificationManager } from "react-notifications";
 import Card from "../components/Card/Card.jsx";
 import "../assets/css/productList.css";
 import CustomButton from "../components/CustomButton/CustomButton.jsx";
-const imageToBase64 = require('image-to-base64');
+const imageToBase64 = require("image-to-base64");
 
 const ProductList = () => {
   const [productItems, setProductItems] = useState([]);
@@ -32,8 +32,8 @@ const ProductList = () => {
   const [uk, setUk] = useState(2.5);
   const [australia, setAustralia] = useState(2.5);
   const [international, setInternational] = useState(2.5);
-  const [shippingStatus, setShippingStatus] = useState('')
-  const [productImage, setProductImage] = useState([])
+  const [shippingStatus, setShippingStatus] = useState("");
+  const [productImage, setProductImage] = useState([]);
   const modalStyle = {
     margin: "auto",
     position: "relative",
@@ -102,8 +102,8 @@ const ProductList = () => {
     setUsa(item.shippingCharge.usa);
     setUk(item.shippingCharge.unitedKingdom);
 
-      setShippingDetails(item.shippingCharge.method)
-      setProductImage(item.productImage)
+    setShippingDetails(item.shippingCharge.method);
+    setProductImage(item.productImage);
     setOpen(true);
   };
 
@@ -140,7 +140,7 @@ const ProductList = () => {
         uk,
         usa,
       },
-      productImage: productImage
+      productImage: productImage,
     };
     console.log(object);
     axios
@@ -204,73 +204,71 @@ const ProductList = () => {
     return range;
   };
 
-let newBuffData = (arr) =>{
-    let encodedData = []
+  let newBuffData = (arr) => {
+    let encodedData = [];
     arr.forEach((item, i) => {
       let reader = new FileReader();
       reader.readAsDataURL(item);
       reader.onloadend = () => {
-        let obj = {imgBufferData:reader.result}
-        encodedData.push(obj)
+        let obj = { imgBufferData: reader.result };
+        encodedData.push(obj);
       };
     });
-    console.log(encodedData)
-    return encodedData
+    console.log(encodedData);
+    return encodedData;
+  };
 
-}
-
-  const showImage = async e =>{
+  const showImage = async (e) => {
     e.preventDefault();
     console.log("pLength", e.target.files.length);
-    let images = []
-    let images1=[]
+    let images = [];
+    let images1 = [];
     for (var i = 0; i < e.target.files.length; i++) {
-      images.push(e.target.files[i])
-
+      images.push(e.target.files[i]);
     }
 
     // images.forEach((item, i) => {
     //   let imgUrl =  newBuffData(item)
     //   console.log(imgUrl);
     // });
-    let data = await newBuffData(images)
-    setProductImage(...productImage, data)
+    let data = await newBuffData(images);
+    setProductImage(...productImage, data);
+  };
 
-  }
-
-  const handleDeleteImage = (data, indexToRemove) =>{
-    setProductImage([...productImage.filter((_, index) => index !== indexToRemove)]);
-
-  }
+  const handleDeleteImage = (data, indexToRemove) => {
+    setProductImage([
+      ...productImage.filter((_, index) => index !== indexToRemove),
+    ]);
+  };
 
   function previewFiles() {
-
-    var preview = document.querySelector('#preview');
-    var files   = document.querySelector('input[type=file]').files;
+    var preview = document.querySelector("#preview");
+    var files = document.querySelector("input[type=file]").files;
 
     function readAndPreview(file) {
-
       // Make sure `file.name` matches our extensions criteria
-      if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+      if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
         var reader = new FileReader();
 
-        reader.addEventListener("load", function () {
-          var image = new Image();
-          image.height = 100;
-          image.title = file.name;
-          image.src = this.result;
-          preview.appendChild( image );
-        }, false);
+        reader.addEventListener(
+          "load",
+          function () {
+            var image = new Image();
+            image.height = 100;
+            image.title = file.name;
+            image.src = this.result;
+            preview.appendChild(image);
+          },
+          false
+        );
 
         reader.readAsDataURL(file);
       }
-
     }
 
     if (files) {
       [].forEach.call(files, readAndPreview);
     }
-
   }
 
   return (
@@ -306,7 +304,7 @@ let newBuffData = (arr) =>{
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
-                            <td>{key+1}</td>
+                            <td>{key + 1}</td>
                             <td style={{ width: "15%" }}>
                               {!!item.productImage[0].imgBufferData ? (
                                 <img
@@ -483,8 +481,8 @@ let newBuffData = (arr) =>{
                   id="exampleRadios1"
                   style={{ marginRight: "10px" }}
                   value="freeShipping"
-                  onChange={(e) => setShippingDetails(e.target.value) }
-                  checked = {(shippingDetails==="freeShipping")?(true):(false)}
+                  onChange={(e) => setShippingDetails(e.target.value)}
+                  checked={shippingDetails === "freeShipping" ? true : false}
                 />
                 <label
                   className="form-check-label shippinglabel"
@@ -502,7 +500,9 @@ let newBuffData = (arr) =>{
                   style={{ marginRight: "10px" }}
                   value="standardShipping"
                   onChange={(e) => setShippingDetails(e.target.value)}
-                  checked = {(shippingDetails==="standardShipping")?(true):(false)}
+                  checked={
+                    shippingDetails === "standardShipping" ? true : false
+                  }
                 />
                 <label
                   className="form-check-label shippinglabel"
@@ -714,25 +714,33 @@ let newBuffData = (arr) =>{
                 </div>
               ))}
             </div>
-            <br/>
+            <br />
             <div className="form-group">
-            {productImage.map((data, i)=>{
-              return(
-                <div className="col-md-3">
-                <button style={{display:"flex"}} type="button" className="close" aria-label="Close" onClick={()=>handleDeleteImage(data, i)}>
-                  <span aria-hidden="true">&times;</span>
-                </button>
-
-                <img src={`data:image/jpeg;base64, ${data.imgBufferData}`} alt="upload-Image" />
-                </div>
-
-              )
-            })}
+              {productImage.map((data, i) => {
+                return (
+                  <div className="col-md-3">
+                    <button
+                      style={{ display: "flex" }}
+                      type="button"
+                      className="close"
+                      aria-label="Close"
+                      onClick={() => handleDeleteImage(data, i)}
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    {data.imgBufferData ? (
+                      <img
+                        src={`data:image/jpeg;base64, ${data.imgBufferData}`}
+                        alt="upload-Image"
+                      />
+                    ) : (
+                      <p>no image available</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
-
-
-
 
           <div className="card-button">
             <CustomButton round fill type="submit">
