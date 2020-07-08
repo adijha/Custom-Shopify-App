@@ -306,11 +306,15 @@ const ProductList = () => {
                           <tr key={key}>
                             <td>{key + 1}</td>
                             <td style={{ width: "15%" }}>
-                              {!!item.productImage[0].imgBufferData ? (
-                                <img
-                                  className="product-logo"
-                                  src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
-                                />
+                              {item.productImage[0] ? (
+                                !!item.productImage[0].imgBufferData ? (
+                                  <img
+                                    className="product-logo"
+                                    src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
+                                  />
+                                ) : (
+                                  "Image not Available"
+                                )
                               ) : (
                                 "Image not Available"
                               )}
