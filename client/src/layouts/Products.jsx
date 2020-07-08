@@ -130,22 +130,21 @@ const Products = () => {
       });
     });
 
-       let product = {
-        product: {
-          title: t.name,
-          body_html: t.description,
-          vendor: decode.store,
-          product_type: t.category,
+    let product = {
+      product: {
+        title: t.name,
+        body_html: t.description,
+        vendor: decode.store,
+        product_type: t.category,
 
-          images: images,
-          // tags: tagArray,
-          variants: vArray,
-          price:t.selliingPrice,
-          inventory_quantity:t.quantity,
-          sku:t.sku,
-        }
-      };
-
+        images: images,
+        // tags: tagArray,
+        variants: vArray,
+        price: t.selliingPrice,
+        inventory_quantity: t.quantity,
+        sku: t.sku,
+      },
+    };
 
     console.log("product added for shopify is", product);
     axios
@@ -386,16 +385,22 @@ const Products = () => {
                 >
                   <p
                     style={{
-                      maxWidth: "200px",
+                      maxWidth: "150px",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      fontSize: "1.5rem",
+                      fontSize: "1.4rem",
                     }}
                   >
                     {list.name}
                   </p>
-                  <b style={{ fontSize: "1.5rem" }}>
+                  <b  style={{
+                      maxWidth: "150px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      fontSize: "1.4rem",
+                    }}>
                     {list.varientArray.length !== 0
                       ? getSellingRange(list.varientArray)
                       : `$`(
