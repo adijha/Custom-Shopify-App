@@ -124,14 +124,13 @@ const Products = () => {
     t.varientArray.forEach((item, i) => {
       vArray.push({
         option1: item.varient,
-        price: item.price,
+        price: item.selliingPrice,
         inventory_quantity: item.quantity,
         sku: item.sku,
       });
     });
-    let product={};
-    if (t.varientArray.length!==0) {
-       product = {
+
+       let product = {
         product: {
           title: t.name,
           body_html: t.description,
@@ -141,24 +140,12 @@ const Products = () => {
           images: images,
           // tags: tagArray,
           variants: vArray,
-        }
-      };
-    }
-    else {
-       product = {
-        product: {
-          title: t.name,
-          body_html: t.description,
-          vendor: decode.store,
-          product_type: t.category,
-          price:t.price,
-          quantity:t.quantity,
+          price:t.selliingPrice,
+          inventory_quantity:t.quantity,
           sku:t.sku,
-          images: images,
-          // tags: tagArray,
         }
       };
-    }
+
 
     console.log("product added for shopify is", product);
     axios
