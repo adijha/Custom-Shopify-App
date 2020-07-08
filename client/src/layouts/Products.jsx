@@ -241,11 +241,12 @@ const Products = () => {
           <div className="">
             <div role="toolbar">
               <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  alignSelf: "center",
-                }}
+                className="text-center 
+                
+                
+                category-container-mx
+                
+                "
               >
                 {[
                   {
@@ -293,29 +294,17 @@ const Products = () => {
                   return (
                     <>
                       <div
-                        role="group"
-                        style={{
-                          display: "flex",
-                          width: 220,
-                          backgroundColor: "#fff",
-                          padding: 10,
-                          alignItems: "center",
-                          border: "2px solid #fafafa",
-                          cursor: "pointer",
-                        }}
+                        // role="group"
+                        className="category-mx"
                         onClick={(e) => {
                           console.log(item.category);
                           handleCategory(e.target.childNodes[0]);
                           console.log(e.target.childNodes[0]);
                         }}
                       >
-                        <i className={item.icon} style={{ fontSize: 40 }} />
+                        <i className={`${item.icon} category-mx-icon`}  />
                         <p
-                          style={{
-                            alignSelf: "center",
-                            marginTop: 8,
-                            marginLeft: 20,
-                          }}
+                       className="category-mx-name"
                         >
                           {item.category}
                         </p>
@@ -385,7 +374,7 @@ const Products = () => {
                 >
                   <p
                     style={{
-                      maxWidth: "150px",
+                      maxWidth: "120px",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
@@ -394,13 +383,15 @@ const Products = () => {
                   >
                     {list.name}
                   </p>
-                  <b  style={{
-                      maxWidth: "150px",
+                  <b
+                    style={{
+                      maxWidth: "120px",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       fontSize: "1.4rem",
-                    }}>
+                    }}
+                  >
                     {list.varientArray.length !== 0
                       ? getSellingRange(list.varientArray)
                       : `$`(
