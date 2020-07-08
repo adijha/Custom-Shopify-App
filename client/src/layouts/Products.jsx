@@ -688,6 +688,7 @@ const Products = () => {
                                   .replace(/&nbsp;/gi, " ")
                                   .slice(0, 200)
                               : null}
+                              <br/>
                             <u
                               onClick={() => setMoreDesc(true)}
                               style={{ color: "blue" }}
