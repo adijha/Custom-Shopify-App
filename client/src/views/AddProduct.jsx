@@ -186,7 +186,7 @@ const AddProduct = () => {
         err
           ? NotificationManager.error(err.toString())
           : NotificationManager.error("There is a problem with your entries");
-        //setVarients([]);
+
       });
   };
 
