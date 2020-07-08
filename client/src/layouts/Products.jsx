@@ -124,24 +124,29 @@ const Products = () => {
     t.varientArray.forEach((item, i) => {
       vArray.push({
         option1: item.varient,
-        price: item.price,
+        price: item.selliingPrice,
         inventory_quantity: item.quantity,
         sku: item.sku,
       });
     });
 
-    let product = {
-      product: {
-        title: t.name,
-        body_html: t.description,
-        vendor: decode.store,
-        product_type: t.category,
+       let product = {
+        product: {
+          title: t.name,
+          body_html: t.description,
+          vendor: decode.store,
+          product_type: t.category,
 
-        images: images,
-        // tags: tagArray,
-        variants: vArray,
-      },
-    };
+          images: images,
+          // tags: tagArray,
+          variants: vArray,
+          price:t.selliingPrice,
+          inventory_quantity:t.quantity,
+          sku:t.sku,
+        }
+      };
+
+
     console.log("product added for shopify is", product);
     axios
       .post("/addToShopify/" + storeName.toLowerCase(), product)
@@ -680,7 +685,7 @@ const Products = () => {
                           ></div>
                         ) : null}
 
-                        {/* 
+                        {/*
                         {product.description
                           ? product.description.replace(/(<([^>]+)>)/gi, "")
                           : null} */}

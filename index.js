@@ -197,17 +197,36 @@ app.post('/addToShopify/:storeName',async (req, res) => {
   let storeData = await Store.find({ name: req.params.storeName });
   // console.log(storeData, "found");
    //console.log(req.body);
-  let obj = {
-    product:{
-      title: req.body.product.title,
-      body_html: req.body.product.body_html,
-      vendor: req.body.product.vendor,
-      images:req.body.product.images,
-      product_type: req.body.product.product_type,
-      variants: req.body.product.variants
-    }
+   let obj={}
+   if (req.body.product.variants.length!==0) {
+     obj = {
+      product:{
+        title: req.body.product.title,
+        body_html: req.body.product.body_html,
+        vendor: req.body.product.vendor,
+        images:req.body.product.images,
+        product_type: req.body.product.product_type,
+        variants: req.body.product.variants
+      }
 
-  }
+    }
+   }
+   else {
+     obj = {
+      product:{
+        title: req.body.product.title,
+        body_html: req.body.product.body_html,
+        vendor: req.body.product.vendor,
+        images:req.body.product.images,
+        product_type: req.body.product.product_type,
+        sku: req.body.product.sku,
+        price: req.body.product.price,
+        inventory_quantity: req.body.product.quantity
+      }
+
+    }
+   }
+
   console.log(obj);
   if (storeData.length>0) {
     const shopRequestUrl =
