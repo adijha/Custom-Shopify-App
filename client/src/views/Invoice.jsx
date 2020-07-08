@@ -109,26 +109,26 @@ const Invoice = (props) =>{
                           ) : (
                             "No Image Available"
                           )}</td>
-                          <td className="text-center">{item.name}</td>
+                          <td className="text-center">{item.name} <small>{item.pName}</small></td>
                           <td className="text-center">{item.sku}</td>
                           <td className="text-center">{item.quantity} PCS</td>
                           <td className="text-center">${
-                          
+
                           new Intl.NumberFormat("en-US").format(
-                            item.price 
-                          
-                         
+                            item.price
+
+
                         )
-                 
-                          
+
+
                           }</td>
                           <td className="text-center">{
-                          
-                          
-                          
+
+
+
                           item.shippingPrice||'-'
-                          
-                          
+
+
                           }</td>
                           <td className="text-right">${item.price*item.quantity}</td>
 

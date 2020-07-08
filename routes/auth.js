@@ -2747,7 +2747,7 @@ router.get('/ordersList/:id', async (req, res) => {
           sku: subItem.sku,
           quantity: subItem.quantity,
           customer: item.customer,
-          varient: item.varient,
+          name: subItem.name,
           paid: item.paid,
           paymentStatus: item.paymentStatus,
           fulfillmentStatus: item.fulfillmentStatus,
@@ -2769,13 +2769,44 @@ router.get('/ordersList/:id', async (req, res) => {
 
   itemArray.forEach((item, i) => {
     productData.forEach((product, j) => {
-      if ((product.code == item.sku)) {
+
+      if (product.varientArray.length!==0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===item.sku) {
+            let dataObj = {
+              id: item.id,
+              productId: item.productId,
+              customer: item.customer,
+              sku: item.sku,
+              pName:product.name,
+              name:item.name,
+              vName: vArr.varient,
+              price: vArr.price,
+              quantity: item.quantity,
+              varient: item.varient,
+              paid: item.paid,
+              paymentStatus: item.paymentStatus,
+              fulfillmentStatus: item.fulfillmentStatus,
+              store: item.store,
+              paymentMode: item.paymentMode,
+              pStatus: item.pStatus,
+              tracking_number: item.tracking_number
+            };
+            // console.log(dataObj);
+            makeList.push(dataObj);
+          }
+        });
+
+      }
+
+      else if ((product.code == item.sku)) {
         let dataObj = {
           id: item.id,
           productId: item.productId,
           customer: item.customer,
           sku: item.sku,
-          name: product.name,
+          name:item.name,
+          pName: product.name,
           price: product.price,
           quantity: item.quantity,
           varient: item.varient,
@@ -2824,7 +2855,7 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
           sku: subItem.sku,
           quantity: subItem.quantity,
           customer: item.customer,
-          varient: item.varient,
+          pName: subItem.name,
           paid: item.paid,
           paymentStatus: item.paymentStatus,
           fulfillmentStatus: item.fulfillmentStatus,
@@ -2846,7 +2877,36 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
 
   itemArray.forEach((item, i) => {
     productData.forEach((product, j) => {
-      if ((product.code == item.sku)) {
+      if (product.varientArray.length!==0) {
+        product.varientArray.forEach((vArr, l) => {
+          if ((vArr.sku == item.sku)) {
+            let dataObj = {
+              id: item.id,
+              productId: item.productId,
+              customer: item.customer,
+              sku: item.sku,
+              name: product.name,
+
+              price: vArr.price,
+              quantity: item.quantity,
+              pName: item.pName,
+              paid: item.paid,
+              paymentStatus: item.paymentStatus,
+              fulfillmentStatus: item.fulfillmentStatus,
+              store: item.store,
+              paymentMode: item.paymentMode,
+              pStatus: item.pStatus,
+              tracking_number: item.tracking_number,
+              productImage: product.productImage[0].imgBufferData,
+              updated_on: item.updated_on
+            };
+            // console.log(dataObj);
+            makeList.push(dataObj);
+          }
+        });
+
+      }
+      else if ((product.code == item.sku)) {
         let dataObj = {
           id: item.id,
           productId: item.productId,

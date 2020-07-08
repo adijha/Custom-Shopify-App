@@ -53,7 +53,11 @@ const SupplierOrders = () => {
     };
     console.log("fulfiled obj", fulfilObject);
 
+    if (fulfill==="") {
+      NotificationManager.error('Please fill valid tracking no.');
 
+    }
+    else{
      await axios.post('/updateOrdersTracking/' + data.store + "/" + data.id, fulfilObject)
      .then(data=>{
        console.log("data", data);
@@ -76,6 +80,7 @@ const SupplierOrders = () => {
      .catch (error=> {
       NotificationManager.error('Something unusual happened');
     })
+  }
   };
 
 
@@ -154,10 +159,10 @@ const SupplierOrders = () => {
 
                               <td colSpan='2'>
                                 <th>Order Details</th>
-                                <tr>Name :- {item.name}</tr>
-                                <tr>Variant :- {item.email}</tr>
+                                <tr>Name :- {item.pName}</tr>
+                                <tr>Variant :- {item.name}</tr>
                                 <tr>Quantity :- {item.quantity}</tr>
-                                <tr>Paid :- {item.paid}</tr>
+                                <tr>Paid :- {item.paymentMode}</tr>
                               </td>
                               {item.fulfillmentStatus === "Fulfilled"?null:
                               <td colSpan='2'>
