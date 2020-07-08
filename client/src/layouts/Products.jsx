@@ -14,6 +14,7 @@ const Products = () => {
   const [status, setStatus] = useState("");
   const [category, setCategory] = useState([]);
   const token = localStorage.getItem("token");
+  const [moreDesc, setMoreDesc] = useState(false);
   let decode = jwt_decode(token);
 
   useEffect(() => {
@@ -302,12 +303,8 @@ const Products = () => {
                           console.log(e.target.childNodes[0]);
                         }}
                       >
-                        <i className={`${item.icon} category-mx-icon`}  />
-                        <p
-                       className="category-mx-name"
-                        >
-                          {item.category}
-                        </p>
+                        <i className={`${item.icon} category-mx-icon`} />
+                        <p className="category-mx-name">{item.category}</p>
                       </div>
                     </>
                   );
@@ -673,18 +670,33 @@ const Products = () => {
                       <br />
                       <h5 className="price">Description:</h5>
                       <p>
-                        {product.description ? (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: product.description,
-                            }}
-                          ></div>
-                        ) : null}
-
-                        {/*
-                        {product.description
-                          ? product.description.replace(/(<([^>]+)>)/gi, "")
-                          : null} */}
+                        {moreDesc ? (
+                          <div>
+                            {product.description ? (
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: product.description,
+                                }}
+                              ></div>
+                            ) : null}
+                          </div>
+                        ) : (
+                          <p>
+                            {product.description
+                              ? product.description
+                                  .replace(/(<([^>]+)>)/gi, " ")
+                                  .replace(/&nbsp;/gi, " ")
+                                  .slice(0, 200)
+                              : null}
+                            <u
+                              onClick={() => setMoreDesc(true)}
+                              style={{ color: "blue" }}
+                            >
+                              {" "}
+                              more
+                            </u>
+                          </p>
+                        )}
                       </p>
 
                       <br />
