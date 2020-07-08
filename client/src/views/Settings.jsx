@@ -12,9 +12,9 @@ const SupplierOrders = () => {
   const [location, setLocation] = useState("");
   const [id, setId] = useState("");
   const [email, setEmail] = useState("");
-  const [businessName, setBusinessName] = useState('')
-  const [phoneNo, setPhoneNo] = useState()
-  const [password, setPassword] = useState('')
+  const [businessName, setBusinessName] = useState("");
+  const [phoneNo, setPhoneNo] = useState();
+  const [password, setPassword] = useState("");
   const token = localStorage.getItem("token");
   const decode = jwt_decode(token);
 
@@ -29,26 +29,30 @@ const SupplierOrders = () => {
       setId(res.data.supplier_id);
       setName(res.data.name);
       setLocation(res.data.location);
-      setBusinessName(res.data.businessName)
-      setPhoneNo(res.data.phoneNo)
+      setBusinessName(res.data.businessName);
+      setPhoneNo(res.data.phoneNo);
     });
   };
 
   const updateSettings = async (e) => {
     e.preventDefault();
     try {
-      if (password==='') {
+      if (password === "") {
         NotificationManager.error("Please Enter Password");
-      }
-      else {
-        let res = await axios.post("/settingsUpdate", { location, name, id, businessName, phoneNo, password });
+      } else {
+        let res = await axios.post("/settingsUpdate", {
+          location,
+          name,
+          id,
+          businessName,
+          phoneNo,
+          password,
+        });
         NotificationManager.success("Settings Updated Successfully");
       }
-      }
-      catch (error) {
-        NotificationManager.error("something unusual happened");
-      }
-
+    } catch (error) {
+      NotificationManager.error("something unusual happened");
+    }
   };
 
   return (
@@ -63,64 +67,62 @@ const SupplierOrders = () => {
               content={
                 <form onSubmit={updateSettings}>
                   <div className="card card-input" style={{ marginTop: 30 }}>
+                    <div className="form-group">
+                      <label for="product_quantity">Supplier ID</label>
+                      <input
+                        type="text"
+                        value={id}
+                        onChange={(e) => setId(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_id"
+                        placeholder="@id"
+                        disabled="disabled"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label for="product_quantity">Supplier ID</label>
-                    <input
-                      type="text"
-                      value={id}
-                      onChange={(e) => setId(e.target.value)}
-                      min="0"
-                      className="form-control"
-                      id="product_id"
-                      placeholder="@id"
-                      disabled="disabled"
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label for="product_name">Full Name</label>
+                      <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_name"
+                        placeholder="Your Name"
+                        required
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label for="product_name">Full Name</label>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      min="0"
-                      className="form-control"
-                      id="product_name"
-                      placeholder="Your Name"
-                      required
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label for="product_name">Business Name</label>
+                      <input
+                        type="text"
+                        value={businessName}
+                        onChange={(e) => setBusinessName(e.target.value)}
+                        min="0"
+                        className="form-control"
+                        id="product_name"
+                        placeholder="Your Business Name"
+                        required
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label for="product_name">Business Name</label>
-                    <input
-                      type="text"
-                      value={businessName}
-                      onChange={(e) => setBusinessName(e.target.value)}
-                      min="0"
-                      className="form-control"
-                      id="product_name"
-                      placeholder="Your Business Name"
-                      required
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label for="product_name">Phone No.</label>
-                    <input
-                      type="text"
-                      value={phoneNo}
-                      onChange={(e) => setPhoneNo(e.target.value)}
-                      min="0"
-
-                      maxLength="15"
-                      className="form-control"
-                      id="product_name"
-                      placeholder="Enter your mobile no."
-                      required
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label for="product_name">Phone No.</label>
+                      <input
+                        type="text"
+                        value={phoneNo}
+                        onChange={(e) => setPhoneNo(e.target.value)}
+                        min="0"
+                        maxLength="15"
+                        className="form-control"
+                        id="product_name"
+                        placeholder="Enter your mobile no."
+                        required
+                      />
+                    </div>
 
                     <div className="form-group">
                       <label for="product_email">Email</label>
@@ -134,7 +136,6 @@ const SupplierOrders = () => {
                         disabled="disabled"
                       />
                     </div>
-
 
                     <div className="form-group">
                       <label for="product_location">Location</label>
