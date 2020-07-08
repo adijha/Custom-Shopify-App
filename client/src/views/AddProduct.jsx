@@ -49,7 +49,7 @@ const AddProduct = () => {
 
   const [preview, setPreview] = useState([]);
 
-  const [multerImage, setMulterImage] = useState([])
+  const [multerImage, setMulterImage] = useState([]);
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -156,7 +156,7 @@ const AddProduct = () => {
     data.append("australia", australia);
     data.append("international", international);
     data.append("varientArray", JSON.stringify(tempVarientArray));
-    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)));
+    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)))
     axios
       .post("/api/addProduct", data)
       .then((res) => {
@@ -171,6 +171,11 @@ const AddProduct = () => {
           setCode("");
           setProductImage([]);
           setVarients([]);
+          setCanada("");
+          setAustralia("");
+          setInternational("");
+          setUsa("");
+          setUk("");
         } else {
           res.data.error
             ? NotificationManager.error(res.data.error.toString())
@@ -386,41 +391,42 @@ const AddProduct = () => {
     }
   };
 
-  const showImage = e =>{
+  const showImage = (e) => {
     e.preventDefault();
     console.log("pLength", e.target.files);
-    let images = []
-    let images1=[]
+    let images = [];
+    let images1 = [];
     for (var i = 0; i < e.target.files.length; i++) {
-      images1.push(e.target.files[i])
+      images1.push(e.target.files[i]);
       images.push({
-        url:URL.createObjectURL(e.target.files[i]),
-        name:e.target.files[i].name
-      })
-
-
+        url: URL.createObjectURL(e.target.files[i]),
+        name: e.target.files[i].name,
+      });
     }
-    setProductImage(images1)
-    setMulterImage(images)
+    setProductImage(images1);
+    setMulterImage(images);
     console.log(productImage, "pImage array");
+  };
 
-  }
-
-  const handleDeleteImage = (data, indexToRemove) =>{
-    setMulterImage([...multerImage.filter((_, index) => index !== indexToRemove)]);
-    setProductImage([...productImage.filter((_, index) => index !== indexToRemove)]);
-// let tempArray = []
-// multerImage.forEach((image, i) => {
-//   productImage.forEach((item, j) => {
-//     console.log({item});
-//     if (multerImage[i].name === productImage[j].name) {
-//         tempArray.push(productImage[j])
-//     }
-//   });
-//
-//   });
-//   setProductImage(tempArray)
-  }
+  const handleDeleteImage = (data, indexToRemove) => {
+    setMulterImage([
+      ...multerImage.filter((_, index) => index !== indexToRemove),
+    ]);
+    setProductImage([
+      ...productImage.filter((_, index) => index !== indexToRemove),
+    ]);
+    // let tempArray = []
+    // multerImage.forEach((image, i) => {
+    //   productImage.forEach((item, j) => {
+    //     console.log({item});
+    //     if (multerImage[i].name === productImage[j].name) {
+    //         tempArray.push(productImage[j])
+    //     }
+    //   });
+    //
+    //   });
+    //   setProductImage(tempArray)
+  };
 
   return (
     <div className="container-fluid">
@@ -459,27 +465,36 @@ const AddProduct = () => {
               className="form-control"
               onChange={(e) => {
                 setProductImage(e.target.files);
-                showImage(e)
+                showImage(e);
               }}
               multiple
               accept="image/*"
             />
           </div>
-          {(multerImage.length!==0)?(
+          {multerImage.length !== 0 ? (
             <div className="image-preview">
-            {multerImage.map((image, i)=>{
-              return(
-                <div className="col-md-4">
-                <button style={{display:"flex"}} type="button" className="close" aria-label="Close" onClick={()=>handleDeleteImage(image, i)}>
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <img src={image.url} alt="upload-image" className="process_Image"/>
-              </div>
-              )
-            })}
+              {multerImage.map((image, i) => {
+                return (
+                  <div className="col-md-4">
+                    <button
+                      style={{ display: "flex" }}
+                      type="button"
+                      className="close"
+                      aria-label="Close"
+                      onClick={() => handleDeleteImage(image, i)}
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <img
+                      src={image.url}
+                      alt="upload-image"
+                      className="process_Image"
+                    />
+                  </div>
+                );
+              })}
             </div>
-          ):null}
-
+          ) : null}
         </div>
         <div className="card card-input py-0 ll">
           <h4 className="text-left" style={{ margin: 0, marginBottom: 15 }}>
@@ -518,23 +533,6 @@ const AddProduct = () => {
               ></div>
               <div>
                 <div>
-                  {/* <select
-                    style={{
-                      width: 150,
-                      height: 40,
-                      border: '1px solid grey',
-                      borderRadius: 5,
-                      marginBottom: 13,
-                    }}
-                    onChange={(e) => setOption1(e.target.value)}
-                  >
-                    <option value='color'>Color</option>
-                    <option value='size'>Size</option>
-                    <option value='style'>Style</option>
-                    <option value='material'>Material</option>
-                    <option value='title'>Title</option>
-                  </select> */}
-                  {/* <div> */}
                   <input
                     type="text"
                     name="city"
@@ -827,10 +825,7 @@ const AddProduct = () => {
               )}
             </>
           ) : null}
-
-
         </div>
-
 
         <div className="card card-input">
           <div className="form-group">
@@ -1131,11 +1126,11 @@ const AddProduct = () => {
           </div>
         </div>
         <div className="card-button" style={{ marginTop: 20 }}>
-            <CustomButton round fill type="submit">
-              Save Product
-            </CustomButton>
-          </div>
-       </form>
+          <CustomButton round fill type="submit">
+            Save Product
+          </CustomButton>
+        </div>
+      </form>
       <br />
       <div className="container-fluid">
         <form onSubmit={addCSvProduct}>
