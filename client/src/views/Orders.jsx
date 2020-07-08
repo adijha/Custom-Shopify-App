@@ -337,6 +337,7 @@ const Orders = () => {
                                     <tr>
                                       {item.productImage.length > 0 ? (
                                         <img
+                                          style={{ width: 100 }}
                                           className='product-logo'
                                           src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                                         />
@@ -356,7 +357,10 @@ const Orders = () => {
 
                                   <td colSpan='1'>
                                     <tr>
-                                      ${item.item_price}x{item.quantity}
+                                      ${' '}
+                                      {new Intl.NumberFormat('en-US').format(
+                                        item.item_price * item.quantity
+                                      )}
                                     </tr>
                                   </td>
                                 </tr>

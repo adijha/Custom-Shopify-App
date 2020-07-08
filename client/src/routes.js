@@ -12,7 +12,7 @@ import AdminProfile from './views/AdminProfile.jsx';
 import AdminOrderDetails from './views/AdminOrderDetails';
 import AdminPayment from './views/AdminPayment';
 import TransactionHistory from './views/TransactionHistory';
-import RequestProductList from './views/RequestProductList'
+import RequestProductList from './views/RequestProductList';
 
 const dashboardRoutes = [
   {
@@ -70,7 +70,7 @@ const dashboardRoutes = [
   },
   {
     path: '/profile',
-    name: 'Setting',
+    name: 'Settings',
     icon: 'pe-7s-config',
     component: AdminProfile,
     layout: '/admin',
