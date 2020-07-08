@@ -1,35 +1,26 @@
-import React, { Component, useEffect, useState } from "react";
-import ChartistGraph from "react-chartist";
-import { Grid, Row, Col, Table } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import ChartistGraph from 'react-chartist';
+import { Grid, Row, Col, Table } from 'react-bootstrap';
 
-import { Card } from "../components/Card/Card.jsx";
-import { StatsCard } from "../components/StatsCard/StatsCard.jsx";
-import { Tasks } from "../components/Tasks/Tasks.jsx";
-import jwt_decode from "jwt-decode";
+import { Card } from '../components/Card/Card.jsx';
+import { StatsCard } from '../components/StatsCard/StatsCard.jsx';
+import jwt_decode from 'jwt-decode';
 
 import {
-  dataPie,
-  legendPie,
-  dataSales,
   optionsSales,
   responsiveSales,
-  legendSales,
-  dataBar,
-  optionsBar,
-  responsiveBar,
-  legendBar,
-} from "../variables/Variables.jsx";
+} from '../variables/Variables.jsx';
 
-import axios from "axios";
+import axios from 'axios';
 
 const SupplierDashboard = () => {
-  const [productCount, setProductCount] = useState("");
-  const [revenue, setRevenue] = useState("");
-  const [order, setOrder] = useState("");
+  const [productCount, setProductCount] = useState('');
+  const [revenue, setRevenue] = useState('');
+  const [order, setOrder] = useState('');
   const [graphPlot, setGraphPlot] = useState({});
   const [topProducts, setTopProducts] = useState([]);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   const decode = jwt_decode(token);
 
   useEffect(() => {
@@ -41,27 +32,27 @@ const SupplierDashboard = () => {
   }, []);
 
   const getProductData = () => {
-    axios.get("/api/supplier/product/" + decode.id).then((products) => {
+    axios.get('/api/supplier/product/' + decode.id).then((products) => {
       console.log(products.data.length);
       setProductCount(products.data.length);
     });
   };
 
   const income = () => {
-    axios.get("/supplierRevenue/" + decode.id).then((rev) => {
+    axios.get('/supplierRevenue/' + decode.id).then((rev) => {
       setRevenue(rev.data);
     });
   };
 
   const totalOrders = () => {
-    axios.get("/supplierOrders/" + decode.id).then((ord) => {
-      console.log("orders are", ord.data);
+    axios.get('/supplierOrders/' + decode.id).then((ord) => {
+      console.log('orders are', ord.data);
       setOrder(ord.data);
     });
   };
 
   const graphData = () => {
-    axios.get("/supplierGraphRevenue/" + decode.id).then((response) => {
+    axios.get('/supplierGraphRevenue/' + decode.id).then((response) => {
       let data = {
         labels: response.data.date,
         series: [response.data.revenue],
@@ -71,44 +62,48 @@ const SupplierDashboard = () => {
   };
 
   const top = () => {
-    axios.get("/topProducts/" + decode.id).then((response) => {
+    axios.get('/topProducts/' + decode.id).then((response) => {
       setTopProducts(response.data);
     });
   };
 
   return (
     <div>
-      <div className="content">
+      <div className='content'>
         <Grid fluid>
           <Row>
             <Col lg={4} sm={6}>
               <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
-                statsText="Total Products"
+                bigIcon={<i className='pe-7s-server text-warning' />}
+                statsText='Total Products'
                 statsValue={productCount}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
+                statsIcon={<i className='fa fa-refresh' />}
+                statsIconText='Updated now'
               />
             </Col>
             <Col lg={4} sm={6}>
               <StatsCard
-                bigIcon={<i className="pe-7s-wallet text-success" />}
-                statsText="Total Revenue"
-                statsValue={revenue? `$ ${new Intl.NumberFormat("en-US").format(
-									Number(revenue).toFixed(2)
-								)}`:' '}
-                statsIcon={<i className="fa fa-calendar-o" />}
-                statsIconText="Last day"
+                bigIcon={<i className='pe-7s-wallet text-success' />}
+                statsText='Total Revenue'
+                statsValue={
+                  revenue
+                    ? `$ ${new Intl.NumberFormat('en-US').format(
+                        Number(revenue).toFixed(2)
+                      )}`
+                    : ' '
+                }
+                statsIcon={<i className='fa fa-calendar-o' />}
+                statsIconText='Last day'
               />
             </Col>
 
             <Col lg={4} sm={6}>
               <StatsCard
-                bigIcon={<i className="fa fa-user text-info" />}
-                statsText="Total Orders"
+                bigIcon={<i className='fa fa-user text-info' />}
+                statsText='Total Orders'
                 statsValue={order}
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
+                statsIcon={<i className='fa fa-refresh' />}
+                statsIconText='Updated now'
               />
             </Col>
           </Row>
@@ -116,16 +111,16 @@ const SupplierDashboard = () => {
           <Row>
             <Col md={7}>
               <Card
-                statsIcon="fa fa-history"
-                id="chartHours"
-                title="Total Revenue"
-                category="24 Hours performance"
-                stats="Updated 3 minutes ago"
+                statsIcon='fa fa-history'
+                id='chartHours'
+                title='Total Revenue'
+                category='24 Hours performance'
+                stats='Updated 3 minutes ago'
                 content={
-                  <div className="ct-chart">
+                  <div className='ct-chart'>
                     <ChartistGraph
                       data={graphPlot}
-                      type="Bar"
+                      type='Bar'
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
                     />
@@ -136,11 +131,11 @@ const SupplierDashboard = () => {
 
             <Col md={5}>
               <Card
-                title="Top Selling Products"
+                title='Top Selling Products'
                 ctTableFullWidth
                 ctTableResponsive
                 content={
-                  <Table striped hover size="sm">
+                  <Table striped hover size='sm'>
                     <thead>
                       <tr>
                         <th>Sku</th>
@@ -157,7 +152,7 @@ const SupplierDashboard = () => {
                             <td>{item.name}</td>
                             <td>
                               $
-                              {new Intl.NumberFormat("en-US").format(
+                              {new Intl.NumberFormat('en-US').format(
                                 Number(item.price).toFixed(2)
                               )}
                             </td>

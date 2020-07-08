@@ -241,7 +241,7 @@ const SingleProductDetail = (props) => {
                             <div className="panel with-nav-tabs panel-default">
                               <div className="panel-heading">
                                 <ul className="nav nav-tabs">
-                                  <li className="active"><a href="#tab1default" data-toggle="tab">Varients</a></li>
+                                  <li className="active"><a href="#tab1default" data-toggle="tab">Variants</a></li>
                                   <li ><a href="#tab2default" data-toggle="tab">Shipping Detils</a></li>
                                   <li style={{float:"right"}}>Processing Time: <strong>1-3 days</strong></li>
                                 </ul>
