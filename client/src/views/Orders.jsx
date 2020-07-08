@@ -291,7 +291,7 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{item.date}</td>
+                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
                                 <td>{item.customer_detail.name}</td>
                                 <td>{item.paymentMode || "NA"}</td>
                                 <td>{item.pStatus}</td>
@@ -388,7 +388,7 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{item.date}</td>
+                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
                                 <td>{item.customer_detail.name}</td>
                                 <td>{item.paymentMode || "NA"}</td>
                                 <td>{item.pStatus}</td>
@@ -475,7 +475,7 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{item.date}</td>
+                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
                                 <td>{item.customer_detail.name}</td>
                                 <td>{item.paymentMode || "NA"}</td>
                                 <td>{item.pStatus}</td>

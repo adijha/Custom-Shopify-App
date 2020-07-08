@@ -43,6 +43,8 @@ const SupplierOrders = () => {
       }
     });
 
+
+
     const fulfilObject = await {
       fulfillment: {
         location_id: 35210428495,

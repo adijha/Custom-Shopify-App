@@ -403,14 +403,21 @@ app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
   console.log(req.params.id);
   console.log(req.body);
 
+
+
+
     if (storeData.length > 0) {
 
-      const shopRequestUrl =
-        'https://' +
+      // const shopRequestUrl =
+      //   'https://' +
+      //   storeFullName +
+      //   '/admin/api/2020-01/orders/' +
+      //   req.params.id +
+      //   '/fulfillments.json';
+
+        const shopRequestUrl = 'https://' +
         storeFullName +
-        '/admin/api/2020-01/orders/' +
-        req.params.id +
-        '/fulfillments.json';
+        '/admin/api/2020-01/location.json';
 
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': storeData[0].token,
@@ -419,12 +426,15 @@ app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
         'X-Shopify-Shop-Domain': storeData[0].name,
         'X-Shopify-API-Version': '2020-01',
       };
-
-  request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
-    .then((data) => {
-      console.log("successfully track ", data);
-      res.send('success')
-    })
+      request.get(shopRequestUrl)
+      .then(location=>{
+        console.log(location);
+      })
+  // request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+  //   .then((data) => {
+  //     console.log("successfully track ", data);
+  //     res.send('success')
+  //   })
     .catch((error) => {
       console.log("error is update tracking", error);
     });

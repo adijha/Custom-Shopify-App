@@ -37,6 +37,7 @@ const AdminProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [expand, setExpand] = useState("");
   const [sDetail, setSDetail] = useState({});
+  const [productImage, setProductImage] = useState([])
 
   const modalStyle = {
     margin: "auto",
@@ -171,6 +172,8 @@ const AdminProduct = () => {
     setInternational(item.shippingCharge.international);
     setUsa(item.shippingCharge.usa);
     setUk(item.shippingCharge.unitedKingdom);
+    setShippingDetails(item.shippingCharge.method)
+    setProductImage(item.productImage)
     setOpen(true);
   };
 
@@ -207,6 +210,8 @@ const AdminProduct = () => {
         uk,
         usa,
       },
+      productImage: productImage
+
     };
     console.log(object);
     axios
@@ -286,6 +291,38 @@ const AdminProduct = () => {
     console.log("selling", sellingRange);
     return sellingRange;
   };
+
+
+
+
+
+
+
+    const showImage = async e =>{
+      // e.preventDefault();
+      // console.log("pLength", e.target.files.length);
+      // let images = []
+      // let images1=[]
+      // for (var i = 0; i < e.target.files.length; i++) {
+      //   images.push(e.target.files[i])
+      //
+      // }
+      //
+      // // images.forEach((item, i) => {
+      // //   let imgUrl =  newBuffData(item)
+      // //   console.log(imgUrl);
+      // // });
+      // //let data = await newBuffData(images)
+      // setProductImage(...productImage, data)
+
+    }
+
+    const handleDeleteImage = (data, indexToRemove) =>{
+      setProductImage([...productImage.filter((_, index) => index !== indexToRemove)]);
+
+    }
+
+
 
   return (
     <div style={{ overflowX: "hidden" }}>
@@ -811,6 +848,7 @@ const AdminProduct = () => {
                     className="form-control"
                     id="product_warranty"
                     placeholder="Price in dollers"
+                    required
                   />
                   <input
                     style={{ flex: 1 }}
@@ -820,6 +858,7 @@ const AdminProduct = () => {
                     className="form-control"
                     id="product_warranty"
                     placeholder="Enter Quantity"
+                    required
                   />
                   <input
                     style={{ flex: 1 }}
@@ -829,11 +868,28 @@ const AdminProduct = () => {
                     className="form-control"
                     id="product_warranty"
                     placeholder="Enter SKU"
+                    required
                   />
                 </div>
               ))}
             </div>
+            <br/>
+            <div className="form-group">
+            {productImage.map((data, i)=>{
+              return(
+                <div className="col-md-3">
+                <button style={{display:"flex"}} type="button" className="close" aria-label="Close" onClick={()=>handleDeleteImage(data, i)}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <img src={`data:image/jpeg;base64, ${data.imgBufferData}`} alt="upload-Image" />
+                </div>
+
+              )
+            })}
+            </div>
           </div>
+
 
           <div className="card-button">
             <CustomButton round fill type="submit">

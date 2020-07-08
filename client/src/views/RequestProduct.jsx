@@ -82,7 +82,7 @@ const RequestProduct = () => {
                       min="0"
                       className="form-control"
                       id="product_name"
-                      placeholder="Enter Product Link"
+                      placeholder="https://www.example.com"
                       required
                     />
                   </div>
