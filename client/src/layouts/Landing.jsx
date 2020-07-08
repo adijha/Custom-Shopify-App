@@ -146,7 +146,7 @@ const Landing = () => {
                 style={{ minWidth: '20%' }}
               >
                 <a
-                  href='/merchant-ssignup'
+                  href='/merchant-signup'
                   style={{ textDecoration: 'none', color: 'white' }}
                 >
                   Sign Up
