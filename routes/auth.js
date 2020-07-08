@@ -668,7 +668,30 @@ router.get('/customOrderDetails', async (req, res)=>{
 
   productsData.forEach((data, k) => {
     firstArr.forEach((arr, l) => {
-      if (data.code===arr.sku) {
+
+      if (data.varientArray.length!==0) {
+        data.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===arr.sku) {
+            secondArr.push({
+              orderId: arr.orderId,
+              sku: arr.sku,
+              total_price: arr.total_price,
+              quantity: arr.quantity,
+              store: arr.store,
+              customer_name: arr.customer_name,
+              order_date: arr.order_date,
+              productImage:data.productImage,
+              shipping: data.shippingCharge,
+              product_price: vArr.price,
+              supplier_id: data.supplier_id,
+              pStatus: arr.pStatus
+            })
+          }
+        });
+
+      }
+
+      else if (data.code===arr.sku) {
         secondArr.push({
           orderId: arr.orderId,
           sku: arr.sku,
