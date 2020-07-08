@@ -27,6 +27,7 @@
     "express-session": "^1.17.0",
     "global": "^4.4.0",
     "googleapis": "^51.0.0",
+    "heroku-ssl-redirect": "0.0.4",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
     "mongoose": "^5.7.13",
