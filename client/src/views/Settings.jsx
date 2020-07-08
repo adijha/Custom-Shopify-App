@@ -109,10 +109,12 @@ const SupplierOrders = () => {
                   <div className="form-group">
                     <label for="product_name">Phone No.</label>
                     <input
-                      type="number"
+                      type="text"
                       value={phoneNo}
                       onChange={(e) => setPhoneNo(e.target.value)}
                       min="0"
+
+                      maxLength="15"
                       className="form-control"
                       id="product_name"
                       placeholder="Enter your mobile no."
