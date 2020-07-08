@@ -1969,10 +1969,18 @@ console.log("new product Array achievement", dupArray);
 
   dupArray.forEach((product, x) => {
     skuArr.forEach((final, index) => {
+      if (product.varientArray.length!==0) {
+        product.varientArray.forEach((vArr, l) => {
+          if (vArr.sku===final.sku) {
+            dupArray[x].revenue+=skuArr[index].revenue
+            dupArray[x].order += skuArr[index].order
+          }
+        });
 
+      }
     if (dupArray[x].code === skuArr[index].sku) {
-        dupArray[x].revenue=skuArr[index].revenue
-        dupArray[x].order = skuArr[index].order
+        dupArray[x].revenue+=skuArr[index].revenue
+        dupArray[x].order += skuArr[index].order
       }
     });
 
