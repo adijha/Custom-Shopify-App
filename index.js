@@ -417,7 +417,7 @@ app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
 
         const shopRequestUrl = 'https://' +
         storeFullName +
-        '/admin/api/2020-01/location.json';
+        '/admin/api/2020-01/locations.json';
 
       const shopRequestHeaders = {
         'X-Shopify-Access-Token': storeData[0].token,
@@ -426,9 +426,15 @@ app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
         'X-Shopify-Shop-Domain': storeData[0].name,
         'X-Shopify-API-Version': '2020-01',
       };
-      request.get(shopRequestUrl)
+      request.get(shopRequestUrl, {headers: shopRequestHeaders})
       .then(location=>{
-        console.log(location);
+        res.send(location)
+        // location.locations.map((item, i) => {
+        //   if (item.name==="gurgaon") {
+        //     console.log(item.id, "id");
+        //   }
+        // });
+
       })
   // request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
   //   .then((data) => {
@@ -442,6 +448,52 @@ app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
     console.log('no data found in fulfil order api');
   }
 });
+
+
+app.post('/updateTracking/:store/:id', async (req, res) => {
+
+  let storeFullName = req.params.store+'.myshopify.com'
+  console.log("storeFullName", storeFullName);
+
+  let storeData = await Store.find({ name: storeFullName });
+  console.log(req.params.id);
+  console.log(req.body);
+
+
+
+
+    if (storeData.length > 0) {
+
+      const shopRequestUrl =
+        'https://' +
+        storeFullName +
+        '/admin/api/2020-01/orders/' +
+        req.params.id +
+        '/fulfillments.json';
+
+
+
+      const shopRequestHeaders = {
+        'X-Shopify-Access-Token': storeData[0].token,
+        'Content-Type': 'application/json',
+        'X-Shopify-Hmac-Sha256': storeData[0].hmac,
+        'X-Shopify-Shop-Domain': storeData[0].name,
+        'X-Shopify-API-Version': '2020-01',
+      };
+
+  request.post(shopRequestUrl, { headers: shopRequestHeaders, json: req.body })
+    .then((data) => {
+      console.log("successfully track ", data);
+      res.send('success')
+    })
+    .catch((error) => {
+      console.log("error is update tracking", error);
+    });
+  } else {
+    console.log('no data found in fulfil order api');
+  }
+});
+
 
 //get fulfilled Orders
 app.get('/fulfilledOrders/:storeName', async (req, res) => {

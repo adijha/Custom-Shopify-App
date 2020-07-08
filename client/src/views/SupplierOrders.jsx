@@ -61,20 +61,42 @@ const SupplierOrders = () => {
     }
     else{
      await axios.post('/updateOrdersTracking/' + data.store + "/" + data.id, fulfilObject)
-     .then(data=>{
-       console.log("data", data);
-       if (data.status===200) {
-         NotificationManager.success('Track No. Updated Successfully');
-         axios.patch('/suppOrderFulfill/'+oId, fulfilObject)
-         .then((updData)=>{
-           if (updData.data.includes('success')) {
-             getOrderList()
-             NotificationManager.success('Fulfilled Successfully');
-           }
-           else{
-             NotificationManager.error('Something wrong in Fulfilled');
-           }
-         })
+     .then(location=>{
+       let obj = {}
+      // console.log("data", data.data.locations);
+       location.data.locations.forEach((item, i) => {
+         if (item.name==="gurgaon") {
+           console.log("id is", item.id);
+            obj = {
+              fulfillment: {
+                location_id: item.id,
+                tracking_number: fulfill,
+                notify_customer: true,
+                tracking_info: productIdArray
+              }
+            }
+         }
+       });
+
+        if (location.status===200) {
+       axios.post('/updateTracking/' + data.store + "/" + data.id, obj)
+       .then(postData=>{
+         if (postData.status===200) {
+             NotificationManager.success('Track No. Updated Successfully');
+            axios.patch('/suppOrderFulfill/'+oId, fulfilObject)
+             .then((updData)=>{
+               if (updData.data.includes('success')) {
+                 getOrderList()
+                 NotificationManager.success('Fulfilled Successfully');
+               }
+               else{
+                 NotificationManager.error('Something wrong in Fulfilled');
+               }
+             })
+         }
+       })
+
+
        }
 
      })
