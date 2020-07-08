@@ -15,21 +15,17 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { Component } from "react";
-import { Grid } from "react-bootstrap";
+import React, { Component } from 'react';
+import { Grid } from 'react-bootstrap';
 
 class Footer extends Component {
   render() {
     return (
-      <footer className="footer">
+      <footer className='footer'>
         <Grid fluid>
-
-          <p className="copyright text-center">
-            &copy; {new Date().getFullYear()}{" "}
-            <a href="">
-              Developers
-            </a>
-            , made with love for a better web
+          <p className='copyright text-center'>
+            &copy; {new Date().getFullYear()} <a href=''>Melisxpress</a>, all
+            rights reserved
           </p>
         </Grid>
       </footer>
