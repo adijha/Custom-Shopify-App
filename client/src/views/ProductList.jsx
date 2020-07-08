@@ -205,8 +205,6 @@ const ProductList = () => {
   };
 
 let newBuffData = (arr) =>{
-  // let promise = new Promise
-  //   let file = url;
     let encodedData = []
     arr.forEach((item, i) => {
       let reader = new FileReader();
@@ -295,6 +293,7 @@ let newBuffData = (arr) =>{
                   <Table striped hover>
                     <thead>
                       <tr>
+                        <th>No.</th>
                         <th>Image</th>
                         <th>Name</th>
                         <th>SKU</th>
@@ -307,6 +306,7 @@ let newBuffData = (arr) =>{
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
+                            <td>{key+1}</td>
                             <td style={{ width: "15%" }}>
                               {!!item.productImage[0].imgBufferData ? (
                                 <img

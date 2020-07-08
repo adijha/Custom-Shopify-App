@@ -94,9 +94,9 @@ const SupplierDashboard = () => {
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Total Revenue"
-                statsValue={`$ ${new Intl.NumberFormat("en-US").format(
+                statsValue={revenue? `$ ${new Intl.NumberFormat("en-US").format(
 									Number(revenue).toFixed(2)
-								)}`}
+								)}`:' '}
                 statsIcon={<i className="fa fa-calendar-o" />}
                 statsIconText="Last day"
               />
