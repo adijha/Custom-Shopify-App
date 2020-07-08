@@ -387,6 +387,7 @@ const ProductList = () => {
               <ReactQuill
                 required
                 theme={"snow"}
+                style={{ maxHeight: '16rem' }}
                 onChange={(value) => setDescription(value)}
                 value={description}
                 modules={Editor.modules}

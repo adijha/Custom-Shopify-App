@@ -455,7 +455,7 @@ const AddProduct = () => {
             <ReactQuill
               theme={'snow'}
               onChange={(value) => setDescription(value)}
-              style={{ minHeight: '18em' }}
+              style={{ maxHeight: '16rem' }}
               value={description}
               modules={Editor.modules}
               formats={Editor.formats}
@@ -896,6 +896,7 @@ const AddProduct = () => {
                 setCategory(e.target.value);
               }}
               placeholder='Enter category'
+              required
             >
               {categoryList.map((item, i) => {
                 return (
