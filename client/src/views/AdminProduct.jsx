@@ -546,7 +546,7 @@ const AdminProduct = () => {
               <ReactQuill
                 required
                 theme={"snow"}
-                style={{ maxHeight: '16rem' }}
+                style={{ maxHeight: '18em' }}
                 onChange={(value) => setDescription(value)}
                 value={description}
                 modules={Editor.modules}
