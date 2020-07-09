@@ -53,7 +53,7 @@ const MerchantAccountDetail = (props) => {
                 <li className="Mdetail">Name: {item.first||'NA'} {item.lastName||''}</li>
                 <li className="Mdetail">Email: {item.email}</li>
                 <li className="Mdetail">Phone No.: {item.phone ||'NA'}</li>
-                <li className="Mdetail">Store Link: <a href= "">{`${item.store}@myshopify.com` ||'NA'}</a></li>
+                <li className="Mdetail">Store Link: <a href= "">{`${item.store}.myshopify.com` ||'NA'}</a></li>
 
                 </ul>
               </div>

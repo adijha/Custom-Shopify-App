@@ -393,8 +393,8 @@ app.get('/orders/:store', async (req, res) => {
   }
 });
 
-//fulfill single orders
-app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
+//fulfill single orders for finding store location
+app.get('/updateOrdersTracking/:store/:id', async (req, res) => {
 
   let storeFullName = req.params.store+'.myshopify.com'
   console.log("storeFullName", storeFullName);
@@ -1134,7 +1134,7 @@ app.get('/topSelling', async (req, res) => {
 
               calOrder.push({
                 name: product.name,
-                sku: product.code,
+                sku: arr.sku,
                 count: arr.count,
                 price: parseInt(vArr.price),
                 revenue: countItem,
@@ -1148,7 +1148,7 @@ app.get('/topSelling', async (req, res) => {
 
           calOrder.push({
             name: product.name,
-            sku: product.code,
+            sku: arr.sku,
             count: arr.count,
             price: parseInt(product.price),
             revenue: countItem,
@@ -1160,21 +1160,21 @@ app.get('/topSelling', async (req, res) => {
   });
 
 
-  obj2.forEach((arr, i) => {
-    productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
-        let countItem = product.price * arr.count;
-
-        calOrder.push({
-          name: product.name,
-          sku: product.code,
-          count: arr.count,
-          price: product.price,
-          revenue: countItem,
-        });
-      }
-    });
-  });
+  // obj2.forEach((arr, i) => {
+  //   productData.forEach((product, j) => {
+  //     if (product.code === arr.sku) {
+  //       let countItem = product.price * arr.count;
+  //
+  //       calOrder.push({
+  //         name: product.name,
+  //         sku: product.code,
+  //         count: arr.count,
+  //         price: product.price,
+  //         revenue: countItem,
+  //       });
+  //     }
+  //   });
+  // });
   //console.log({calOrder});
   let totalOrders = calOrder.sort((a, b) => b.count - a.count);
   let top10 = totalOrders.slice(0, 10);

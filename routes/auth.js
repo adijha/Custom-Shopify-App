@@ -2225,7 +2225,7 @@ orderArray.forEach((order, i) => {
         if (vArr.sku==order.sku) {
           checkProductOrderSku.push({
             category: product.category,
-            price: vArr.price,
+            price: parseInt(vArr.price),
             quantity: order.quantity
           })
         }
@@ -2238,7 +2238,7 @@ orderArray.forEach((order, i) => {
     else if (order.sku === product.code) {
       checkProductOrderSku.push({
         category: product.category,
-        price: product.price,
+        price: parseInt(product.price),
         quantity: order.quantity
       })
     }
