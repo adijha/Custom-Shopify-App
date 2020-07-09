@@ -140,18 +140,18 @@ const Landing = () => {
                 Let's get started!
               </p>
               <br />
-              <button
-                type='button'
-                className=' text-center signup-banner'
-                style={{ minWidth: '20%' }}
+              <a
+                href='/merchant-signup'
+                style={{ textDecoration: 'none', color: 'white' }}
               >
-                <a
-                  href='/merchant-signup'
-                  style={{ textDecoration: 'none', color: 'white' }}
+                <button
+                  type='button'
+                  className=' text-center signup-banner'
+                  style={{ minWidth: '20%' }}
                 >
                   Sign Up
-                </a>
-              </button>
+                </button>
+              </a>
               <br />
               <p style={{ marginTop: '10px' }}>
                 <i>Start your 7 days trial. 100% Secure</i>
@@ -549,45 +549,8 @@ const Landing = () => {
             <div className='col-md-5'>
               <img
                 src={require('../assets/img/2.jpg')}
-                style={{ borderRadius: '5px' }}
+                style={{ borderRadius: '5px', marginTop: '10rem' }}
               />
-              <br />
-              <form style={{ marginTop: '20px' }}>
-                <div className='form-group' style={{ width: '100%' }}>
-                  <input
-                    styletype='email'
-                    className='form-control fields-blank'
-                    id='exampleInputEmail1'
-                    aria-describedby='emailHelp'
-                    placeholder='Name'
-                  />
-                </div>
-                <div className='form-group' style={{ width: '100%' }}>
-                  <input
-                    styletype='email'
-                    className='form-control fields-blank'
-                    id='exampleInputEmail1'
-                    aria-describedby='emailHelp'
-                    placeholder='Email'
-                  />
-                </div>
-                <div className='form-group' style={{ width: '100%' }}>
-                  <input
-                    type='password'
-                    className='form-control fields-blank'
-                    id='exampleInputPassword1'
-                    placeholder='Password'
-                  />
-                </div>
-
-                <button
-                  style={{ backgroundColor: '#90ee90', color: 'black' }}
-                  type='submit'
-                  className='btn btn-success'
-                >
-                  Sign Up
-                </button>
-              </form>
             </div>
 
             <div className='col-md-6 about-us'>
@@ -650,18 +613,18 @@ const Landing = () => {
           <div className='row'>
             <div className='col-md-4'></div>
             <div className='col-md-4'>
-              <button
-                type='button'
-                className=' text-center signup-banner'
-                style={{}}
+              <a
+                href='/merchant-signup'
+                style={{ textDecoration: 'none', color: 'white' }}
               >
-                <a
-                  href='/merchant-signup'
-                  style={{ textDecoration: 'none', color: 'white' }}
+                <button
+                  type='button'
+                  className=' text-center signup-banner'
+                  style={{}}
                 >
                   Sign Up Now
-                </a>
-              </button>
+                </button>
+              </a>
             </div>
             <div className='col-md-4'></div>
           </div>
