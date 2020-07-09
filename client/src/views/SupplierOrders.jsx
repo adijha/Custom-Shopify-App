@@ -60,7 +60,7 @@ const SupplierOrders = () => {
 
     }
     else{
-     await axios.post('/updateOrdersTracking/' + data.store + "/" + data.id, fulfilObject)
+     await axios.get('/updateOrdersTracking/' + data.store + "/" + data.id)
      .then(location=>{
        let obj = {}
       // console.log("data", data.data.locations);

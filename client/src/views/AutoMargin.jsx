@@ -36,6 +36,7 @@ const getCategoryList = () =>{
   axios.get('/api/totalCategoryMargin')
   .then(data=>{
     setCategoryList(data.data)
+    console.log(data.data);
   })
 }
 

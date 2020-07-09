@@ -33,6 +33,7 @@ const Category = () => {
   const getAnalytic = () => {
     axios.get("/api/categoryProductDetail").then((data) => {
       setAnalyticPart(data.data);
+      
     });
   };
 

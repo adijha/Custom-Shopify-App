@@ -50,6 +50,9 @@ const AddProduct = () => {
   const [preview, setPreview] = useState([]);
 
   const [multerImage, setMulterImage] = useState([]);
+  const [autoMargin, setAutoMargin] = useState()
+
+
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -98,6 +101,13 @@ const AddProduct = () => {
       setPrice(0);
       setCode(0);
     }
+    let margin = '';
+
+
+
+console.log("margin", autoMargin);
+
+
 
     let options = [
       { name: option1, values: tag0 },
@@ -113,7 +123,7 @@ const AddProduct = () => {
         price: document.getElementById(`varientPrice${i}`).value,
         quantity: document.getElementById(`varientQuantity${i}`).value,
         sku: document.getElementById(`varientSku${i}`).value,
-        selliingPrice: document.getElementById(`varientPrice${i}`).value,
+        selliingPrice: parseInt(document.getElementById(`varientPrice${i}`).value) + parseInt((document.getElementById(`varientPrice${i}`).value * autoMargin) /100)
       };
       // console.log({
       //   varient: document.getElementById(`varientName${i}`).value,
@@ -134,7 +144,7 @@ const AddProduct = () => {
       // });
       tempVarientArray.push(obj);
     }
-
+    console.log(tempVarientArray);
     const data = await new FormData();
     console.log(productImage, 'add button image');
     data.append('productImage', productImage[0]);
@@ -256,6 +266,7 @@ const AddProduct = () => {
   const getCategoryList = () => {
     axios.get('/api/totalCategory').then((data) => {
       setCategoryList(data.data);
+
     });
   };
   //tags
@@ -894,12 +905,25 @@ const AddProduct = () => {
               id='product_category'
               onChange={(e) => {
                 setCategory(e.target.value);
+                categoryList.forEach((item, i) => {
+                  if (item.category===e.target.value) {
+                    if (item.margin!==undefined||null) {
+                      setAutoMargin(item.margin)
+                    }
+                    else {
+                      setAutoMargin(0)
+                    }
+                  }
+                });
+
               }}
               placeholder='Enter category'
               required
             >
+            <option>Select Category</option>
               {categoryList.map((item, i) => {
                 return (
+
                   <option key={i} value={item.category}>
                     {item.category}
                   </option>

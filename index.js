@@ -386,7 +386,7 @@ app.get('/orders/:store', async (req, res) => {
 });
 
 //fulfill single orders
-app.post('/updateOrdersTracking/:store/:id', async (req, res) => {
+app.get('/updateOrdersTracking/:store/:id', async (req, res) => {
   let storeFullName = req.params.store + '.myshopify.com';
   console.log('storeFullName', storeFullName);
 
@@ -1059,50 +1059,55 @@ app.get('/topSelling', async (req, res) => {
   let orderArray = [];
 
   obj2.forEach((arr, i) => {
-    productData.forEach((product, k) => {
-      if (product.varientArray.length != 0) {
-        product.varientArray.forEach((vArr, l) => {
-          if (vArr.sku === arr.sku) {
-            let countItem = parseInt(vArr.price) * arr.count;
+      productData.forEach((product, k) => {
 
-            calOrder.push({
-              name: product.name,
-              sku: product.code,
-              count: arr.count,
-              price: parseInt(vArr.price),
-              revenue: countItem,
-            });
-          }
-        });
-      } else if (product.code === arr.sku) {
-        let countItem = parseInt(product.price) * arr.count;
+        if (product.varientArray.length!=0) {
+          product.varientArray.forEach((vArr, l) => {
+            if (vArr.sku===arr.sku) {
+              let countItem = parseInt(vArr.price) * arr.count;
 
-        calOrder.push({
-          name: product.name,
-          sku: product.code,
-          count: arr.count,
-          price: parseInt(product.price),
-          revenue: countItem,
-        });
-      }
+              calOrder.push({
+                name: product.name,
+                sku: arr.sku,
+                count: arr.count,
+                price: parseInt(vArr.price),
+                revenue: countItem,
+              })
+            }
+          });
+
+        }
+        else if(product.code===arr.sku) {
+          let countItem = parseInt(product.price) * arr.count;
+
+          calOrder.push({
+            name: product.name,
+            sku: arr.sku,
+            count: arr.count,
+            price: parseInt(product.price),
+            revenue: countItem,
+          })
+        }
+
+
     });
   });
 
-  obj2.forEach((arr, i) => {
-    productData.forEach((product, j) => {
-      if (product.code === arr.sku) {
-        let countItem = product.price * arr.count;
-
-        calOrder.push({
-          name: product.name,
-          sku: product.code,
-          count: arr.count,
-          price: product.price,
-          revenue: countItem,
-        });
-      }
-    });
-  });
+  // obj2.forEach((arr, i) => {
+  //   productData.forEach((product, j) => {
+  //     if (product.code === arr.sku) {
+  //       let countItem = product.price * arr.count;
+  //
+  //       calOrder.push({
+  //         name: product.name,
+  //         sku: product.code,
+  //         count: arr.count,
+  //         price: product.price,
+  //         revenue: countItem,
+  //       });
+  //     }
+  //   });
+  // });
   //console.log({calOrder});
   let totalOrders = calOrder.sort((a, b) => b.count - a.count);
   let top10 = totalOrders.slice(0, 10);
