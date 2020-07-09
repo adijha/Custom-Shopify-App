@@ -1,28 +1,28 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Grid, Row, Col, Table } from "react-bootstrap";
-import Card from "../components/Card/Card.jsx";
-import jwt_decode from "jwt-decode";
-import { NotificationManager } from "react-notifications";
-import Checkout from "./Checkout.jsx";
-import StriprCheckout from "react-stripe-checkout";
-import moment from "moment";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Grid, Row, Col, Table } from 'react-bootstrap';
+import Card from '../components/Card/Card.jsx';
+import jwt_decode from 'jwt-decode';
+import { NotificationManager } from 'react-notifications';
+import Checkout from './Checkout.jsx';
+import StriprCheckout from 'react-stripe-checkout';
+import moment from 'moment';
 
 const Orders = () => {
   const [tab, setTab] = useState(1);
   const [orderDetails, setOrderDetails] = useState([]);
   const [orderDetailsUn, setOrderDetailsUn] = useState([]);
   const [orderDetailsFu, setOrderDetailsFu] = useState([]);
-  const [msg, setMsg] = useState("");
-  const [found, setFound] = useState("");
-  const [foundUn, setFoundUn] = useState("");
-  const [foundFu, setFoundFu] = useState("");
-  const [expand, setExpand] = useState("");
+  const [msg, setMsg] = useState('');
+  const [found, setFound] = useState('');
+  const [foundUn, setFoundUn] = useState('');
+  const [foundFu, setFoundFu] = useState('');
+  const [expand, setExpand] = useState('');
   // var stripe = Stripe('pk_test_pmfKOqLm5AdRbXBfsqNrWew8');
   //const [product, setProduct] = useState({})
   const [pPrice, setPPrice] = useState();
-  const [pName, setPName] = useState("");
-  const [orderId, setOrderId] = useState("");
+  const [pName, setPName] = useState('');
+  const [orderId, setOrderId] = useState('');
   const [custDetail, setCustDetail] = useState({});
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const Orders = () => {
     // getOrderDetailsAll();
   }, []);
 
-  const tokenData = localStorage.getItem("token");
+  const tokenData = localStorage.getItem('token');
   let decode = jwt_decode(tokenData);
   let str = decode.email;
   let storeName = `${decode.store}.myshopify.com`;
@@ -56,21 +56,21 @@ const Orders = () => {
   const getOrderDetails = async () => {
     console.log(decode.store);
     console.log(
-      "moment date, ",
-      moment.utc("2020-06-30T21:09:43.000Z").format("YYYY-MM-DD,  h:mm:ss a")
+      'moment date, ',
+      moment.utc('2020-06-30T21:09:43.000Z').format('YYYY-MM-DD,  h:mm:ss a')
     );
 
     await axios
       .get(
-        "/api/merchantShopifyOrdersUnfulfilled/" +
+        '/api/merchantShopifyOrdersUnfulfilled/' +
           decode.store.toLowerCase().toString()
       )
       .then((data) => {
-        console.log("data is orders unfulfilled", data.data);
+        console.log('data is orders unfulfilled', data.data);
         const sortedArray = data.data.allOrder.sort(
           (a, b) =>
-            moment(a.date).format("YYYY-MM-DD,  h:mm:ss a") -
-            moment(b.date).format("YYYY-MM-DD,  h:mm:ss a")
+            moment(a.date).format('YYYY-MM-DD,  h:mm:ss a') -
+            moment(b.date).format('YYYY-MM-DD,  h:mm:ss a')
         );
         const sortedActivities = data.data.allOrder.sort(
           (a, b) => b.date - a.date
@@ -78,20 +78,20 @@ const Orders = () => {
         let sortData = data.data.allOrder.filter((allOrd) => {
           return moment(allOrd.date).subtract(1);
         });
-        console.log("sortData", sortData);
-        console.log("sortedArray", sortedArray);
-        console.log("sortedActivities", sortedActivities);
+        console.log('sortData', sortData);
+        console.log('sortedArray', sortedArray);
+        console.log('sortedActivities', sortedActivities);
 
         setOrderDetailsUn(data.data.unfulfilOrder);
         setOrderDetails(data.data.allOrder);
         setOrderDetailsFu(data.data.fulfilOrder);
 
         if (data.data.unfulfilOrder.length == 0) {
-          setFoundUn("No Order Found");
+          setFoundUn('No Order Found');
         } else if (data.data.fulfilOrder.length == 0) {
-          setFoundFu("No Order Found");
+          setFoundFu('No Order Found');
         } else if (data.data.allOrder.length == 0) {
-          setFound("No Order Found");
+          setFound('No Order Found');
         }
 
         // else{
@@ -103,11 +103,11 @@ const Orders = () => {
   const changeView = (e) => {
     e.preventDefault();
     console.log(e.target.value);
-    if (e.target.value === "all") {
+    if (e.target.value === 'all') {
       setTab(1);
-    } else if (e.target.value === "unfulfil") {
+    } else if (e.target.value === 'unfulfil') {
       setTab(2);
-    } else if (e.target.value === "fulfil") {
+    } else if (e.target.value === 'fulfil') {
       setTab(3);
     }
   };
@@ -121,16 +121,16 @@ const Orders = () => {
       orderId: orderId.toString(),
     };
 
-    console.log("obj is", obj);
+    console.log('obj is', obj);
     axios
-      .patch("/api/supplierOrderFromMerchant/" + data.orderId.toString())
+      .patch('/api/supplierOrderFromMerchant/' + data.orderId.toString())
       .then((res) => {
         if (res) {
-          NotificationManager.success("Fulfilled Successfully");
+          NotificationManager.success('Fulfilled Successfully');
           getOrderDetails();
           //console.log(filterItems.length, "length of filterItems")
         } else {
-          NotificationManager.error("Something wrong");
+          NotificationManager.error('Something wrong');
         }
       });
 
@@ -173,7 +173,7 @@ const Orders = () => {
   };
 
   const handleClickTest = (data) => {
-    console.log("data is ", data);
+    console.log('data is ', data);
     setPName(data.productName);
     setPPrice(parseInt(data.item_price));
     setCustDetail(data.customer_detail);
@@ -190,7 +190,7 @@ const Orders = () => {
       token,
       product,
     };
-    console.log("body is", body);
+    console.log('body is', body);
     console.log();
     // return await axios.post('/api/payment', body)
     // .then(response=>{
@@ -202,51 +202,51 @@ const Orders = () => {
     // })
 
     const headers = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
-    let dateObj = { date: moment().format("MMM Do YYYY") };
+    let dateObj = { date: moment().format('MMM Do YYYY') };
 
-    return fetch("http://www.Melisxpress.com/api/payment", {
-      method: "POST",
+    return fetch('http://www.Melisxpress.com/api/payment', {
+      method: 'POST',
       headers,
       body: JSON.stringify(body),
     })
       .then((response) => {
         if (response.status === 200) {
-          NotificationManager.success("Payment Done Successfully");
+          NotificationManager.success('Payment Done Successfully');
 
           axios
             .patch(
-              "/api/supplierOrderFromMerchant/" + orderId.toString(),
+              '/api/supplierOrderFromMerchant/' + orderId.toString(),
               dateObj
             )
             .then((res) => {
               if (res) {
-                NotificationManager.success("Fulfilled Successfully");
+                NotificationManager.success('Fulfilled Successfully');
                 getOrderDetails();
                 //console.log(filterItems.length, "length of filterItems")
               } else {
-                NotificationManager.error("Something wrong");
+                NotificationManager.error('Something wrong');
               }
             });
         }
       })
       .catch((err) => {
-        console.log("last err", err);
+        console.log('last err', err);
       });
   };
 
   return (
     <div>
-      <div className="content">
-        <div className="text-center" style={{ color: "green" }}>
+      <div className='content'>
+        <div className='text-center' style={{ color: 'green' }}>
           {msg}
         </div>
         <br />
         <select onChange={(e) => changeView(e)}>
-          <option value="all">All Orders</option>
-          <option value="unfulfil">Unfulfilled</option>
-          <option value="fulfil">Fulfilled</option>
+          <option value='all'>All Orders</option>
+          <option value='unfulfil'>Unfulfilled</option>
+          <option value='fulfil'>Fulfilled</option>
         </select>
         <br />
         <br />
@@ -254,7 +254,7 @@ const Orders = () => {
           <Row>
             <Col md={12}>
               <Card
-                title="Orders List"
+                title='Orders List'
                 ctTableFullWidth
                 ctTableResponsive
                 content={
@@ -291,25 +291,27 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
+                                <td>
+                                  {moment(item.date).format('DD-MM-YYYY')}
+                                </td>
                                 <td>{item.customer_detail.name}</td>
-                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.paymentMode || 'NA'}</td>
                                 <td>{item.pStatus}</td>
                                 <td>
                                   $
-                                  {new Intl.NumberFormat("en-US").format(
+                                  {new Intl.NumberFormat('en-US').format(
                                     item.total_amount
                                   )}
                                 </td>
-                                <td>{item.shipping || "NA"}</td>
+                                <td>{item.shipping || 'NA'}</td>
                                 <td>
-                                  {item.pStatus === "Paid" ? (
+                                  {item.pStatus === 'Paid' ? (
                                     <span
                                       style={{
-                                        backgroundColor: "yellowgreen",
-                                        width: "100px",
-                                        height: "100px",
-                                        borderRadius: "10%",
+                                        backgroundColor: 'yellowgreen',
+                                        width: '100px',
+                                        height: '100px',
+                                        borderRadius: '10%',
                                       }}
                                     >
                                       Fulfilled
@@ -317,10 +319,10 @@ const Orders = () => {
                                   ) : (
                                     <span
                                       style={{
-                                        backgroundColor: "#ffcccb",
-                                        width: "100px",
-                                        height: "100px",
-                                        borderRadius: "10%",
+                                        backgroundColor: '#ffcccb',
+                                        width: '100px',
+                                        height: '100px',
+                                        borderRadius: '10%',
                                       }}
                                     >
                                       Unfulfilled
@@ -328,34 +330,37 @@ const Orders = () => {
                                   )}
                                 </td>
                               </tr>
-
                               {expand === item.orderId ? (
                                 <tr key={9898989}>
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <th>Product Detail</th>
                                     <tr>
                                       {item.productImage.length > 0 ? (
                                         <img
-                                          className="product-logo"
+                                          style={{ width: 100 }}
+                                          className='product-logo'
                                           src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                                         />
                                       ) : (
-                                        "NA"
+                                        'NA'
                                       )}
                                     </tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.productName}</tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.sku}</tr>
                                   </td>
 
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <tr>
-                                      ${item.item_price}x{item.quantity}
+                                      ${' '}
+                                      {new Intl.NumberFormat('en-US').format(
+                                        item.item_price * item.quantity
+                                      )}
                                     </tr>
                                   </td>
                                 </tr>
@@ -388,21 +393,29 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
+                                <td>
+                                  {moment(item.date).format('DD-MM-YYYY')}
+                                </td>
                                 <td>{item.customer_detail.name}</td>
-                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.paymentMode || 'NA'}</td>
                                 <td>{item.pStatus}</td>
-                                <td>${item.total_amount}</td>
-                                <td>{item.shipping || "NA"}</td>
+
+                                <td>
+                                  $
+                                  {new Intl.NumberFormat('en-US')
+                                    .format(item.total_amount)
+                                    .toFixed(2)}
+                                </td>
+                                <td>{item.shipping || 'NA'}</td>
                                 <td>
                                   <StriprCheckout
-                                    stripeKey="pk_test_pmfKOqLm5AdRbXBfsqNrWew8"
+                                    stripeKey='pk_test_pmfKOqLm5AdRbXBfsqNrWew8'
                                     token={handlePayment}
-                                    name="Pay for Order"
+                                    name='Pay for Order'
                                     amount={pPrice}
                                   >
-                                    {" "}
-                                    <button className="btn btn-primary">
+                                    {' '}
+                                    <button className='btn btn-primary'>
                                       Pay
                                     </button>
                                   </StriprCheckout>
@@ -422,29 +435,29 @@ const Orders = () => {
 
                               {expand === item.orderId ? (
                                 <tr key={9898989}>
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <th>Product Detail</th>
                                     <tr>
                                       {item.productImage.length > 0 ? (
                                         <img
-                                          className="product-logo"
+                                          className='product-logo'
                                           src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                                         />
                                       ) : (
-                                        "NA"
+                                        'NA'
                                       )}
                                     </tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.productName}</tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.sku}</tr>
                                   </td>
 
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <tr>
                                       ${item.item_price}x{item.quantity}
                                     </tr>
@@ -475,40 +488,42 @@ const Orders = () => {
                               >
                                 <td>{key + 1}</td>
                                 <td>{item.orderId}</td>
-                                <td>{moment(item.date).format("DD-MM-YYYY")}</td>
+                                <td>
+                                  {moment(item.date).format('DD-MM-YYYY')}
+                                </td>
                                 <td>{item.customer_detail.name}</td>
-                                <td>{item.paymentMode || "NA"}</td>
+                                <td>{item.paymentMode || 'NA'}</td>
                                 <td>{item.pStatus}</td>
                                 <td>${item.total_amount}</td>
-                                <td>{item.shipping || "NA"}</td>
+                                <td>{item.shipping || 'NA'}</td>
                                 <td>Fulfilled</td>
                               </tr>
 
                               {expand === item.orderId ? (
                                 <tr key={9898989}>
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <th>Product Detail</th>
                                     <tr>
                                       {item.productImage.length > 0 ? (
                                         <img
-                                          className="product-logo"
+                                          className='product-logo'
                                           src={`data:image/jpeg;base64, ${item.productImage[0].imgBufferData}`}
                                         />
                                       ) : (
-                                        "NA"
+                                        'NA'
                                       )}
                                     </tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.productName}</tr>
                                   </td>
 
-                                  <td colSpan="2">
+                                  <td colSpan='2'>
                                     <tr>{item.sku}</tr>
                                   </td>
 
-                                  <td colSpan="1">
+                                  <td colSpan='1'>
                                     <tr>
                                       ${item.item_price}x{item.quantity}
                                     </tr>

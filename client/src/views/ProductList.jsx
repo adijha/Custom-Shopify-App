@@ -387,6 +387,7 @@ const ProductList = () => {
               <ReactQuill
                 required
                 theme={"snow"}
+                style={{ maxHeight: '16rem' }}
                 onChange={(value) => setDescription(value)}
                 value={description}
                 modules={Editor.modules}
@@ -675,7 +676,7 @@ const ProductList = () => {
 
             <div className="form-group">
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p style={{ flex: 1 }}>Varient</p>
+                <p style={{ flex: 1 }}>Variant</p>
                 <p style={{ flex: 1 }}>Price</p>
                 <p style={{ flex: 1 }}>Quantity</p>
                 <p style={{ flex: 1 }}>SKU</p>
