@@ -47,9 +47,7 @@ function Supplier() {
       .post('/api/signUp', obj)
       .then((data) => {
         if (data) {
-          NotificationManager.success(
-            'New Supplier Created Successfully'  
-          );
+          NotificationManager.success('New Supplier Created Successfully');
           // setStatus("New Supplier Created Successfully: "+ data.config.data)
           setName('');
           setEmail('');
@@ -91,6 +89,7 @@ function Supplier() {
               name='password'
               value={password}
               onChange={updatePwd}
+              style={{ height: 40 }}
             />
             <span className='password__show text-right' onClick={handleClick}>
               {' '}

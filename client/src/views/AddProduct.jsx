@@ -50,8 +50,7 @@ const AddProduct = () => {
   const [preview, setPreview] = useState([]);
 
   const [multerImage, setMulterImage] = useState([]);
-  const [autoMargin, setAutoMargin] = useState()
-
+  const [autoMargin, setAutoMargin] = useState();
 
   useEffect(() => {
     getCategoryList();
@@ -103,11 +102,7 @@ const AddProduct = () => {
     }
     let margin = '';
 
-
-
-console.log("margin", autoMargin);
-
-
+    console.log('margin', autoMargin);
 
     let options = [
       { name: option1, values: tag0 },
@@ -123,7 +118,12 @@ console.log("margin", autoMargin);
         price: document.getElementById(`varientPrice${i}`).value,
         quantity: document.getElementById(`varientQuantity${i}`).value,
         sku: document.getElementById(`varientSku${i}`).value,
-        selliingPrice: parseInt(document.getElementById(`varientPrice${i}`).value) + parseInt((document.getElementById(`varientPrice${i}`).value * autoMargin) /100)
+        selliingPrice:
+          parseInt(document.getElementById(`varientPrice${i}`).value) +
+          parseInt(
+            (document.getElementById(`varientPrice${i}`).value * autoMargin) /
+              100
+          ),
       };
       // console.log({
       //   varient: document.getElementById(`varientName${i}`).value,
@@ -266,7 +266,6 @@ console.log("margin", autoMargin);
   const getCategoryList = () => {
     axios.get('/api/totalCategory').then((data) => {
       setCategoryList(data.data);
-
     });
   };
   //tags
@@ -466,12 +465,14 @@ console.log("margin", autoMargin);
             <ReactQuill
               theme={'snow'}
               onChange={(value) => setDescription(value)}
-              style={{ maxHeight: '18em' }}
+              style={{ height: '18em', marginBottom: 20 }}
               value={description}
               modules={Editor.modules}
               formats={Editor.formats}
               placeholder={'Write something'}
             />
+            <br />
+            <br />
           </div>
 
           <div className='form-group'>
@@ -906,24 +907,21 @@ console.log("margin", autoMargin);
               onChange={(e) => {
                 setCategory(e.target.value);
                 categoryList.forEach((item, i) => {
-                  if (item.category===e.target.value) {
-                    if (item.margin!==undefined||null) {
-                      setAutoMargin(item.margin)
-                    }
-                    else {
-                      setAutoMargin(0)
+                  if (item.category === e.target.value) {
+                    if (item.margin !== undefined || null) {
+                      setAutoMargin(item.margin);
+                    } else {
+                      setAutoMargin(0);
                     }
                   }
                 });
-
               }}
               placeholder='Enter category'
               required
             >
-            <option>Select Category</option>
+              <option>Select Category</option>
               {categoryList.map((item, i) => {
                 return (
-
                   <option key={i} value={item.category}>
                     {item.category}
                   </option>

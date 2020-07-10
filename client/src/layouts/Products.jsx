@@ -13,6 +13,7 @@ const Products = () => {
   const [msg, setMsg] = useState('');
   const [status, setStatus] = useState('');
   const [category, setCategory] = useState([]);
+  const [moreCategory, setMoreCategory] = useState(false);
   const token = localStorage.getItem('token');
   const [moreDesc, setMoreDesc] = useState(false);
   let decode = jwt_decode(token);
@@ -241,14 +242,7 @@ const Products = () => {
         <div class='row'>
           <div className=''>
             <div role='toolbar'>
-              <div
-                className='text-center 
-                
-                
-                category-container-mx
-                
-                '
-              >
+              <div className='text-center category-container-mx'>
                 {[
                   {
                     category: 'Men’s Clothing & Accessories',
@@ -271,7 +265,7 @@ const Products = () => {
                     icon: 'pe-7s-piggy',
                   },
                   {
-                    category: 'Jewellery & Watches',
+                    category: 'Electronics',
                     icon: 'pe-7s-wristwatch',
                   },
                   {
@@ -286,26 +280,51 @@ const Products = () => {
                     category: 'Sports',
                     icon: 'pe-7s-ball',
                   },
-                  ,
                   {
-                    category: 'More	',
+                    category: 'More',
                     icon: 'pe-7s-more',
                   },
                 ].map((item) => {
                   return (
                     <>
-                      <div
-                        // role="group"
-                        className='category-mx'
-                        onClick={(e) => {
-                          console.log(item.category);
-                          handleCategory(e.target.childNodes[0]);
-                          console.log(e.target.childNodes[0]);
-                        }}
-                      >
-                        <i className={`${item.icon} category-mx-icon`} />
-                        <p className='category-mx-name'>{item.category}</p>
-                      </div>
+                      {item.category === 'More' ? (
+                        <div className='category-mx'>
+                          <i className={`${item.icon} category-mx-icon`} />
+                          <select
+                            className='form-control'
+                            id='product_category'
+                            onChange={(e) => {
+                              // setCategory(e.target.value);
+                              handleCategory(e.target.value);
+                            }}
+                            style={{ border: 'none' }}
+                            placeholder='Enter category'
+                            required
+                          >
+                            <option>{item.category}</option>
+                            {category.map((itemm, i) => {
+                              console.log(itemm);
+                              return (
+                                <option key={i} value={itemm.category}>
+                                  {itemm.category}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      ) : (
+                        <div
+                          className='category-mx'
+                          onClick={(e) => {
+                            console.log(item.category);
+                            handleCategory(e.target.childNodes[0]);
+                            console.log(e.target.childNodes[0]);
+                          }}
+                        >
+                          <i className={`${item.icon} category-mx-icon`} />
+                          <p className='category-mx-name'>{item.category}</p>
+                        </div>
+                      )}
                     </>
                   );
                 })}
