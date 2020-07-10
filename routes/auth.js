@@ -2652,7 +2652,7 @@ router.patch('/autoMargin', async (req, res) => {
             price: arr.price,
             sku: arr.sku,
             quantity: arr.quantity,
-            selliingPrice: parseInt(arr.price) + ((parseInt(arr.price) * req.body.margin) / 100)
+            selliingPrice: parseInt(arr.price) + ((parseInt(arr.price) * parseInt(req.body.margin)) / 100)
           }
 
           console.log({obj});
@@ -2670,7 +2670,7 @@ router.patch('/autoMargin', async (req, res) => {
         console.log({ updatePrice });
       }
       else {
-        let calPrice = item.price + (item.price * req.body.margin) / 100;
+        let calPrice = parseInt(item.price) + (parseInt(item.price) * parseInt(req.body.margin)) / 100;
         let price = calPrice.toFixed(2);
         let updatePrice = await Products.updateOne(
           { _id: item._id },
