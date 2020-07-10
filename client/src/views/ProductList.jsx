@@ -387,13 +387,14 @@ const ProductList = () => {
               <ReactQuill
                 required
                 theme={"snow"}
-                style={{ maxHeight: '18em' }}
+                style={{ height: '18em', marginBottom: 20 }}
                 onChange={(value) => setDescription(value)}
                 value={description}
                 modules={Editor.modules}
                 formats={Editor.formats}
                 placeholder={"Write description"}
               />
+              <br/><br/>
             </div>
 
             <div className="form-group">
