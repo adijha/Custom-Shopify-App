@@ -34,6 +34,10 @@ const ProductList = () => {
   const [international, setInternational] = useState(2.5);
   const [shippingStatus, setShippingStatus] = useState("");
   const [productImage, setProductImage] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  const [autoMargin, setAutoMargin] = useState()
+
+
   const modalStyle = {
     margin: "auto",
     position: "relative",
@@ -76,12 +80,20 @@ const ProductList = () => {
 
   useEffect(() => {
     getProductData();
+    getCategoryList();
   }, []);
 
   const getProductData = () => {
     axios.get("/api/supplier/product/" + decode.id).then((products) => {
       setProductItems(products.data);
       console.log(products.data);
+    });
+  };
+
+  const getCategoryList = () => {
+    axios.get('/api/totalCategory').then((data) => {
+      setCategoryList(data.data);
+
     });
   };
 
@@ -104,6 +116,17 @@ const ProductList = () => {
 
     setShippingDetails(item.shippingCharge.method);
     setProductImage(item.productImage);
+    categoryList.forEach((Cat, i) => {
+      if (Cat.category===item.category) {
+        if (item.margin!==undefined||null) {
+          setAutoMargin(Cat.margin)
+        }
+        else {
+          setAutoMargin(0)
+        }
+      }
+    });
+
     setOpen(true);
   };
 
@@ -168,6 +191,7 @@ const ProductList = () => {
     switch (ref) {
       case "price":
         newArr[index].price = e.target.value;
+        newArr[index].selliingPrice = parseInt(e.target.value) + parseInt((e.target.value * autoMargin)/100)
         break;
       case "quantity":
         newArr[index].quantity = e.target.value;
@@ -179,6 +203,7 @@ const ProductList = () => {
         newArr[index].price = e.target.value;
         break;
     }
+    console.log("autoMargin", autoMargin);
     console.log(newArr);
     setVarient(newArr);
   };
@@ -422,15 +447,37 @@ const ProductList = () => {
             </div>
             <div className="form-group">
               <label for="product_category">Category</label>
-              <input
-                type="text"
+              <select
+                className='form-control'
+                id='product_category'
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="form-control"
-                id="product_category"
-                placeholder="Enter category of Product"
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                  categoryList.forEach((item, i) => {
+                    if (item.category===e.target.value) {
+                      if (item.margin!==undefined||null) {
+                        setAutoMargin(item.margin)
+                      }
+                      else {
+                        setAutoMargin(0)
+                      }
+                    }
+                  });
+
+                }}
+                placeholder='Enter category'
                 required
-              />
+              >
+
+                {categoryList.map((item, i) => {
+                  return (
+
+                    <option key={i} value={item.category}>
+                      {item.category}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             <div className="form-group">
