@@ -242,14 +242,7 @@ const Products = () => {
         <div class='row'>
           <div className=''>
             <div role='toolbar'>
-              <div
-                className='text-center 
-                
-                
-                category-container-mx
-                
-                '
-              >
+              <div className='text-center category-container-mx'>
                 {[
                   {
                     category: 'Men’s Clothing & Accessories',
@@ -287,7 +280,6 @@ const Products = () => {
                     category: 'Sports',
                     icon: 'pe-7s-ball',
                   },
-                  ,
                   {
                     category: 'More',
                     icon: 'pe-7s-more',
@@ -298,13 +290,11 @@ const Products = () => {
                       {item.category === 'More' ? (
                         <div className='category-mx'>
                           <i className={`${item.icon} category-mx-icon`} />
-
                           <select
                             className='form-control'
                             id='product_category'
                             onChange={(e) => {
                               // setCategory(e.target.value);
-
                               handleCategory(e.target.value);
                             }}
                             style={{ border: 'none' }}
