@@ -466,7 +466,7 @@ console.log("margin", autoMargin);
             <ReactQuill
               theme={'snow'}
               onChange={(value) => setDescription(value)}
-              style={{ maxHeight: '16rem' }}
+              style={{ maxHeight: '18em' }}
               value={description}
               modules={Editor.modules}
               formats={Editor.formats}
