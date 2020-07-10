@@ -17,7 +17,7 @@ const SupplierList = () => {
   const [method, setMethod] = useState("");
   const [id, setId] = useState("");
   const [transData, setTransdata] = useState([]);
-
+  const [clickStatus, setClickStatus] = useState(false)
   useEffect(() => {
     getPaymentsData();
     getTransactionDetail();
@@ -43,6 +43,7 @@ const SupplierList = () => {
   };
 
   const markAsPaid = async (item) => {
+    setClickStatus(true)
     let d = moment().format("DD-MM-YY");
     let t = moment().format("h:mm:ss");
     let obj = {
@@ -311,10 +312,12 @@ const SupplierList = () => {
                                       }
                                     >
                                       <option value="">select mode</option>
-                                      <option value="transferwise">
+                                      <option value="Transferwise">
                                         Transferwise
                                       </option>
-                                      <option value="paypal">Paypal</option>
+                                      <option value="Paypal">Paypal</option>
+                                      <option value="Bank Account">Bank Account</option>
+                                      <option value="Western Union">Western Union</option>
                                     </select>
                                   </div>
                                   <div
@@ -344,6 +347,7 @@ const SupplierList = () => {
 
                                 <td colSpan="2">
                                   <div
+                                  disable = {clickStatus}
                                     style={{
                                       backgroundColor: "grey",
                                       width: "140px",

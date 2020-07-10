@@ -145,6 +145,16 @@ router.post('/transactionDetail',async (req, res)=>{
 router.get('/getTransaction', async (req, res)=>{
   try {
     let data = await Transaction.find().sort({date:-1})
+    let userData = await User.find()
+    data.forEach((item, i) => {
+      userData.forEach((item, index) => {
+        if (data[i].supplier_id===userData[index]._id.toString()) {
+          data[i].supplier_id = userData[index].supplier_id
+        }
+      });
+
+    });
+console.log(data);
     res.send(data)
   } catch (e) {
       console.log("get tranaction", e);

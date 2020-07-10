@@ -128,7 +128,7 @@ const SupplierList = () => {
                       return (
                         <tr key={key}>
                           <td>{key + 1}</td>
-                          <td style={{ width: "20%" }}>{item.date}</td>
+                          <td style={{ width: "20%" }}>{moment(item.date).format("DD-MM-YYYY")}</td>
                           <td>{item.time}</td>
                           <td>
                             {context === "supplier"

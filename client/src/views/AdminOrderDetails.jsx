@@ -204,7 +204,8 @@ const SupplierList = () => {
                               {item.customer_name.name}
                             </td>
                             <td>{item.sku}</td>
-                            <td>${item.total_price}</td>
+                            <td>${new Intl.NumberFormat('en-US').format(
+                                parseFloat(item.total_price).toFixed(2))}</td>
                             <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
                           </tr>
 

@@ -250,9 +250,13 @@ const SupplierList = () => {
                           <td>{key + 1}</td>
                           <td>{item.supplier_id}</td>
                           <td>{item.email}</td>
-                          <td>{item.product}</td>
-                          <td>{item.order}</td>
-                          <td>${item.revenue}</td>
+                          <td>{new Intl.NumberFormat('en-US').format(
+                              parseFloat(item.product).toFixed(2))}</td>
+                          <td>{new Intl.NumberFormat('en-US').format(
+                              parseFloat(item.order).toFixed(2))}</td>
+
+                          <td>${new Intl.NumberFormat('en-US').format(
+                              parseFloat(item.revenue).toFixed(2))}</td>
                           <td>
                             <button
                               className="btn btn-primary btn-sm"

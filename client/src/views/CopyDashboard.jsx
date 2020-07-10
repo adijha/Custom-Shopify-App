@@ -337,7 +337,9 @@ const CopyDashboard = () => {
                           <tr key={key}>
                             <td>{item.sku}</td>
                             <td>{item.name}</td>
-                            <td>${item.price}</td>
+
+                            <td>${new Intl.NumberFormat('en-US').format(
+                                parseFloat(item.price).toFixed(2))}</td>
                             <td>{item.count}</td>
                           </tr>
                         );

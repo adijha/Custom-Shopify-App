@@ -65,7 +65,7 @@ const MerchantDetail = () => {
                               {item.firstName || 'NA'} {item.lastName || ''}
                             </td>
                             <td>{item.email || 'NA'}</td>
-                            <td>{item.joiningDate || 'NA'}</td>
+                            <td>{moment(item.joiningDate).format("DD-MM-YYYY") || 'NA'}</td>
                             <td>{item.plan || 'NA'}</td>
                             <td>{item.count || 'NA'}</td>
                             <td>&#x24; {`${(new Intl.NumberFormat("en-US").format(item.price))}`|| 'NA'}</td>

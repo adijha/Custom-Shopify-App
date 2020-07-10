@@ -153,7 +153,7 @@ const Category = () => {
                     <thead>
                       <tr>
                         <th>Name</th>
-                        <th>Date Created</th>
+                        <th>Created On</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -216,9 +216,12 @@ const Category = () => {
                         return (
                           <tr key={key}>
                             <td>{item.category}</td>
-                            <td>{item.count || 0}</td>
-                            <td>{item.order || 0}</td>
-                            <td>${item.revenue || 0}</td>
+                            <td>{new Intl.NumberFormat('en-US').format(
+                                parseFloat(item.count).toFixed(2)) || 0}</td>
+                            <td>{new Intl.NumberFormat('en-US').format(
+                                parseFloat(item.order).toFixed(2)) || 0}</td>
+                            <td>${new Intl.NumberFormat('en-US').format(
+                                parseFloat(item.revenue).toFixed(2)) || 0}</td>
                           </tr>
                         );
                       })}
