@@ -25,6 +25,7 @@ const SupplierList = () => {
         setFound("No Order Found")
       }
       else {
+        res.data.sort((a,b)=> new Date(b.order_date) - new Date(a.order_date))
         setOrders(res.data);
          // console.log(res.data);
       }
@@ -156,8 +157,8 @@ const SupplierList = () => {
                       <th>No.</th>
                       <th>Product Image</th>
                       <th>Order Id</th>
-                      <th>Merchant Id</th>
-                      <th>Supplier Id</th>
+                      <th>Merchant Name</th>
+                      <th>Supplier Name</th>
                       <th>Customer</th>
                       <th>SKU</th>
                       <th>Total</th>
@@ -192,7 +193,7 @@ const SupplierList = () => {
                               {item.orderId}
                             </td>
                             <td>{item.merchantName}</td>
-                            <td>{item.supplier_id}</td>
+                            <td>{item.supplierName}</td>
                             <td
                               onClick={() => {
                                 setExpand2(item.orderId);

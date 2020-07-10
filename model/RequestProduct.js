@@ -5,7 +5,7 @@ const RequestProductSchema = mongoose.Schema({
     type:String
   },
   date:{
-    type:String
+    type:Date
   },
   name:{
     type:String

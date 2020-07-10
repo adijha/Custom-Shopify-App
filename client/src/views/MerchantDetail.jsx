@@ -7,7 +7,7 @@ import Card from '../components/Card/Card.jsx';
 import CustomButton from '../components/CustomButton/CustomButton';
 import '../assets/css/supplierOrders.css';
 import MerchantAccountDetail from './MerchantAccountDetail.jsx';
-
+import moment from 'moment'
 const MerchantDetail = () => {
   const [expand, setExpand] = useState('');
   const [merchantList, setMerchantList] = useState([]);
@@ -20,7 +20,7 @@ const MerchantDetail = () => {
 
   const getMerchant = async () => {
     const res = await axios.get('/api/customMerchantDetail');
-
+    res.data.sort((a,b)=> new Date(b.joiningDate)-new Date(a.joiningDate))
     setMerchantList(res.data);
     console.log(res.data);
   };

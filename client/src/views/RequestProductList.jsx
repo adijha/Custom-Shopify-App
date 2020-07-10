@@ -17,11 +17,11 @@ const RequestProductList = () => {
 
   const getMerchant = async () => {
     const res = await axios.get('/api/getRequestProduct');
-    res.data.sort((a,b) =>
+    let resFilter = await res.data.sort((a,b) =>
       new Date(b.date) - new Date(a.date)
     )
-    setRequestList(res.data);
-    console.log(res.data);
+    setRequestList(resFilter);
+    console.log(resFilter);
   };
 
   return (
@@ -56,7 +56,7 @@ const RequestProductList = () => {
                               {key+1}
                             </td>
                             <td>{item.merchantId || 'NA'}</td>
-                            <td>{item.date || 'NA'}</td>
+                            <td>{moment(item.date).format("YYYY-DD-MM") || 'NA'}</td>
                             <td>{item.name || 'NA'}</td>
                             <td><a href={item.link} target="_blank">{item.link}</a></td>
 

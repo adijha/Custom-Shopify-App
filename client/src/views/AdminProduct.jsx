@@ -127,7 +127,8 @@ const AdminProduct = () => {
     console.log("unsorted", unsorted);
     if (e.target.value === "asce") {
       setProductItems(
-        filterItems.sort((a, b) => parseFloat(a.price) - parseFloat(b.price))
+        filterItems.sort((a, b) =>   a.varientArray[1] - b.varientArray[1]? 1:-1
+      )
       );
     } else if (e.target.value == "desc") {
       setProductItems(

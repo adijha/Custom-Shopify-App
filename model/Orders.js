@@ -28,7 +28,7 @@ const OrderSchema = mongoose.Schema({
     default: "unpaid"
   },
   updated_on:{
-    type:String
+    type:Date
   }
 });
 

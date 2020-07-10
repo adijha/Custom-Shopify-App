@@ -3,7 +3,7 @@ import axios from "axios";
 import { Grid, Row, Col, Table, Modal as Mod, Button } from "react-bootstrap";
 import Card from "../components/Card/Card.jsx";
 import Modal from "react-responsive-modal";
-
+import moment from 'moment'
 import { NotificationManager } from "react-notifications";
 
 const Category = () => {
@@ -24,8 +24,10 @@ const Category = () => {
   //get Category
   const getCategory = () => {
     axios.get("/api/totalCategory").then((data) => {
-      console.log("category list is", data.data);
+      data.data.sort((a,b)=> new moment(b.created_on).format("DD-MM-YYYY") - new moment(a.created_on).format("DD-MM-YYYY"))
       setCategoryList(data.data);
+      console.log("category list is", data.data);
+
     });
   };
 
@@ -33,7 +35,7 @@ const Category = () => {
   const getAnalytic = () => {
     axios.get("/api/categoryProductDetail").then((data) => {
       setAnalyticPart(data.data);
-      
+
     });
   };
 

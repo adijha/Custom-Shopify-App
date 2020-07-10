@@ -654,7 +654,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           total_price: item.price,
           quantity: product.quantity,
           store: product.store.toLowerCase(),
-
+          updated_on: item.updated_on,
           customer_name: item.customer,
           order_date: item.created_on,
           pStatus:item.pStatus
@@ -680,6 +680,7 @@ router.get('/customOrderDetails', async (req, res)=>{
               store: arr.store,
               customer_name: arr.customer_name,
               order_date: arr.order_date,
+              updated_on: arr.updated_on,
               productImage:data.productImage,
               shipping: data.shippingCharge,
               product_price: vArr.price,
@@ -700,6 +701,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           store: arr.store,
           customer_name: arr.customer_name,
           order_date: arr.order_date,
+          updated_on: arr.updated_on,
           productImage:data.productImage,
           shipping: data.shippingCharge,
           product_price: data.price,
@@ -723,6 +725,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           store: sArr.store,
           customer_name: sArr.customer_name,
           order_date: sArr.order_date,
+          updated_on: sArr.updated_on,
           shipping: sArr.shipping,
           product_price: sArr.product_price,
           supplier_id: sArr.supplier_id,
@@ -749,6 +752,7 @@ thirdArr.forEach((tArr, o) => {
         store: tArr.store,
         customer_name: tArr.customer_name,
         order_date: tArr.order_date,
+        updated_on: tArr.updated_on,
         shipping: tArr.shipping,
         product_price: tArr.product_price,
         supplier_id: tArr.supplier_id,
@@ -1161,7 +1165,7 @@ else {
 
 
 
-  // console.log('final object is', mDetail);
+   console.log('final object is', mDetail);
 
   res.send(mDetail);
 
@@ -2119,7 +2123,7 @@ router.post('/addCategory', async (req, res) => {
 //get category
 router.get('/totalCategory', async (req, res) => {
   try {
-    const categories = await Category.find({}).sort({created_on:-1});
+    const categories = await Category.find({}).sort({created_on:1});
     // console.log(categories);
     res.json(categories);
   } catch (error) {
@@ -2294,7 +2298,7 @@ obj2.forEach((priceObj, j) => {
   });
 });
 
-const categoryData = await Category.find().sort({created_on:-1})
+const categoryData = await Category.find().sort({created_on:1})
 
 let countArray = []
 
@@ -2996,7 +3000,7 @@ router.post('/requestProduct', async (req, res)=>{
 //get Requested product list
 router.get('/getRequestProduct', async (req, res)=>{
   try {
-    let reqData = await RequestProduct.find().sort({date:-1});
+    let reqData = await RequestProduct.find().sort({date:1});
     let merchantData = await MerchantUser.find();
     let newData = []
     reqData.forEach((data, i) => {

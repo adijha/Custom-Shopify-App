@@ -3,7 +3,7 @@ import axios from 'axios'
 import { NotificationManager } from 'react-notifications';
 import { Grid, Row, Col, Table, Modal as Mod, Button } from 'react-bootstrap';
 import Card from '../components/Card/Card.jsx';
-
+import moment from 'moment'
 
 const AutoMargin =()=>{
   const [margin, setMargin] = useState();
@@ -35,6 +35,7 @@ const updatePrice = async (e) =>{
 const getCategoryList = () =>{
   axios.get('/api/totalCategoryMargin')
   .then(data=>{
+    data.data.sort((a,b)=>  Date(b.margin_updated) -  Date(a.margin_updated))
     setCategoryList(data.data)
     console.log(data.data);
   })
