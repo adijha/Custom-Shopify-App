@@ -183,11 +183,8 @@ const ProductList = () => {
   };
   const updateFieldChanged = (index, ref) => (e) => {
     console.log("index: " + index);
-
     console.log("property name: " + e.target.name);
-
     let newArr = [...varient]; // copying the old datas array
-
     switch (ref) {
       case "price":
         newArr[index].price = e.target.value;
