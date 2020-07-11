@@ -455,7 +455,7 @@ const AdminProduct = () => {
                               </td>
                               <td>{item.supplier_name}</td>
                               <td>
-                                <a href={'/admin/single-product/' + item._id}>
+                                <a href={'/admin/single-product/' + item._id} target="_blank">
                                   {item.name}
                                 </a>
                               </td>

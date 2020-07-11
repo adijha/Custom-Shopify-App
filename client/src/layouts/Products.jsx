@@ -448,7 +448,8 @@ const Products = () => {
                   <div className=' row'>
                     <div className='preview col-md-6'>
                       <div className='preview-pic tab-content'>
-                        <div className='tab-pane active' id='pic-1'>
+
+                          <div className='tab-pane active' id='pic-1'>
                           {product.productImage[0] ? (
                             <img
                               src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`}
@@ -456,39 +457,36 @@ const Products = () => {
                           ) : (
                             <h5>no image available</h5>
                           )}
-                        </div>
-                        <div className='tab-pane' id='pic-2'>
-                          {product.productImage[1] ? (
-                            <img
-                              src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`}
-                            />
-                          ) : (
-                            <h5>no image available</h5>
-                          )}
-                        </div>
+                          </div>
+                          {
+                            product.productImage.map((image, index)=>{
+                              return(
+                                <div className='tab-pane' id={`pic-${index+2}`}>
+                                <img
+                                  src={`data:image/jpeg;base64, ${image.imgBufferData}`}
+                                />
+                                </div>
+                              )
+                            })
+                          }
+
                       </div>
                       <ul className='preview-thumbnail nav nav-tabs'>
-                        <li className='active'>
-                          <a data-target='#pic-1' data-toggle='tab'>
-                            {product.productImage[0] ? (
-                              <img
-                                src={`data:image/jpeg;base64, ${product.productImage[0].imgBufferData}`}
-                              />
-                            ) : (
-                              <h5>no image available</h5>
-                            )}
-                          </a>
-                        </li>
-                        <li>
-                          <a data-target='#pic-2' data-toggle='tab'>
-                            {product.productImage[1] ? (
-                              <img
-                                src={`data:image/jpeg;base64, ${product.productImage[1].imgBufferData}`}
-                              />
-                            ) : (
-                              <h5>no image available</h5>
-                            )}
-                          </a>
+
+                        <li style={{display:"flex", width:"100%"}}>
+                        {
+                          (product.productImage.length!==0)?(
+                            product.productImage.map((image, index)=>{
+                              return(
+                                <a data-target={`#pic-${index+1}`} data-toggle='tab'>
+                                <img
+                                  src={`data:image/jpeg;base64, ${image.imgBufferData}`}
+                                />
+                                </a>
+                              )
+                            })
+                          ):"No Image Available"
+                        }
                         </li>
                       </ul>
                     </div>
