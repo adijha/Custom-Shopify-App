@@ -2617,15 +2617,59 @@ router.get('/product/:id', async (req, res) => {
 });
 
 //update Product details
-router.patch('/product/update', async (req, res) => {
-  try {
+router.patch('/product/update',upload.array('addOnImage'), async (req, res) => {
+ try {
+  const files = await req.files;
+  let imgData = [];
+  let pImageData = await JSON.parse(req.body.productImage)
+  files.forEach((file) => {
+    imgData.push({
+      imgName: file.mimetype,
+      imgBufferData: file.buffer.toString('base64'),
+    });
+  });
+
+pImageData.forEach((item, i) => {
+  imgData = [...imgData, item]
+});
+
+
+
+
+let shippingObj = {
+  method: req.body.method,
+  usa: req.body.usa,
+  canada: req.body.canada,
+  unitedKingdom: req.body.uk,
+  australia: req.body.australia,
+  international: req.body.international,
+};
+
+  let obj = {
+    name: req.body.name,
+    price: req.body.price,
+    quantity: req.body.quantity,
+    warranty: req.body.warranty,
+    description: req.body.description,
+    category: req.body.category,
+    code: req.body.code,
+    productImage: imgData,
+    shippingCharge: shippingObj,
+    varientArray: JSON.parse(req.body.varientArray),
+    selliingPrice: req.body.price
+  }
+
+ console.log("obj update", obj);
+
     const data = await Products.updateOne(
       { _id: req.body._id },
-      { $set: req.body }
+      { $set: obj }
     );
+    console.log("update data", data);
     res.json({ message: 'Product updated Successfilly' + data });
   } catch (error) {
     res.json({ message: error.message });
+    console.log(error);
   }
 });
 

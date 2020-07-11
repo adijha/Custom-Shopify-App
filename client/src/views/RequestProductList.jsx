@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, Row, Col, Table } from 'react-bootstrap';
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-import { NotificationManager } from 'react-notifications';
-import Card from '../components/Card/Card.jsx';
-import CustomButton from '../components/CustomButton/CustomButton';
-import '../assets/css/supplierOrders.css';
-import moment from 'moment';
+import React, { useState, useEffect } from "react";
+import { Grid, Row, Col, Table } from "react-bootstrap";
+import axios from "axios";
+import jwt_decode from "jwt-decode";
+import { NotificationManager } from "react-notifications";
+import Card from "../components/Card/Card.jsx";
+import CustomButton from "../components/CustomButton/CustomButton";
+import "../assets/css/supplierOrders.css";
+import moment from "moment";
 
 const RequestProductList = () => {
   const [requestList, setRequestList] = useState([]);
@@ -16,26 +16,25 @@ const RequestProductList = () => {
   }, []);
 
   const getMerchant = async () => {
-    const res = await axios.get('/api/getRequestProduct');
-    let resFilter = await res.data.sort((a,b) =>
-      new Date(b.date) - new Date(a.date)
-    )
-    setRequestList(resFilter);
-    console.log(resFilter);
+    const res = await axios.get("/api/getRequestProduct");
+    let sortedArray = res.data.sort(
+      (a, b) => new moment(b.date) - new moment(a.date)
+    );
+    setRequestList(sortedArray);
   };
 
   return (
-    <div className='content'>
+    <div className="content">
       <Grid fluid>
         <Row>
           <Col md={12}>
             <Card
-              title='Requested Product List'
-              category={'Total Requested Product :' + requestList.length}
+              title="Requested Product List"
+              category={"Total Requested Product :" + requestList.length}
               ctTableFullWidth
               ctTableResponsive
               content={
-                <Table hover size='sm'>
+                <Table hover size="sm">
                   <thead>
                     <tr>
                       <th>S.No</th>
@@ -49,17 +48,18 @@ const RequestProductList = () => {
                     {requestList.map((item, key) => {
                       return (
                         <>
-                          <tr
-                            key={key}
-                            >
+                          <tr key={key}>
+                            <td>{key + 1}</td>
+                            <td>{item.merchantId || "NA"}</td>
                             <td>
-                              {key+1}
+                              {moment(item.date).format("YYYY-DD-MM") || "NA"}
                             </td>
-                            <td>{item.merchantId || 'NA'}</td>
-                            <td>{moment(item.date).format("YYYY-DD-MM") || 'NA'}</td>
-                            <td>{item.name || 'NA'}</td>
-                            <td><a href={item.link} target="_blank">{item.link}</a></td>
-
+                            <td>{item.name || "NA"}</td>
+                            <td>
+                              <a href={item.link} target="_blank">
+                                {item.link}
+                              </a>
+                            </td>
                           </tr>
                         </>
                       );
