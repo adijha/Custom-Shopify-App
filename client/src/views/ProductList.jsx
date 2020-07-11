@@ -346,10 +346,10 @@ const ProductList = () => {
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>
-                              {" "}
+                              {"$"}
                               {item.varientArray.length !== 0
                                 ? getRange(item.varientArray)
-                                : `$`(
+                                : (
                                     new Intl.NumberFormat("en-US").format(
                                       item.price.toFixed(2)
                                     )

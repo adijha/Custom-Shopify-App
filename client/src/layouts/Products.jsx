@@ -415,7 +415,7 @@ const Products = () => {
                   >
                     {list.varientArray.length !== 0
                       ? getSellingRange(list.varientArray)
-                      : `$`(
+                      : '$'(
                           new Intl.NumberFormat('en-US').format(
                             list.selliingPrice.toFixed(2)
                           )
