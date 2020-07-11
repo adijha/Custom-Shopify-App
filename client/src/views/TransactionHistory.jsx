@@ -12,11 +12,13 @@ const SupplierList = () => {
 
   const getSupplierData = async () => {
     axios.get("/api/getTransaction").then((res) => {
-      let SortData = res.data.sort((a,b)=>
-        new Date(b.date)- new Date(a.date)
-      )
+      let SortData = res.data.sort(
+        (a, b) =>
+          new Date(moment(b.date).format("DD-MM-YYYY") + " " + b.time) -
+          new Date(moment(a.date).format("DD-MM-YYYY") + " " + a.time)
+      );
 
-            setHistory(SortData);
+      setHistory(SortData);
       // console.log(res.data);
     });
   };
@@ -132,7 +134,9 @@ const SupplierList = () => {
                       return (
                         <tr key={key}>
                           <td>{key + 1}</td>
-                          <td style={{ width: "20%" }}>{moment(item.date).format("DD-MM-YYYY")}</td>
+                          <td style={{ width: "20%" }}>
+                            {moment(item.date).format("DD-MM-YYYY")}
+                          </td>
                           <td>{item.time}</td>
                           <td>
                             {context === "supplier"
