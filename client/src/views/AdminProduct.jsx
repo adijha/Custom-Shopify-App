@@ -113,7 +113,26 @@ const AdminProduct = () => {
   const getProductData = () => {
     axios.get('/api/customProductDetail').then((data) => {
       console.log('get api of product list', data);
-      setProductItems(data.data);
+      let all = data.data;
+      all = all.sort(
+        (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+      );
+      all.forEach((e, i) => {
+        console.log({ e });
+        if (e.varientArray.length > 0) {
+          // console.log(getSellingRange(e.varientArray));
+
+          all[i].lowSellingRange = getSellingRange(e.varientArray);
+          all[i].highSellingRange = getHighRange(e.varientArray);
+          all[i].lowRange = getBaseRange(e.varientArray);
+          all[i].highRange = getBaseHighRange(e.varientArray);
+        } else {
+          all[i].lowRange = e.price.toString();
+          all[i].highRange = e.price.toString();
+        }
+      });
+
+      setProductItems(all);
     });
   };
 
@@ -125,15 +144,18 @@ const AdminProduct = () => {
   const handlClick = (e) => {
     e.preventDefault();
     let unsorted = filterItems;
-    console.log('unsorted', unsorted);
-    if (e.target.value === 'asce') {
+    console.log("unsorted", unsorted);
+    if (e.target.value === "asce") {
       setProductItems(
-        filterItems.sort((a, b) =>   a.varientArray[1] - b.varientArray[1]? 1:-1
-      )
+        filterItems.sort((a, b) => {
+          return parseFloat(a.lowRange) - parseFloat(b.lowRange);
+        })
       );
-    } else if (e.target.value == 'desc') {
+    } else if (e.target.value == "desc") {
       setProductItems(
-        filterItems.sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
+        filterItems.sort((a, b) => {
+          return parseFloat(b.highRange) - parseFloat(a.highRange);
+        })
       );
     }
   };
@@ -152,9 +174,28 @@ const AdminProduct = () => {
       getProductData();
       setStatus('');
     } else {
-      axios.get('/api/product/filter/' + selectedCategory).then((response) => {
-        if (response.data.length) {
-          setProductItems(response.data);
+      axios.get('/api/product/filter/' + selectedCategory).then((data) => {
+        if (data.data.length) {
+          let all = data.data;
+          all = all.sort(
+            (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+          );
+          all.forEach((e, i) => {
+            console.log({ e });
+            if (e.varientArray.length > 0) {
+              // console.log(getSellingRange(e.varientArray));
+
+              all[i].lowSellingRange = getSellingRange(e.varientArray);
+              all[i].highSellingRange = getHighRange(e.varientArray);
+              all[i].lowRange = getBaseRange(e.varientArray);
+              all[i].highRange = getBaseHighRange(e.varientArray);
+            } else {
+              all[i].lowRange = e.price.toString();
+              all[i].highRange = e.price.toString();
+            }
+          });
+
+          setProductItems(all);
           setStatus('');
         } else {
           setStatus('No Product of This Category : ' + selectedCategory);
@@ -305,50 +346,73 @@ const AdminProduct = () => {
     setSDetail(supplierDetail.data);
   };
 
-  const getRange = (arr) => {
-    console.log('arr', arr);
-    let maxValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
-    });
-    let minValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
-    });
 
-    let range =
-      '$' +
-      `${new Intl.NumberFormat('en-US').format(
-        parseFloat(minValue.price).toFixed(2)
-      )}` +
-      '-' +
-      `${new Intl.NumberFormat('en-US').format(
-        parseFloat(maxValue.price).toFixed(2)
-      )}`;
-    return range;
-  };
+    const getBaseRange = (arr) => {
+      let maxSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.price) > parseFloat(curr.price)
+          ? prev
+          : curr;
+      });
+      let minSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.price) < parseFloat(curr.price)
+          ? prev
+          : curr;
+      });
+      let baseRange = minSellingValue.price;
+      console.log("selling", baseRange);
+      return baseRange;
+    };
 
-  const getSellingRange = (arr) => {
-    let maxSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
-    });
-    let minSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
-    });
-    let sellingRange =
-      '$' +
-      `${new Intl.NumberFormat('en-US').format(
-        parseFloat(minSellingValue.selliingPrice).toFixed(2)
-      )}` +
-      '-' +
-      `${new Intl.NumberFormat('en-US').format(
-        parseFloat(maxSellingValue.selliingPrice).toFixed(2)
-      )}`;
-    console.log('selling', sellingRange);
-    return sellingRange;
-  };
+
+    const getBaseHighRange = (arr) => {
+      let maxSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.price) > parseFloat(curr.price)
+          ? prev
+          : curr;
+      });
+      let minSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.price) < parseFloat(curr.price)
+          ? prev
+          : curr;
+      });
+      let baseHighRange = maxSellingValue.price;
+      console.log("selling", baseHighRange);
+      return baseHighRange;
+    };
+
+
+    const getSellingRange = (arr) => {
+      let maxSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
+          ? prev
+          : curr;
+      });
+      let minSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
+          ? prev
+          : curr;
+      });
+      let sellingRange = minSellingValue.selliingPrice;
+      console.log("selling", sellingRange);
+      return sellingRange;
+    };
+
+
+    const getHighRange = (arr) => {
+      let maxSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
+          ? prev
+          : curr;
+      });
+      let minSellingValue = arr.reduce(function (prev, curr) {
+        return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
+          ? prev
+          : curr;
+      });
+      let sellingRange = maxSellingValue.selliingPrice;
+      console.log("selling", sellingRange);
+      return sellingRange;
+    };
 
   const showImage = (e) => {
     e.preventDefault();
@@ -514,24 +578,18 @@ const AdminProduct = () => {
                               <td>{item.code}</td>
                               <td>{item.category}</td>
                               <td>
-                                {item.varientArray.length !== 0
-                                  ? getRange(item.varientArray)
-                                  : (<>
-                                    $
-                                    {new Intl.NumberFormat('en-US').format(
-                                      item.price || 0
-                                    )}</>
-                                  )}
+                              ${new Intl.NumberFormat("en-US").format(item.lowRange)}
+                              {item.lowRange === item.highRange ? null : "-"}
+                              {item.lowRange === item.highRange
+                                ? null
+                                : new Intl.NumberFormat("en-US").format(item.highRange)}
                               </td>
                               <td>
-                                {item.varientArray.length !== 0
-                                  ? getSellingRange(item.varientArray)
-                                  : (
-                                    `$`
-                                    `${new Intl.NumberFormat('en-US').format(
-                                      sDetail.revenue || 0
-                                    )}`
-                                    )}
+                              ${new Intl.NumberFormat("en-US").format(item.lowSellingRange)}
+                              {item.lowSellingRange === item.highSellingRange ? null : "-"}
+                              {item.lowSellingRange === item.highSellingRange
+                                ? null
+                                : new Intl.NumberFormat("en-US").format(item.highSellingRange)}
                               </td>
 
                               <td>{item.order}</td>

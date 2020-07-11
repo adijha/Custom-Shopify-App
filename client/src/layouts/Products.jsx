@@ -107,12 +107,30 @@ const Products = () => {
       getProductList();
       setStatus("");
     } else {
-      axios.get("/api/product/filter/" + selectedCategory).then((response) => {
-        if (response.data.length) {
-          setProductList(response.data);
+      axios.get("/api/product/filter/" + selectedCategory).then((data) => {
+        if (data.data.length) {
+          let all = data.data;
+          all = all.sort(
+            (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+          );
+          all.forEach((e, i) => {
+            console.log({ e });
+            if (e.varientArray.length > 0) {
+              // console.log(getSellingRange(e.varientArray));
+
+              all[i].lowRange = getSellingRange(e.varientArray);
+              all[i].highRange = getHighRange(e.varientArray);
+            } else {
+              all[i].lowRange = e.price.toString();
+              all[i].highRange = e.price.toString();
+            }
+          });
+          console.log({ all });
+          console.log(data.data);
+          setProductList(all);
           setStatus("");
         } else {
-          setStatus("No Product of This Category : " + selectedCategory);
+          setStatus("No product found");
         }
       });
     }
@@ -199,6 +217,8 @@ const Products = () => {
     console.log("selling", sellingRange);
     return sellingRange;
   };
+
+
   const getHighRange = (arr) => {
     let maxSellingValue = arr.reduce(function (prev, curr) {
       return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
@@ -384,8 +404,14 @@ const Products = () => {
           style={{ color: "red" }}
           style={{ backgroundColor: "#fff" }}
         >
-          {status}
+          {status!==''?(<div>
+
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+</svg>  {status}
+            </div>):null}
         </div>
+        <br/>
         {filterItems.map((list) => {
           return (
             <div
