@@ -1,0 +1,23 @@
+.showContent>span{
+  top: 7px;
+font-size: 18px;
+position: relative;
+display: block;
+}
+table.tableizer-table {
+font-size: 16px;
+border: 1px solid #CCC;
+
+margin-left: 25%;
+margin-right: 25%;
+}
+.tableizer-table td {
+padding: 4px;
+margin: 3px;
+border: 1px solid #CCC;
+}
+.tableizer-table th {
+background-color: #104E8B;
+color: #FFF;
+font-weight: bold;
+}

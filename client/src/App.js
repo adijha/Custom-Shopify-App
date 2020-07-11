@@ -17,7 +17,7 @@ import SupplierForm from './views/SupplierForm.jsx';
 import Invoice from "./views/Invoice.jsx";
 import SupplierTerms from "./views/SupplierTerms.jsx";
 import AddProduct from "./views/AddProduct.jsx";
-
+import TermsConditions from "./views/TermsConditions.jsx";
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
           <Route path='/merchant' render={props => <MerchantLayout {...props} />} />
           <Route exact path='/invoice/:supplierId/:orderId' component={Invoice} />
           <Route exact path='/supplier-t&c' component={SupplierTerms} />
+          <Route exact path='/terms&condtions' component={TermsConditions} />
 
         </Switch>
       </div>
