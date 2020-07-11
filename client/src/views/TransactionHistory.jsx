@@ -12,7 +12,11 @@ const SupplierList = () => {
 
   const getSupplierData = async () => {
     axios.get("/api/getTransaction").then((res) => {
-      setHistory(res.data);
+      let SortData = res.data.sort((a,b)=>
+        new Date(b.date)- new Date(a.date)
+      )
+
+            setHistory(SortData);
       // console.log(res.data);
     });
   };

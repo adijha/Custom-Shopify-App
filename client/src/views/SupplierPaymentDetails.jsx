@@ -65,7 +65,7 @@ const SupplierPaymentDetails = () => {
 
       }
       else {
-        let res = await axios.post("/api/supplierPaymentUpdate", {name, accountno, sortCode});
+        let res = await axios.post("/api/supplierPaymentUpdate", {pmethod, name, accountno, sortCode, supplier_id});
         getDetails();
         NotificationManager.success("Detail saved Successfully");
       }
@@ -83,6 +83,10 @@ const SupplierPaymentDetails = () => {
     try {
       if (name ==='' || profileId==='' || pmethod === '') {
         NotificationManager.error("Please fill all fields");
+
+      }
+      else if (!profileId.includes('@')||!profileId.includes('.com')) {
+        NotificationManager.error("Invalid paypal profile id");
 
       }
       else {
@@ -155,8 +159,96 @@ const getDetails = () =>{
                   <br/>
                   <div>
                   <h4>Saved Details</h4>
-                      <p>{savedDetails._id}</p>
+                      {/*<p>{savedDetails._id}</p>
                       <p>{savedDetails.pmethod} :-  {savedDetails.name} : {savedDetails.profileId || savedDetails.ifscCode}</p>
+
+                      {(savedDetails.pmethod==="bankTransfer")?():null}
+                      {(savedDetails.pmethod==="westerUnion")?():null}
+                      */}
+                      {(savedDetails.pmethod==="transferwise")?(
+                        <table className="table table-dark">
+                        <thead>
+                        <tr>
+                          <th>Method</th>
+                          <th>Name</th>
+                          <th>Account No.</th>
+                          <th>Sort Code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td>Transfer Wise</td>
+                        <td>{savedDetails.name}</td>
+                        <td>{savedDetails.accountno}</td>
+                        <td>{savedDetails.sortCode}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      ):null}
+
+                      {(savedDetails.pmethod==="paypal")?(
+                        <table className="table table-dark">
+                        <thead>
+                        <tr>
+                          <th>Method</th>
+                          <th>Name</th>
+                          <th>Profile Id</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td>Paypal</td>
+                        <td>{savedDetails.name}</td>
+                        <td>{savedDetails.profileId}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      ):null}
+
+                      {(savedDetails.pmethod==="bankTransfer")?(
+                        <table className="table table-dark">
+                        <thead>
+                        <tr>
+                          <th>Method</th>
+                          <th>Name</th>
+                          <th>Account No.</th>
+                          <th>IFSC Code</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td>Bank Transfer</td>
+                        <td>{savedDetails.name}</td>
+                        <td>{savedDetails.accountno}</td>
+                        <td>{savedDetails.ifscCode}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      ):null}
+
+                      {(savedDetails.pmethod==="westerUnion")?(
+                        <table className="table table-dark">
+                        <thead>
+                        <tr>
+                          <th>Method</th>
+                          <th>ID</th>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Residential Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td>Western Union</td>
+                        <td>{savedDetails.westernId}</td>
+                        <td>{savedDetails.firstName}</td>
+                        <td>{savedDetails.lastName}</td>
+                        <td>{savedDetails.address}</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                      ):null}
+
 
                   </div>
                   <br/>
@@ -283,14 +375,16 @@ const getDetails = () =>{
                   </div>
                   <div className="form-group">
                     <label for="product_quantity">Profile Id</label>
+
                     <input
-                      type="email"
+                       type="email" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"
                       value={profileId}
                       onChange={(e) => setProfileId(e.target.value)}
 
                       className="form-control"
-                      id="product_id"
+
                       placeholder="Enter Paypal Profile id or username"
+                      required
                     />
                   </div>
                   <CustomButton  onClick={savePaypalDetails}>Save Details</CustomButton>

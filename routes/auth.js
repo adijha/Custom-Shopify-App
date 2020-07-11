@@ -144,7 +144,8 @@ router.post('/transactionDetail',async (req, res)=>{
 
 router.get('/getTransaction', async (req, res)=>{
   try {
-    let data = await Transaction.find().sort({date:-1})
+    let data = await Transaction.find().sort({"date":-1})
+    console.log("data", data);
     let userData = await User.find()
     data.forEach((item, i) => {
       userData.forEach((item, index) => {
@@ -1828,7 +1829,7 @@ router.post('/supplierPaymentUpdate', async (req, res) => {
   console.log("paymentmode", paymentMode);
   try {
     const data = await paymentMode.save();
-    // console.log('data is', data);
+    console.log('data is', data);
     res.send('Success');
   } catch (error) {
     res.send(error);
