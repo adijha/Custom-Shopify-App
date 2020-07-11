@@ -746,8 +746,8 @@ const SupplierForm = () => {
                   </p>
                 </div>
                 <div className="col-md-6 footer-company">
-                  <a href="#">Terms & Conditions</a>
-                  <a href="#">Privacy policy</a>
+                  <a href="/terms&condtions" target="_blank">Terms & Conditions</a>
+                  <a href="/privacy-policy" target="_blank">Privacy policy</a>
                   <a href="/supplier-form" target="_blank">
                     Become a supplier
                   </a>

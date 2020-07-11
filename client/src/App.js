@@ -18,6 +18,8 @@ import Invoice from "./views/Invoice.jsx";
 import SupplierTerms from "./views/SupplierTerms.jsx";
 import AddProduct from "./views/AddProduct.jsx";
 import TermsConditions from "./views/TermsConditions.jsx";
+import PrivacyPolicy from "./views/PrivacyPolicy.jsx";
+
 
 function App() {
   return (
@@ -38,7 +40,7 @@ function App() {
           <Route exact path='/invoice/:supplierId/:orderId' component={Invoice} />
           <Route exact path='/supplier-t&c' component={SupplierTerms} />
           <Route exact path='/terms&condtions' component={TermsConditions} />
-
+          <Route exact path='/privacy-policy' component={PrivacyPolicy} />
         </Switch>
       </div>
         <NotificationContainer />
