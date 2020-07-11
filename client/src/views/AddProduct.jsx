@@ -1028,6 +1028,7 @@ const AddProduct = () => {
                         id='product_price'
                         style={{ border: 'none' }}
                         placeholder='Enter Shipping Charges.'
+                        required
                       />
                     </div>
                   </div>
@@ -1057,6 +1058,7 @@ const AddProduct = () => {
                         id='product_price'
                         style={{ border: 'none' }}
                         placeholder='Enter Shipping Charges.'
+                        required
                       />
                     </div>
                   </div>
@@ -1088,6 +1090,7 @@ const AddProduct = () => {
                         id='product_price'
                         style={{ border: 'none' }}
                         placeholder='Enter Shipping Charges.'
+                        required
                       />
                     </div>
                   </div>
@@ -1117,6 +1120,7 @@ const AddProduct = () => {
                         id='product_price'
                         style={{ border: 'none' }}
                         placeholder='Enter Shipping Charges.'
+                        required
                       />
                     </div>
                   </div>
@@ -1148,6 +1152,7 @@ const AddProduct = () => {
                         id='product_price'
                         style={{ border: 'none' }}
                         placeholder='Enter Shipping Charges.'
+                        required
                       />
                     </div>
                   </div>

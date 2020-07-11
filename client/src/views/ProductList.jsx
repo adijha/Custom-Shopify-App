@@ -157,11 +157,12 @@ const ProductList = () => {
       code: code,
       varientArray: varient,
       shippingCharge: {
-        australia,
-        canada,
-        international,
-        uk,
-        usa,
+        method:shippingDetails,
+        australia:australia,
+        canada:canada,
+        international:international,
+        unitedKingdom:uk,
+        usa:usa,
       },
       productImage: productImage,
     };
@@ -532,7 +533,7 @@ const ProductList = () => {
                   style={{ marginRight: "10px" }}
                   value="freeShipping"
                   onChange={(e) => setShippingDetails(e.target.value)}
-                  checked={shippingDetails === "freeShipping" ? true : false}
+                  checked={shippingDetails === `freeShipping`}
                 />
                 <label
                   className="form-check-label shippinglabel"
@@ -550,9 +551,7 @@ const ProductList = () => {
                   style={{ marginRight: "10px" }}
                   value="standardShipping"
                   onChange={(e) => setShippingDetails(e.target.value)}
-                  checked={
-                    shippingDetails === "standardShipping" ? true : false
-                  }
+                  checked={shippingDetails === `standardShipping`}
                 />
                 <label
                   className="form-check-label shippinglabel"
@@ -589,6 +588,7 @@ const ProductList = () => {
                           id="product_price"
                           style={{ border: "none" }}
                           placeholder="Enter Shipping Charges."
+                          required
                         />
                       </div>
                     </div>
@@ -618,6 +618,7 @@ const ProductList = () => {
                           id="product_price"
                           style={{ border: "none" }}
                           placeholder="Enter Shipping Charges."
+                          required
                         />
                       </div>
                     </div>
@@ -634,6 +635,7 @@ const ProductList = () => {
                           border: "1px solid #ddd",
                           display: "flex",
                           flexDirection: "row",
+
                         }}
                       >
                         <span class="icon-wrapp">
@@ -649,6 +651,7 @@ const ProductList = () => {
                           id="product_price"
                           style={{ border: "none" }}
                           placeholder="Enter Shipping Charges."
+                          required
                         />
                       </div>
                     </div>
@@ -678,6 +681,7 @@ const ProductList = () => {
                           id="product_price"
                           style={{ border: "none" }}
                           placeholder="Enter Shipping Charges."
+                          required
                         />
                       </div>
                     </div>
@@ -709,6 +713,7 @@ const ProductList = () => {
                           id="product_price"
                           style={{ border: "none" }}
                           placeholder="Enter Shipping Charges."
+                          required
                         />
                       </div>
                     </div>

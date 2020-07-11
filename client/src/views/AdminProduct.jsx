@@ -223,11 +223,12 @@ const AdminProduct = () => {
       code: code,
       varientArray: varient,
       shippingCharge: {
-        australia,
-        canada,
-        international,
-        uk,
-        usa,
+        method:shippingDetails,
+        australia:australia,
+        canada:canada,
+        international:international,
+        unitedKingdom:uk,
+        usa:usa,
       },
       productImage: productImage,
     };
@@ -565,7 +566,7 @@ const AdminProduct = () => {
               />
               <br />
               <br />
-          
+
             </div>
 
             <div className='form-group'>
@@ -681,6 +682,7 @@ const AdminProduct = () => {
                   style={{ marginRight: '10px' }}
                   value='freeShipping'
                   onChange={(e) => setShippingDetails(e.target.value)}
+                  checked={shippingDetails === `freeShipping`}
                 />
                 <label
                   className='form-check-label shippinglabel'
@@ -698,6 +700,8 @@ const AdminProduct = () => {
                   style={{ marginRight: '10px' }}
                   value='standardShipping'
                   onChange={(e) => setShippingDetails(e.target.value)}
+                  checked={shippingDetails === `standardShipping`}
+
                 />
                 <label
                   className='form-check-label shippinglabel'
@@ -734,6 +738,7 @@ const AdminProduct = () => {
                           id='product_price'
                           style={{ border: 'none' }}
                           placeholder='Enter Shipping Charges.'
+                          required
                         />
                       </div>
                     </div>
@@ -763,6 +768,7 @@ const AdminProduct = () => {
                           id='product_price'
                           style={{ border: 'none' }}
                           placeholder='Enter Shipping Charges.'
+                          required
                         />
                       </div>
                     </div>
@@ -794,6 +800,7 @@ const AdminProduct = () => {
                           id='product_price'
                           style={{ border: 'none' }}
                           placeholder='Enter Shipping Charges.'
+                          required
                         />
                       </div>
                     </div>
@@ -823,6 +830,7 @@ const AdminProduct = () => {
                           id='product_price'
                           style={{ border: 'none' }}
                           placeholder='Enter Shipping Charges.'
+                          required
                         />
                       </div>
                     </div>
@@ -854,6 +862,7 @@ const AdminProduct = () => {
                           id='product_price'
                           style={{ border: 'none' }}
                           placeholder='Enter Shipping Charges.'
+                          required
                         />
                       </div>
                     </div>
