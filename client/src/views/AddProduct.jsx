@@ -278,38 +278,128 @@ const AddProduct = () => {
   useEffect(() => {
     handelDelete();
   }, [tag2]);
+
+
   const removeTag0 = (indexToRemove) => {
     setTag0([...tag0.filter((_, index) => index !== indexToRemove)]);
   };
+
+
   const addTag0 = (event) => {
-    if (event.target.value !== '') {
-      let value = event.target.value.replace(/,/g, '');
-      setTag0([...tag0, value]);
-      selectedTags([...tag0, value]);
-      event.target.value = '';
+    let value = event.target.value.replace(/,/g, '');
+
+    if (value === '') {
+      return NotificationManager.error('Blank varient name not allowed');
+    }
+
+    else{
+
+      if (tag0.length!==0) {
+
+        let found = tag0.some(el => el === value);
+        if (!found) {
+          setTag0([...tag0, value]);
+          selectedTags([...tag0, value]);
+          event.target.value = '';
+
+        }
+        else {
+        return NotificationManager.error('Duplicate Name');
+        }
+
+
+}
+  else {
+
+    setTag0([...tag0, value]);
+    selectedTags([...tag0, value]);
+    event.target.value = '';
+
+  }
     }
   };
+
+
+
   const removeTag1 = (indexToRemove) => {
     setTag1([...tag1.filter((_, index) => index !== indexToRemove)]);
   };
+
+
+
   const addTag1 = (event) => {
-    if (event.target.value !== '') {
-      let value = event.target.value.replace(/,/g, '');
-      setTag1([...tag1, value]);
-      selectedTag1([...tag1, value]);
-      event.target.value = '';
+    let value = event.target.value.replace(/,/g, '');
+
+    if (value === '') {
+      return NotificationManager.error('Blank varient name not allowed');
+    }
+
+    else{
+
+      if (tag1.length!==0) {
+
+        let found1 = tag1.some(el => el === value);
+        if (!found1) {
+          setTag1([...tag1, value]);
+          selectedTag1([...tag1, value]);
+          event.target.value = '';
+
+        }
+        else {
+        return NotificationManager.error('Duplicate Name');
+        }
+
+
+}
+  else {
+
+    setTag1([...tag1, value]);
+    selectedTag1([...tag1, value]);
+    event.target.value = '';
+
+  }
     }
   };
+
+
 
   const removeTag2 = (indexToRemove) => {
     setTag2([...tag2.filter((_, index) => index !== indexToRemove)]);
   };
+
+
+
   const addTag2 = (event) => {
-    if (event.target.value !== '') {
-      let value = event.target.value.replace(/,/g, '');
-      setTag2([...tag2, value]);
-      selectedTag2([...tag2, value]);
-      event.target.value = '';
+    let value = event.target.value.replace(/,/g, '');
+
+    if (value === '') {
+      return NotificationManager.error('Blank varient name not allowed');
+    }
+
+    else{
+
+      if (tag2.length!==0) {
+
+        let found2 = tag2.some(el => el === value);
+        if (!found2) {
+          setTag2([...tag2, value]);
+          selectedTag2([...tag2, value]);
+          event.target.value = '';
+
+        }
+        else {
+        return NotificationManager.error('Duplicate Name');
+        }
+
+
+}
+  else {
+
+    setTag2([...tag2, value]);
+    selectedTag2([...tag2, value]);
+    event.target.value = '';
+
+  }
     }
   };
 
