@@ -242,11 +242,16 @@ const Products = () => {
         <div class='row'>
           <div className=''>
             <div role='toolbar'>
-              <div className='text-center category-container-mx'>
+              <div className='text-center category-container-mx' onChange={(e) => {
+                // setCategory(e.target.value);
+                console.log(e.target, "div cat");
+                handleCategory(e.target.value);
+              }}>
                 {[
                   {
                     category: 'Men’s Clothing & Accessories',
                     icon: 'pe-7s-users',
+                    value: 'Men’s Clothing & Accessories'
                   },
                   {
                     category: 'Women’s Clothing & Accessories',
@@ -317,7 +322,7 @@ const Products = () => {
                           className='category-mx'
                           onClick={(e) => {
                             console.log(item.category);
-                            handleCategory(e.target.childNodes[0]);
+                            handleCategory(item.category.toString());
                             console.log(e.target.childNodes[0]);
                           }}
                         >
