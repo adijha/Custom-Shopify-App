@@ -39,7 +39,8 @@ const AdminProduct = () => {
   const [sDetail, setSDetail] = useState({});
   const [productImage, setProductImage] = useState([])
   const [autoMargin, setAutoMargin] = useState()
-
+  const [addOnImage, setAddOnImage] = useState()
+  const [multerImage, setMulterImage] = useState([]);
 
 
   const modalStyle = {
@@ -210,31 +211,68 @@ const AdminProduct = () => {
     });
   };
 
-  const updateProductItem = (e) => {
+  const updateProductItem = async (e) => {
     e.preventDefault();
-    const object = {
-      _id: itemId,
-      name: name,
-      price: price,
-      quantity: quantity,
-      warranty: warranty,
-      description: description,
-      category: category,
-      code: code,
-      varientArray: varient,
-      shippingCharge: {
-        method:shippingDetails,
-        australia:australia,
-        canada:canada,
-        international:international,
-        unitedKingdom:uk,
-        usa:usa,
-      },
-      productImage: productImage,
-    };
-    console.log(object);
+    // const object = {
+    //   _id: itemId,
+    //   name: name,
+    //   price: price,
+    //   quantity: quantity,
+    //   warranty: warranty,
+    //   description: description,
+    //   category: category,
+    //   code: code,
+    //   varientArray: varient,
+    //   shippingCharge: {
+    //     method:shippingDetails,
+    //     australia:australia,
+    //     canada:canada,
+    //     international:international,
+    //     unitedKingdom:uk,
+    //     usa:usa,
+    //   },
+    //   productImage: productImage,
+    // };
+    // console.log(object);
+
+
+
+        const data = await new FormData();
+        console.log(productImage, 'add button image');
+        data.append('addOnImage', addOnImage[0]);
+        data.append('addOnImage', addOnImage[1]);
+        data.append('addOnImage', addOnImage[2]);
+        data.append('addOnImage', addOnImage[3]);
+        data.append('addOnImage', addOnImage[4]);
+        data.append('addOnImage', addOnImage[5]);
+        data.append('addOnImage', addOnImage[6]);
+        data.append('name', name);
+        data.append('price', price);
+        data.append('quantity', quantity);
+        data.append('warranty', warranty);
+
+        data.append('description', description);
+        data.append('category', category);
+        data.append('code', code);
+
+        data.append('method', shippingDetails);
+        data.append('usa', usa);
+        data.append('canada', canada);
+        data.append('uk', uk);
+        data.append('australia', australia);
+        data.append('international', international);
+        data.append('varientArray', JSON.stringify(varient));
+        data.append('_id', itemId)
+        data.append("productImage", JSON.stringify(productImage))
+
+
+
+
+
+
+
     axios
-      .patch('/api/product/update', object)
+      .patch('/api/product/update', data)
       .then((data) => {
         if (data) {
           NotificationManager.success('Product Updated Successfully');
@@ -251,6 +289,7 @@ const AdminProduct = () => {
           setUsa('');
           setUk('');
           setOpen(false);
+          setMulterImage([])
           getProductData();
         }
       })
@@ -311,28 +350,41 @@ const AdminProduct = () => {
     return sellingRange;
   };
 
-  const showImage = async (e) => {
-    // e.preventDefault();
-    // console.log("pLength", e.target.files.length);
-    // let images = []
-    // let images1=[]
-    // for (var i = 0; i < e.target.files.length; i++) {
-    //   images.push(e.target.files[i])
-    //
-    // }
-    //
-    // // images.forEach((item, i) => {
-    // //   let imgUrl =  newBuffData(item)
-    // //   console.log(imgUrl);
-    // // });
-    // //let data = await newBuffData(images)
-    // setProductImage(...productImage, data)
+  const showImage = (e) => {
+    e.preventDefault();
+    console.log('pLength', e.target.files);
+    let images = [];
+    let images1 = [];
+    for (var i = 0; i < e.target.files.length; i++) {
+      images1.push(e.target.files[i]);
+      images.push({
+        url: URL.createObjectURL(e.target.files[i]),
+        name: e.target.files[i].name,
+      });
+    }
+    setAddOnImage(images1);
+    setMulterImage(images);
+    console.log(addOnImage, 'pImage array');
   };
 
   const handleDeleteImage = (data, indexToRemove) => {
-    setProductImage([
-      ...productImage.filter((_, index) => index !== indexToRemove),
+    setMulterImage([
+      ...multerImage.filter((_, index) => index !== indexToRemove),
     ]);
+    setAddOnImage([
+      ...addOnImage.filter((_, index) => index !== indexToRemove),
+    ]);
+    // let tempArray = []
+    // multerImage.forEach((image, i) => {
+    //   productImage.forEach((item, j) => {
+    //     console.log({item});
+    //     if (multerImage[i].name === productImage[j].name) {
+    //         tempArray.push(productImage[j])
+    //     }
+    //   });
+    //
+    //   });
+    //   setProductImage(tempArray)
   };
 
   return (
@@ -464,19 +516,21 @@ const AdminProduct = () => {
                               <td>
                                 {item.varientArray.length !== 0
                                   ? getRange(item.varientArray)
-                                  : `$`(
-                                      new Intl.NumberFormat('en-US').format(
-                                        item.price.toFixed(2)
-                                      )
-                                    )}
+                                  : (<>
+                                    $
+                                    {new Intl.NumberFormat('en-US').format(
+                                      item.price || 0
+                                    )}</>
+                                  )}
                               </td>
                               <td>
                                 {item.varientArray.length !== 0
                                   ? getSellingRange(item.varientArray)
-                                  : `$`(
-                                      new Intl.NumberFormat('en-US').format(
-                                        item.selliingPrice.toFixed(2)
-                                      )
+                                  : (
+                                    `$`
+                                    `${new Intl.NumberFormat('en-US').format(
+                                      sDetail.revenue || 0
+                                    )}`
                                     )}
                               </td>
 
@@ -918,30 +972,72 @@ const AdminProduct = () => {
                 </div>
               ))}
             </div>
-            <br />
-            <div className='form-group'>
-              {productImage.map((data, i) => {
-                return (
-                  <div className='col-md-3'>
-                    <button
-                      style={{ display: 'flex' }}
-                      type='button'
-                      className='close'
-                      aria-label='Close'
-                      onClick={() => handleDeleteImage(data, i)}
-                    >
-                      <span aria-hidden='true'>&times;</span>
-                    </button>
+            <br />  <div className='form-group'>
+                <label for='productImage'>Add More Images</label>
+                <input
+                  type='file'
+                  name='addOnImage'
+                  className='form-control'
+                  onChange={(e) => {
+                    setAddOnImage(e.target.files);
+                    showImage(e);
+                  }}
+                  multiple
+                  accept='image/*'
+                />
+              </div>
+              {multerImage.length !== 0 ? (
+                <div className='image-preview'>
+                  {multerImage.map((image, i) => {
+                    return (
+                      <div className='col-md-4'>
+                        <button
+                          style={{ display: 'flex' }}
+                          type='button'
+                          className='close'
+                          aria-label='Close'
+                          onClick={() => handleDeleteImage(image, i)}
+                        >
+                          <span aria-hidden='true'>&times;</span>
+                        </button>
+                        <img
+                          src={image.url}
+                          alt='upload-image'
+                          className='process_Image'
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
 
-                    <img
-                      src={`data:image/jpeg;base64, ${data.imgBufferData}`}
-                      alt='upload-Image'
-                    />
-                  </div>
-                );
-              })}
+
+              <div className="form-group">
+                {productImage.map((data, i) => {
+                  return (
+                    <div className="col-md-3">
+                      <button
+                        style={{ display: "flex" }}
+                        type="button"
+                        className="close"
+                        aria-label="Close"
+                        onClick={() => handleDeleteImage(data, i)}
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      {data.imgBufferData ? (
+                        <img
+                          src={`data:image/jpeg;base64, ${data.imgBufferData}`}
+                          alt="upload-Image"
+                        />
+                      ) : (
+                        <p>no image available</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
           <div className='card-button'>
             <CustomButton round fill type='submit'>
