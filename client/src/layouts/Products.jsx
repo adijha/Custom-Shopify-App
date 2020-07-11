@@ -174,7 +174,7 @@ const Products = () => {
         : curr;
     });
     let sellingRange =
-      ' $ ' +
+
       `${new Intl.NumberFormat('en-US').format(
         parseFloat(minSellingValue.selliingPrice).toFixed(2)
       )}` +
@@ -413,9 +413,10 @@ const Products = () => {
                       fontSize: '1.4rem',
                     }}
                   >
+                    $
                     {list.varientArray.length !== 0
                       ? getSellingRange(list.varientArray)
-                      : '$'(
+                      : (
                           new Intl.NumberFormat('en-US').format(
                             list.selliingPrice.toFixed(2)
                           )
