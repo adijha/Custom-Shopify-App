@@ -725,7 +725,7 @@ const SupplierForm = () => {
                   </div>
                   <div className="col-sm-6">
                     <div className="text-center footer-social">
-                      <a href="#"> Support</a>
+                      <a href="/contact-us"> Support</a>
                       <a href="/login-merchant"> Login</a>
                       <a href="/merchant-signup">Sign Up</a>
                     </div>
@@ -753,7 +753,7 @@ const SupplierForm = () => {
                   </a>
                 </div>
                 <div className="col-md-2">
-                  <a className="btn btn-info" href="#">
+                  <a className="btn btn-info" href="/contact-us">
                     Support
                   </a>
                 </div>

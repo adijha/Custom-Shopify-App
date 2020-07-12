@@ -1819,6 +1819,42 @@ router.post('/SupplierForm', (req, res) => {
   });
 });
 
+//contact us data forward
+
+//supplier form data sent to Email
+router.post('/contactUs', (req, res) => {
+  console.log(req.body);
+
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'ashish.goyal7118@gmail.com',
+      pass: 'ashish@718',
+    },
+  });
+
+  var mailOptions = {
+    from: 'ashish.goyal7118@gmail.com',
+    to: 'goyal.ashish062@gmail.com',
+    subject: 'contact us form details',
+    html: `
+  <br>
+  1. name: ${req.body.name}<br>
+  2. email: ${req.body.email}<br>
+  3. phone no: ${req.body.phoneNo}<br>
+  4. message: ${req.body.message}<br>
+  `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      res.send(error);
+    } else {
+      res.send('success');
+    }
+  });
+});
+
 //save supplier payment details
 router.post('/supplierPaymentUpdate', async (req, res) => {
   const paymentMode = new PaymentMode({

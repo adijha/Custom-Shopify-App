@@ -31,7 +31,7 @@ const Footer=()=> {
                </div>
                <div className="col-sm-6">
                <div className="text-center footer-social">
-               <a href="#"> Support</a>
+               <a href="/contact-us"> Support</a>
                <a href="/login-merchant"> Login</a>
                <a href="/merchant-signup">Sign Up</a>
 
@@ -57,7 +57,7 @@ const Footer=()=> {
 
           </div>
           <div className="col-md-2">
-          <a className="btn btn-info" href="#">Support</a>
+          <a className="btn btn-info" href="/contact-us">Support</a>
           </div>
         </div>
        </div>
