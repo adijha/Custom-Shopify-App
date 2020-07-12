@@ -191,7 +191,7 @@ const ProductList = () => {
 
     const data = await new FormData();
     console.log(productImage, 'add button image');
-    
+
     if (addOnImage.length!==0) {
       for (var i = 0; i < addOnImage.length; i++) {
         data.append('addOnImage', addOnImage[i]);
@@ -597,7 +597,12 @@ const ProductList = () => {
                   id="exampleRadios1"
                   style={{ marginRight: "10px" }}
                   value="freeShipping"
-                  onChange={(e) => setShippingDetails(e.target.value)}
+                  onChange={(e) => setShippingDetails(e.target.value),
+                    setUsa(2.5),
+                    setAustralia(2.5),
+                    setCanada(2.5),
+                    setUk(2.5),
+                    setInternational(2.5)}
                   checked={shippingDetails === `freeShipping`}
                 />
                 <label
