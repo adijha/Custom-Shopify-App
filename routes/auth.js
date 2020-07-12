@@ -2702,7 +2702,7 @@ let shippingObj = {
       { $set: obj }
     );
     console.log("update data", data);
-    res.json({ message: 'Product updated Successfilly' + data });
+    res.json('success');
   } catch (error) {
     res.json({ message: error.message });
     console.log(error);
