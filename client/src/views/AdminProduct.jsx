@@ -32,7 +32,7 @@ const AdminProduct = () => {
   const [uk, setUk] = useState(2.5);
   const [australia, setAustralia] = useState(2.5);
   const [international, setInternational] = useState(2.5);
-
+  const [sPrice, setSPrice] = useState()
   const [search, setSearch] = useState('');
   const [categoryList, setCategoryList] = useState([]);
   const [expand, setExpand] = useState('');
@@ -129,6 +129,8 @@ const AdminProduct = () => {
         } else {
           all[i].lowRange = e.price.toString();
           all[i].highRange = e.price.toString();
+          all[i].lowSellingRange = e.selliingPrice.toString();
+          all[i].highSellingRange = e.selliingPrice.toString();
         }
       });
 
@@ -277,7 +279,7 @@ const AdminProduct = () => {
     // };
     // console.log(object);
 
-
+let calSPrice = parseInt(price) + parseInt(price)*parseInt(autoMargin)/100
 
         const data = await new FormData();
         console.log(productImage, 'add button image');
@@ -288,6 +290,7 @@ const AdminProduct = () => {
         }
         data.append('name', name);
         data.append('price', price);
+        data.append('selliingPrice', calSPrice)
         data.append('quantity', quantity);
         data.append('warranty', warranty);
 
@@ -607,7 +610,7 @@ const AdminProduct = () => {
                                 : new Intl.NumberFormat("en-US").format(item.highRange)}
                               </td>
                               <td>
-                              ${new Intl.NumberFormat("en-US").format(parseInt(item.lowSellingRange))}
+                            {}  ${new Intl.NumberFormat("en-US").format(parseInt(item.lowSellingRange))}
                               {item.lowSellingRange === item.highSellingRange ? null : "-"}
                               {item.lowSellingRange === item.highSellingRange
                                 ? null

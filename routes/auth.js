@@ -2693,7 +2693,7 @@ let shippingObj = {
     productImage: imgData,
     shippingCharge: shippingObj,
     varientArray: JSON.parse(req.body.varientArray),
-    selliingPrice: req.body.price
+    selliingPrice: req.body.selliingPrice
   }
 
  console.log("obj update", obj);
