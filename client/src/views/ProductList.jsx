@@ -36,7 +36,8 @@ const ProductList = () => {
   const [productImage, setProductImage] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [autoMargin, setAutoMargin] = useState()
-
+  const [addOnImage, setAddOnImage] = useState()
+  const [multerImage, setMulterImage] = useState([]);
 
   const modalStyle = {
     margin: "auto",
@@ -84,9 +85,27 @@ const ProductList = () => {
   }, []);
 
   const getProductData = () => {
-    axios.get("/api/supplier/product/" + decode.id).then((products) => {
-      setProductItems(products.data);
-      console.log(products.data);
+    axios.get("/api/supplier/product/" + decode.id).then((data) => {
+      console.log('get api of product list', data);
+      let all = data.data;
+      all = all.sort(
+        (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+      );
+      all.forEach((e, i) => {
+        console.log({ e });
+        if (e.varientArray.length > 0) {
+          // console.log(getSellingRange(e.varientArray));
+
+
+          all[i].lowRange = getBaseRange(e.varientArray);
+          all[i].highRange = getBaseHighRange(e.varientArray);
+        } else {
+          all[i].lowRange = e.price.toString();
+          all[i].highRange = e.price.toString();
+        }
+      });
+
+      setProductItems(all);
     });
   };
 
@@ -99,6 +118,7 @@ const ProductList = () => {
 
   const updateProduct = (item) => {
     console.log("updateProduct", item);
+    setMulterImage([])
     setName(item.name);
     setPrice(item.price);
     setQuantity(item.quantity);
@@ -132,6 +152,7 @@ const ProductList = () => {
 
   const onCloseModal = () => {
     setOpen(false);
+
   };
 
   const deleteProduct = (item) => {
@@ -144,36 +165,78 @@ const ProductList = () => {
     });
   };
 
-  const updateProductItem = (e) => {
+  const updateProductItem = async (e) => {
     e.preventDefault();
-    const object = {
-      _id: itemId,
-      name: name,
-      price: price,
-      quantity: quantity,
-      warranty: warranty,
-      description: description,
-      category: category,
-      code: code,
-      varientArray: varient,
-      shippingCharge: {
-        method:shippingDetails,
-        australia:australia,
-        canada:canada,
-        international:international,
-        unitedKingdom:uk,
-        usa:usa,
-      },
-      productImage: productImage,
-    };
-    console.log(object);
+    // const object = {
+    //   _id: itemId,
+    //   name: name,
+    //   price: price,
+    //   quantity: quantity,
+    //   warranty: warranty,
+    //   description: description,
+    //   category: category,
+    //   code: code,
+    //   varientArray: varient,
+    //   shippingCharge: {
+    //     method:shippingDetails,
+    //     australia:australia,
+    //     canada:canada,
+    //     international:international,
+    //     unitedKingdom:uk,
+    //     usa:usa,
+    //   },
+    //   productImage: productImage,
+    // };
+    // console.log(object);
+
+    const data = await new FormData();
+    console.log(productImage, 'add button image');
+    data.append('addOnImage', addOnImage[0]);
+    data.append('addOnImage', addOnImage[1]);
+    data.append('addOnImage', addOnImage[2]);
+    data.append('addOnImage', addOnImage[3]);
+    data.append('addOnImage', addOnImage[4]);
+    data.append('addOnImage', addOnImage[5]);
+    data.append('addOnImage', addOnImage[6]);
+    data.append('name', name);
+    data.append('price', price);
+    data.append('quantity', quantity);
+    data.append('warranty', warranty);
+
+    data.append('description', description);
+    data.append('category', category);
+    data.append('code', code);
+
+    data.append('method', shippingDetails);
+    data.append('usa', usa);
+    data.append('canada', canada);
+    data.append('uk', uk);
+    data.append('australia', australia);
+    data.append('international', international);
+    data.append('varientArray', JSON.stringify(varient));
+    data.append('_id', itemId)
+    data.append("productImage", JSON.stringify(productImage))
+
+
     axios
-      .patch("/api/product/update", object)
+      .patch("/api/product/update", data)
       .then((data) => {
         if (data) {
           NotificationManager.success("Product Updated Successfully");
-
+          setName('');
+          setPrice('');
+          setQuantity('');
+          setWarranty('');
+          setDescription('');
+          setCategory('');
+          setCode('');
+          setCanada('');
+          setAustralia('');
+          setInternational('');
+          setUsa('');
+          setUk('');
           setOpen(false);
+          setMulterImage([])
           getProductData();
         }
       })
@@ -206,25 +269,71 @@ const ProductList = () => {
     setVarient(newArr);
   };
 
-  const getRange = (arr) => {
-    console.log("arr", arr);
-    let maxValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
+  const getBaseRange = (arr) => {
+    let maxSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price)
+        ? prev
+        : curr;
     });
-    let minValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
+    let minSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) < parseFloat(curr.price)
+        ? prev
+        : curr;
     });
+    let baseRange = minSellingValue.price;
+    console.log("selling", baseRange);
+    return baseRange;
+  };
 
-    let range =
-      "$" +
-      `${new Intl.NumberFormat("en-US").format(
-        parseFloat(minValue.price).toFixed(2)
-      )}` +
-      "-" +
-      `${new Intl.NumberFormat("en-US").format(
-        parseFloat(maxValue.price).toFixed(2)
-      )}`;
-    return range;
+
+  const getBaseHighRange = (arr) => {
+    let maxSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price)
+        ? prev
+        : curr;
+    });
+    let minSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) < parseFloat(curr.price)
+        ? prev
+        : curr;
+    });
+    let baseHighRange = maxSellingValue.price;
+    console.log("selling", baseHighRange);
+    return baseHighRange;
+  };
+
+
+  const getSellingRange = (arr) => {
+    let maxSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
+    });
+    let minSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
+    });
+    let sellingRange = minSellingValue.selliingPrice;
+    console.log("selling", sellingRange);
+    return sellingRange;
+  };
+
+
+  const getHighRange = (arr) => {
+    let maxSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
+    });
+    let minSellingValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
+        ? prev
+        : curr;
+    });
+    let sellingRange = maxSellingValue.selliingPrice;
+    console.log("selling", sellingRange);
+    return sellingRange;
   };
 
   let newBuffData = (arr) => {
@@ -241,58 +350,44 @@ const ProductList = () => {
     return encodedData;
   };
 
-  const showImage = async (e) => {
+
+
+  const showImage = (e) => {
     e.preventDefault();
-    console.log("pLength", e.target.files.length);
+    console.log('pLength', e.target.files);
     let images = [];
     let images1 = [];
     for (var i = 0; i < e.target.files.length; i++) {
-      images.push(e.target.files[i]);
+      images1.push(e.target.files[i]);
+      images.push({
+        url: URL.createObjectURL(e.target.files[i]),
+        name: e.target.files[i].name,
+      });
     }
-
-    // images.forEach((item, i) => {
-    //   let imgUrl =  newBuffData(item)
-    //   console.log(imgUrl);
-    // });
-    let data = await newBuffData(images);
-    setProductImage(...productImage, data);
+    setAddOnImage(images1);
+    setMulterImage(images);
+    console.log(addOnImage, 'pImage array');
   };
 
   const handleDeleteImage = (data, indexToRemove) => {
-    setProductImage([
-      ...productImage.filter((_, index) => index !== indexToRemove),
+    setMulterImage([
+      ...multerImage.filter((_, index) => index !== indexToRemove),
     ]);
+    setAddOnImage([
+      ...addOnImage.filter((_, index) => index !== indexToRemove),
+    ]);
+    // let tempArray = []
+    // multerImage.forEach((image, i) => {
+    //   productImage.forEach((item, j) => {
+    //     console.log({item});
+    //     if (multerImage[i].name === productImage[j].name) {
+    //         tempArray.push(productImage[j])
+    //     }
+    //   });
+    //
+    //   });
+    //   setProductImage(tempArray)
   };
-
-  function previewFiles() {
-    var preview = document.querySelector("#preview");
-    var files = document.querySelector("input[type=file]").files;
-
-    function readAndPreview(file) {
-      // Make sure `file.name` matches our extensions criteria
-      if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-        var reader = new FileReader();
-
-        reader.addEventListener(
-          "load",
-          function () {
-            var image = new Image();
-            image.height = 100;
-            image.title = file.name;
-            image.src = this.result;
-            preview.appendChild(image);
-          },
-          false
-        );
-
-        reader.readAsDataURL(file);
-      }
-    }
-
-    if (files) {
-      [].forEach.call(files, readAndPreview);
-    }
-  }
 
   return (
     <div>
@@ -346,14 +441,11 @@ const ProductList = () => {
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>
-                              {" "}
-                              {item.varientArray.length !== 0
-                                ? getRange(item.varientArray)
-                                : `$`(
-                                    new Intl.NumberFormat("en-US").format(
-                                      item.price.toFixed(2)
-                                    )
-                                  )}
+                            ${new Intl.NumberFormat("en-US").format(item.lowRange)}
+                            {item.lowRange === item.highRange ? null : "-"}
+                            {item.lowRange === item.highRange
+                              ? null
+                              : new Intl.NumberFormat("en-US").format(item.highRange)}
                             </td>
                             <td>
                               <div
@@ -770,6 +862,44 @@ const ProductList = () => {
               ))}
             </div>
             <br />
+            <div className='form-group'>
+                <label for='productImage'>Add More Images</label>
+                <input
+                  type='file'
+                  name='addOnImage'
+                  className='form-control'
+                  onChange={(e) => {
+                    setAddOnImage(e.target.files);
+                    showImage(e);
+                  }}
+                  multiple
+                  accept='image/*'
+                />
+              </div>
+              {multerImage.length !== 0 ? (
+                <div className='image-preview'>
+                  {multerImage.map((image, i) => {
+                    return (
+                      <div className='col-md-4'>
+                        <button
+                          style={{ display: 'flex' }}
+                          type='button'
+                          className='close'
+                          aria-label='Close'
+                          onClick={() => handleDeleteImage(image, i)}
+                        >
+                          <span aria-hidden='true'>&times;</span>
+                        </button>
+                        <img
+                          src={image.url}
+                          alt='upload-image'
+                          className='process_Image'
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
             <div className="form-group">
               {productImage.map((data, i) => {
                 return (

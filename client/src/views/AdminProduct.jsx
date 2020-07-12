@@ -206,6 +206,7 @@ const AdminProduct = () => {
 
   const updateProduct = (item) => {
     console.log('updateProduct', item._id);
+    setMulterImage([])
     setName(item.name);
     setPrice(item.price);
     setQuantity(item.quantity);
@@ -1030,7 +1031,8 @@ const AdminProduct = () => {
                 </div>
               ))}
             </div>
-            <br />  <div className='form-group'>
+            <br />
+            <div className='form-group'>
                 <label for='productImage'>Add More Images</label>
                 <input
                   type='file'
