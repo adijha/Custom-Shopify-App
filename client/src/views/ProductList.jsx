@@ -85,9 +85,9 @@ const ProductList = () => {
   }, []);
 
   const getProductData = () => {
-    axios.get("/api/supplier/product/" + decode.id).then((data) => {
-      console.log('get api of product list', data);
-      let all = data.data;
+    axios.get("/api/supplier/product/" + decode.id).then((products) => {
+      // console.log(products.data);
+      let all = products.data;
       all = all.sort(
         (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
       );
@@ -96,16 +96,16 @@ const ProductList = () => {
         if (e.varientArray.length > 0) {
           // console.log(getSellingRange(e.varientArray));
 
-
-          all[i].lowRange = getBaseRange(e.varientArray);
-          all[i].highRange = getBaseHighRange(e.varientArray);
+          all[i].lowRange = getLowRange(e.varientArray);
+          all[i].highRange = getHighRange(e.varientArray);
         } else {
           all[i].lowRange = e.price.toString();
           all[i].highRange = e.price.toString();
         }
       });
-
+      // console.log({ all });
       setProductItems(all);
+
     });
   };
 
@@ -269,72 +269,27 @@ const ProductList = () => {
     setVarient(newArr);
   };
 
-  const getBaseRange = (arr) => {
-    let maxSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) > parseFloat(curr.price)
-        ? prev
-        : curr;
+  const getLowRange = (arr) => {
+    console.log("arr", arr);
+    let minValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
     });
-    let minSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) < parseFloat(curr.price)
-        ? prev
-        : curr;
-    });
-    let baseRange = minSellingValue.price;
-    console.log("selling", baseRange);
-    return baseRange;
-  };
-
-
-  const getBaseHighRange = (arr) => {
-    let maxSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) > parseFloat(curr.price)
-        ? prev
-        : curr;
-    });
-    let minSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) < parseFloat(curr.price)
-        ? prev
-        : curr;
-    });
-    let baseHighRange = maxSellingValue.price;
+    let baseHighRange = minValue.price;
     console.log("selling", baseHighRange);
     return baseHighRange;
   };
 
 
-  const getSellingRange = (arr) => {
-    let maxSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
-    });
-    let minSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
-    });
-    let sellingRange = minSellingValue.selliingPrice;
-    console.log("selling", sellingRange);
-    return sellingRange;
-  };
-
-
   const getHighRange = (arr) => {
-    let maxSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
+    console.log("arr", arr);
+    let maxValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
     });
-    let minSellingValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.selliingPrice) < parseFloat(curr.selliingPrice)
-        ? prev
-        : curr;
-    });
-    let sellingRange = maxSellingValue.selliingPrice;
-    console.log("selling", sellingRange);
-    return sellingRange;
+
+    let range =maxValue.price
+    return range;
   };
+
 
   let newBuffData = (arr) => {
     let encodedData = [];
@@ -442,10 +397,10 @@ const ProductList = () => {
                             <td>{item.category}</td>
                             <td>
                             ${new Intl.NumberFormat("en-US").format(item.lowRange)}
-                            {item.lowRange === item.highRange ? null : "-"}
-                            {item.lowRange === item.highRange
-                              ? null
-                              : new Intl.NumberFormat("en-US").format(item.highRange)}
+                    {item.lowRange === item.highRange ? null : "-"}
+                    {item.lowRange === item.highRange
+                      ? null
+                      : new Intl.NumberFormat("en-US").format(item.highRange)}
                             </td>
                             <td>
                               <div
