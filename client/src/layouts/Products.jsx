@@ -46,7 +46,7 @@ const Products = () => {
           all[i].lowRange = getSellingRange(e.varientArray);
           all[i].highRange = getHighRange(e.varientArray);
         } else {
-          all[i].lowRange = e.selliingPrice.toString();
+          all[i].lowRange =  e.selliingPrice.toString();
           all[i].highRange = e.selliingPrice.toString();
         }
       });
@@ -72,7 +72,7 @@ const Products = () => {
           all[i].highRange = getHighRange(e.varientArray);
         } else {
           all[i].lowRange = e.selliingPrice.toString();
-          all[i].highRange = e.sellingRange.toString();
+          all[i].highRange = e.selliingPrice.toString();
         }
       });
       console.log({ all });
@@ -692,21 +692,22 @@ const Products = () => {
                       ) : (
                         <div>
                           <div className="panel with-nav-tabs panel-default">
-                            <div className="panel-heading">
-                              <ul className="nav nav-tabs">
-                                <li className="active">
-                                  <a href="#tab2default" data-toggle="tab">
-                                    Shipping Details
-                                  </a>
-                                </li>
-                                <li style={{ float: "right" }}>
-                                  Processing Time: <strong>1-3 days</strong>
-                                </li>
-                              </ul>
-                            </div>
+                          <div className="panel-heading">
+                            <ul className="nav nav-tabs">
+                              <li className="active">
+                                <a href="#tab1default" data-toggle="tab">
+                                  Shipping Details
+                                </a>
+                              </li>
+
+                              <li style={{ float: "right" }}>
+                                Processing Time: <strong>1-3 days</strong>
+                              </li>
+                            </ul>
+                          </div>
                             <div className="panel-body">
                               <div className="tab-content">
-                                <div className="tab-pane fade" id="tab2default">
+                                <div className="tab-pane fade in active" id="tab1default">
                                   <table className="table table-sm">
                                     <thead>
                                       <th>Country</th>
@@ -756,6 +757,9 @@ const Products = () => {
                                     </tbody>
                                   </table>
                                 </div>
+
+                                
+
                               </div>
                             </div>
                           </div>

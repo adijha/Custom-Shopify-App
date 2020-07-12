@@ -210,11 +210,13 @@ const SingleProductDetail = (props) => {
                     (product.productImage.length!==0)?(
                       product.productImage.map((image, index)=>{
                         return(
-                          <a data-target={`#pic-${index+1}`} data-toggle='tab'>
+                          <div className="col-md-3">
+                          <a data-target={`#pic-${index+2}`} data-toggle='tab'>
                           <img
                             src={`data:image/jpeg;base64, ${image.imgBufferData}`}
                           />
                           </a>
+                          </div>
                         )
                       })
                     ):"No Image Available"
@@ -236,7 +238,7 @@ const SingleProductDetail = (props) => {
                     <h5 className='price'>
                       Price:
                       <span>
-                        {`$`(
+                        {`$`+(
                           new Intl.NumberFormat('en-US').format(
                             product.selliingPrice.toFixed(2)
                           )
@@ -245,7 +247,7 @@ const SingleProductDetail = (props) => {
                     </h5>
                   )}
 
-                  {product.varientArray.length != 0 ? (
+                  {product.varientArray.length !==0 ? (
                     <div>
                       <div className='panel with-nav-tabs panel-default'>
                         <div className='panel-heading'>
@@ -362,7 +364,7 @@ const SingleProductDetail = (props) => {
                         </div>
                         <div className='panel-body'>
                           <div className='tab-content'>
-                            <div className='tab-pane fade' id='tab2default'>
+                            <div className='tab-pane fade in active' id='tab2default'>
                               <table className='table table-sm'>
                                 <thead>
                                   <th>Country</th>
@@ -414,6 +416,7 @@ const SingleProductDetail = (props) => {
 
                   <br />
                   <br />
+
                   <h5 className='price'>Description:</h5>
                   <p>
                     {product.description
