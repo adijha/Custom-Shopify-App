@@ -46,8 +46,8 @@ const Products = () => {
           all[i].lowRange = getSellingRange(e.varientArray);
           all[i].highRange = getHighRange(e.varientArray);
         } else {
-          all[i].lowRange = e.price.toString();
-          all[i].highRange = e.price.toString();
+          all[i].lowRange = e.selliingPrice.toString();
+          all[i].highRange = e.selliingPrice.toString();
         }
       });
       console.log({ all });
@@ -58,9 +58,26 @@ const Products = () => {
 
   const getProductId = (list) => {
     //console.log(list._id);
-    axios.get("/api/product/" + list._id).then((item) => {
-      console.log("single pronduct detail", item);
-      setSingleProduct(item.data);
+    axios.get("/api/product/" + list._id).then((data) => {
+      let all = data.data;
+      all = all.sort(
+        (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+      );
+      all.forEach((e, i) => {
+        console.log({ e });
+        if (e.varientArray.length > 0) {
+          // console.log(getSellingRange(e.varientArray));
+
+          all[i].lowRange = getSellingRange(e.varientArray);
+          all[i].highRange = getHighRange(e.varientArray);
+        } else {
+          all[i].lowRange = e.selliingPrice.toString();
+          all[i].highRange = e.sellingRange.toString();
+        }
+      });
+      console.log({ all });
+      console.log(data.data);
+      setSingleProduct(all);
       setOpen(true);
     });
   };
@@ -121,8 +138,8 @@ const Products = () => {
               all[i].lowRange = getSellingRange(e.varientArray);
               all[i].highRange = getHighRange(e.varientArray);
             } else {
-              all[i].lowRange = e.price.toString();
-              all[i].highRange = e.price.toString();
+              all[i].lowRange = e.selliingPrice.toString();
+              all[i].highRange = e.selliingPrice.toString();
             }
           });
           console.log({ all });
@@ -528,14 +545,16 @@ const Products = () => {
                           {product.productImage.length !== 0
                             ? product.productImage.map((image, index) => {
                                 return (
+                                  <div className="col-md-3">
                                   <a
-                                    data-target={`#pic-${index + 1}`}
+                                    data-target={`#pic-${index + 2}`}
                                     data-toggle="tab"
                                   >
                                     <img
                                       src={`data:image/jpeg;base64, ${image.imgBufferData}`}
                                     />
                                   </a>
+                                  </div>
                                 );
                               })
                             : "No Image Available"}
@@ -550,13 +569,13 @@ const Products = () => {
                       {product.varientArray.length !== 0 ? (
                         <h5 className="price">
                           Price Range:
-                          <span>{getSellingRange(product.varientArray)}</span>
+                          <span>${product.lowRange}-{product.highRange}</span>
                         </h5>
                       ) : (
                         <h5 className="price">
                           Price:
                           <span>
-                            {`$`(
+                            {`$`+(
                               new Intl.NumberFormat("en-US").format(
                                 product.selliingPrice.toFixed(2)
                               )
