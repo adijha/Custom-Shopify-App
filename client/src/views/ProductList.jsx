@@ -328,9 +328,28 @@ const ProductList = () => {
     setMulterImage([
       ...multerImage.filter((_, index) => index !== indexToRemove),
     ]);
+    
     setAddOnImage([
       ...addOnImage.filter((_, index) => index !== indexToRemove),
     ]);
+    // let tempArray = []
+    // multerImage.forEach((image, i) => {
+    //   productImage.forEach((item, j) => {
+    //     console.log({item});
+    //     if (multerImage[i].name === productImage[j].name) {
+    //         tempArray.push(productImage[j])
+    //     }
+    //   });
+    //
+    //   });
+    //   setProductImage(tempArray)
+  };
+  const handleDeleteImage1 = (data, indexToRemove) => {
+
+    setProductImage([
+    ...productImage.filter((_, index) => index !== indexToRemove),
+  ]);
+
     // let tempArray = []
     // multerImage.forEach((image, i) => {
     //   productImage.forEach((item, j) => {
@@ -864,7 +883,7 @@ const ProductList = () => {
                       type="button"
                       className="close"
                       aria-label="Close"
-                      onClick={() => handleDeleteImage(data, i)}
+                      onClick={() => handleDeleteImage1(data, i)}
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>

@@ -436,6 +436,9 @@ const AdminProduct = () => {
     setMulterImage([
       ...multerImage.filter((_, index) => index !== indexToRemove),
     ]);
+    setProductImage([
+    ...productImage.filter((_, index) => index !== indexToRemove),
+  ]);
     setAddOnImage([
       ...addOnImage.filter((_, index) => index !== indexToRemove),
     ]);
@@ -451,6 +454,26 @@ const AdminProduct = () => {
     //   });
     //   setProductImage(tempArray)
   };
+
+  const handleDeleteImage1 = (data, indexToRemove) => {
+
+    setProductImage([
+    ...productImage.filter((_, index) => index !== indexToRemove),
+  ]);
+    
+    // let tempArray = []
+    // multerImage.forEach((image, i) => {
+    //   productImage.forEach((item, j) => {
+    //     console.log({item});
+    //     if (multerImage[i].name === productImage[j].name) {
+    //         tempArray.push(productImage[j])
+    //     }
+    //   });
+    //
+    //   });
+    //   setProductImage(tempArray)
+  };
+
 
   return (
     <div style={{ overflowX: 'hidden' }}>
@@ -586,7 +609,7 @@ const AdminProduct = () => {
                                 : new Intl.NumberFormat("en-US").format(item.highRange)}
                               </td>
                               <td>
-                              ${new Intl.NumberFormat("en-US").format(item.lowSellingRange)}
+                              ${new Intl.NumberFormat("en-US").format(parseInt(item.lowSellingRange))}
                               {item.lowSellingRange === item.highSellingRange ? null : "-"}
                               {item.lowSellingRange === item.highSellingRange
                                 ? null
@@ -1081,7 +1104,7 @@ const AdminProduct = () => {
                         type="button"
                         className="close"
                         aria-label="Close"
-                        onClick={() => handleDeleteImage(data, i)}
+                        onClick={() => handleDeleteImage1(data, i)}
                       >
                         <span aria-hidden="true">&times;</span>
                       </button>
