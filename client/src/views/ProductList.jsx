@@ -85,7 +85,7 @@ const ProductList = () => {
 
   const getProductData = () => {
     axios.get("/api/supplier/product/" + decode.id).then((products) => {
-      // setProductItems(products.data);
+      // console.log(products.data);
       let all = products.data;
       all = all.sort(
         (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
@@ -102,7 +102,7 @@ const ProductList = () => {
           all[i].highRange = e.price.toString();
         }
       });
-      console.log({ all });
+      // console.log({ all });
       setProductItems(all);
 
     });
