@@ -2657,9 +2657,11 @@ router.patch('/product/update',upload.array('addOnImage'), async (req, res) => {
  try {
   const files = await req.files;
   let imgData = [];
-  let pImageData = await JSON.parse(req.body.productImage)
+  imgData = await JSON.parse(req.body.productImage)
+if (files.length>0) {
+  let pImageData = [];
   files.forEach((file) => {
-    imgData.push({
+    pImageData.push({
       imgName: file.mimetype,
       imgBufferData: file.buffer.toString('base64'),
     });
@@ -2668,8 +2670,7 @@ router.patch('/product/update',upload.array('addOnImage'), async (req, res) => {
 pImageData.forEach((item, i) => {
   imgData = [...imgData, item]
 });
-
-
+}
 
 
 let shippingObj = {

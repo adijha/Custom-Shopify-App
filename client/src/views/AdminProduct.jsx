@@ -39,7 +39,7 @@ const AdminProduct = () => {
   const [sDetail, setSDetail] = useState({});
   const [productImage, setProductImage] = useState([])
   const [autoMargin, setAutoMargin] = useState()
-  const [addOnImage, setAddOnImage] = useState()
+  const [addOnImage, setAddOnImage] = useState([])
   const [multerImage, setMulterImage] = useState([]);
 
 
@@ -281,13 +281,11 @@ const AdminProduct = () => {
 
         const data = await new FormData();
         console.log(productImage, 'add button image');
-        data.append('addOnImage', addOnImage[0]);
-        data.append('addOnImage', addOnImage[1]);
-        data.append('addOnImage', addOnImage[2]);
-        data.append('addOnImage', addOnImage[3]);
-        data.append('addOnImage', addOnImage[4]);
-        data.append('addOnImage', addOnImage[5]);
-        data.append('addOnImage', addOnImage[6]);
+        if (addOnImage.length!==0) {
+          for (var i = 0; i < addOnImage.length; i++) {
+            data.append('addOnImage', addOnImage[i]);
+          }
+        }
         data.append('name', name);
         data.append('price', price);
         data.append('quantity', quantity);
@@ -460,7 +458,7 @@ const AdminProduct = () => {
     setProductImage([
     ...productImage.filter((_, index) => index !== indexToRemove),
   ]);
-    
+
     // let tempArray = []
     // multerImage.forEach((image, i) => {
     //   productImage.forEach((item, j) => {

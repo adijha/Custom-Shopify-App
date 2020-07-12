@@ -36,7 +36,7 @@ const ProductList = () => {
   const [productImage, setProductImage] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [autoMargin, setAutoMargin] = useState()
-  const [addOnImage, setAddOnImage] = useState()
+  const [addOnImage, setAddOnImage] = useState([])
   const [multerImage, setMulterImage] = useState([]);
 
   const modalStyle = {
@@ -191,13 +191,12 @@ const ProductList = () => {
 
     const data = await new FormData();
     console.log(productImage, 'add button image');
-    data.append('addOnImage', addOnImage[0]);
-    data.append('addOnImage', addOnImage[1]);
-    data.append('addOnImage', addOnImage[2]);
-    data.append('addOnImage', addOnImage[3]);
-    data.append('addOnImage', addOnImage[4]);
-    data.append('addOnImage', addOnImage[5]);
-    data.append('addOnImage', addOnImage[6]);
+    
+    if (addOnImage.length!==0) {
+      for (var i = 0; i < addOnImage.length; i++) {
+        data.append('addOnImage', addOnImage[i]);
+      }
+    }
     data.append('name', name);
     data.append('price', price);
     data.append('quantity', quantity);
@@ -328,7 +327,7 @@ const ProductList = () => {
     setMulterImage([
       ...multerImage.filter((_, index) => index !== indexToRemove),
     ]);
-    
+
     setAddOnImage([
       ...addOnImage.filter((_, index) => index !== indexToRemove),
     ]);
