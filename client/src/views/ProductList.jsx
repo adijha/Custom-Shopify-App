@@ -85,8 +85,26 @@ const ProductList = () => {
 
   const getProductData = () => {
     axios.get("/api/supplier/product/" + decode.id).then((products) => {
-      setProductItems(products.data);
-      console.log(products.data);
+      // setProductItems(products.data);
+      let all = products.data;
+      all = all.sort(
+        (a, b) => new Date(b.uploaded_on) - new Date(a.uploaded_on)
+      );
+      all.forEach((e, i) => {
+        console.log({ e });
+        if (e.varientArray.length > 0) {
+          // console.log(getSellingRange(e.varientArray));
+
+          all[i].lowRange = getLowRange(e.varientArray);
+          all[i].highRange = getHighRange(e.varientArray);
+        } else {
+          all[i].lowRange = e.price.toString();
+          all[i].highRange = e.price.toString();
+        }
+      });
+      console.log({ all });
+      setProductItems(all);
+
     });
   };
 
@@ -206,26 +224,25 @@ const ProductList = () => {
     setVarient(newArr);
   };
 
-  const getRange = (arr) => {
+  const getLowRange = (arr) => {
     console.log("arr", arr);
-    let maxValue = arr.reduce(function (prev, curr) {
-      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
-    });
     let minValue = arr.reduce(function (prev, curr) {
       return parseFloat(prev.price) < parseFloat(curr.price) ? prev : curr;
     });
 
-    let range =
-      "$" +
-      `${new Intl.NumberFormat("en-US").format(
-        parseFloat(minValue.price).toFixed(2)
-      )}` +
-      "-" +
-      `${new Intl.NumberFormat("en-US").format(
-        parseFloat(maxValue.price).toFixed(2)
-      )}`;
+    let range =minValue.price
     return range;
   };
+  const getHighRange = (arr) => {
+    console.log("arr", arr);
+    let maxValue = arr.reduce(function (prev, curr) {
+      return parseFloat(prev.price) > parseFloat(curr.price) ? prev : curr;
+    });
+
+    let range =maxValue.price
+    return range;
+  };
+
 
   let newBuffData = (arr) => {
     let encodedData = [];
@@ -346,14 +363,11 @@ const ProductList = () => {
                             <td>{item.code}</td>
                             <td>{item.category}</td>
                             <td>
-                              {" "}
-                              {item.varientArray.length !== 0
-                                ? getRange(item.varientArray)
-                                : `$`(
-                                    new Intl.NumberFormat("en-US").format(
-                                      item.price.toFixed(2)
-                                    )
-                                  )}
+                            ${new Intl.NumberFormat("en-US").format(item.lowRange)}
+                    {item.lowRange === item.highRange ? null : "-"}
+                    {item.lowRange === item.highRange
+                      ? null
+                      : new Intl.NumberFormat("en-US").format(item.highRange)}
                             </td>
                             <td>
                               <div
