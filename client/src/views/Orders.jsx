@@ -498,6 +498,7 @@ const Orders = () => {
                                 <td>{item.shipping || 'NA'}</td>
                                 <td>Fulfilled</td>
                               </tr>
+                              
 
                               {expand === item.orderId ? (
                                 <tr key={9898989}>
