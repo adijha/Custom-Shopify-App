@@ -46,7 +46,7 @@ const Products = () => {
           all[i].lowRange = getSellingRange(e.varientArray);
           all[i].highRange = getHighRange(e.varientArray);
         } else {
-          all[i].lowRange =  e.selliingPrice.toString();
+          all[i].lowRange = e.selliingPrice.toString();
           all[i].highRange = e.selliingPrice.toString();
         }
       });
@@ -235,7 +235,6 @@ const Products = () => {
     return sellingRange;
   };
 
-
   const getHighRange = (arr) => {
     let maxSellingValue = arr.reduce(function (prev, curr) {
       return parseFloat(prev.selliingPrice) > parseFloat(curr.selliingPrice)
@@ -421,14 +420,26 @@ const Products = () => {
           style={{ color: "red" }}
           style={{ backgroundColor: "#fff" }}
         >
-          {status!==''?(<div>
-
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-exclamation-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-</svg>  {status}
-            </div>):null}
+          {status !== "" ? (
+            <div>
+              <svg
+                width="1em"
+                height="1em"
+                viewBox="0 0 16 16"
+                class="bi bi-exclamation-circle-fill"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+                />
+              </svg>{" "}
+              {status}
+            </div>
+          ) : null}
         </div>
-        <br/>
+        <br />
         {filterItems.map((list) => {
           return (
             <div
@@ -546,14 +557,14 @@ const Products = () => {
                             ? product.productImage.map((image, index) => {
                                 return (
                                   <div className="col-md-3">
-                                  <a
-                                    data-target={`#pic-${index + 2}`}
-                                    data-toggle="tab"
-                                  >
-                                    <img
-                                      src={`data:image/jpeg;base64, ${image.imgBufferData}`}
-                                    />
-                                  </a>
+                                    <a
+                                      data-target={`#pic-${index + 2}`}
+                                      data-toggle="tab"
+                                    >
+                                      <img
+                                        src={`data:image/jpeg;base64, ${image.imgBufferData}`}
+                                      />
+                                    </a>
                                   </div>
                                 );
                               })
@@ -569,17 +580,18 @@ const Products = () => {
                       {product.varientArray.length !== 0 ? (
                         <h5 className="price">
                           Price Range:
-                          <span>${product.lowRange}-{product.highRange}</span>
+                          <span>
+                            ${product.lowRange}-{product.highRange}
+                          </span>
                         </h5>
                       ) : (
                         <h5 className="price">
                           Price:
                           <span>
-                            {`$`+(
+                            {`$` +
                               new Intl.NumberFormat("en-US").format(
                                 product.selliingPrice.toFixed(2)
-                              )
-                            )}
+                              )}
                           </span>
                         </h5>
                       )}
@@ -692,22 +704,25 @@ const Products = () => {
                       ) : (
                         <div>
                           <div className="panel with-nav-tabs panel-default">
-                          <div className="panel-heading">
-                            <ul className="nav nav-tabs">
-                              <li className="active">
-                                <a href="#tab1default" data-toggle="tab">
-                                  Shipping Details
-                                </a>
-                              </li>
+                            <div className="panel-heading">
+                              <ul className="nav nav-tabs">
+                                <li className="active">
+                                  <a href="#tab1default" data-toggle="tab">
+                                    Shipping Details
+                                  </a>
+                                </li>
 
-                              <li style={{ float: "right" }}>
-                                Processing Time: <strong>1-3 days</strong>
-                              </li>
-                            </ul>
-                          </div>
+                                <li style={{ float: "right" }}>
+                                  Processing Time: <strong>1-3 days</strong>
+                                </li>
+                              </ul>
+                            </div>
                             <div className="panel-body">
                               <div className="tab-content">
-                                <div className="tab-pane fade in active" id="tab1default">
+                                <div
+                                  className="tab-pane fade in active"
+                                  id="tab1default"
+                                >
                                   <table className="table table-sm">
                                     <thead>
                                       <th>Country</th>
@@ -757,9 +772,6 @@ const Products = () => {
                                     </tbody>
                                   </table>
                                 </div>
-
-                                
-
                               </div>
                             </div>
                           </div>
