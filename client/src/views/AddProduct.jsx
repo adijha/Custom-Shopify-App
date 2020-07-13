@@ -39,11 +39,11 @@ const AddProduct = () => {
   const [quantities, setQuantities] = useState([]);
   const [skus, setSkus] = useState([]);
   const [shippingDetails, setShippingDetails] = useState('');
-  const [usa, setUsa] = useState(2.5);
-  const [canada, setCanada] = useState(2.5);
-  const [uk, setUk] = useState(2.5);
-  const [australia, setAustralia] = useState(2.5);
-  const [international, setInternational] = useState(2.5);
+  const [usa, setUsa] = useState();
+  const [canada, setCanada] = useState();
+  const [uk, setUk] = useState();
+  const [australia, setAustralia] = useState();
+  const [international, setInternational] = useState();
 
   const [length, setLength] = useState();
 
@@ -144,7 +144,10 @@ const AddProduct = () => {
       // });
       tempVarientArray.push(obj);
     }
-    console.log(tempVarientArray);
+    if (name===''|| description===''|| category===''||shippingDetails==='') {
+      NotificationManager.error('Please fill all the details')
+    }
+    else{
     const data = await new FormData();
     console.log(productImage, 'add button image');
     data.append('productImage', productImage[0]);
@@ -173,7 +176,8 @@ const AddProduct = () => {
     data.append('australia', australia);
     data.append('international', international);
     data.append('varientArray', JSON.stringify(tempVarientArray));
-    //console.log("tempVarientArray", JSON.parse(JSON.stringify(tempVarientArray)))
+
+
     axios
       .post('/api/addProduct', data)
       .then((res) => {
@@ -204,6 +208,7 @@ const AddProduct = () => {
           ? NotificationManager.error(err.toString())
           : NotificationManager.error('There is a problem with your entries');
       });
+  }
   };
 
   //Add Product from CSV File
@@ -902,7 +907,10 @@ const AddProduct = () => {
                           </h5>
                           <input
                             id={`varientPrice${index}`}
-                            type='text'
+                            type='number'
+                            min='0'
+                            step=".01"
+                            maxLength="10"
                             style={{
                               flex: 1,
                               borderTopLeftRadius: 0,
@@ -913,7 +921,10 @@ const AddProduct = () => {
                           />
                         </div>
                         <input
-                          type='text'
+                          type='number'
+                          min='0'
+                          step="any"
+                          maxLength="10"
                           value={item.quantity}
                           className='form-control'
                           id={`varientQuantity${index}`}
@@ -963,8 +974,10 @@ const AddProduct = () => {
                 <input
                   class='input-with-icon'
                   id='form-name'
-                  type='text'
+                  type='number'
                   min='0'
+                  step=".01"
+                  maxLength="10"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   id='product_price'
@@ -976,10 +989,13 @@ const AddProduct = () => {
             <div className='form-group'>
               <label for='product_quantity'>Quantity</label>
               <input
-                type='number'
+              type='number'
+              min='0'
+              step="any"
+              maxLength="10"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
-                min='0'
+
                 className='form-control'
                 id='product_quantity'
                 placeholder='Enter Available Quanity of Product'
@@ -1064,7 +1080,13 @@ const AddProduct = () => {
                 id='exampleRadios1'
                 style={{ marginRight: '10px' }}
                 value='freeShipping'
-                onChange={(e) => setShippingDetails(e.target.value)}
+                onChange={(e) => { return (setShippingDetails(e.target.value),
+                  setUsa(2.5),
+                  setAustralia(2.5),
+                  setCanada(2.5),
+                  setUk(2.5),
+                  setInternational(2.5)
+                )}}
               />
               <label
                 className='form-check-label shippinglabel'
@@ -1111,8 +1133,10 @@ const AddProduct = () => {
                       <input
                         class='input-with-icon'
                         id='form-name'
-                        type='text'
+                        type='number'
                         min='0'
+                        step=".01"
+                        maxLength="10"
                         value={usa}
                         onChange={(e) => setUsa(e.target.value)}
                         id='product_price'
@@ -1141,8 +1165,10 @@ const AddProduct = () => {
                       <input
                         class='input-with-icon'
                         id='form-name'
-                        type='text'
+                        type='number'
                         min='0'
+                        step=".01"
+                        maxLength="10"
                         value={canada}
                         onChange={(e) => setCanada(e.target.value)}
                         id='product_price'
@@ -1173,8 +1199,10 @@ const AddProduct = () => {
                       <input
                         class='input-with-icon'
                         id='form-name'
-                        type='text'
+                        type='number'
                         min='0'
+                        step=".01"
+                        maxLength="10"
                         value={uk}
                         onChange={(e) => setUk(e.target.value)}
                         id='product_price'
@@ -1203,8 +1231,10 @@ const AddProduct = () => {
                       <input
                         class='input-with-icon'
                         id='form-name'
-                        type='text'
+                        type='number'
                         min='0'
+                        step=".01"
+                        maxLength="10"
                         value={australia}
                         onChange={(e) => setAustralia(e.target.value)}
                         id='product_price'
@@ -1235,8 +1265,10 @@ const AddProduct = () => {
                       <input
                         class='input-with-icon'
                         id='form-name'
-                        type='text'
+                        type='number'
                         min='0'
+                        step=".01"
+                        maxLength="10"
                         value={international}
                         onChange={(e) => setInternational(e.target.value)}
                         id='product_price'

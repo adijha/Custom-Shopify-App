@@ -75,6 +75,9 @@ const SupplierList = () => {
               axios.get("/api/adminPaymentSupplier").then((res) => {
                 setPayments(res.data);
                 NotificationManager.success("Transaction Updated Successfully");
+                setId('')
+                setAmount('')
+                setMethod('')
                 // console.log(res.data);
               });
             }
@@ -106,6 +109,9 @@ const SupplierList = () => {
             axios.get("/api/adminPaymentSupplier").then((res) => {
               setPayments(res.data);
               NotificationManager.success("Transaction Updated Successfully");
+              setId('')
+              setAmount('')
+              setMethod('')
               // console.log(res.data);
             });
           }
@@ -277,7 +283,10 @@ const SupplierList = () => {
                                       required
                                       placeholder="in dollar"
                                       className=" border focus:outline-none text-sm  rounded-full w-full p-0 px-3 text-grey-darker"
-                                      type="text"
+                                      type="number"
+                                      min="0"
+                                      maxLength="10"
+                                      step=".01"
                                       required
                                       value={amount}
                                       onChange={(e) =>

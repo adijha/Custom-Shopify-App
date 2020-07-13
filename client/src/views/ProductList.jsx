@@ -597,12 +597,13 @@ const ProductList = () => {
                   id="exampleRadios1"
                   style={{ marginRight: "10px" }}
                   value="freeShipping"
-                  onChange={(e) => setShippingDetails(e.target.value),
+                  onChange={(e) => { return (setShippingDetails(e.target.value),
                     setUsa(2.5),
                     setAustralia(2.5),
                     setCanada(2.5),
                     setUk(2.5),
-                    setInternational(2.5)}
+                    setInternational(2.5)
+                  )}}
                   checked={shippingDetails === `freeShipping`}
                 />
                 <label
