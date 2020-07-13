@@ -65,7 +65,7 @@ const SupplierOrders = () => {
        let obj = {}
        console.log("data", location.data.locations);
        location.data.locations.forEach((item, i) => {
-         if (item.name==="gurgaon") {
+         if (item.name.toLowerCase()==="melisxpress") {
            console.log("id is", item.id);
             obj = {
               fulfillment: {
