@@ -63,7 +63,7 @@ const SupplierOrders = () => {
      await axios.get('/updateOrdersTracking/' + data.store + "/" + data.id)
      .then(location=>{
        let obj = {}
-      // console.log("data", data.data.locations);
+       console.log("data", location.data.locations);
        location.data.locations.forEach((item, i) => {
          if (item.name==="gurgaon") {
            console.log("id is", item.id);

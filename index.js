@@ -17,7 +17,7 @@ const csv = require('csvtojson');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
-  'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders';
+  'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders, read_locations';
 const forwardingAddress = 'https://www.Melisxpress.com';
 let hmacc, tokenn;
 // let shop;
@@ -392,7 +392,7 @@ app.get('/updateOrdersTracking/:store/:id', async (req, res) => {
 
   let storeData = await Store.find({ name: storeFullName });
   console.log(req.params.id);
-  console.log(req.body);
+
 
   if (storeData.length > 0) {
     // const shopRequestUrl =
@@ -412,9 +412,11 @@ app.get('/updateOrdersTracking/:store/:id', async (req, res) => {
       'X-Shopify-Shop-Domain': storeData[0].name,
       'X-Shopify-API-Version': '2020-01',
     };
+    console.log({shopRequestHeaders});
     request
       .get(shopRequestUrl, { headers: shopRequestHeaders })
       .then((location) => {
+        console.log({location});
         res.send(location);
         // location.locations.map((item, i) => {
         //   if (item.name==="gurgaon") {

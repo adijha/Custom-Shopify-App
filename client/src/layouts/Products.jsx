@@ -183,12 +183,11 @@ const Products = () => {
     t.varientArray.forEach((item, i) => {
       vArray.push({
         option1: item.varient,
-        price: item.selliingPrice,
-        inventory_quantity: item.quantity,
+        price: parseInt(item.selliingPrice),
+        inventory_quantity: parseInt(item.quantity),
         sku: item.sku,
       });
     });
-
     let product = {
       product: {
         title: t.name,
