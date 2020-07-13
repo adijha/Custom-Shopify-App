@@ -175,7 +175,7 @@ const Orders = () => {
   const handleClickTest = (data) => {
     console.log('data is ', data);
     setPName(data.productName);
-    setPPrice((parseInt(data.item_price)*10));
+    setPPrice(parseInt(data.item_price)/10);
     setCustDetail(data.customer_detail);
   };
 
@@ -401,10 +401,10 @@ const Orders = () => {
                                 <td>{item.pStatus}</td>
 
                                 <td>
-
-                                  {(new Intl.NumberFormat('en-US')
-                                    .format(item.total_amount)
-                                    .toFixed(2))}
+                                $
+                                {new Intl.NumberFormat('en-US').format(
+                                  item.total_amount
+                                )}
                                 </td>
                                 <td>{item.shipping || 'NA'}</td>
                                 <td>
@@ -494,11 +494,14 @@ const Orders = () => {
                                 <td>{item.customer_detail.name}</td>
                                 <td>{item.paymentMode || 'NA'}</td>
                                 <td>{item.pStatus}</td>
-                                <td>${item.total_amount}</td>
+                                <td>$
+                                {new Intl.NumberFormat('en-US').format(
+                                  item.total_amount
+                                )}</td>
                                 <td>{item.shipping || 'NA'}</td>
                                 <td>Fulfilled</td>
                               </tr>
-                              
+
 
                               {expand === item.orderId ? (
                                 <tr key={9898989}>
