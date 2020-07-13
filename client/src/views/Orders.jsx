@@ -175,7 +175,7 @@ const Orders = () => {
   const handleClickTest = (data) => {
     console.log('data is ', data);
     setPName(data.productName);
-    setPPrice(parseInt(data.item_price)/10);
+    setPPrice(parseInt(data.total_amount)*10);
     setCustDetail(data.customer_detail);
   };
 
@@ -204,9 +204,9 @@ const Orders = () => {
     const headers = {
       'Content-Type': 'application/json',
     };
-    let dateObj = { date: moment().format('MMM Do YYYY') };
+    let dateObj = { date: moment().format('DD-MM-YYYY') };
 
-    return fetch('http://www.Melisxpress.com/api/payment', {
+    return fetch('http://localhost:3000/api/payment', {
       method: 'POST',
       headers,
       body: JSON.stringify(body),

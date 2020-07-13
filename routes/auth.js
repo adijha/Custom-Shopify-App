@@ -619,7 +619,7 @@ router.patch('/supplierOrderFromMerchant/:orderId', async (req, res)=>{
         { "product_name": req.params.orderId },
         { $set:{
             "pStatus": "Paid",
-            "updated_on": req.body.date
+            "updated_on": new Date()
           }
         },{
           new: true,
