@@ -815,15 +815,17 @@ router.post('/signUpMerchant', async (req, res) => {
     phoneNo: req.body.phoneNo,
     email: req.body.email,
     password: hashPassword,
-    joiningDate: currDate('-'),
+    joiningDate: new Date(),
     store: req.body.store,
   });
   console.log(req.body);
   try {
     const savedUser = await merchantUser.save();
     res.send('success');
+    console.log("savedUser", savedUser);
   } catch (err) {
     res.status(400).send(err);
+    console.log(err);
   }
 });
 
