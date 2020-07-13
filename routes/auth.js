@@ -749,7 +749,6 @@ router.get('/customOrderDetails', async (req, res)=>{
     });
   });
 
-
 const mUser = await MerchantUser.find()
 
 thirdArr.forEach((tArr, o) => {
