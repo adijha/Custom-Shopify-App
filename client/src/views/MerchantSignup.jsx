@@ -29,7 +29,7 @@ function MerchantSignup() {
     };
     console.log('signup details', obj);
     try {
-      let res = await axios.post('/api/merchant', obj);
+      let res = await axios.post('/api/signUpMerchant', obj);
       if (res.data.includes('success')) {
         NotificationManager.success('Registered Successfully');
         setEmail('');

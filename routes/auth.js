@@ -787,7 +787,7 @@ res.send(doneArr)
 
 
 //merchant sign up
-router.post('/merchant', async (req, res) => {
+router.post('/signUpMerchant', async (req, res) => {
   //let validate the data
   // console.log(req.body);
   const { error } = userValidation(req.body);
@@ -818,6 +818,7 @@ router.post('/merchant', async (req, res) => {
     joiningDate: currDate('-'),
     store: req.body.store,
   });
+  console.log(req.body);
   try {
     const savedUser = await merchantUser.save();
     res.send('success');

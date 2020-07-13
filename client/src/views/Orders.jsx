@@ -401,10 +401,10 @@ const Orders = () => {
                                 <td>{item.pStatus}</td>
 
                                 <td>
-                                  $
-                                  {new Intl.NumberFormat('en-US')
+
+                                  {(new Intl.NumberFormat('en-US')
                                     .format(item.total_amount)
-                                    .toFixed(2)}
+                                    .toFixed(2))}
                                 </td>
                                 <td>{item.shipping || 'NA'}</td>
                                 <td>
