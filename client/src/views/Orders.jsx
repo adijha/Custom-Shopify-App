@@ -206,7 +206,7 @@ const Orders = () => {
     };
     let dateObj = { date: moment().format('DD-MM-YYYY') };
 
-    return fetch('https://melisxpress.com/api/payment', {
+    return fetch('https://www.melisxpress.com/api/payment', {
       method: 'POST',
       headers,
       body: JSON.stringify(body),
