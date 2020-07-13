@@ -781,8 +781,10 @@ let calSPrice = parseInt(price) + parseInt(price)*parseInt(autoMargin)/100
                 <input
                   class='input-with-icon'
                   id='form-name'
-                  type='text'
-                  min='0'
+                  type="number"
+                  step=".01"
+                  min="0"
+                  maxLength="10"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   id='product_price'
@@ -1030,7 +1032,11 @@ let calSPrice = parseInt(price) + parseInt(price)*parseInt(autoMargin)/100
                   </label>
                   <input
                     style={{ flex: 1 }}
-                    type='text'
+
+                    type="number"
+                    step=".01"
+                    min="0"
+                    maxLength="10"
                     value={e.price}
                     onChange={updateFieldChanged(index, 'price')}
                     className='form-control'

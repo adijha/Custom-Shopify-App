@@ -175,7 +175,7 @@ const Orders = () => {
   const handleClickTest = (data) => {
     console.log('data is ', data);
     setPName(data.productName);
-    setPPrice(parseInt(data.item_price));
+    setPPrice((parseInt(data.item_price)*10));
     setCustDetail(data.customer_detail);
   };
 

@@ -560,8 +560,10 @@ const ProductList = () => {
                 <input
                   class="input-with-icon"
                   id="form-name"
-                  type="text"
+                  type="number"
+                  step=".01"
                   min="0"
+                  maxLength="10"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   id="product_price"
@@ -809,7 +811,10 @@ const ProductList = () => {
                   </label>
                   <input
                     style={{ flex: 1 }}
-                    type="text"
+                    type="number"
+                    step=".01"
+                    min="0"
+                    maxLength="10"
                     value={e.price}
                     onChange={updateFieldChanged(index, "price")}
                     className="form-control"
