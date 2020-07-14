@@ -424,6 +424,7 @@ console.log(req.params.store);
               productImage:product.productImage,
               quantity: item.quantity,
               productName: vArr.varient,
+              selliingPrice: vArr.selliingPrice,
               shippingCharge: product.shippingCharge,
               store: item.store,
               pStatus: item.pStatus,
@@ -445,6 +446,7 @@ console.log(req.params.store);
           quantity: item.quantity,
           productName: product.name,
           shippingCharge: product.shippingCharge,
+          selliingPrice:product.selliingPrice,
           store: item.store,
           pStatus: item.pStatus,
         })
@@ -1939,7 +1941,7 @@ router.get('/customProductDetail', async (req, res)=>{
     })
   });
 
-console.log("new product Array achievement", dupArray);
+// console.log("new product Array achievement", dupArray);
 
   orderData.forEach((item, i) => {
       item.products.forEach((data, j) => {
@@ -1951,11 +1953,12 @@ console.log("new product Array achievement", dupArray);
               if (vArr.sku===data.sku) {
                 priceArr.push({
                   sku: data.sku,
-                  price: parseInt(vArr.price)
+                  price: parseInt(vArr.selliingPrice) * parseInt(data.quantity)
                 })
                 quanArr.push({
                   sku: data.sku,
-                  quantity: parseInt(data.quantity)
+                  quantity: 1,
+
                 })
               }
             });
@@ -1964,11 +1967,12 @@ console.log("new product Array achievement", dupArray);
           else if (pro.code === data.sku) {
             priceArr.push({
               sku: data.sku,
-              price: parseInt(pro.price)
+              price: parseInt(pro.selliingPrice) * parseInt(data.quantity)
             })
             quanArr.push({
               sku: data.sku,
-              quantity: parseInt(data.quantity)
+              quantity: 1,
+
             })
           }
 
@@ -1990,7 +1994,8 @@ console.log("new product Array achievement", dupArray);
       });
   });
 
-
+console.log(priceArr);
+console.log(quanArr);
 
   var holder = {};
 
@@ -2038,7 +2043,7 @@ console.log("new product Array achievement", dupArray);
     });
   });
 
-
+console.log(skuArr);
   // console.log("skuArr", skuArr);
   // console.log("before pData", productData);
 
@@ -2054,7 +2059,7 @@ console.log("new product Array achievement", dupArray);
         });
 
       }
-    if (dupArray[x].code === skuArr[index].sku) {
+    else if (dupArray[x].code === skuArr[index].sku) {
         dupArray[x].revenue+=skuArr[index].revenue
         dupArray[x].order += skuArr[index].order
       }

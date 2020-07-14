@@ -300,10 +300,15 @@ const Orders = () => {
                                 <td>
                                   $
                                   {new Intl.NumberFormat('en-US').format(
-                                    item.total_amount
+                                    item.selliingPrice*item.quantity
                                   )}
                                 </td>
-                                <td>{item.shipping || 'NA'}</td>
+                                <td>{item.customer_detail.country.toLowerCase()==="usa"?'$'+item.shippingCharge.usa:null}
+                                {item.customer_detail.country.toLowerCase()==="canada"?'$'+item.shippingCharge.canada:null}
+                                {item.customer_detail.country.toLowerCase()==="australia"?'$'+item.shippingCharge.australia:null}
+                                {item.customer_detail.country.toLowerCase()==="unitedKingdom"?'$'+item.shippingCharge.unitedKingdom:null}
+                                {(item.customer_detail.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shippingCharge.international:null}</td>
+
                                 <td>
                                   {item.pStatus === 'Paid' ? (
                                     <span
@@ -359,7 +364,9 @@ const Orders = () => {
                                     <tr>
                                       ${' '}
                                       {new Intl.NumberFormat('en-US').format(
-                                        item.item_price * item.quantity
+                                        item.selliingPrice
+                                      )}x{new Intl.NumberFormat('en-US').format(
+                                        item.quantity
                                       )}
                                     </tr>
                                   </td>
@@ -403,10 +410,14 @@ const Orders = () => {
                                 <td>
                                 $
                                 {new Intl.NumberFormat('en-US').format(
-                                  item.total_amount
+                                  item.selliingPrice*item.quantity
                                 )}
                                 </td>
-                                <td>{item.shipping || 'NA'}</td>
+                                <td>{item.customer_detail.country.toLowerCase()==="usa"?'$'+item.shippingCharge.usa:null}
+                                {item.customer_detail.country.toLowerCase()==="canada"?'$'+item.shippingCharge.canada:null}
+                                {item.customer_detail.country.toLowerCase()==="australia"?'$'+item.shippingCharge.australia:null}
+                                {item.customer_detail.country.toLowerCase()==="unitedKingdom"?'$'+item.shippingCharge.unitedKingdom:null}
+                                {(item.customer_detail.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shippingCharge.international:null}</td>
                                 <td>
                                   <StriprCheckout
                                     stripeKey='pk_test_pmfKOqLm5AdRbXBfsqNrWew8'
@@ -459,7 +470,7 @@ const Orders = () => {
 
                                   <td colSpan='1'>
                                     <tr>
-                                      ${item.item_price}x{item.quantity}
+                                      ${item.selliingPrice}x{item.quantity}
                                     </tr>
                                   </td>
                                 </tr>
@@ -496,9 +507,13 @@ const Orders = () => {
                                 <td>{item.pStatus}</td>
                                 <td>$
                                 {new Intl.NumberFormat('en-US').format(
-                                  item.total_amount
+                                  item.selliingPrice*item.quantity
                                 )}</td>
-                                <td>{item.shipping || 'NA'}</td>
+                                <td>{item.customer_detail.country.toLowerCase()==="usa"?'$'+item.shippingCharge.usa:null}
+                                {item.customer_detail.country.toLowerCase()==="canada"?'$'+item.shippingCharge.canada:null}
+                                {item.customer_detail.country.toLowerCase()==="australia"?'$'+item.shippingCharge.australia:null}
+                                {item.customer_detail.country.toLowerCase()==="unitedKingdom"?'$'+item.shippingCharge.unitedKingdom:null}
+                                {(item.customer_detail.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shippingCharge.international:null}</td>
                                 <td>Fulfilled</td>
                               </tr>
 
@@ -529,7 +544,7 @@ const Orders = () => {
 
                                   <td colSpan='1'>
                                     <tr>
-                                      ${item.item_price}x{item.quantity}
+                                      ${item.selliingPrice}x{item.quantity}
                                     </tr>
                                   </td>
                                 </tr>
