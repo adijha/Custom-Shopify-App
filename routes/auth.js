@@ -697,6 +697,7 @@ router.get('/customOrderDetails', async (req, res)=>{
               productImage:data.productImage,
               shipping: data.shippingCharge,
               product_price: vArr.price,
+              product_selling: vArr.selliingPrice,
               supplier_id: data.supplier_id,
               pStatus: arr.pStatus
             })
@@ -719,6 +720,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           shipping: data.shippingCharge,
           product_price: data.price,
           supplier_id: data.supplier_id,
+          product_selling: data.selliingPrice,
           pStatus: arr.pStatus
         })
       }
@@ -744,7 +746,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           supplier_id: sArr.supplier_id,
           supplierName: user.supplier_id,
           productImage:sArr.productImage,
-          pStatus:sArr.pStatus
+          pStatus:sArr.pStatus,
+          product_selling: sArr.product_selling,
         })
       }
 
@@ -771,7 +774,8 @@ thirdArr.forEach((tArr, o) => {
         supplierName: tArr.supplierName,
         productImage:tArr.productImage,
         merchantName: muser.firstName,
-        pStatus: tArr.pStatus
+        pStatus: tArr.pStatus,
+        product_selling: tArr.product_selling,
       })
     }
   });

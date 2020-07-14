@@ -205,7 +205,7 @@ const SupplierList = () => {
                             </td>
                             <td>{item.sku}</td>
                             <td>${new Intl.NumberFormat('en-US').format(
-                                parseFloat(item.total_price).toFixed(2))}</td>
+                                parseFloat(item.product_selling*item.quantity).toFixed(2))}</td>
                             <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
                           </tr>
 
@@ -225,11 +225,11 @@ const SupplierList = () => {
                               <td colSpan='3'>
                                 <td>
                                 <th>Shipping Details</th>
-                                  <tr>USA:            ${(new Intl.NumberFormat('en-US').format(item.shipping.usa ))|| 'NA'}</tr>
-                                  <tr>Canada:         ${(new Intl.NumberFormat('en-US').format(item.shipping.canada ))|| 'NA'}</tr>
-                                  <tr>United Kingdom: ${(new Intl.NumberFormat('en-US').format(item.shipping.uk ))|| 'NA'}</tr>
-                                  <tr>Australia:      ${(new Intl.NumberFormat('en-US').format(item.shipping.australia ))|| 'NA'}</tr>
-                                  <tr>International:  ${(new Intl.NumberFormat('en-US').format(item.shipping.international ))|| 'NA'}</tr>
+                                <tr>{item.customer_name.country.toLowerCase()==="usa"?'$'+item.shipping.usa:null}
+                                {item.customer_name.country.toLowerCase()==="canada"?'$'+item.shipping.canada:null}
+                                {item.customer_name.country.toLowerCase()==="australia"?'$'+item.shipping.australia:null}
+                                {item.customer_name.country.toLowerCase()==="unitedKingdom"?'$'+item.shipping.unitedKingdom:null}
+                                {(item.customer_name.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shipping.international:null}</tr>
                                 </td>
                               </td>
                             </tr>

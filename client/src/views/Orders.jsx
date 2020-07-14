@@ -223,7 +223,9 @@ const Orders = () => {
             .then((res) => {
               if (res) {
                 NotificationManager.success('Fulfilled Successfully');
+                setFoundFu('')
                 getOrderDetails();
+
                 //console.log(filterItems.length, "length of filterItems")
               } else {
                 NotificationManager.error('Something wrong');
