@@ -21,7 +21,7 @@ const OrderSchema = mongoose.Schema({
   paid: { type: Number },
   paymentStatus: { type: Boolean },
   paymentMode: {type:String},
-  fulfillmentStatus: { type: String,default: "unfulfill" },
+  fulfillmentStatus: { type: String,default: "Unfulfilled" },
   tracking_number:{type:String, default:null},
   pStatus: {
     type: String,

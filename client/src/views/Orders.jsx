@@ -174,9 +174,42 @@ const Orders = () => {
 
   const handleClickTest = (data) => {
     console.log('data is ', data);
-    setPName(data.productName);
-    setPPrice(parseInt(data.total_amount)*10);
-    setCustDetail(data.customer_detail);
+console.log("DATAA", data);
+    if (data.customer_detail.country.toLowerCase()==="usa") {
+      setPName(data.productName);
+      setPPrice(parseFloat(data.selliingPrice*data.quantity)+parseFloat(data.shippingCharge.usa));
+      setCustDetail(data.customer_detail);
+      setExpand(data.orderId);
+      setOrderId(data.orderId);
+    }
+    else if (data.customer_detail.country.toLowerCase()==="canada") {
+      setPName(data.productName);
+      setPPrice(parseFloat(data.selliingPrice*data.quantity)+parseFloat(data.shippingCharge.canada));
+      setCustDetail(data.customer_detail);
+      setExpand(data.orderId);
+      setOrderId(data.orderId);
+    }
+    else if (data.customer_detail.country.toLowerCase()==="australia") {
+      setPName(data.productName);
+      setPPrice(parseFloat(data.selliingPrice*data.quantity)+parseFloat(data.shippingCharge.australia));
+      setCustDetail(data.customer_detail);
+      setExpand(data.orderId);
+      setOrderId(data.orderId);
+    }
+    else if (data.customer_detail.country.toLowerCase()==="unitedKingdom") {
+      setPName(data.productName);
+      setPPrice(parseFloat(data.selliingPrice*data.quantity)+parseFloat(data.shippingCharge.unitedKingdom));
+      setCustDetail(data.customer_detail);
+      setExpand(data.orderId);
+      setOrderId(data.orderId);
+    }
+    else  {
+      setPName(data.productName);
+      setPPrice(parseFloat(data.selliingPrice*data.quantity)+parseFloat(data.shippingCharge.international));
+      setCustDetail(data.customer_detail);
+      setExpand(data.orderId);
+      setOrderId(data.orderId);
+    }
   };
 
   let handlePayment = async (token) => {
@@ -312,7 +345,7 @@ const Orders = () => {
                                 {(item.customer_detail.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shippingCharge.international:null}</td>
 
                                 <td>
-                                  {item.pStatus === 'Paid' ? (
+                                  {item.fulfillmentStatus === 'Fulfilled' ? (
                                     <span
                                       style={{
                                         backgroundColor: 'yellowgreen',
@@ -392,11 +425,13 @@ const Orders = () => {
                                   if (expand === item.orderId) {
                                     setExpand(null);
                                   } else {
-                                    setExpand(item.orderId);
-                                    setPName(item.productName);
-                                    setPPrice(item.item_price);
-                                    setCustDetail(item.customer_detail);
-                                    setOrderId(item.orderId);
+                                    handleClickTest(item)
+                                    // setExpand(item.orderId);
+
+                                    // setPName(item.productName);
+                                    // setPPrice(item.item_price);
+                                    // setCustDetail(item.customer_detail);
+                                    // setOrderId(item.orderId);
                                   }
                                 }}
                               >
@@ -421,17 +456,19 @@ const Orders = () => {
                                 {item.customer_detail.country.toLowerCase()==="unitedKingdom"?'$'+item.shippingCharge.unitedKingdom:null}
                                 {(item.customer_detail.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?'$'+item.shippingCharge.international:null}</td>
                                 <td>
-                                  <StriprCheckout
-                                    stripeKey='pk_test_pmfKOqLm5AdRbXBfsqNrWew8'
-                                    token={handlePayment}
-                                    name='Pay for Order'
-                                    amount={pPrice}
-                                  >
-                                    {' '}
-                                    <button className='btn btn-primary'>
-                                      Pay
-                                    </button>
-                                  </StriprCheckout>
+                                {item.pStatus==="unpaid"?
+                                <StriprCheckout
+                                  stripeKey='pk_test_pmfKOqLm5AdRbXBfsqNrWew8'
+                                  token={handlePayment}
+                                  name='Pay for Order'
+                                  amount={pPrice*100}
+                                >
+                                  {' '}
+                                  <button className='btn btn-primary'>
+                                    Pay
+                                  </button>
+                                </StriprCheckout>:"Unfulfilled"}
+
                                   {/*<button
                                 classsName="btn btn-primary"
                                 style={{

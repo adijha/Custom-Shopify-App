@@ -376,6 +376,7 @@ console.log(req.params.store);
           quantity: product.quantity,
           store: product.store,
           pStatus: item.pStatus,
+          fulfillmentStatus: item.fulfillmentStatus
         })
       }
     });
@@ -399,6 +400,7 @@ console.log(req.params.store);
 
         store: item.store,
         pStatus: item.pStatus,
+        fulfillmentStatus:item.fulfillmentStatus
       })
     }
   });
@@ -428,6 +430,7 @@ console.log(req.params.store);
               shippingCharge: product.shippingCharge,
               store: item.store,
               pStatus: item.pStatus,
+              fulfillmentStatus:item.fulfillmentStatus
             })
           }
         });
@@ -449,6 +452,7 @@ console.log(req.params.store);
           selliingPrice:product.selliingPrice,
           store: item.store,
           pStatus: item.pStatus,
+          fulfillmentStatus:item.fulfillmentStatus
         })
       }
 
@@ -494,12 +498,12 @@ console.log(req.params.store);
 let finalDataUnpiad = []
 let finalDataPaid = []
   checkStore.forEach((item, i) => {
-    if (checkStore[i].pStatus==='unpaid') {
+    if (checkStore[i].fulfillmentStatus==='Unfulfilled') {
         finalDataUnpiad.push(checkStore[i])
     }
   });
   checkStore.forEach((item, i) => {
-    if (checkStore[i].pStatus==='Paid') {
+    if (checkStore[i].fulfillmentStatus==='Fulfilled') {
         finalDataPaid.push(checkStore[i])
     }
   });
