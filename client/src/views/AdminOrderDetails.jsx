@@ -206,7 +206,7 @@ const SupplierList = () => {
                             <td>{item.sku}</td>
                             <td>${new Intl.NumberFormat('en-US').format(
                                 parseFloat(item.product_selling*item.quantity).toFixed(2))}</td>
-                            <td>{item.pStatus==="Paid"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
+                            <td>{item.fulfillmentStatus==="Fulfilled"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
                           </tr>
 
                           {expand === item.orderId ? (

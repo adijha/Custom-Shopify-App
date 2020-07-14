@@ -670,7 +670,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           updated_on: item.updated_on,
           customer_name: item.customer,
           order_date: item.created_on,
-          pStatus:item.pStatus
+          pStatus:item.pStatus,
+          fulfillmentStatus: item.fulfillmentStatus
         })
       }
 
@@ -699,7 +700,8 @@ router.get('/customOrderDetails', async (req, res)=>{
               product_price: vArr.price,
               product_selling: vArr.selliingPrice,
               supplier_id: data.supplier_id,
-              pStatus: arr.pStatus
+              pStatus: arr.pStatus,
+              fulfillmentStatus: arr.fulfillmentStatus
             })
           }
         });
@@ -721,7 +723,8 @@ router.get('/customOrderDetails', async (req, res)=>{
           product_price: data.price,
           supplier_id: data.supplier_id,
           product_selling: data.selliingPrice,
-          pStatus: arr.pStatus
+          pStatus: arr.pStatus,
+          fulfillmentStatus: arr.fulfillmentStatus
         })
       }
     });
@@ -748,6 +751,7 @@ router.get('/customOrderDetails', async (req, res)=>{
           productImage:sArr.productImage,
           pStatus:sArr.pStatus,
           product_selling: sArr.product_selling,
+          fulfillmentStatus: sArr.fulfillmentStatus
         })
       }
 
@@ -776,6 +780,7 @@ thirdArr.forEach((tArr, o) => {
         merchantName: muser.firstName,
         pStatus: tArr.pStatus,
         product_selling: tArr.product_selling,
+        fulfillmentStatus: tArr.fulfillmentStatus
       })
     }
   });
