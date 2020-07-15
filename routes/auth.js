@@ -3034,7 +3034,7 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
               sku: item.sku,
               name: product.name,
 
-              price: vArr.price,
+              price: vArr.selliingPrice,
               quantity: item.quantity,
               pName: item.pName,
               paid: item.paid,
@@ -3045,7 +3045,8 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
               pStatus: item.pStatus,
               tracking_number: item.tracking_number,
               productImage: product.productImage[0].imgBufferData,
-              updated_on: item.updated_on
+              updated_on: item.updated_on,
+              shippingCharge: product.shippingCharge
             };
             // console.log(dataObj);
             makeList.push(dataObj);
@@ -3060,7 +3061,7 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
           customer: item.customer,
           sku: item.sku,
           name: product.name,
-          price: product.price,
+          price: product.selliingPrice,
           quantity: item.quantity,
           varient: item.varient,
           paid: item.paid,
@@ -3071,7 +3072,8 @@ router.get('/invoice/:supplierId/:orderId', async (req, res) => {
           pStatus: item.pStatus,
           tracking_number: item.tracking_number,
           productImage: product.productImage[0].imgBufferData,
-          updated_on: item.updated_on
+          updated_on: item.updated_on,
+          shippingCharge: product.shippingCharge
         };
         // console.log(dataObj);
         makeList.push(dataObj);

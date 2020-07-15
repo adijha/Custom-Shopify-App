@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import { Grid, Row, Col, Table, Modal as Mod, Button } from 'react-bootstrap';
 import Card from '../components/Card/Card.jsx';
 import {Redirect} from 'react-router-dom';
-
+import moment from 'moment'
 
 const Invoice = (props) =>{
   const token = localStorage.getItem('token');
@@ -14,6 +14,7 @@ const Invoice = (props) =>{
   const [totalAmount, setTotalAmount] = useState()
   const [totalQuantity, setTotalQuantity] = useState()
   const [invoiceDate, setInvoiceDate] = useState("")
+  const [shipCharge, setShipCharge] = useState("")
   useEffect(() => {
 
     getOrderList();
@@ -26,9 +27,32 @@ const Invoice = (props) =>{
       let price = []
       let quantity = []
 
+
+
       res.data.map(item=>{
+        let shippingObj;
+
+        if (item.customer.country.toLowerCase()==="usa") {
+          shippingObj = item.shippingCharge.usa
+        }
+        else if (item.customer.country.toLowerCase()==="canada") {
+          shippingObj = item.shippingCharge.canada
+        }
+
+        else if (item.customer.country.toLowerCase()==="australia") {
+          shippingObj = item.shippingCharge.australia
+        }
+
+        else if (item.customer.country.toLowerCase()==="unitedKingdom") {
+          shippingObj = item.shippingCharge.unitedKingdom
+        }
+        else if (item.customer.country.toLowerCase()!=="usa"||"canada"||"australia"||"unitedKingdom") {
+          shippingObj = item.shippingCharge.international
+        }
+
+        setShipCharge(shippingObj)
         setCustomer(item.customer)
-        let calprice = parseInt(item.price)*parseInt(item.quantity)
+        let calprice = parseFloat(item.price)*parseFloat(item.quantity)+parseFloat(shippingObj)
         price.push(calprice)
         quantity.push(parseInt(item.quantity))
 
@@ -70,7 +94,7 @@ const Invoice = (props) =>{
             <div className="col-xs-6 text-right">
               <address>
                 <strong>Order Date:</strong><br />
-                {invoiceDate || "NA"}<br /><br />
+                {moment(invoiceDate).format("MMM DD YYYY") || "NA"}<br /><br />
               </address>
             </div>
           </div>
@@ -126,11 +150,11 @@ const Invoice = (props) =>{
 
 
 
-                          item.shippingPrice||'-'
+                          `$`+shipCharge||'-'
 
 
                           }</td>
-                          <td className="text-right">${item.price*item.quantity}</td>
+                          <td className="text-right">${parseFloat(item.price)*parseFloat(item.quantity)+parseFloat(shipCharge)}</td>
 
 
 
