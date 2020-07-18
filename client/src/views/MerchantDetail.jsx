@@ -13,6 +13,7 @@ const MerchantDetail = () => {
   const [merchantList, setMerchantList] = useState([]);
   const [fulfill, setFulfill] = useState('');
   const [orderDetail, setOrderDetail] = useState('');
+  const [found, setFound] = useState('')
 
   useEffect(() => {
     getMerchant();
@@ -21,8 +22,15 @@ const MerchantDetail = () => {
   const getMerchant = async () => {
     const res = await axios.get('/api/customMerchantDetail');
     res.data.sort((a,b)=> new Date(b.joiningDate)-new Date(a.joiningDate))
-    setMerchantList(res.data);
-    console.log(res.data);
+    if (res.data.length===0) {
+      setFound("No Data Found")
+    }
+    else{
+      setMerchantList(res.data);
+      console.log(res.data);
+      
+    }
+
   };
 
   return (
@@ -48,6 +56,7 @@ const MerchantDetail = () => {
                     </tr>
                   </thead>
                   <tbody>
+                  <tr>{found}</tr>
                     {merchantList.map((item, key) => {
                       return (
                         <>

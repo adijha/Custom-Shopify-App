@@ -95,14 +95,18 @@ const AdminProfile = () => {
                       <label for="product_location">Phone No</label>
 
                       <input
-                        type="number"
+                        type="tel"
                         value={phone || ''}
                         onChange={(e) => setPhone(e.target.value)}
                         min="0"
+                        maxLength="10"
                         className="form-control"
-                        id="product_location"
+                        id="phone"
+                        name="phone"
+                        pattern="[0-9]{10}"
                         placeholder="Enter Phone No."
                       />
+                      <small>Enter 10-digit phone no.</small>
                     </div>
                   {/*  <div className="form-group">
                       <label for="product_location">Password</label>

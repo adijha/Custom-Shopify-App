@@ -70,6 +70,13 @@ const SupplierList = () => {
       password: password,
     };
     console.log(obj);
+
+    if (tempSupplier===""||name===""||password==="") {
+      NotificationManager.error("Please enter other details and password");
+
+
+    }
+  else{
     axios.patch("/api/update", obj).then((res) => {
       try {
         if (res.data.includes("success")) {
@@ -85,6 +92,8 @@ const SupplierList = () => {
         NotificationManager.error("Something unusual happened");
       }
     });
+  }
+
   };
 
   const deleteSupplier = (item) => {

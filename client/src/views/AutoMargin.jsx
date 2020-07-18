@@ -19,12 +19,25 @@ getCategoryList()
 const updatePrice = async (e) =>{
   e.preventDefault()
   try{
+
+if (margin==='') {
+    NotificationManager.error('enter margin ');
+}
+else if (parseFloat(margin)===0) {
+  NotificationManager.error('enter margin properly');
+}
+else if (category==='') {
+  NotificationManager.error('Select category ');
+}
+else{
   const getProCategory = await axios.patch('/api/autoMargin', {margin, category})
   if (getProCategory.data.includes('success')) {
     NotificationManager.success(`${category} category Product selling price updated with ${margin}% Successfully`);
     setMargin()
     getCategoryList()
   }
+}
+
 } catch (error) {
   NotificationManager.error('Something unusual happened');
 }

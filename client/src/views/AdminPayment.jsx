@@ -286,7 +286,7 @@ const SupplierList = () => {
                                       type="number"
                                       min="0"
                                       maxLength="10"
-                                      step=".01"
+                                      step="0.01"
                                       required
                                       value={amount}
                                       onChange={(e) =>

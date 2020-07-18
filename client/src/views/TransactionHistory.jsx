@@ -5,7 +5,9 @@ import Card from "../components/Card/Card.jsx";
 import moment from "moment";
 const SupplierList = () => {
   const [history, setHistory] = useState([]);
+  const [history1, setHistory1] = useState([]);
   const [context, setContext] = useState("supplier");
+  const [found, setFound] = useState('')
   useEffect(() => {
     getSupplierData();
   }, []);
@@ -17,8 +19,13 @@ const SupplierList = () => {
           new Date(moment(b.date).format("DD-MM-YYYY") + " " + b.time) -
           new Date(moment(a.date).format("DD-MM-YYYY") + " " + a.time)
       );
+      if (res.data.length===0) {
+        setFound("No data found")
+      }
+      else {
+        setHistory(SortData);
+      }
 
-      setHistory(SortData);
       // console.log(res.data);
     });
   };
@@ -27,7 +34,7 @@ const SupplierList = () => {
     //   // setHistory(res.data);
     //   console.log(res.data);
     // });
-    setHistory([
+    setHistory1([
       {
         amount_paid: "no data",
         date: "no data",
@@ -130,6 +137,8 @@ const SupplierList = () => {
                     </tr>
                   </thead>
                   <tbody>
+                  <tr>{context === "supplier" ? found : null}
+                  </tr>
                     {history.map((item, key) => {
                       return (
                         <tr key={key}>

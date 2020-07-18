@@ -10,6 +10,7 @@ import moment from "moment";
 
 const RequestProductList = () => {
   const [requestList, setRequestList] = useState([]);
+  const [found, setFound] = useState('')
 
   useEffect(() => {
     getMerchant();
@@ -20,7 +21,13 @@ const RequestProductList = () => {
     let sortedArray = res.data.sort(
       (a, b) => new moment(b.date) - new moment(a.date)
     );
-    setRequestList(sortedArray);
+    if (sortedArray.length===0) {
+      setFound("No Data Found")
+    }
+    else {
+      setRequestList(sortedArray);
+    }
+
   };
 
   return (
@@ -45,6 +52,8 @@ const RequestProductList = () => {
                     </tr>
                   </thead>
                   <tbody>
+
+                  <tr>{found}</tr>
                     {requestList.map((item, key) => {
                       return (
                         <>
