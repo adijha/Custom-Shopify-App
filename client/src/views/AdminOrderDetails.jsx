@@ -26,6 +26,7 @@ const SupplierList = () => {
       }
       else {
         res.data.sort((a,b)=> new Date(b.order_date) - new Date(a.order_date))
+
         setOrders(res.data);
          // console.log(res.data);
       }
@@ -204,8 +205,24 @@ const SupplierList = () => {
                               {item.customer_name.name}
                             </td>
                             <td>{item.sku}</td>
-                            <td>${new Intl.NumberFormat('en-US').format(
-                                parseFloat(item.product_selling*item.quantity).toFixed(2))}</td>
+
+
+                            <td></td>
+
+                            <td>
+                            {item.customer_name.country.toLowerCase()==="usa"?(`$`+(new Intl.NumberFormat('en-US').format(
+                            parseFloat(parseFloat(item.product_selling)*parseFloat(item.quantity)+parseFloat(item.shipping.usa)).toFixed(2)))):null}
+                            {item.customer_name.country.toLowerCase()==="canada"?(`$`+(new Intl.NumberFormat('en-US').format(
+                                parseFloat(parseFloat(item.product_selling)*parseFloat(item.quantity)+parseFloat(item.shipping.canada)).toFixed(2)))):null}
+                            {item.customer_name.country.toLowerCase()==="australia"?(`$`+(new Intl.NumberFormat('en-US').format(
+                                parseFloat(parseFloat(item.product_selling)*parseFloat(item.quantity)+parseFloat(item.shipping.australia)).toFixed(2)))):null}
+                            {item.customer_name.country.toLowerCase()==="unitedKingdom"?(`$`+(new Intl.NumberFormat('en-US').format(
+                                parseFloat(parseFloat(item.product_selling)*parseFloat(item.quantity)+parseFloat(item.shipping.unitedKingdom)).toFixed(2)))):null}
+                            {(item.customer_name.country.toLowerCase()==="usa"||"canada"||"australia"||"unitedKingdom")?(`$`+(new Intl.NumberFormat('en-US').format(
+                                parseFloat(parseFloat(item.product_selling)*parseFloat(item.quantity)+parseFloat(item.shipping.international)).toFixed(2)))):null}
+                            </td>
+
+
                             <td>{item.fulfillmentStatus==="Fulfilled"?<span style={{backgroundColor:"yellowgreen", width:"100px", height:"100px", borderRadius:"10%"}}>Fulfilled</span>:<span style={{backgroundColor:"#ffcccb", width:"100px", height:"100px", borderRadius:"10%"}}>Unfulfilled</span>}</td>
                           </tr>
 
@@ -216,7 +233,7 @@ const SupplierList = () => {
                                 <td>Product Price : $
 
 
-                                {(new Intl.NumberFormat('en-US').format(item.product_price ))}
+                                {(new Intl.NumberFormat('en-US').format(item.product_price ))} x {item.quantity}
 
 
 
