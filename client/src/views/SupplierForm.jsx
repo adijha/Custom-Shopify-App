@@ -51,6 +51,7 @@ const SupplierForm = () => {
         epacket,
         epacketShipping,
         processing,
+        epacketCountry,
         nonEpacketCountry,
         fastUS,
         brandedInvoice,
