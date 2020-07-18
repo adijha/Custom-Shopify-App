@@ -251,7 +251,7 @@ const ProductList = () => {
     switch (ref) {
       case "price":
         newArr[index].price = e.target.value;
-        newArr[index].selliingPrice = parseInt(e.target.value) + parseInt((e.target.value * autoMargin)/100)
+        newArr[index].selliingPrice = parseFloat(e.target.value) + ((parseFloat(e.target.value) * parseFloat(autoMargin))/100)
         break;
       case "quantity":
         newArr[index].quantity = e.target.value;
