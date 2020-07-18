@@ -145,71 +145,71 @@ const AddProduct = () => {
       tempVarientArray.push(obj);
     }
     console.log("tempVarientArray", tempVarientArray);
-  //   if (name===''|| description===''|| category===''||shippingDetails==='') {
-  //     NotificationManager.error('Please fill all the details')
-  //   }
-  //   else{
-  //   const data = await new FormData();
-  //   console.log(productImage, 'add button image');
-  //   data.append('productImage', productImage[0]);
-  //   data.append('productImage', productImage[1]);
-  //   data.append('productImage', productImage[2]);
-  //   data.append('productImage', productImage[3]);
-  //   data.append('productImage', productImage[4]);
-  //   data.append('productImage', productImage[5]);
-  //   data.append('productImage', productImage[6]);
-  //   data.append('supplier_id', decode.id);
-  //   data.append('name', name);
-  //   data.append('price', varien ? 0 : price);
-  //   data.append('quantity', varien ? 0 : quantity);
-  //   data.append('warranty', warranty);
-  //   data.append('weight', weight);
-  //   data.append('description', description);
-  //   data.append('category', category);
-  //   data.append('code', varien ? 0 : code);
-  //   data.append('size', size);
-  //   data.append('varients', JSON.stringify(varients));
-  //   data.append('options', JSON.stringify(options));
-  //   data.append('method', shippingDetails);
-  //   data.append('usa', usa);
-  //   data.append('canada', canada);
-  //   data.append('uk', uk);
-  //   data.append('australia', australia);
-  //   data.append('international', international);
-  //   data.append('varientArray', JSON.stringify(tempVarientArray));
-  //
-  //
-  //   axios
-  //     .post('/api/addProduct', data)
-  //     .then((res) => {
-  //       if (res.data.includes('Success')) {
-  //         NotificationManager.success('Product Added Successfully');
-  //         setName('');
-  //         setPrice('');
-  //         setQuantity('');
-  //         setWarranty('');
-  //         setDescription('');
-  //         setCategory('');
-  //         setCode('');
-  //         setProductImage([]);
-  //         setVarients([]);
-  //         setCanada('');
-  //         setAustralia('');
-  //         setInternational('');
-  //         setUsa('');
-  //         setUk('');
-  //       } else {
-  //         res.data.error
-  //           ? NotificationManager.error(res.data.error.toString())
-  //           : NotificationManager.error('There is a problem with your entries');
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       err
-  //         ? NotificationManager.error(err.toString())
-  //         : NotificationManager.error('There is a problem with your entries');
-  //     });
-  // }
+    if (name===''|| description===''|| category===''||shippingDetails==='') {
+      NotificationManager.error('Please fill all the details')
+    }
+    else{
+    const data = await new FormData();
+    console.log(productImage, 'add button image');
+    data.append('productImage', productImage[0]);
+    data.append('productImage', productImage[1]);
+    data.append('productImage', productImage[2]);
+    data.append('productImage', productImage[3]);
+    data.append('productImage', productImage[4]);
+    data.append('productImage', productImage[5]);
+    data.append('productImage', productImage[6]);
+    data.append('supplier_id', decode.id);
+    data.append('name', name);
+    data.append('price', varien ? 0 : price);
+    data.append('quantity', varien ? 0 : quantity);
+    data.append('warranty', warranty);
+    data.append('weight', weight);
+    data.append('description', description);
+    data.append('category', category);
+    data.append('code', varien ? 0 : code);
+    data.append('size', size);
+    data.append('varients', JSON.stringify(varients));
+    data.append('options', JSON.stringify(options));
+    data.append('method', shippingDetails);
+    data.append('usa', usa);
+    data.append('canada', canada);
+    data.append('uk', uk);
+    data.append('australia', australia);
+    data.append('international', international);
+    data.append('varientArray', JSON.stringify(tempVarientArray));
+
+
+    axios
+      .post('/api/addProduct', data)
+      .then((res) => {
+        if (res.data.includes('Success')) {
+          NotificationManager.success('Product Added Successfully');
+          setName('');
+          setPrice('');
+          setQuantity('');
+          setWarranty('');
+          setDescription('');
+          setCategory('');
+          setCode('');
+          setProductImage([]);
+          setVarients([]);
+          setCanada('');
+          setAustralia('');
+          setInternational('');
+          setUsa('');
+          setUk('');
+        } else {
+          res.data.error
+            ? NotificationManager.error(res.data.error.toString())
+            : NotificationManager.error('There is a problem with your entries');
+        }
+      })
+      .catch((err) => {
+        err
+          ? NotificationManager.error(err.toString())
+          : NotificationManager.error('There is a problem with your entries');
+      });
+  }
   };
 
   //Add Product from CSV File
