@@ -17,7 +17,7 @@ const csv = require('csvtojson');
 const apiKey = process.env.SHOPIFY_API_KEY;
 const apiSecret = process.env.SHOPIFY_API_SECRET;
 const scopes =
-  'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders, read_locations, write_locations';
+  'read_products, write_products, read_orders, write_orders, read_assigned_fulfillment_orders, read_locations';
 const forwardingAddress = 'https://www.Melisxpress.com';
 let hmacc, tokenn;
 // let shop;
