@@ -2740,6 +2740,15 @@ router.delete('/product/:id', async (req, res) => {
   }
 });
 
+router.delete('/csvProduct/:id', async (req, res) => {
+  try {
+    const data = await CsvTest.deleteOne({ _id: req.params.id });
+    res.json({ message: 'product Deleted' });
+  } catch (e) {
+    res.json({ message: error.message });
+  }
+});
+
 
 
 
@@ -2836,35 +2845,54 @@ router.post('/product/csv', upload.single('file'), async (req, res) => {
   let list_csv = await csv().fromString(req.file.buffer.toString());
   list_csv = JSON.stringify(list_csv);
   list_csv = JSON.parse(list_csv);
-  list_csv.forEach(async (item, index) => {
-    index === 1 ? console.log(item) : null;
-    const csvtest = new CsvTest({
-      supplier_id: req.body.supplier_id,
-      name: item.Title,
-      type: item.Type,
-      tags: item.Tags,
-      option1: item['Option1 Name'],
-      option1: item['Option1 Value'],
-      option2: item['Option2 Name'],
-      option2: item['Option2 Value'],
-      option3: item['Option3 Name'],
-      option3: item['Option3 Value'],
-      // varients
-      // varient: item
-      productImage: item['Image Src'],
-      description: item['Body (HTML)'],
-      price: item['Variant Price'],
-    });
-    try {
-      const newProduct = await csvtest.save();
-      if (newProduct) {
-        res.json('product added completed');
+
+  function addSingleProduct(){
+    list_csv.forEach(async (item, index) => {
+      if (item.Title==="") {
+        return
       }
-    } catch (error) {
-      res.send(error);
-      console.log('catch error is', error);
-    }
-  });
+      else {
+        console.log("item", item.Title);
+        index === 1 ? console.log(item) : null;
+        const csvtest = new CsvTest({
+          supplier_id: req.body.supplier_id,
+          name: item.Title,
+          type: item.Type,
+          tags: item.Tags,
+          option1: item['Option1 Name'],
+          option1: item['Option1 Value'],
+          option2: item['Option2 Name'],
+          option2: item['Option2 Value'],
+          option3: item['Option3 Name'],
+          option3: item['Option3 Value'],
+          // varients
+          // varient: item
+          image: item['Image Src'],
+          description: item['Body (HTML)'],
+          price: item['Variant Price'],
+        });
+        let newProduct = await csvtest.save();
+
+        if (newProduct) return "added product success"
+
+        else return "error in added csv product"
+      }
+
+
+
+
+
+    });
+    return "done"
+  }
+
+  let checkStatus = await addSingleProduct()
+  if (checkStatus==="done") {
+    res.send('success')
+  }
+  else {
+    res.send("something went wrong")
+  }
 });
 // });
 
@@ -2872,6 +2900,7 @@ router.post('/product/csv', upload.single('file'), async (req, res) => {
 router.get('/csv/product', async (req, res) => {
   try {
     const item = await CsvTest.find();
+    console.log(item.length);
     res.json(item);
   } catch (error) {
     res.json({ message: error });

@@ -221,7 +221,7 @@ const AddProduct = () => {
     axios
       .post('/api/product/csv', scvdata)
       .then((res) => {
-        if (res.data.includes('Success')) {
+        if (res.data.includes('success')) {
           NotificationManager.success('File uploaded Successfully');
         } else {
           res.data.error

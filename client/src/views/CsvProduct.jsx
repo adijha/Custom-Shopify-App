@@ -56,10 +56,13 @@ const CsvProduct = () => {
 
   const deleteProduct = (item) => {
     console.log("delete" + item._id);
-    axios.delete("/api/product/" + item._id).then((data) => {
+    axios.delete("/api/csvProduct/" + item._id).then((data) => {
       if (data) {
         NotificationManager.success("Product Deleted");
         getProductData();
+      }
+      else {
+        NotificationManager.error("Something Went Wrong")
       }
     });
   };
@@ -116,6 +119,7 @@ const CsvProduct = () => {
                   <Table striped hover>
                     <thead>
                       <tr>
+                      <th>Image</th>
                         <th>Name</th>
                         <th>SKU</th>
                         <th>Category</th>
@@ -126,25 +130,27 @@ const CsvProduct = () => {
                       {productItems.map((item, key) => {
                         return (
                           <tr key={key}>
+                          
+                          <td style={{width:"20%"}}>{item.image!==""?(<img style={{width:"100px", height:"100px"}} src={`${item.image}`}/>):"NA"}</td>
                             <td>{item.name}</td>
-                            <td>{item.code}</td>
-                            <td>{item.category}</td>
-                            <td>{
-                            
+                            <td>{item.code||"NA"}</td>
+                            <td>{item.category||"NA"}</td>
+                            <td>${
+
                             new Intl.NumberFormat("en-US").format(
-                              item.price 
-                            
-                           
+                              item.price
+
+
                           )
                             }</td>
-                            <td>
+                            {/**<td>
                               <button
                                 className="btn btn-primary btn-sm"
                                 onClick={() => updateProduct(item)}
                               >
                                 Edit
                               </button>
-                            </td>
+                            </td>**/}
                             <td>
                               <button
                                 className="btn btn-danger btn-sm"

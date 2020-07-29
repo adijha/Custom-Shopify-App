@@ -28,6 +28,9 @@ const CsvTestSchema = mongoose.Schema({
   },
   code:{
     type: String,
+  },
+  image:{
+    type:String
   }
 })
 
